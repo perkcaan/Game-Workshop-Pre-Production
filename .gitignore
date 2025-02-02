@@ -72,11 +72,35 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-# FMOD Editor Generated Files
+###FMOD INTEGRATION IGNORE FILES###
+
+# Never ignore DLLs in the FMOD subfolder.
+!/[Aa]ssets/Plugins/FMOD/**/lib/*
+
+# Don't ignore images and gizmos used by FMOD in the Unity Editor.
+!/[Aa]ssets/Gizmos/FMOD/*
+!/[Aa]ssets/Editor Default Resources/FMOD/*
+
+#Ignore cache folders
 Assets/FMODStudioCache.asset
 Assets/FMODStudioCache.asset.meta
+Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset.meta
+/[Aa]ssets/Plugins/FMOD/Cache/*
+Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset
+
+#Log-Files
 Fmod.log
 Food_editor.log
-Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset.meta
-Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset
+
+# Ignore bank files in the StreamingAssets folder.
+/[Aa]ssets/StreamingAssets/**/*.bank
+/[Aa]ssets/StreamingAssets/**/*.bank.meta
+
+
+#FMOD 1.10 x (Legacy)
+/Assets/FMODAssets/*
+/Assets//FMODStudioCache.meta
+/Game Workshop Pre/.cache
+/Game Workshop Pre/.unsaved
+
 .pdc
