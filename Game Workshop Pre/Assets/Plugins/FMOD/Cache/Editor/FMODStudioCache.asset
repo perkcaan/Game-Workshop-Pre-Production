@@ -15,10 +15,10 @@ MonoBehaviour:
   Path: HellishFMOD/HellishSoundDesign/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638741195719437643
+  lastModified: 638741201715257003
   FileSizes:
   - Name: Desktop
-    Value: 102528
+    Value: 324352
   Exists: 1
 --- !u!114 &-615045433087154330
 MonoBehaviour:
@@ -35,10 +35,10 @@ MonoBehaviour:
   Path: HellishFMOD/HellishSoundDesign/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638741195719473420
+  lastModified: 638741201715287642
   FileSizes:
   - Name: Desktop
-    Value: 760
+    Value: 804
   Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -57,13 +57,41 @@ MonoBehaviour:
   - {fileID: -4759238607353344848}
   EditorEvents:
   - {fileID: 9036009694680717989}
+  - {fileID: 5013564767276696423}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4759238607353344848}
   StringsBanks:
   - {fileID: -615045433087154330}
-  cacheTime: 638741195719473420
+  cacheTime: 638741201715287642
   cacheVersion: 131622
+--- !u!114 &5013564767276696423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/TestEvent1
+  m_EditorClassIdentifier: 
+  Path: event:/TestEvent1
+  Guid:
+    Data1: -1575558771
+    Data2: 1271020076
+    Data3: -202892663
+    Data4: 870782624
+  Banks:
+  - {fileID: -4759238607353344848}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 28107
 --- !u!114 &9036009694680717989
 MonoBehaviour:
   m_ObjectHideFlags: 0
