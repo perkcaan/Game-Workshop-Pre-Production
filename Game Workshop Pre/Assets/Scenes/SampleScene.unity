@@ -636,7 +636,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5.3843627
+  orthographic size: 8.953143
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -661,7 +661,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.2000003, y: 1.31, z: -10}
+  m_LocalPosition: {x: 2.2000003, y: -0.13, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1051,9 +1051,10 @@ GameObject:
   - component: {fileID: 1074767499}
   - component: {fileID: 1074767501}
   - component: {fileID: 1074767502}
+  - component: {fileID: 1074767503}
   m_Layer: 0
   m_Name: Hitbox
-  m_TagString: Mouse
+  m_TagString: Hitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1067,8 +1068,8 @@ Transform:
   m_GameObject: {fileID: 1074767495}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.02, y: 1.54, z: 0}
-  m_LocalScale: {x: 0.41891977, y: -1.9073166, z: 1.9152561}
+  m_LocalPosition: {x: -0.01, y: 1.05, z: 0}
+  m_LocalScale: {x: 0.41891977, y: -0.7152437, z: 1.9152561}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 115312519}
@@ -1154,7 +1155,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1200,6 +1201,22 @@ MonoBehaviour:
   moveSpeed: 3
   rb: {fileID: 0}
   cam: {fileID: 519420031}
+--- !u!114 &1074767503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074767495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
+    _objectReferences:
+    - {fileID: 11400000, guid: 38044a2a00e90462f81d8953a794b383, type: 2}
 --- !u!1 &1137725441
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,7 +1459,7 @@ Transform:
   m_GameObject: {fileID: 1338790133}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.8909, y: -10.3821, z: 0.02149975}
+  m_LocalPosition: {x: 2.8909, y: -8.9, z: 0.02149975}
   m_LocalScale: {x: 32.63387, y: 1.3141774, z: 1.0177}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1585,7 +1602,7 @@ Transform:
   m_GameObject: {fileID: 1788738450}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.066548474, w: 0.99778324}
-  m_LocalPosition: {x: 1.4591892, y: 13.518056, z: 0.02149975}
+  m_LocalPosition: {x: 1.4591892, y: 8.77, z: 0.02149975}
   m_LocalScale: {x: 28.444855, y: 1.8537184, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
