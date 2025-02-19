@@ -31,6 +31,9 @@
 		<relationship name="timeline">
 			<destination>{8748ec1b-4ef9-4235-874b-b368752f5f1f}</destination>
 		</relationship>
+		<relationship name="parameters">
+			<destination>{365e7d1e-117d-4212-8470-d266a1605b8e}</destination>
+		</relationship>
 		<relationship name="banks">
 			<destination>{f1417bbe-be3e-416a-9e1c-307045676c2c}</destination>
 		</relationship>
@@ -59,11 +62,24 @@
 	<object class="EventAutomatableProperties" id="{4bc4dd05-308f-4ca3-830a-eb8a186b8061}" />
 	<object class="MarkerTrack" id="{9cafae60-4bf4-4fbc-ba38-a400592062b0}" />
 	<object class="GroupTrack" id="{fa03064e-3523-408c-8427-d57ef272f842}">
+		<relationship name="modules">
+			<destination>{c1e874a8-f387-4b18-8eee-ceb8dd57447a}</destination>
+			<destination>{be5eaf72-572a-4f53-a34f-28df67263af8}</destination>
+		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{2c073af8-03a1-47a9-9d72-db86be53a978}</destination>
 		</relationship>
 	</object>
 	<object class="Timeline" id="{8748ec1b-4ef9-4235-874b-b368752f5f1f}" />
+	<object class="ParameterProxy" id="{365e7d1e-117d-4212-8470-d266a1605b8e}">
+		<relationship name="modules">
+			<destination>{c1e874a8-f387-4b18-8eee-ceb8dd57447a}</destination>
+			<destination>{be5eaf72-572a-4f53-a34f-28df67263af8}</destination>
+		</relationship>
+		<relationship name="preset">
+			<destination>{b1cc105d-51c6-40b1-a27f-ea9b9f3b4fd4}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerMaster" id="{da909649-9af1-4f38-9289-fca89e7322a4}">
 		<relationship name="effectChain">
 			<destination>{7f8301ce-a8cd-4024-87d9-f144b78ddb90}</destination>
@@ -81,6 +97,12 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{555b9e10-fe71-4b58-8260-2e291ad89e9a}" />
+	<object class="MultiSound" id="{c1e874a8-f387-4b18-8eee-ceb8dd57447a}" />
+	<object class="MultiSound" id="{be5eaf72-572a-4f53-a34f-28df67263af8}">
+		<property name="start">
+			<value>1</value>
+		</property>
+	</object>
 	<object class="EventMixerGroup" id="{2c073af8-03a1-47a9-9d72-db86be53a978}">
 		<property name="name">
 			<value>Audio 1</value>
