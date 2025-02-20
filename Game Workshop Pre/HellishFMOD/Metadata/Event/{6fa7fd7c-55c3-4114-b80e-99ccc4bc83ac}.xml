@@ -65,20 +65,20 @@
 		<relationship name="modules">
 			<destination>{b456c2cd-19e4-47ad-95dc-b6172a5c652a}</destination>
 			<destination>{646ad5f8-f120-4def-afe4-816b0d3ba237}</destination>
-			<destination>{8f72689b-508f-407f-a2f0-7a5d9fbe56cc}</destination>
-			<destination>{e653122c-7893-46d7-8468-6fa654355c2c}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{5c676910-bc4c-44cf-83ee-e5afd6ba694b}</destination>
 		</relationship>
 	</object>
-	<object class="Timeline" id="{6324acd8-0014-45cb-b03a-7c77f8ef1ddd}" />
+	<object class="Timeline" id="{6324acd8-0014-45cb-b03a-7c77f8ef1ddd}">
+		<property name="isProxyEnabled">
+			<value>false</value>
+		</property>
+	</object>
 	<object class="ParameterProxy" id="{cd0ad826-6087-4b9c-9f07-5377fd452751}">
 		<relationship name="modules">
 			<destination>{b456c2cd-19e4-47ad-95dc-b6172a5c652a}</destination>
 			<destination>{646ad5f8-f120-4def-afe4-816b0d3ba237}</destination>
-			<destination>{8f72689b-508f-407f-a2f0-7a5d9fbe56cc}</destination>
-			<destination>{e653122c-7893-46d7-8468-6fa654355c2c}</destination>
 		</relationship>
 		<relationship name="preset">
 			<destination>{e6f70b34-a4eb-43e7-8643-d2025b798e6b}</destination>
@@ -105,16 +105,6 @@
 	<object class="MultiSound" id="{646ad5f8-f120-4def-afe4-816b0d3ba237}">
 		<property name="start">
 			<value>1</value>
-		</property>
-	</object>
-	<object class="MultiSound" id="{8f72689b-508f-407f-a2f0-7a5d9fbe56cc}">
-		<property name="start">
-			<value>2</value>
-		</property>
-	</object>
-	<object class="MultiSound" id="{e653122c-7893-46d7-8468-6fa654355c2c}">
-		<property name="start">
-			<value>3</value>
 		</property>
 	</object>
 	<object class="EventMixerGroup" id="{5c676910-bc4c-44cf-83ee-e5afd6ba694b}">
