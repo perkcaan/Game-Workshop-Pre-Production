@@ -412,9 +412,6 @@
 	</object>
 	<object class="MixerBusFader" id="{46a63ce3-1139-4d22-b100-9dfa9147f9e1}" />
 	<object class="PannerEffect" id="{4a72b76c-d1c9-42cf-a4fe-324709350d2a}">
-		<property name="stereoPan">
-			<value>15</value>
-		</property>
 		<property name="overridingOutputFormat">
 			<value>1</value>
 		</property>
@@ -434,9 +431,6 @@
 	<object class="RandomizerModulator" id="{282dd2b4-82ce-48c0-a17c-34afcb744014}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>stereoPan</value>
-		</property>
-		<property name="amount">
-			<value>10</value>
 		</property>
 	</object>
 </objects>
