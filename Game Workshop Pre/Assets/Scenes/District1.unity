@@ -1663,7 +1663,7 @@ MonoBehaviour:
     _objectReferences:
     - {fileID: 1016447074}
     - {fileID: 1074767495}
-    - {fileID: 1074767495}
+    - {fileID: 558385715}
     - {fileID: 115312517}
     - {fileID: 1771688531}
 --- !u!4 &1515581889
@@ -2593,6 +2593,10 @@ PrefabInstance:
     - target: {fileID: 3286498022762003610, guid: b93e9e510f6394385940baf05a7dc241, type: 3}
       propertyPath: m_CollisionDetection
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5324460973584994722, guid: b93e9e510f6394385940baf05a7dc241, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5450918295105373273, guid: b93e9e510f6394385940baf05a7dc241, type: 3}
       propertyPath: m_Name
