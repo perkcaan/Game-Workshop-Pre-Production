@@ -2674,6 +2674,7 @@ MonoBehaviour:
       Health","value":{"$content":5.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"Current
       Health","value":{"$content":5.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"HoldTrashValue","value":{"$content":0.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 1016447074}
@@ -4520,6 +4521,10 @@ PrefabInstance:
     - target: {fileID: 5450918295105373273, guid: b93e9e510f6394385940baf05a7dc241, type: 3}
       propertyPath: m_Name
       value: TrashBullet
+      objectReference: {fileID: 0}
+    - target: {fileID: 5450918295105373273, guid: b93e9e510f6394385940baf05a7dc241, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6635341969271269889, guid: b93e9e510f6394385940baf05a7dc241, type: 3}
       propertyPath: _data._json
