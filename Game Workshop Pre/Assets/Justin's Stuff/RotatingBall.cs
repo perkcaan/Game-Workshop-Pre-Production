@@ -7,6 +7,7 @@ public class RotatingBall : MonoBehaviour
     Vector3 direction;
     Vector3 up;
     float speed = 100;
+    float moveSpeed = 2;
 
     private void Start()
     {
@@ -23,5 +24,7 @@ public class RotatingBall : MonoBehaviour
         print(rotateAxis);
 
         transform.Rotate(rotateAxis, -direction.magnitude * speed * Time.deltaTime, Space.World);
+
+        transform.Translate(new Vector3(direction.x, direction.z) * moveSpeed * Time.deltaTime, Space.World);
     }
 }
