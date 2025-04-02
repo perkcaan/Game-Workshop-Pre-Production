@@ -92,8 +92,12 @@
 		<property name="length">
 			<value>8.4091041666666673</value>
 		</property>
+		<property name="pitch">
+			<value>0.699999988</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{ec06722c-8e36-42a6-8fc8-74419e2e8a7d}</destination>
+			<destination>{2477c2db-0499-4cbf-98fd-c4f7937ff005}</destination>
 		</relationship>
 		<relationship name="sounds">
 			<destination>{737b8c8b-bb0f-4f30-9f2f-50cbb18f8f25}</destination>
@@ -128,6 +132,14 @@
 		</property>
 		<property name="amount">
 			<value>57.5</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{2477c2db-0499-4cbf-98fd-c4f7937ff005}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>7</value>
 		</property>
 	</object>
 	<object class="SingleSound" id="{737b8c8b-bb0f-4f30-9f2f-50cbb18f8f25}">
