@@ -181,8 +181,11 @@
 		<property name="pitch">
 			<value>7.5</value>
 		</property>
+		<property name="minimumTimeBetweenSounds">
+			<value>200</value>
+		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>550</value>
+			<value>350</value>
 		</property>
 		<property name="minimumScatterDistance">
 			<value>0</value>
@@ -494,7 +497,7 @@
 	<object class="MixerBusFader" id="{010463e6-7912-4919-a6d8-c9029b862845}" />
 	<object class="SFXReverbEffect" id="{76989576-86c1-41bd-9031-d0af7792227a}">
 		<property name="decayTime">
-			<value>1000</value>
+			<value>100</value>
 		</property>
 		<property name="earlyDelay">
 			<value>0</value>
