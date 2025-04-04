@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 5686366}
   - component: {fileID: 5686365}
   m_Layer: 7
-  m_Name: Sphere
+  m_Name: Trash Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,7 +280,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 52275f0d740429840afde4283f0f878d, type: 2}
+  - {fileID: 2100000, guid: 36adc8688216bf34baea9a5d0efc8323, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -321,7 +321,7 @@ Transform:
   m_LocalRotation: {x: -0.38268343, y: 0, z: 0, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0.4, z: -10.4}
   m_LocalScale: {x: 2, y: 2, z: 2}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1769713673}
   m_Father: {fileID: 0}
