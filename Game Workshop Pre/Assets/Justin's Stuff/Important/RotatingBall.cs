@@ -6,25 +6,48 @@ public class RotatingBall : MonoBehaviour
 {
     Vector3 direction;
     Vector3 up;
-    float speed = 100;
-    float moveSpeed = 2;
+    Vector3 oldPosition;
+    private float _size;
+    public float size
+    {
+        get
+        {
+            return _size;
+        }
+        set
+        {
+            ScaleUp(value);
+            _size = value;
+        }
+    }
 
     private void Start()
     {
         up = new Vector3(0, Mathf.Sqrt(2f) / 2f, -Mathf.Sqrt(2f) / 2f);
+        oldPosition = transform.position;
+        size = 1;
+    }
+
+    private void ScaleUp(float s)
+    {
+        transform.localScale = new Vector3(s, s, s);
     }
 
     // Update is called once per frame
     void Update()
     {
-        direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        if (oldPosition != transform.position)
+        {
+            direction = transform.position - oldPosition;
 
-        Vector3 rotateAxis = Vector3.Cross(direction, up);
+            float displacement = -direction.magnitude;
 
-        print(rotateAxis);
+            oldPosition = transform.position;
 
-        transform.Rotate(rotateAxis, -direction.magnitude * speed * Time.deltaTime, Space.World);
+            Vector3 rotateAxis = Vector3.Cross(direction, up);
 
-        transform.Translate(new Vector3(direction.x, direction.z) * moveSpeed * Time.deltaTime, Space.World);
+            transform.Rotate(rotateAxis, displacement / size * 2 * Mathf.Rad2Deg, Space.World);
+        }
+
     }
 }
