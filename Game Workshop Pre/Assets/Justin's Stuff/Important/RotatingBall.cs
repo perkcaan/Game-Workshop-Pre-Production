@@ -25,7 +25,7 @@ public class RotatingBall : MonoBehaviour
     {
         up = new Vector3(0, Mathf.Sqrt(2f) / 2f, -Mathf.Sqrt(2f) / 2f);
         oldPosition = transform.position;
-        size = 1;
+        size = 4;
     }
 
     private void ScaleUp(float s)
