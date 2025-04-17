@@ -149,6 +149,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{b6aaea47-4751-4e4d-a8e5-fd331256cfd8}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<property name="name">
 			<value>Lava Bubbles</value>
 		</property>
@@ -222,22 +225,14 @@
 			<destination>{fcbd52c0-0d85-4cf0-8542-cb60406c9373}</destination>
 			<destination>{ab3dc755-c225-4d76-a201-e327ba09a436}</destination>
 			<destination>{06dd5484-429f-4b5c-9188-2505da762bf1}</destination>
-			<destination>{348216f2-7b2f-47b1-8127-e13582e119c7}</destination>
 			<destination>{6a7582c1-0fe4-46aa-8e31-e7f0f70a77ad}</destination>
 			<destination>{af1a801f-2d71-46d3-83a5-a1f52bfcc7b9}</destination>
-			<destination>{76770f64-a732-480a-bacd-02eb8352ce6d}</destination>
 			<destination>{702f413a-795d-43ac-9f6d-8808800617e0}</destination>
 			<destination>{23e6ec1a-c2f8-41c3-92e6-b6d8d01eb886}</destination>
 			<destination>{dd5dc584-b70f-4dfb-ba8c-94d385fecb52}</destination>
 			<destination>{e976897d-7823-4c56-b833-27d03d4b57bc}</destination>
 			<destination>{f558a383-3cc8-4d81-9f9f-888b2bd72d88}</destination>
-			<destination>{8b210a54-e761-465b-a353-8bb1dfc2af8c}</destination>
 			<destination>{411503c8-4ce6-4e1c-870a-655d2d0977fc}</destination>
-		</relationship>
-		<relationship name="playPercentages">
-			<destination>{4b0f5805-5334-43c2-8423-d1006b24db75}</destination>
-			<destination>{f66cd676-bf46-40a2-be9a-fad0d9f718bd}</destination>
-			<destination>{e49ce280-b8b4-4adb-b98f-594a47e97b33}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{5577d3e7-0b4c-483a-8e99-63d259639b93}">
@@ -283,11 +278,6 @@
 			<destination>{a1a30422-42b4-4d25-9950-77617426a6e1}</destination>
 		</relationship>
 	</object>
-	<object class="SingleSound" id="{348216f2-7b2f-47b1-8127-e13582e119c7}">
-		<relationship name="audioFile">
-			<destination>{338550ed-fc20-437d-9765-840d7aa9e8fd}</destination>
-		</relationship>
-	</object>
 	<object class="SingleSound" id="{6a7582c1-0fe4-46aa-8e31-e7f0f70a77ad}">
 		<relationship name="audioFile">
 			<destination>{dbc88ec0-7308-45b2-8d3e-438a63f43258}</destination>
@@ -296,11 +286,6 @@
 	<object class="SingleSound" id="{af1a801f-2d71-46d3-83a5-a1f52bfcc7b9}">
 		<relationship name="audioFile">
 			<destination>{182d084e-9714-45df-99cc-ceb086edcaa7}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{76770f64-a732-480a-bacd-02eb8352ce6d}">
-		<relationship name="audioFile">
-			<destination>{a71e46ca-76e1-4986-9e00-3a48fbd53519}</destination>
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{702f413a-795d-43ac-9f6d-8808800617e0}">
@@ -328,38 +313,9 @@
 			<destination>{74935dbf-bf3c-4a5a-b17a-63ad432524d7}</destination>
 		</relationship>
 	</object>
-	<object class="SingleSound" id="{8b210a54-e761-465b-a353-8bb1dfc2af8c}">
-		<relationship name="audioFile">
-			<destination>{e8cf4e7e-dd56-45ed-a5f7-9ac3a9f810f4}</destination>
-		</relationship>
-	</object>
 	<object class="SingleSound" id="{411503c8-4ce6-4e1c-870a-655d2d0977fc}">
 		<relationship name="audioFile">
 			<destination>{388d9960-f8f7-4c22-9f69-a66c3eba5f03}</destination>
-		</relationship>
-	</object>
-	<object class="PlayPercentage" id="{4b0f5805-5334-43c2-8423-d1006b24db75}">
-		<property name="percentage">
-			<value>2</value>
-		</property>
-		<relationship name="sound">
-			<destination>{348216f2-7b2f-47b1-8127-e13582e119c7}</destination>
-		</relationship>
-	</object>
-	<object class="PlayPercentage" id="{f66cd676-bf46-40a2-be9a-fad0d9f718bd}">
-		<property name="percentage">
-			<value>2</value>
-		</property>
-		<relationship name="sound">
-			<destination>{76770f64-a732-480a-bacd-02eb8352ce6d}</destination>
-		</relationship>
-	</object>
-	<object class="PlayPercentage" id="{e49ce280-b8b4-4adb-b98f-594a47e97b33}">
-		<property name="percentage">
-			<value>2</value>
-		</property>
-		<relationship name="sound">
-			<destination>{8b210a54-e761-465b-a353-8bb1dfc2af8c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{22e867df-86b3-4458-9b5d-f7de1131952d}" />
