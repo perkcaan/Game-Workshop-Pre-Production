@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class RotatingBall : MonoBehaviour
 {
     Vector3 direction;
     Vector3 up;
     Vector3 oldPosition;
+    private VariableDeclarations activeScene;
+
     private float _size;
     public float size
     {
@@ -26,6 +29,7 @@ public class RotatingBall : MonoBehaviour
         up = new Vector3(0, Mathf.Sqrt(2f) / 2f, -Mathf.Sqrt(2f) / 2f);
         oldPosition = transform.position;
         size = 2;
+        activeScene = Variables.ActiveScene;
     }
 
     private void ScaleUp(float s)
@@ -36,6 +40,13 @@ public class RotatingBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float trashScore = (float)activeScene.Get("TrashScore");
+
+        if (size != trashScore)
+        {
+            size = trashScore / 4f + 2f;
+        }
+
         if (oldPosition != transform.position)
         {
             direction = transform.position - oldPosition;
