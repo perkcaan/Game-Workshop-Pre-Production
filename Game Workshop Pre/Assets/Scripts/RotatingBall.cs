@@ -45,6 +45,11 @@ public class RotatingBall : MonoBehaviour
         if (size != trashScore)
         {
             size = trashScore / 4f + 2f;
+
+            foreach(Transform child in transform)
+            {
+                child.localScale = child.localScale / child.lossyScale.x;
+            }
         }
 
         if (oldPosition != transform.position)
