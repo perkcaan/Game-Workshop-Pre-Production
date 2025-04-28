@@ -48,7 +48,10 @@ public class RotatingBall : MonoBehaviour
 
             foreach(Transform child in transform)
             {
-                child.localScale = child.localScale / child.lossyScale.x;
+                if(!child.name.Contains("PIXEL MASK"))
+                {
+                    child.localScale = child.localScale / child.lossyScale.x;
+                }
             }
         }
 
