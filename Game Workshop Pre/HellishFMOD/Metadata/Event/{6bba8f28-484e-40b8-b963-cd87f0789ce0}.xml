@@ -76,7 +76,11 @@
 			<destination>{db96cb79-2f63-43ec-b9f0-4493d8088862}</destination>
 		</relationship>
 	</object>
-	<object class="Timeline" id="{e17060d4-8712-4120-858f-7e328d3a5b5d}" />
+	<object class="Timeline" id="{e17060d4-8712-4120-858f-7e328d3a5b5d}">
+		<property name="isProxyEnabled">
+			<value>false</value>
+		</property>
+	</object>
 	<object class="ParameterProxy" id="{11f82779-c104-47cd-9938-92d4107bf533}">
 		<relationship name="modules">
 			<destination>{ad39a83e-e499-43d7-b126-0ac25636f22c}</destination>
