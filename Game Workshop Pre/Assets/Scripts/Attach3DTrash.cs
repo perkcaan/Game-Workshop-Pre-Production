@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Attach3DTrash : MonoBehaviour
 {
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject target = collision.collider.gameObject;
+        GameObject target = collision.gameObject;
 
         if (target.CompareTag("3DTrash") && !target.transform.IsChildOf(transform))
         {
