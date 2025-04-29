@@ -29,7 +29,7 @@ public class RotatingBall : MonoBehaviour
         up = new Vector3(0, Mathf.Sqrt(2f) / 2f, -Mathf.Sqrt(2f) / 2f);
         oldPosition = transform.position;
         size = 2;
-        activeScene = Variables.ActiveScene;
+        activeScene = Variables.Object(this.gameObject);
     }
 
     private void ScaleUp(float s)
@@ -40,7 +40,7 @@ public class RotatingBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float trashScore = (float)activeScene.Get("TrashScore");
+        float trashScore = (float)activeScene.Get("size");
 
         if (size != trashScore)
         {
