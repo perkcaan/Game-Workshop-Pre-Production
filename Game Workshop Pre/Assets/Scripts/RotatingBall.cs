@@ -1,26 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.VisualScripting;
 
 public class RotatingBall : MonoBehaviour
 {
     Vector3 direction;
     Vector3 up;
     Vector3 oldPosition;
-    private VariableDeclarations activeScene;
-
-    private float _size;
     public float size
     {
         get
         {
-            return _size;
+            return size;
         }
         set
         {
             ScaleUp(value);
-            _size = value;
+            size = value;
         }
     }
 
@@ -28,8 +24,7 @@ public class RotatingBall : MonoBehaviour
     {
         up = new Vector3(0, Mathf.Sqrt(2f) / 2f, -Mathf.Sqrt(2f) / 2f);
         oldPosition = transform.position;
-        size = 2;
-        activeScene = Variables.Object(this.gameObject);
+        size = 0;
     }
 
     private void ScaleUp(float s)
@@ -37,24 +32,9 @@ public class RotatingBall : MonoBehaviour
         transform.localScale = new Vector3(s, s, s);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float trashScore = (float)activeScene.Get("size");
-
-        if (size != trashScore)
-        {
-            size = trashScore / 4f + 2f;
-
-            foreach(Transform child in transform)
-            {
-                if(!child.name.Contains("PIXEL MASK"))
-                {
-                    child.localScale = child.localScale / child.lossyScale.x;
-                }
-            }
-        }
-
+        // Trash Sphere Rotation
         if (oldPosition != transform.position)
         {
             direction = transform.position - oldPosition;
@@ -67,6 +47,5 @@ public class RotatingBall : MonoBehaviour
 
             transform.Rotate(rotateAxis, displacement / size * 2 * Mathf.Rad2Deg, Space.World);
         }
-
     }
 }
