@@ -7,7 +7,7 @@ public class TrashScore : MonoBehaviour
 {
     // Start is called before the first frame update
     public TextMeshProUGUI scoreText;
-    public int score = 0;
+    public static int score = 0;
 
     // Start is called before the first frame update
     void Start()

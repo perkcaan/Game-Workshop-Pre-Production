@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class Hitbox : MonoBehaviour
 {
-    public int TrashScore = 0;
     public GameObject fakeTrash;
     public GameObject Hitboxobj;
     public int BaseSpeed;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        // Explicitly convert Vector2 to Vector3 to resolve ambiguity
+        Hitboxobj.transform.position -= (Vector3)new Vector2(.9f, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (TrashScore > 0)
+        if (Score.score > 0)
         {
             fakeTrash.SetActive(true);
         }
@@ -31,35 +32,26 @@ public class Hitbox : MonoBehaviour
     {
         if (other.CompareTag("Trash") || other.CompareTag("TrashBullet"))
         {
-            TrashScore++;
+            Score.score++;
+            TrashScore.score += 1;
             Destroy(other.gameObject);
-            if (TrashScore > 1)
+            if (Score.score > 1)
             {
-                Hitboxobj.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
                 BaseSpeed += 2;
-
             }
         }
 
-        
         if (other.CompareTag("BigTrash"))
         {
-            TrashScore += 5;
+            Score.score += 5;
+            TrashScore.score += 1;
             Destroy(other.gameObject);
-            if (TrashScore > 1)
+            if (Score.score > 1)
             {
-                Hitboxobj.transform.localScale += new Vector3(0.4f, 0.4f, 0.4f);
                 BaseSpeed += 4;
             }
         }
 
-
-        
-
-
+        Hitboxobj.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
     }
-
-   
-
-
 }

@@ -9,6 +9,7 @@ public class RotatingBall : MonoBehaviour
     Vector3 up;
     Vector3 oldPosition;
     private VariableDeclarations activeScene;
+    public GameObject player;
 
     private float _size;
     public float size
@@ -30,6 +31,8 @@ public class RotatingBall : MonoBehaviour
         oldPosition = transform.position;
         size = 2;
         activeScene = Variables.Object(this.gameObject);
+        player = GameObject.FindGameObjectWithTag("Player");
+
     }
 
     private void ScaleUp(float s)
@@ -44,9 +47,11 @@ public class RotatingBall : MonoBehaviour
 
         if (size != trashScore)
         {
-            size = trashScore / 4f + 2f;
+            size = TrashScore.score / 4f + 2f;
+            
 
-            foreach(Transform child in transform)
+
+            foreach (Transform child in transform)
             {
                 if(!child.name.Contains("PIXEL MASK"))
                 {
@@ -58,6 +63,8 @@ public class RotatingBall : MonoBehaviour
         if (oldPosition != transform.position)
         {
             direction = transform.position - oldPosition;
+
+           
 
             float displacement = -direction.magnitude;
 
