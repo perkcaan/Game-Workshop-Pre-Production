@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// NOT THE ONE BEING USED CURRENTLY
+/*
 public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
@@ -45,28 +47,6 @@ public class PlayerMovement : MonoBehaviour
             Vector3 move = (Vector3)(playerVector.normalized * basicSpeed * Time.deltaTime);
             ballTransform.position += move;
         }
-
-
-        Vector2 acceleration = Input.acceleration;
-
-        acceleration += playerVector;
-
-
-    }
-
-    private void FixedUpdate()
-    {
-        if(TrashScore.score > 1)
-        {
-            basicSpeed = Hitbox.FindAnyObjectByType<Hitbox>().BaseSpeed += 1; 
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Lava"))
-        {
-            
-        }
     }
 }
+*/

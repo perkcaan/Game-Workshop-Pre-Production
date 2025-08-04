@@ -22,7 +22,7 @@ public class PlayerMovementController : MonoBehaviour
     private Vector2 targetVelocity = Vector2.zero;
     private Rigidbody2D rb;
     private Camera mainCamera;
-    private float rotation;
+    public float rotation;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -74,6 +74,6 @@ public class PlayerMovementController : MonoBehaviour
         moveSpeed = baseMoveSpeed / (1 + weight * speedReduction);
         acceleration = baseAcceleration / (1 + weight * accelerationReduction);
         rotationSpeed = baseRotationSpeed / (1 + weight * rotationReduction);
-        spriteAnimator.SetBool("Sweeping", weight > 0);
+        spriteAnimator.SetBool("Sweeping", weight > 1);
     }
 }
