@@ -199,8 +199,6 @@ GameObject:
   - component: {fileID: 229679070}
   - component: {fileID: 229679074}
   - component: {fileID: 229679073}
-  - component: {fileID: 229679072}
-  - component: {fileID: 229679071}
   - component: {fileID: 229679075}
   m_Layer: 5
   m_Name: Score
@@ -228,37 +226,6 @@ RectTransform:
   m_AnchoredPosition: {x: -100, y: 26}
   m_SizeDelta: {x: 200, y: 56.457596}
   m_Pivot: {x: 0.5, y: 0.50000006}
---- !u!114 &229679071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 229679069}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"Kind":"Flow","collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":null,"summary":null,"pan":{"x":36.13498,"y":105.1229},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{},"position":{"x":-205.0,"y":-81.0},"guid":"fa1254a4-66c6-4e86-a3a4-f20fd82b7799","$version":"A","$type":"Unity.VisualScripting.Update","$id":"10"},{"chainable":false,"parameterNames":["sourceText","syncTextInputBox"],"member":{"name":"SetText","parameterTypes":["System.String","System.Boolean"],"targetType":"TMPro.TextMeshProUGUI","targetTypeName":"TMPro.TextMeshProUGUI","$version":"A"},"defaultValues":{"target":null,"%sourceText":{"$content":"","$type":"System.String"},"%syncTextInputBox":{"$content":true,"$type":"System.Boolean"}},"position":{"x":189.0,"y":-81.0},"guid":"8e11a68c-d3ca-4612-b66e-274635578d96","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"12"},{"inputCount":2,"defaultValues":{},"position":{"x":-33.0,"y":87.0},"guid":"68a1659d-ba7c-469c-bfe9-9cce73fa9203","$version":"A","$type":"Unity.VisualScripting.GenericSum","$id":"16"},{"type":"System.String","value":{"$content":"Score:
-      ","$type":"System.String"},"defaultValues":{},"position":{"x":-206.0,"y":60.0},"guid":"de49921e-1ee9-4ed9-8315-12acc64631d9","$version":"A","$type":"Unity.VisualScripting.Literal","$id":"18"},{"specifyFallback":false,"kind":"Scene","defaultValues":{"name":{"$content":"ScoreScore","$type":"System.String"}},"position":{"x":-266.0,"y":181.0},"guid":"b01c5591-67ba-4362-be12-c0eb3ec61e70","$version":"A","$type":"Unity.VisualScripting.GetVariable","$id":"20"},{"sourceUnit":{"$ref":"10"},"sourceKey":"trigger","destinationUnit":{"$ref":"12"},"destinationKey":"enter","guid":"b788379a-5ad4-4b2c-96b9-7f6febb9bd9a","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"16"},"sourceKey":"sum","destinationUnit":{"$ref":"12"},"destinationKey":"%sourceText","guid":"8c3f0c01-3f5f-4cd0-a0b3-d19e208ee554","$type":"Unity.VisualScripting.ValueConnection"},{"sourceUnit":{"$ref":"18"},"sourceKey":"output","destinationUnit":{"$ref":"16"},"destinationKey":"0","guid":"ae732444-0d0c-4418-8be8-66c856df2a07","$type":"Unity.VisualScripting.ValueConnection"},{"sourceUnit":{"$ref":"20"},"sourceKey":"value","destinationUnit":{"$ref":"16"},"destinationKey":"1","guid":"3bc85bc5-b81c-4a3b-a573-66338aad3b05","$type":"Unity.VisualScripting.ValueConnection"},{"position":{"xMin":-349.3333,"yMin":-164.0,"xMax":462.6667,"yMax":323.6666},"label":"Score","comment":null,"color":{"r":1.0,"g":1.0,"b":1.0,"a":1.0},"guid":"2587f04e-879c-4134-bfef-a0b1a31b8850","$version":"A","$type":"Unity.VisualScripting.GraphGroup"}],"$version":"A"}}}'
-    _objectReferences: []
---- !u!114 &229679072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 229679069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
 --- !u!114 &229679073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,8 +489,6 @@ GameObject:
   m_Component:
   - component: {fileID: 623835053}
   - component: {fileID: 623835052}
-  - component: {fileID: 623835051}
-  - component: {fileID: 623835050}
   - component: {fileID: 623835054}
   - component: {fileID: 623835049}
   - component: {fileID: 623835048}
@@ -619,47 +584,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
---- !u!114 &623835050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 623835046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
-    _objectReferences:
-    - {fileID: 11400000, guid: f13b4fcf8bd17437a959d1d37bb5df97, type: 2}
---- !u!114 &623835051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 623835046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"Waypoints","value":{"$content":[0,1],"$type":"System.Collections.Generic.List`1[[UnityEngine.Transform,
-      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"typeHandle":{"Identification":"System.Collections.Generic.List`1[[UnityEngine.Transform,
-      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]],
-      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"CurrentPosition","value":{"$content":0,"$type":"System.Int32"},"typeHandle":{"Identification":"System.Int32,
-      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"EnemySpeed","value":{"$content":5.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
-      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"Starting
-      Point","value":{"$content":2,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
-      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
-    _objectReferences:
-    - {fileID: 777842076}
-    - {fileID: 986145474}
-    - {fileID: 777842075}
 --- !u!212 &623835052
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4518,8 +4442,6 @@ GameObject:
   - component: {fileID: 2102475576}
   - component: {fileID: 2102475578}
   - component: {fileID: 2102475577}
-  - component: {fileID: 2102475580}
-  - component: {fileID: 2102475579}
   - component: {fileID: 2102475581}
   m_Layer: 5
   m_Name: TrashScore
@@ -4644,37 +4566,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2102475575}
   m_CullTransparentMesh: 1
---- !u!114 &2102475579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2102475575}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
-    _objectReferences:
-    - {fileID: 11400000, guid: 9068e2d0f595c48fa87df00efa69f9d5, type: 2}
---- !u!114 &2102475580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2102475575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
 --- !u!114 &2102475581
 MonoBehaviour:
   m_ObjectHideFlags: 0
