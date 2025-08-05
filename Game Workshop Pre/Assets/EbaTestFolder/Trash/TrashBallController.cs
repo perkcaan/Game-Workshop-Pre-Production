@@ -10,17 +10,32 @@ public class TrashBallController : MonoBehaviour
     [SerializeField] float distanceFromPlayer;
     public float trashSize;
     private float trashScale;
+    private Vector2 initialPosition;
+
+    private void Start()
+    {
+       
+        
+    }
     void LateUpdate()
     {
         HandlePosition();
         ChangeTrashSize(0);
+
+        
+
+
     }
 
     void HandlePosition()
     {
-        float angle = playerController.rotation * Mathf.Deg2Rad;
-        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-        transform.localPosition = (Vector3)direction * (distanceFromPlayer + (trashScale/2));
+        
+        
+      float angle = playerController.rotation * Mathf.Deg2Rad;
+      Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+      transform.localPosition = (Vector3)direction * (distanceFromPlayer + (trashScale / 2));
+        
+        
     }
 
     public void AddCollectableTrash(CollectableTrash trash)
@@ -35,4 +50,6 @@ public class TrashBallController : MonoBehaviour
         trashScale = (float)Math.Max(Math.Log(trashSize + 1), 0);
         transform.localScale = new Vector3(trashScale, trashScale, trashSize);
     }
+
+    
 }

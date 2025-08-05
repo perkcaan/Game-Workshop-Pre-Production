@@ -1928,7 +1928,7 @@ GameObject:
   - component: {fileID: 795139917}
   m_Layer: 9
   m_Name: PlayerController
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2038,6 +2038,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6154980984698754866, guid: 6345002057a82f248a0c4b528cf23cd0, type: 3}
   m_PrefabInstance: {fileID: 548091199}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &952163582 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9123172459719700772, guid: 60e54d1254936434480b8b335fa1cd52, type: 3}
+  m_PrefabInstance: {fileID: 1634958615}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1106322253
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2109,7 +2114,7 @@ GameObject:
   - component: {fileID: 1235807343}
   m_Layer: 0
   m_Name: Colliders
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2968,6 +2973,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Huge Trash (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7410673055430407488, guid: fb56719b7c4fd7849babdef01815f7d4, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3033,13 +3042,98 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9123172459719700772, guid: 60e54d1254936434480b8b335fa1cd52, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634958619}
+    - targetCorrespondingSourceObject: {fileID: 9123172459719700772, guid: 60e54d1254936434480b8b335fa1cd52, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634958620}
+    - targetCorrespondingSourceObject: {fileID: 9123172459719700772, guid: 60e54d1254936434480b8b335fa1cd52, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634958621}
   m_SourcePrefab: {fileID: 100100000, guid: 60e54d1254936434480b8b335fa1cd52, type: 3}
 --- !u!4 &1634958616 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 349314687530620988, guid: 60e54d1254936434480b8b335fa1cd52, type: 3}
   m_PrefabInstance: {fileID: 1634958615}
   m_PrefabAsset: {fileID: 0}
+--- !u!58 &1634958619
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952163582}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!114 &1634958620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952163582}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aee426f22fff6344b9249945a122b3fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 0}
+  trashBallController: {fileID: 1865928575669122939}
+--- !u!50 &1634958621
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952163582}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &1641981682
 GameObject:
   m_ObjectHideFlags: 0
@@ -3303,6 +3397,9 @@ GameObject:
   - component: {fileID: 3382771614823967193}
   - component: {fileID: 6104350036512309442}
   - component: {fileID: 1865928575669122939}
+  - component: {fileID: 6104350036512309445}
+  - component: {fileID: 6104350036512309444}
+  - component: {fileID: 6104350036512309443}
   m_Layer: 0
   m_Name: TrashBallController
   m_TagString: Untagged
@@ -3345,6 +3442,82 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &6104350036512309443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6104350036512309441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aee426f22fff6344b9249945a122b3fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 0}
+  trashBallController: {fileID: 1865928575669122939}
+--- !u!58 &6104350036512309444
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6104350036512309441}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!50 &6104350036512309445
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6104350036512309441}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

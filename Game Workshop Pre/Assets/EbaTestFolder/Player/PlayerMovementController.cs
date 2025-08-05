@@ -9,6 +9,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] float baseMoveSpeed;
     [SerializeField] float baseAcceleration;
     [SerializeField] float baseRotationSpeed;
+    [SerializeField] public static bool moving;
     [Header("Movement with Ball")]
     [SerializeField] float speedReduction;
     [SerializeField] float accelerationReduction;
@@ -17,8 +18,9 @@ public class PlayerMovementController : MonoBehaviour
     float moveSpeed = 0;
     float acceleration = 0;
     float rotationSpeed = 0;
+    private Vector2 inputVector = Vector2.zero;
 
-    private Vector2 currentVelocity = Vector2.zero;
+    public static Vector2 currentVelocity = Vector2.zero;
     private Vector2 targetVelocity = Vector2.zero;
     private Rigidbody2D rb;
     private Camera mainCamera;
@@ -34,17 +36,22 @@ public class PlayerMovementController : MonoBehaviour
     {
         HandleMovement();
         HandleRotation();
+
+
     }
 
     void HandleMovement()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
-        Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
+        inputVector = new Vector2(horizontalInput, verticalInput); // Store inputVector
 
-        if (inputVector.sqrMagnitude > 0) {
+        if (inputVector.sqrMagnitude > 0)
+        {
             targetVelocity = inputVector.normalized * moveSpeed;
-        } else {
+        }
+        else
+        {
             targetVelocity = Vector2.zero;
         }
 
@@ -56,16 +63,17 @@ public class PlayerMovementController : MonoBehaviour
     // makes the player gradually rotates towards the mouse
     void HandleRotation()
     {
-        Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = mousePosition - (Vector2)transform.position;
-        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        rotation = Mathf.LerpAngle(rotation, targetAngle, rotationSpeed * Time.deltaTime);
+        if (inputVector.sqrMagnitude > 0.01f)
+        {
+            float targetAngle = Mathf.Atan2(inputVector.y, inputVector.x) * Mathf.Rad2Deg;
+            rotation = Mathf.LerpAngle(rotation, targetAngle, rotationSpeed * Time.deltaTime);
 
-        rotation %= 360;
-        if (rotation <= -180) rotation += 360;
-        else if (rotation > 180) rotation -= 360;
+            rotation %= 360;
+            if (rotation <= -180) rotation += 360;
+            else if (rotation > 180) rotation -= 360;
 
-        spriteAnimator.SetFloat("Rotation", rotation);
+            spriteAnimator.SetFloat("Rotation", rotation);
+        }
     }
 
     // multiplies moveSpeed, acceleration and rotationSpeed
