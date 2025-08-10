@@ -6,24 +6,24 @@ public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] Animator spriteAnimator;
     [Header("Base Movement")]
-    [SerializeField] float baseMoveSpeed;
+    [SerializeField] public float baseMoveSpeed;
     [SerializeField] float baseAcceleration;
     [SerializeField] float baseRotationSpeed;
-    [SerializeField] public static bool moving;
     [Header("Movement with Ball")]
     [SerializeField] float speedReduction;
     [SerializeField] float accelerationReduction;
     [SerializeField] float rotationReduction;
 
-    float moveSpeed = 0;
+    public float moveSpeed = 0;
     float acceleration = 0;
     float rotationSpeed = 0;
     private Vector2 inputVector = Vector2.zero;
 
-    public static Vector2 currentVelocity = Vector2.zero;
+    public  Vector2 currentVelocity = Vector2.zero;
     private Vector2 targetVelocity = Vector2.zero;
     private Rigidbody2D rb;
     private Camera mainCamera;
+    public TrashBallController trashBallController;
     [HideInInspector] public float rotation;
     void Start()
     {
@@ -36,6 +36,8 @@ public class PlayerMovementController : MonoBehaviour
     {
         HandleMovement();
         HandleRotation();
+        
+
 
 
     }
@@ -60,7 +62,7 @@ public class PlayerMovementController : MonoBehaviour
         rb.velocity = currentVelocity;
     }
 
-    // makes the player gradually rotates towards the mouse
+    
     void HandleRotation()
     {
         if (inputVector.sqrMagnitude > 0.01f)
@@ -76,6 +78,18 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("TrashBall"))
+        {
+            Debug.Log("Reattached to ball");
+            trashBallController.isAttached = true;
+            trashBallController.trashBall.transform.parent = transform;
+            trashBallController.trashRb.bodyType = RigidbodyType2D.Kinematic;
+            trashBallController.SyncBallScale();
+        }
+    }
+
     // multiplies moveSpeed, acceleration and rotationSpeed
     public void SetWeight(float weight)
     {
@@ -85,4 +99,8 @@ public class PlayerMovementController : MonoBehaviour
         spriteAnimator.SetBool("Sweeping", weight > 0);
         
     }
+
+    
+
+    
 }
