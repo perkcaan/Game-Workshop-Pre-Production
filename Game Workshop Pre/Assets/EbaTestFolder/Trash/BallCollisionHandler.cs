@@ -72,7 +72,7 @@ public class BallCollisionHandler : MonoBehaviour
         rb.gravityScale = 0f; // Keeps the ball from falling
         
         
-        if (trashBallController.isAttached)
+        if (trashBallController.isAttached && PlayerMovementController.currentVelocity.magnitude > 1f)
         {
             // Example in BallCollisionHandler.cs
             float maxBounceSpeed = 4f; // Set your desired max speed
@@ -83,9 +83,17 @@ public class BallCollisionHandler : MonoBehaviour
             PlayerMovementController.currentVelocity *= -PlayerMovementController.currentVelocity.magnitude * (trashBallController.trashSize / 2);
         }
 
+        if(PlayerMovementController.currentVelocity.magnitude <= 1f)
+        {
+            // If the player is almost stationary, give a small random bounce
+            
+            PlayerMovementController.currentVelocity = Vector2.zero;
+        }
         
 
-        
+
+
+
     }
 }
     

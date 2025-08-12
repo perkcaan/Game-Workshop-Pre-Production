@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovementController : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class PlayerMovementController : MonoBehaviour
     private Rigidbody2D rb;
     private Camera mainCamera;
     public TrashBallController trashBallController;
+
     [HideInInspector] public float rotation;
     void Start()
     {
@@ -87,6 +89,11 @@ public class PlayerMovementController : MonoBehaviour
             trashBallController.trashBall.transform.parent = transform;
             trashBallController.trashRb.bodyType = RigidbodyType2D.Kinematic;
             trashBallController.SyncBallScale();
+        }
+
+        if (collision.CompareTag("EndPoint"))
+        {
+            SceneManager.LoadScene("RebuildScene");
         }
     }
 
