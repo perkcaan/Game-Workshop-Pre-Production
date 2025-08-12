@@ -74,8 +74,8 @@ public class BallCollisionHandler : MonoBehaviour
         
         if (trashBallController.isAttached && PlayerMovementController.currentVelocity.magnitude > 1f)
         {
-            // Example in BallCollisionHandler.cs
-            float maxBounceSpeed = 4f; // Set your desired max speed
+            
+            float maxBounceSpeed = 4f; 
 
             // When setting the player's velocity after a bounce:
             PlayerMovementController.currentVelocity = Vector2.ClampMagnitude(PlayerMovementController.currentVelocity, maxBounceSpeed);
@@ -85,7 +85,7 @@ public class BallCollisionHandler : MonoBehaviour
 
         if(PlayerMovementController.currentVelocity.magnitude <= 1f)
         {
-            // If the player is almost stationary, give a small random bounce
+            
             
             PlayerMovementController.currentVelocity = Vector2.zero;
         }

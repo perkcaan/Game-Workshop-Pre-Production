@@ -18,7 +18,9 @@ public class PlayerMovementController : MonoBehaviour
     public float moveSpeed = 0;
     float acceleration = 0;
     float rotationSpeed = 0;
-    private Vector2 inputVector = Vector2.zero;
+    private Vector2 moveInputVector = Vector2.zero;
+    public Vector2 rotateInputVector = Vector2.zero; 
+
 
     public  Vector2 currentVelocity = Vector2.zero;
     private Vector2 targetVelocity = Vector2.zero;
@@ -48,13 +50,13 @@ public class PlayerMovementController : MonoBehaviour
 
     void HandleMovement()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        
         float verticalInput = Input.GetAxisRaw("Vertical");
-        inputVector = new Vector2(horizontalInput, verticalInput); // Store inputVector
+        moveInputVector = new Vector2(0, verticalInput); // Store inputVector
 
-        if (inputVector.sqrMagnitude > 0)
+        if (moveInputVector.sqrMagnitude > 0)
         {
-            targetVelocity = inputVector.normalized * moveSpeed;
+            targetVelocity = moveInputVector.normalized * moveSpeed;
         }
         else
         {
@@ -69,17 +71,25 @@ public class PlayerMovementController : MonoBehaviour
     
     void HandleRotation()
     {
-        if (inputVector.sqrMagnitude > 0.01f)
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        rotateInputVector = new Vector2(horizontalInput, 0); 
+        //Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = rotateInputVector - (Vector2)transform.position;
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        if(Mathf.Abs(horizontalInput) > 0.1f)
         {
-            float targetAngle = Mathf.Atan2(inputVector.y, inputVector.x) * Mathf.Rad2Deg;
-            rotation = Mathf.LerpAngle(rotation, targetAngle, rotationSpeed * Time.deltaTime);
-
-            rotation %= 360;
-            if (rotation <= -180) rotation += 360;
-            else if (rotation > 180) rotation -= 360;
-
-            spriteAnimator.SetFloat("Rotation", rotation);
+            
+            rotation += Mathf.LerpAngle(rotation, targetAngle, rotationSpeed * Time.deltaTime);
+            
         }
+        
+
+        rotation %= 360;
+        if (rotation <= -180) rotation += 360;
+        else if (rotation > 180) rotation -= 360;
+
+        spriteAnimator.SetFloat("Rotation", rotation);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -114,7 +124,11 @@ public class PlayerMovementController : MonoBehaviour
         
     }
 
-    
+    private IEnumerator RotationDelay()
+    {
+        yield return new WaitForSeconds(1f);
+    }
 
-    
+
+
 }
