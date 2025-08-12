@@ -25,6 +25,7 @@ public class PlayerMovementController : MonoBehaviour
     private Rigidbody2D rb;
     private Camera mainCamera;
     public TrashBallController trashBallController;
+    public Collision2D playerCollider;
 
     [HideInInspector] public float rotation;
     void Start()
@@ -39,6 +40,7 @@ public class PlayerMovementController : MonoBehaviour
         HandleMovement();
         HandleRotation();
         
+
 
 
 
@@ -91,7 +93,12 @@ public class PlayerMovementController : MonoBehaviour
             trashBallController.SyncBallScale();
         }
 
-        if (collision.CompareTag("EndPoint"))
+        
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("EndPoint"))
         {
             SceneManager.LoadScene("RebuildScene");
         }
