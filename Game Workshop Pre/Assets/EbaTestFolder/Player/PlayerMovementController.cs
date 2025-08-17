@@ -9,7 +9,7 @@ public class PlayerMovementController : MonoBehaviour
     [Header("Base Movement")]
     [SerializeField] public float baseMoveSpeed;
     [SerializeField] float baseAcceleration;
-    [SerializeField] float baseRotationSpeed;
+    [SerializeField] float baseRotationSpeed = 10f; 
     [Header("Movement with Ball")]
     [SerializeField] float speedReduction;
     [SerializeField] float accelerationReduction;
@@ -35,6 +35,7 @@ public class PlayerMovementController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         mainCamera = Camera.main;
         SetWeight(0);
+        rotationSpeed = baseRotationSpeed; // Initialize rotation speed
     }
 
     void Update()
@@ -50,41 +51,41 @@ public class PlayerMovementController : MonoBehaviour
 
     void HandleMovement()
     {
-        
-        float verticalInput = Input.GetAxisRaw("Vertical");
-        moveInputVector = new Vector2(0, verticalInput); // Store inputVector
+        float verticalInput = Input.GetAxisRaw("Vertical"); 
 
-        if (moveInputVector.sqrMagnitude > 0)
+        // Calculate the forward direction based on the player's rotation (in degrees)
+        float angleRad = rotation * Mathf.Deg2Rad;
+        Vector2 forward = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
+
+        // Only add force if there is input
+        if (Mathf.Abs(verticalInput) > 0.01f)
         {
-            targetVelocity = moveInputVector.normalized * moveSpeed;
-        }
-        else
-        {
-            targetVelocity = Vector2.zero;
+           
+            rb.AddForce(forward * verticalInput * moveSpeed, ForceMode2D.Force);
         }
 
-        currentVelocity = Vector2.Lerp(currentVelocity, targetVelocity, moveSpeed / acceleration * Time.deltaTime);
-        spriteAnimator.SetFloat("Speed", currentVelocity.magnitude);
-        rb.velocity = currentVelocity;
+        // Clamp velocity to prevent excessive speed
+        float maxPlayerSpeed = 8f;
+        rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxPlayerSpeed);
+        currentVelocity = rb.velocity;
+
+        spriteAnimator.SetFloat("Speed", rb.velocity.magnitude);
     }
 
     
     void HandleRotation()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
-        rotateInputVector = new Vector2(horizontalInput, 0); 
-        //Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = rotateInputVector - (Vector2)transform.position;
-        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        if(Mathf.Abs(horizontalInput) > 0.1f)
+        if (Mathf.Abs(horizontalInput) > 0.1f)
         {
             
-            rotation += Mathf.LerpAngle(rotation, targetAngle, rotationSpeed * Time.deltaTime);
-            
-        }
-        
+            float lerpFactor = Mathf.Clamp01(rotationSpeed * Time.deltaTime); 
+            float targetAngle = rotation + horizontalInput * 90f;
+            rotation -= horizontalInput * rotationSpeed * Time.deltaTime;
 
+        }
+
+        // Clamp rotation to [-180, 180]
         rotation %= 360;
         if (rotation <= -180) rotation += 360;
         else if (rotation > 180) rotation -= 360;
@@ -124,10 +125,36 @@ public class PlayerMovementController : MonoBehaviour
         
     }
 
-    private IEnumerator RotationDelay()
-    {
-        yield return new WaitForSeconds(1f);
-    }
+    //private IEnumerator RotationDelay()
+    //{
+    //    float horizontalInput = Input.GetAxisRaw("Horizontal");
+    //    float lerpFactor = Mathf.Clamp01(rotationSpeed * Time.deltaTime);
+
+    //    Vector2 direction = rotateInputVector - (Vector2)transform.position;
+    //    float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+    //    if (Mathf.Abs(horizontalInput) > 0.5f)
+    //    {
+            
+    //        rotation += Mathf.LerpAngle(rotation, targetAngle, rotationSpeed * Time.deltaTime);
+            
+    //    }
+
+
+    //    rotation %= 360;
+
+    //    if (rotation <= -180) rotation += 360;
+
+
+    //    else if (rotation > 180) rotation -= 360;
+            
+        
+
+
+    //    spriteAnimator.SetFloat("Rotation", rotation);
+        
+
+    //}
 
 
 

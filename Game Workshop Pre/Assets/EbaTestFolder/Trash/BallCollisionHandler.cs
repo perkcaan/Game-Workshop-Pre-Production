@@ -72,7 +72,7 @@ public class BallCollisionHandler : MonoBehaviour
         rb.gravityScale = 0f; // Keeps the ball from falling
         
         
-        if (trashBallController.isAttached && PlayerMovementController.currentVelocity.magnitude > 1f)
+        if (trashBallController.isAttached)
         {
             
             float maxBounceSpeed = 4f; 
