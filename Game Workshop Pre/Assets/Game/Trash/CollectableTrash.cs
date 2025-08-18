@@ -3,7 +3,12 @@ using UnityEngine;
 public class CollectableTrash : MonoBehaviour
 {
     public float trashSize;
-
+    private ClosedRoom parentRoom;
+    void Start()
+    {
+        parentRoom = GetComponentInParent<ClosedRoom>();
+        parentRoom.trashList.Add(this);
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -20,13 +25,12 @@ public class CollectableTrash : MonoBehaviour
             // or forward it to the TrashBallController if needed.
             ballHandler.trashBallController.AddCollectableTrash(this);
             DestroySelf();
-
-
-
         }
 
         void DestroySelf()
         {
+            parentRoom.trashList.Remove(this);
+            parentRoom.OpenRoom();
             Destroy(gameObject);
         }
     }

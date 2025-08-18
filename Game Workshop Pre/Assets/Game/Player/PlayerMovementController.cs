@@ -39,11 +39,6 @@ public class PlayerMovementController : MonoBehaviour
     {
         HandleMovement();
         HandleRotation();
-        
-
-
-
-
     }
 
     void HandleMovement()
@@ -86,7 +81,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (collision.CompareTag("TrashBall"))
         {
-            Debug.Log("Reattached to ball");
+            //Debug.Log("Reattached to ball");
             trashBallController.isAttached = true;
             trashBallController.trashBall.transform.parent = transform;
             trashBallController.trashRb.bodyType = RigidbodyType2D.Kinematic;

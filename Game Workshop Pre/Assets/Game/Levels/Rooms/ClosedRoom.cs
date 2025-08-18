@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class ClosedRoom : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public List<Door> doors;
+    public List<CollectableTrash> trashList;
+
+    public void CloseRoom()
     {
-        
+        if (trashList.Count > 0)
+        {
+            foreach (Door door in doors)
+            {
+                door.CloseDoor();
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OpenRoom()
     {
-        
+        if (trashList.Count <= 0)
+        {
+            foreach (Door door in doors)
+            {
+                door.OpenDoor();
+            }
+        }
     }
 }

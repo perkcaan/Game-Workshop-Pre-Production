@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class RoomEntrance : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private ClosedRoom parentRoom;
     void Start()
     {
-        
+        parentRoom = GetComponentInParent<ClosedRoom>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (collision.gameObject.TryGetComponent(out PlayerMovementController player))
+        {
+            parentRoom.CloseRoom();
+        }
     }
 }
