@@ -23,7 +23,6 @@ public class PlayerMovementController : MonoBehaviour
     public  Vector2 currentVelocity = Vector2.zero;
     private Vector2 targetVelocity = Vector2.zero;
     private Rigidbody2D rb;
-    private Camera mainCamera;
     public TrashBallController trashBallController;
     public Collision2D playerCollider;
 
@@ -31,7 +30,6 @@ public class PlayerMovementController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        mainCamera = Camera.main;
         SetWeight(0);
     }
 

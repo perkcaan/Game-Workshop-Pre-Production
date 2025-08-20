@@ -14,7 +14,7 @@ public class RoomEntrance : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out PlayerMovementController player))
         {
-            parentRoom.CloseRoom();
+            parentRoom.EnterRoom();
         }
     }
 }

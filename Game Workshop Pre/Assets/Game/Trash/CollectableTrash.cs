@@ -30,7 +30,7 @@ public class CollectableTrash : MonoBehaviour
         void DestroySelf()
         {
             parentRoom.trashList.Remove(this);
-            parentRoom.OpenRoom();
+            parentRoom.ExitRoom();
             Destroy(gameObject);
         }
     }

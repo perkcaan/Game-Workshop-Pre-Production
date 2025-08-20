@@ -4,28 +4,21 @@ using UnityEngine;
 
 public class ClosedRoom : MonoBehaviour
 {
-    public List<Door> doors;
     public List<CollectableTrash> trashList;
 
-    public void CloseRoom()
+    public void EnterRoom()
     {
         if (trashList.Count > 0)
         {
-            foreach (Door door in doors)
-            {
-                door.CloseDoor();
-            }
+            PlayerState.Instance.EnterRoom();
         }
     }
 
-    public void OpenRoom()
+    public void ExitRoom()
     {
         if (trashList.Count <= 0)
         {
-            foreach (Door door in doors)
-            {
-                door.OpenDoor();
-            }
+            PlayerState.Instance.ExitRoom();
         }
     }
 }
