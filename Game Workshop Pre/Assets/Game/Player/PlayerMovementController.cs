@@ -85,8 +85,6 @@ public class PlayerMovementController : MonoBehaviour
             trashBallController.trashRb.bodyType = RigidbodyType2D.Kinematic;
             trashBallController.SyncBallScale();
         }
-
-        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -104,10 +102,5 @@ public class PlayerMovementController : MonoBehaviour
         acceleration = baseAcceleration / (1 + weight * accelerationReduction);
         rotationSpeed = baseRotationSpeed / (1 + weight * rotationReduction);
         spriteAnimator.SetBool("Sweeping", weight > 0);
-        
     }
-
-    
-
-    
 }
