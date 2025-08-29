@@ -6,19 +6,31 @@ public class ClosedRoom : MonoBehaviour
 {
     public List<CollectableTrash> trashList;
 
-    public void EnterRoom()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (trashList.Count > 0)
+        if (collision.gameObject.TryGetComponent(out CollectableTrash trash))
         {
-            PlayerState.Instance.EnterRoom();
+            trashList.Add(trash);
+        }
+
+        if (collision.gameObject.TryGetComponent(out PlayerMovementController player))
+        {
+            if (trashList.Count > 0)
+            {
+                PlayerState.Instance.EnterRoom();
+            }
         }
     }
 
-    public void ExitRoom()
+    void OnTriggerExit2D(Collider2D collision)
     {
-        if (trashList.Count <= 0)
+        if (collision.gameObject.TryGetComponent(out CollectableTrash trash))
         {
-            PlayerState.Instance.ExitRoom();
+            trashList.Remove(trash);
+            if (trashList.Count <= 0)
+            {
+                PlayerState.Instance.ExitRoom();
+            }
         }
     }
 }
