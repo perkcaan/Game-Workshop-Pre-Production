@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    [SerializeField] Animator spriteAnimator;
+    public Animator spriteAnimator;
     [Header("Base Movement")]
-    [SerializeField] float baseMoveSpeed;
+    [SerializeField] float baseMaxSpeed;
     [SerializeField] float baseAcceleration;
     [SerializeField] float baseRotationSpeed;
     [Header("Movement with Ball")]
@@ -14,7 +14,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] float accelerationReduction;
     [SerializeField] float rotationReduction;
 
-    float moveSpeed = 0;
+    float maxSpeed = 0;
     float acceleration = 0;
     float rotationSpeed = 0;
 
@@ -27,7 +27,10 @@ public class PlayerMovementController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         mainCamera = Camera.main;
-        SetWeight(0);
+
+        maxSpeed = baseMaxSpeed;
+        acceleration = baseAcceleration;
+        rotationSpeed = baseRotationSpeed;
     }
 
     void Update()
@@ -40,17 +43,20 @@ public class PlayerMovementController : MonoBehaviour
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
-        Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
+        Vector2 inputVector = new Vector2(horizontalInput, verticalInput).normalized;
 
-        if (inputVector.sqrMagnitude > 0) {
-            targetVelocity = inputVector.normalized * moveSpeed;
-        } else {
-            targetVelocity = Vector2.zero;
+        Vector2 force = inputVector * acceleration;
+
+        // Apply the force to the rigidbody
+        rb.AddForce(force);
+
+        if (rb.velocity.magnitude > maxSpeed)
+        {
+            rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
         }
 
-        currentVelocity = Vector2.Lerp(currentVelocity, targetVelocity, moveSpeed / acceleration * Time.deltaTime);
-        spriteAnimator.SetFloat("Speed", currentVelocity.magnitude);
-        rb.velocity = currentVelocity;
+        // Update the animator
+        spriteAnimator.SetFloat("Speed", rb.velocity.magnitude);
     }
 
     // makes the player gradually rotates towards the mouse
@@ -69,11 +75,13 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     // multiplies moveSpeed, acceleration and rotationSpeed
-    public void SetWeight(float weight)
+    public void AddWeight(float weight)
     {
-        moveSpeed = baseMoveSpeed / (1 + weight * speedReduction);
-        acceleration = baseAcceleration / (1 + weight * accelerationReduction);
-        rotationSpeed = baseRotationSpeed / (1 + weight * rotationReduction);
-        spriteAnimator.SetBool("Sweeping", weight > 1);
+        maxSpeed += weight;
+    }
+
+    public void RemoveWeight(float weight)
+    {
+        maxSpeed -= weight;
     }
 }

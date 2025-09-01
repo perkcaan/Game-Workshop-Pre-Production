@@ -1294,11 +1294,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 8374405070240450408}
-  distanceFromPlayer: 0.75
-  trashBallCompaction: 0.2
-  maxGrabForce: 10
   throwForce: 16
-  trashSize: 0
+  distanceFromPlayer: 0.75
 --- !u!58 &1489872336
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4655,9 +4652,9 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 30
-  m_LinearDrag: 30
-  m_AngularDrag: 30
+  m_Mass: 1
+  m_LinearDrag: 1
+  m_AngularDrag: 1
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -4998,7 +4995,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteAnimator: {fileID: 3895924738010112959}
-  baseMoveSpeed: 8
+  baseMaxSpeed: 5
   baseAcceleration: 1
   baseRotationSpeed: 8
   speedReduction: 0.1
