@@ -2,23 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrashBall : MonoBehaviour
+public class TrashBall : PushableObject
 {
-    [SerializeField] PlayerMovementController playerController;
-    [SerializeField] float distanceFromPlayer;
-    void Start()
+    [SerializeField] float scaleMultiplier;
+    private void OnCollisionEnter2D(Collision2D other)
     {
-
+        if (other.gameObject.TryGetComponent(out CollectableTrash collectableTrash))
+        {
+            weight += collectableTrash.weight;
+            Destroy(collectableTrash.gameObject);
+            SetSize();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetSize()
     {
-
-    }
-
-    void HandleRotation()
-    {
-        
+        float newSize = scaleMultiplier * Mathf.Sqrt(weight);
+        transform.localScale = Vector3.one * newSize;
     }
 }

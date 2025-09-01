@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    [SerializeField] Animator spriteAnimator;
+    public Animator spriteAnimator;
     [Header("Base Movement")]
-    [SerializeField] public float baseMoveSpeed;
+    [SerializeField] float baseMaxSpeed;
     [SerializeField] float baseAcceleration;
     [SerializeField] float baseRotationSpeed;
     [Header("Movement with Ball")]
@@ -15,22 +14,23 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] float accelerationReduction;
     [SerializeField] float rotationReduction;
 
-    public float moveSpeed = 0;
+    float maxSpeed = 0;
     float acceleration = 0;
     float rotationSpeed = 0;
-    private Vector2 inputVector = Vector2.zero;
 
-    public  Vector2 currentVelocity = Vector2.zero;
+    private Vector2 currentVelocity = Vector2.zero;
     private Vector2 targetVelocity = Vector2.zero;
     private Rigidbody2D rb;
-    public TrashBallController trashBallController;
-    public Collision2D playerCollider;
-
-    [HideInInspector] public float rotation;
+    private Camera mainCamera;
+    public float rotation;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        SetWeight(0);
+        mainCamera = Camera.main;
+
+        maxSpeed = baseMaxSpeed;
+        acceleration = baseAcceleration;
+        rotationSpeed = baseRotationSpeed;
     }
 
     void Update()
@@ -43,64 +43,45 @@ public class PlayerMovementController : MonoBehaviour
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
-        inputVector = new Vector2(horizontalInput, verticalInput); // Store inputVector
+        Vector2 inputVector = new Vector2(horizontalInput, verticalInput).normalized;
 
-        if (inputVector.sqrMagnitude > 0)
+        Vector2 force = inputVector * acceleration;
+
+        // Apply the force to the rigidbody
+        rb.AddForce(force);
+
+        if (rb.velocity.magnitude > maxSpeed)
         {
-            targetVelocity = inputVector.normalized * moveSpeed;
-        }
-        else
-        {
-            targetVelocity = Vector2.zero;
+            rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
         }
 
-        currentVelocity = Vector2.Lerp(currentVelocity, targetVelocity, moveSpeed / acceleration * Time.deltaTime);
-        spriteAnimator.SetFloat("Speed", currentVelocity.magnitude);
-        rb.velocity = currentVelocity;
+        // Update the animator
+        spriteAnimator.SetFloat("Speed", rb.velocity.magnitude);
     }
 
-    
+    // makes the player gradually rotates towards the mouse
     void HandleRotation()
     {
-        if (inputVector.sqrMagnitude > 0.01f)
-        {
-            float targetAngle = Mathf.Atan2(inputVector.y, inputVector.x) * Mathf.Rad2Deg;
-            rotation = Mathf.LerpAngle(rotation, targetAngle, rotationSpeed * Time.deltaTime);
+        Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = mousePosition - (Vector2)transform.position;
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        rotation = Mathf.LerpAngle(rotation, targetAngle, rotationSpeed * Time.deltaTime);
 
-            rotation %= 360;
-            if (rotation <= -180) rotation += 360;
-            else if (rotation > 180) rotation -= 360;
+        rotation %= 360;
+        if (rotation <= -180) rotation += 360;
+        else if (rotation > 180) rotation -= 360;
 
-            spriteAnimator.SetFloat("Rotation", rotation);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("TrashBall"))
-        {
-            //Debug.Log("Reattached to ball");
-            trashBallController.isAttached = true;
-            trashBallController.trashBall.transform.parent = transform;
-            trashBallController.trashRb.bodyType = RigidbodyType2D.Kinematic;
-            trashBallController.SyncBallScale();
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("EndPoint"))
-        {
-            SceneManager.LoadScene("RebuildScene");
-        }
+        spriteAnimator.SetFloat("Rotation", rotation);
     }
 
     // multiplies moveSpeed, acceleration and rotationSpeed
-    public void SetWeight(float weight)
+    public void AddWeight(float weight)
     {
-        moveSpeed = baseMoveSpeed / (1 + weight * speedReduction);
-        acceleration = baseAcceleration / (1 + weight * accelerationReduction);
-        rotationSpeed = baseRotationSpeed / (1 + weight * rotationReduction);
-        spriteAnimator.SetBool("Sweeping", weight > 0);
+        //maxSpeed += weight;
+    }
+
+    public void RemoveWeight(float weight)
+    {
+        //maxSpeed -= weight;
     }
 }

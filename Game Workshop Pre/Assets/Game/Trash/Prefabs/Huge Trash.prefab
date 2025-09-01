@@ -17,6 +17,10 @@ PrefabInstance:
       value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 284755473005219811, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
+      propertyPath: weight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 284755473005219811, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
       propertyPath: trashSize
       value: 2
       objectReference: {fileID: 0}
@@ -63,6 +67,26 @@ PrefabInstance:
     - target: {fileID: 1034961219214558266, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
       propertyPath: m_Name
       value: Huge Trash
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257901113980049684, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
+      propertyPath: m_Mass
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257901113980049684, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257901113980049684, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
+      propertyPath: m_LinearDrag
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257901113980049684, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257901113980049684, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
+      propertyPath: m_Constraints
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2667248249660854184, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
       propertyPath: m_Size.x
