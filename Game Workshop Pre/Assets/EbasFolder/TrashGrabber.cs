@@ -7,7 +7,7 @@ public class TrashGrabber : MonoBehaviour
     [SerializeField] PlayerMovementController playerController;
     [SerializeField] float throwForce; // players push force when clicking space
     [SerializeField] float distanceFromPlayer;
-    private List<CollectableTrash> trashInRange = new List<CollectableTrash>();
+    private List<PushableObject> objectsInRange = new List<PushableObject>();
     private CircleCollider2D grabCollider;
 
     void Start()
@@ -36,50 +36,41 @@ public class TrashGrabber : MonoBehaviour
             PushTrash();
             if (Input.GetKey(KeyCode.Space))
             {
-                ThrowTrash();
+                // sweep
             }
         }
     }
 
     void PushTrash()
     {
-        playerController.spriteAnimator.SetBool("Sweeping", trashInRange.Count > 1);
+        playerController.spriteAnimator.SetBool("Sweeping", objectsInRange.Count > 1);
         Vector2 forwardDirection = Quaternion.Euler(0, 0, playerController.rotation - 90) * Vector2.up;
-        foreach (CollectableTrash trash in trashInRange)
+        foreach (PushableObject pushableObject in objectsInRange)
         {
-            trash.Throw(forwardDirection, throwForce);
-        }
-    }
-
-    void ThrowTrash()
-    {
-        Vector2 forwardDirection = Quaternion.Euler(0, 0, playerController.rotation - 90) * Vector2.up;
-        foreach (CollectableTrash trash in trashInRange)
-        {
-            trash.Throw(forwardDirection, throwForce);
+            pushableObject.Throw(forwardDirection, throwForce);
         }
     }
 
     // When touching trash, add it to the list of trash in range
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.TryGetComponent(out CollectableTrash collectableTrash))
+        if (other.gameObject.TryGetComponent(out PushableObject pushableObject))
         {
-            if (!trashInRange.Contains(collectableTrash))
+            if (!objectsInRange.Contains(pushableObject))
             {
-                trashInRange.Add(collectableTrash);
-                playerController.AddWeight(collectableTrash.trashSize);
+                objectsInRange.Add(pushableObject);
+                playerController.AddWeight(pushableObject.weight);
             }
         }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.TryGetComponent(out CollectableTrash collectableTrash))
+        if (other.gameObject.TryGetComponent(out PushableObject pushableObject))
         {
-            if (trashInRange.Contains(collectableTrash))
+            if (objectsInRange.Contains(pushableObject))
             {
-                trashInRange.Remove(collectableTrash);
-                playerController.RemoveWeight(collectableTrash.trashSize);
+                objectsInRange.Remove(pushableObject);
+                playerController.RemoveWeight(pushableObject.weight);
             }
         }
     }

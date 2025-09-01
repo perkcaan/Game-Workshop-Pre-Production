@@ -138,7 +138,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 3b7af493c3f54b34e99304d3d160a029, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -162,9 +162,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a90e44352c75cf41af1e2174eddb4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trashSize: 0
+  weight: 0
   rb: {fileID: 0}
-  trashBallPrefab: {fileID: 6202403466804958030}
+  scaleMultiplier: 0.3
 --- !u!1 &7260877717450357450
 GameObject:
   m_ObjectHideFlags: 0
