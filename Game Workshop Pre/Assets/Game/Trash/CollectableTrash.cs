@@ -5,13 +5,13 @@ public class CollectableTrash : PushableObject
 {
     public TrashBall trashBallPrefab;
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.TryGetComponent(out CollectableTrash collectableTrash))
+        if (other.gameObject.TryGetComponent(out CollectableTrash trash))
         {
-            if (gameObject.GetInstanceID() < other.gameObject.GetInstanceID())
+            if (rb.velocity.magnitude < trash.rb.velocity.magnitude)
             {
-                CreateMergedTrashBall(collectableTrash);
+                CreateMergedTrashBall(trash);
             }
         }
     }
@@ -19,8 +19,9 @@ public class CollectableTrash : PushableObject
     {
         // Instantiate the trash ball
         TrashBall newTrashBall = Instantiate(trashBallPrefab);
-        newTrashBall.transform.position = transform.position;
-        newTrashBall.weight = this.weight + otherTrash.weight;
+        newTrashBall.transform.position = otherTrash.transform.position;
+        newTrashBall.weight = weight + otherTrash.weight;
+        newTrashBall.rb.velocity = rb.velocity + otherTrash.rb.velocity;
         newTrashBall.SetSize();
         
         // Destroy the collectableTrash

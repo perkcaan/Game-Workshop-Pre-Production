@@ -2,18 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrashBall : PushableObject
+public class TrashBall : CollectableTrash
 {
     [SerializeField] float scaleMultiplier;
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.TryGetComponent(out CollectableTrash collectableTrash))
-        {
-            weight += collectableTrash.weight;
-            Destroy(collectableTrash.gameObject);
-            SetSize();
-        }
-    }
 
     public void SetSize()
     {
