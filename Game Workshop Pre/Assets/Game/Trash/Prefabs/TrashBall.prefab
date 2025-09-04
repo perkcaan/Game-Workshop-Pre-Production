@@ -169,8 +169,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 2
-  m_LinearDrag: 0.03
+  m_Mass: 8
+  m_LinearDrag: 0.4
   m_AngularDrag: 0.03
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -198,5 +198,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weight: 0
   rb: {fileID: 0}
-  trashBallPrefab: {fileID: -7724986121031642578}
   scaleMultiplier: 0.7
+  consumedTrash: []

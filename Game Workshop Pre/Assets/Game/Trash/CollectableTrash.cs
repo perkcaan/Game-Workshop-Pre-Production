@@ -22,10 +22,12 @@ public class CollectableTrash : PushableObject
         newTrashBall.transform.position = otherTrash.transform.position;
         newTrashBall.weight = weight + otherTrash.weight;
         newTrashBall.rb.velocity = rb.velocity + otherTrash.rb.velocity;
+        newTrashBall.consumedTrash.Add(this);
+        newTrashBall.consumedTrash.Add(otherTrash);
         newTrashBall.SetSize();
-        
+
         // Destroy the collectableTrash
         Destroy(otherTrash.gameObject);
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }
