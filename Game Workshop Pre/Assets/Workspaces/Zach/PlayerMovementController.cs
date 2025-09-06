@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class ZPlayerMovementController : MonoBehaviour
+public class PlayerMovementController : MonoBehaviour
 {
 
     #region header
@@ -14,6 +14,13 @@ public class ZPlayerMovementController : MonoBehaviour
     [SerializeField] private float _baseMaxWalkSpeed;
     [SerializeField] private float _baseAcceleration;
     [SerializeField] private float _baseRotationSpeed;
+    [Header("Sweeping Movement")]
+    [SerializeField] private float _sweepMaxSpeedModifier;
+    [SerializeField] private float _sweepAccelerationModifier;
+    [SerializeField] private float _sweepRotationModifier;
+    [SerializeField] private float _sweepingMaxAngleBeforeTurnSlowdown;
+    [SerializeField] private float _sweepingSlowdownTurnSpeed;
+
     [Header("Weighted Movement")]
     [SerializeField] private float _maxWalkSpeedReduction;
     [SerializeField] private float _accelerationReduction;
@@ -27,13 +34,19 @@ public class ZPlayerMovementController : MonoBehaviour
         get { return _weight; }
         set { SetWeight(value); }
     }
-    
-
 
     //context & state
     PlayerContext _ctx;
     PlayerStateMachine _state;
 
+    //TODO: Temporary. Decouple Trash ball!
+    TrashBallController _trashBallController;
+    public float rotation {
+        get { return _ctx.Rotation; }
+        set { _ctx.Rotation = value; } }
+    public Vector2 currentVelocity { get; set; } = Vector2.zero; // This doesnt work. Just keeps things happy. Need to decouple.
+
+    //TODO: end of temporary
 
     #endregion
 
@@ -44,6 +57,7 @@ public class ZPlayerMovementController : MonoBehaviour
         _ctx.RigidBody = GetComponent<Rigidbody2D>();
         _ctx.Animator = GetComponent<Animator>();
         _state = new PlayerStateMachine(_ctx);
+        _trashBallController = GetComponentInChildren<TrashBallController>();
     }
 
     private void Start()
@@ -54,6 +68,12 @@ public class ZPlayerMovementController : MonoBehaviour
     private void Update()
     {
         _state.Update();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_state == null) return;
+        _state.OnDrawGizmos();    
     }
 
     //inputs
@@ -72,7 +92,6 @@ public class ZPlayerMovementController : MonoBehaviour
         _ctx.IsSweepPressed = value.isPressed;
         if (!_ctx.IsSweepPressed) return;
 
-        //Debug.Log("Sweep");
     }
 
     private void OnSwipe(InputValue value)
@@ -81,13 +100,42 @@ public class ZPlayerMovementController : MonoBehaviour
     }
 
 
+    //collision
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("TrashBall"))
+        {
+            //Debug.Log("Reattached to ball");
+            _trashBallController.isAttached = true;
+            _trashBallController.trashBall.transform.parent = transform;
+            _trashBallController.trashRb.bodyType = RigidbodyType2D.Kinematic;
+            _trashBallController.SyncBallScale();
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("EndPoint"))
+        {
+            SceneManager.LoadScene("RebuildScene");
+        }
+    }
+
+
     //weight system
     public void SetWeight(float weight)
     {
         _ctx.MaxWalkSpeed = _baseMaxWalkSpeed / (1 + weight * _maxWalkSpeedReduction);
+        _ctx.MaxSweepSpeed = _ctx.MaxWalkSpeed * _sweepMaxSpeedModifier;
         _ctx.Acceleration = _baseAcceleration / (1 + weight * _accelerationReduction);
+        _ctx.SweepAcceleration = _ctx.Acceleration * _sweepAccelerationModifier;
         _ctx.RotationSpeed = _baseRotationSpeed / (1 + weight * _rotationSpeedReduction);
-        _ctx.Animator.SetBool("Sweeping", weight > 0);
+        _ctx.SweepRotationSpeed = _ctx.RotationSpeed * _sweepRotationModifier;
         _weight = weight;
+
+        //these arent really weight dependent
+        _ctx.SweepSlowdownAngle = _sweepingMaxAngleBeforeTurnSlowdown;
+        _ctx.SweepSlowdownSpeed = _sweepingSlowdownTurnSpeed;
     }
 }

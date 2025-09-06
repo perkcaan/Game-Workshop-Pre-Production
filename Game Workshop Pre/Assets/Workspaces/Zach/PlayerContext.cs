@@ -9,7 +9,7 @@ using UnityEngine;
 public class PlayerContext
 {
     // Player reference
-    public ZPlayerMovementController Player { get; }
+    public PlayerMovementController Player { get; }
 
     // Fields
     //input
@@ -19,14 +19,25 @@ public class PlayerContext
 
     //weight adjusted stats
     public float MaxWalkSpeed { get; set; } = 0f;
+    public float MaxSweepSpeed { get; set; } = 0f;
     public float Acceleration { get; set; } = 0f;
+    public float SweepAcceleration { get; set; } = 0f;
     public float RotationSpeed { get; set; } = 0f;
+    public float SweepRotationSpeed { get; set; } = 0f;
+
+    //other stats
+    public float SweepSlowdownAngle { get; set; } = 0f;
+    public float SweepSlowdownSpeed { get; set; } = 0f;
+
+    // current values
+    public float Rotation { get; set; } = 0f;
+    public float MoveVelocity { get; set; } = 0f;
 
     // Components
     public Rigidbody2D RigidBody { get; set; }
     public Animator Animator { get; set; }
 
-    public PlayerContext(ZPlayerMovementController player)
+    public PlayerContext(PlayerMovementController player)
     {
         Player = player;
     }

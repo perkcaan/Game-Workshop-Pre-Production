@@ -12,4 +12,5 @@ public abstract class BaseState<StateEnum> where StateEnum : Enum
     public virtual void EnterState() { }
     public virtual void ExitState() { }
     public virtual void Update() { }
+    public virtual void OnDrawGizmos() { }
 }

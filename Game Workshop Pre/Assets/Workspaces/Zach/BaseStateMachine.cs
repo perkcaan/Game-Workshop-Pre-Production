@@ -28,4 +28,7 @@ public abstract class BaseStateMachine<StateEnum> where StateEnum : Enum
         _currentState.Update();
     }
 
+    public void OnDrawGizmos() {
+        _currentState.OnDrawGizmos();
+    }
 }

@@ -18,8 +18,8 @@ public class PlayerStateMachine : BaseStateMachine<PlayerStateEnum>
     {
         Dictionary<PlayerStateEnum, BaseState<PlayerStateEnum>> states = new Dictionary<PlayerStateEnum, BaseState<PlayerStateEnum>>()
     {
-        { PlayerStateEnum.Idle, new PlayerIdleState(context) },
-        { PlayerStateEnum.Sweeping, new PlayerSweepingState(context) }
+        { PlayerStateEnum.Idle, new PlayerIdleState(context, this) },
+        { PlayerStateEnum.Sweeping, new PlayerSweepingState(context, this) }
     };
         _ctx = context;
         Setup(states, PlayerStateEnum.Idle);
