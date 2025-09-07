@@ -96,11 +96,10 @@ public class PlayerChargingState : BaseState<PlayerStateEnum>
         if (Mathf.Abs(sidewaysInput) > 0.1f)
         {
             float turnSpeed = _ctx.ChargeRotationSpeed / Mathf.Max(_ctx.MoveVelocity / _ctx.MaxWalkSpeed, 1);
-            Debug.Log("Turn speed: " + turnSpeed);
-            _ctx.Rotation += sidewaysInput * turnSpeed * Time.deltaTime;
+            float angle =  _ctx.Rotation + sidewaysInput * turnSpeed * Time.deltaTime;
+            _ctx.Rotation = Mathf.DeltaAngle(0f, angle);
         }
 
-        Debug.Log("V: " + _ctx.MoveVelocity + " |A: " + _ctx.Rotation);
         _ctx.RigidBody.velocity = forwardAxis * _ctx.MoveVelocity;
 
         _ctx.Animator.SetFloat("Speed", _ctx.MoveVelocity);
