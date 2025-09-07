@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrashBallController : MonoBehaviour
+public class TrashBallController : MonoBehaviour,Swipeable
 {
     [SerializeField] PlayerMovementController playerController;
     [SerializeField] public GameObject trashBall;
@@ -14,6 +14,7 @@ public class TrashBallController : MonoBehaviour
     public BallCollisionHandler BallCollisionHandler;
     [SerializeField] public Rigidbody2D trashRb;
     public bool isAttached = true;
+    public bool swiped = false;
 
     private void Start()
     {
@@ -73,10 +74,11 @@ public class TrashBallController : MonoBehaviour
 
     void LaunchTrash()
     {
+        if(swiped) return;
         if (trashSize > 0 && isAttached)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
+            
+            
                 trashRb.bodyType = RigidbodyType2D.Dynamic;
 
                 float angle = playerController.rotation * Mathf.Deg2Rad;
@@ -104,7 +106,8 @@ public class TrashBallController : MonoBehaviour
                 transform.localScale = new Vector3(trashScale, trashScale, trashSize);
 
                 isAttached = false;
-            }
+                swiped = true;
+            
         }
     }
 
@@ -124,5 +127,21 @@ public class TrashBallController : MonoBehaviour
                 trashBall.transform.localScale = transform.localScale;
             }
         }
+    }
+
+    public void OnSwiped()
+    {
+        LaunchTrash();
+        
+    }
+
+    public void OnSwipeEnd()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerator SwipedEndCoroutine()
+    {
+        throw new NotImplementedException();
     }
 }

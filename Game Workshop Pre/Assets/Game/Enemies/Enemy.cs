@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour,Swipeable
 {
     public Vector2 StartingPoint;
     public int speed = 5;
     private Rigidbody2D rb;
+    [SerializeField] PlayerMovementController playerController;
 
     // Reference to the Health component
     public Health playerHealth;
@@ -50,5 +51,25 @@ public class Enemy : MonoBehaviour
         Debug.Log("Player hit! Current health: " + playerHealth.currentHealth);
         yield return new WaitForSeconds(0.5f);
         
+    }
+
+    public void OnSwiped()
+    {
+        rb.bodyType = RigidbodyType2D.Dynamic;
+
+        float angle = playerController.rotation * Mathf.Deg2Rad;
+        Vector2 launchDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized;
+
+        rb.AddForce(launchDirection * 10f); // Adjust force multiplier as needed
+    }
+
+    public void OnSwipeEnd()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public IEnumerator SwipedEndCoroutine()
+    {
+        throw new System.NotImplementedException();
     }
 }

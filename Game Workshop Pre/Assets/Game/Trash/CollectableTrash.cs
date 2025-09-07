@@ -1,9 +1,18 @@
+using System.Collections;
 using UnityEngine;
 
-public class CollectableTrash : MonoBehaviour
+public class CollectableTrash : MonoBehaviour,Swipeable
 {
     public float trashSize;
+    private Rigidbody2D trashRb;
+    [SerializeField] PlayerMovementController playerController;
 
+    private void Start()
+    {
+        trashRb = GetComponent<Rigidbody2D>();
+        trashRb.bodyType = RigidbodyType2D.Kinematic; // Start as kinematic
+        playerController = FindObjectOfType<PlayerMovementController>();
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -30,4 +39,32 @@ public class CollectableTrash : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void OnSwiped()
+    {
+        trashRb.bodyType = RigidbodyType2D.Dynamic;
+
+        float angle = playerController.rotation * Mathf.Deg2Rad;
+        Vector2 launchDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized;
+
+        trashRb.AddForce(launchDirection * trashSize * 200f); // Adjust force multiplier as needed
+        Debug.Log("Trash swiped and launched");
+        StartCoroutine(SwipedEndCoroutine());
+    }
+        
+
+    public void OnSwipeEnd()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public IEnumerator SwipedEndCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        trashRb.bodyType = RigidbodyType2D.Kinematic;
+        Debug.Log("Trash swipe ended, set to kinematic");
+
+
+    }
 }
+

@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] Animator spriteAnimator;
+    [SerializeField] AudioSource parryReady;
+    
     [Header("Base Movement")]
     [SerializeField] public float baseMoveSpeed;
     [SerializeField] float baseAcceleration;
@@ -26,8 +28,14 @@ public class PlayerMovementController : MonoBehaviour
     private Camera mainCamera;
     public TrashBallController trashBallController;
     public Collision2D playerCollider;
+    public bool swiping;
+    public GameObject swipeBox;
 
     [HideInInspector] public float rotation;
+
+    [SerializeField] float swipeCooldownDuration = 1f; // Cooldown in seconds
+    public bool canSwipe = true;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -39,9 +47,21 @@ public class PlayerMovementController : MonoBehaviour
     {
         HandleMovement();
         HandleRotation();
-        
+        Swipe();
 
-
+       
+        if (!canSwipe)
+        {
+            swipeCooldownDuration -= Time.deltaTime;
+            if (swipeCooldownDuration <= 0f)
+            {
+                canSwipe = true;
+                Debug.Log("Swipe ready");
+                swipeCooldownDuration = 10f; // Reset cooldown
+                if(canSwipe)
+                parryReady.Play();
+            }
+        }
 
 
     }
@@ -64,6 +84,8 @@ public class PlayerMovementController : MonoBehaviour
         currentVelocity = Vector2.Lerp(currentVelocity, targetVelocity, moveSpeed / acceleration * Time.deltaTime);
         spriteAnimator.SetFloat("Speed", currentVelocity.magnitude);
         rb.velocity = currentVelocity;
+        
+        
     }
 
     
@@ -114,7 +136,28 @@ public class PlayerMovementController : MonoBehaviour
         
     }
 
-    
+    public void Swipe()
+    {
+        if (canSwipe && Input.GetKeyDown(KeyCode.Space))
+        {
+            swiping = true;
+            swipeBox.SetActive(true);
+            canSwipe = false;
+            StartCoroutine(StopSwiping());
 
-    
+        }
+    }
+
+    public IEnumerator StopSwiping()
+    {
+        yield return new WaitForSeconds(0.5f);
+        swiping = false;
+        swipeBox.SetActive(false);
+
+        
+    }
+
+
+
+
 }
