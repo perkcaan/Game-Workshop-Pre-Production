@@ -11,6 +11,9 @@ public class PlayerContext
     // Player reference
     public PlayerMovementController Player { get; }
 
+    // movement props reference
+    public PlayerMovementProps Props { get; }
+
     // Fields
     //input
     public Vector2 MovementInput { get; set; } = Vector2.zero;
@@ -20,14 +23,14 @@ public class PlayerContext
     //weight adjusted stats
     public float MaxWalkSpeed { get; set; } = 0f;
     public float MaxSweepSpeed { get; set; } = 0f;
+    public float MaxChargeSpeed { get; set; } = 0f;
     public float Acceleration { get; set; } = 0f;
     public float SweepAcceleration { get; set; } = 0f;
+    public float ChargeAcceleration { get; set; } = 0f;
     public float RotationSpeed { get; set; } = 0f;
     public float SweepRotationSpeed { get; set; } = 0f;
+    public float ChargeRotationSpeed { get; set; } = 0f;
 
-    //other stats
-    public float SweepSlowdownAngle { get; set; } = 0f;
-    public float SweepSlowdownSpeed { get; set; } = 0f;
 
     // current values
     public float Rotation { get; set; } = 0f;
@@ -37,9 +40,10 @@ public class PlayerContext
     public Rigidbody2D RigidBody { get; set; }
     public Animator Animator { get; set; }
 
-    public PlayerContext(PlayerMovementController player)
+    public PlayerContext(PlayerMovementController player, PlayerMovementProps props)
     {
         Player = player;
+        Props = props;
     }
 
 

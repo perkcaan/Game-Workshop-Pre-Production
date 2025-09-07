@@ -10,21 +10,7 @@ public class PlayerMovementController : MonoBehaviour
     #region header
 
     // Properties
-    [Header("Base Movement")]
-    [SerializeField] private float _baseMaxWalkSpeed;
-    [SerializeField] private float _baseAcceleration;
-    [SerializeField] private float _baseRotationSpeed;
-    [Header("Sweeping Movement")]
-    [SerializeField] private float _sweepMaxSpeedModifier;
-    [SerializeField] private float _sweepAccelerationModifier;
-    [SerializeField] private float _sweepRotationModifier;
-    [SerializeField] private float _sweepingMaxAngleBeforeTurnSlowdown;
-    [SerializeField] private float _sweepingSlowdownTurnSpeed;
-
-    [Header("Weighted Movement")]
-    [SerializeField] private float _maxWalkSpeedReduction;
-    [SerializeField] private float _accelerationReduction;
-    [SerializeField] private float _rotationSpeedReduction;
+    [SerializeField] private PlayerMovementProps _movementProps;
 
     // Fields
     //weight
@@ -53,7 +39,7 @@ public class PlayerMovementController : MonoBehaviour
     // Methods
     private void Awake()
     {
-        _ctx = new PlayerContext(this);
+        _ctx = new PlayerContext(this, _movementProps);
         _ctx.RigidBody = GetComponent<Rigidbody2D>();
         _ctx.Animator = GetComponent<Animator>();
         _state = new PlayerStateMachine(_ctx);
@@ -126,16 +112,20 @@ public class PlayerMovementController : MonoBehaviour
     //weight system
     public void SetWeight(float weight)
     {
-        _ctx.MaxWalkSpeed = _baseMaxWalkSpeed / (1 + weight * _maxWalkSpeedReduction);
-        _ctx.MaxSweepSpeed = _ctx.MaxWalkSpeed * _sweepMaxSpeedModifier;
-        _ctx.Acceleration = _baseAcceleration / (1 + weight * _accelerationReduction);
-        _ctx.SweepAcceleration = _ctx.Acceleration * _sweepAccelerationModifier;
-        _ctx.RotationSpeed = _baseRotationSpeed / (1 + weight * _rotationSpeedReduction);
-        _ctx.SweepRotationSpeed = _ctx.RotationSpeed * _sweepRotationModifier;
-        _weight = weight;
+        PlayerMovementProps p = _movementProps; //For shorthand access
 
-        //these arent really weight dependent
-        _ctx.SweepSlowdownAngle = _sweepingMaxAngleBeforeTurnSlowdown;
-        _ctx.SweepSlowdownSpeed = _sweepingSlowdownTurnSpeed;
+        _ctx.MaxWalkSpeed = p.BaseMaxWalkSpeed / (1 + weight * p.MaxWalkSpeedReduction);
+        _ctx.MaxSweepSpeed = _ctx.MaxWalkSpeed * p.SweepMaxSpeedModifier;
+        _ctx.MaxChargeSpeed = _ctx.MaxWalkSpeed * p.ChargeMaxSpeedModifier;
+
+        _ctx.Acceleration = p.BaseAcceleration / (1 + weight * p.AccelerationReduction);
+        _ctx.SweepAcceleration = _ctx.Acceleration * p.SweepAccelerationModifier;
+        _ctx.ChargeAcceleration = _ctx.Acceleration * p.ChargeAccelationModifier;
+
+        _ctx.RotationSpeed = p.BaseRotationSpeed / (1 + weight * p.RotationSpeedReduction);
+        _ctx.SweepRotationSpeed = _ctx.RotationSpeed * p.SweepRotationModifier;
+        _ctx.ChargeRotationSpeed = _ctx.RotationSpeed * p.ChargeRotationModifier;
+
+        _weight = weight;
     }
 }

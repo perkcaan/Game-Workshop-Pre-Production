@@ -7,7 +7,8 @@ using UnityEngine;
 public enum PlayerStateEnum
 {
     Idle,
-    Sweeping
+    Sweeping,
+    Charging
 } 
 
 public class PlayerStateMachine : BaseStateMachine<PlayerStateEnum>
@@ -19,7 +20,8 @@ public class PlayerStateMachine : BaseStateMachine<PlayerStateEnum>
         Dictionary<PlayerStateEnum, BaseState<PlayerStateEnum>> states = new Dictionary<PlayerStateEnum, BaseState<PlayerStateEnum>>()
     {
         { PlayerStateEnum.Idle, new PlayerIdleState(context, this) },
-        { PlayerStateEnum.Sweeping, new PlayerSweepingState(context, this) }
+        { PlayerStateEnum.Sweeping, new PlayerSweepingState(context, this) },
+        { PlayerStateEnum.Charging, new PlayerChargingState(context, this) }
     };
         _ctx = context;
         Setup(states, PlayerStateEnum.Idle);
