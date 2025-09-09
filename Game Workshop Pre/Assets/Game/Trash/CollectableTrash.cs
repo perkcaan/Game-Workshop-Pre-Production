@@ -23,10 +23,9 @@ public class CollectableTrash : MonoBehaviour,Swipeable
             DestroySelf();
         }
         // Ball collects trash independently
-        else if (collision.gameObject.TryGetComponent(out BallCollisionHandler ballHandler) && !ballHandler.trashBallController.isAttached)
+        else if (collision.gameObject.TryGetComponent(out BallCollisionHandler ballHandler))
         {
-            // You can implement a method in BallCollisionHandler to handle trash collection,
-            // or forward it to the TrashBallController if needed.
+            
             ballHandler.trashBallController.AddCollectableTrash(this);
             DestroySelf();
 
@@ -40,6 +39,8 @@ public class CollectableTrash : MonoBehaviour,Swipeable
         }
     }
 
+    
+
     public void OnSwiped()
     {
         trashRb.bodyType = RigidbodyType2D.Dynamic;
@@ -47,24 +48,42 @@ public class CollectableTrash : MonoBehaviour,Swipeable
         float angle = playerController.rotation * Mathf.Deg2Rad;
         Vector2 launchDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized;
 
-        trashRb.AddForce(launchDirection * trashSize * 200f); // Adjust force multiplier as needed
+        if (trashSize < 1)
+        {
+            trashRb.AddForce(launchDirection * 200f * (trashSize * 4));
+        }
+        else
+        {
+            trashRb.AddForce(launchDirection * 200f / (trashSize));
+        }
+        // Set drag for smooth deceleration
+        trashRb.drag = 10f; // Adjust this value for faster/slower stop
+        trashRb.angularDrag = 10f;
+        trashRb.gravityScale = 0; // Ensure gravity is off
         Debug.Log("Trash swiped and launched");
-        StartCoroutine(SwipedEndCoroutine());
-    }
         
+    }
+
 
     public void OnSwipeEnd()
     {
-        throw new System.NotImplementedException();
+        StartCoroutine(SwipedEndCoroutine());
     }
+
+
 
     public IEnumerator SwipedEndCoroutine()
     {
         yield return new WaitForSeconds(0.5f);
+        trashRb.velocity = Vector2.zero;
+        trashRb.angularVelocity = 0f;
         trashRb.bodyType = RigidbodyType2D.Kinematic;
-        Debug.Log("Trash swipe ended, set to kinematic");
-
-
+        trashRb.drag = 0f; // Reset drag for next time
+        trashRb.angularDrag = 0f;
+        trashRb.gravityScale = 1; // Ensure gravity is off
+        Debug.Log("Object stopped after swipe.");
     }
+
 }
+
 

@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] Animator spriteAnimator;
-    [SerializeField] AudioSource parryReady;
+    [SerializeField] AudioSource parryReady;// Added
+
     
     [Header("Base Movement")]
     [SerializeField] public float baseMoveSpeed;
@@ -28,13 +29,15 @@ public class PlayerMovementController : MonoBehaviour
     private Camera mainCamera;
     public TrashBallController trashBallController;
     public Collision2D playerCollider;
-    public bool swiping;
-    public GameObject swipeBox;
+    public bool swiping; //Added
+    public GameObject swipeBox; //Added
+    public GameObject BroomBox; //Added
+    public bool sweeping; // Added
 
     [HideInInspector] public float rotation;
 
-    [SerializeField] float swipeCooldownDuration = 1f; // Cooldown in seconds
-    public bool canSwipe = true;
+    [SerializeField] float swipeCooldownDuration = 1f; //Added
+    public bool canSwipe = true;//Added
 
     void Start()
     {
@@ -48,6 +51,7 @@ public class PlayerMovementController : MonoBehaviour
         HandleMovement();
         HandleRotation();
         Swipe();
+        Sweep();
 
        
         if (!canSwipe)
@@ -57,9 +61,9 @@ public class PlayerMovementController : MonoBehaviour
             {
                 canSwipe = true;
                 Debug.Log("Swipe ready");
-                swipeCooldownDuration = 10f; // Reset cooldown
+                swipeCooldownDuration = 3f; // Reset cooldown
                 if(canSwipe)
-                parryReady.Play();
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Swipe Recharge");
             }
         }
 
@@ -140,6 +144,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (canSwipe && Input.GetKeyDown(KeyCode.Space))
         {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe");
             swiping = true;
             swipeBox.SetActive(true);
             canSwipe = false;
@@ -157,7 +162,21 @@ public class PlayerMovementController : MonoBehaviour
         
     }
 
-
+    public void Sweep()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && !sweeping)
+        {
+            sweeping = true;
+            BroomBox.gameObject.SetActive(true);
+            spriteAnimator.SetBool("Sweeping", true);
+        }
+        else if(Input.GetKeyDown(KeyCode.E))
+        {
+            sweeping = false;
+            BroomBox.gameObject.SetActive(false);
+            spriteAnimator.SetBool("Sweeping", false);
+        }
+    }
 
 
 }
