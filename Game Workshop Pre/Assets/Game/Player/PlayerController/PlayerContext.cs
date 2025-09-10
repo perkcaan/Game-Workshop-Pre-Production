@@ -34,10 +34,11 @@ public class PlayerContext
 
     // current values
     public float Rotation { get; set; } = 0f;
-    public float MoveVelocity { get; set; } = 0f;
+    public float MoveSpeed { get; set; } = 0f;
+    public Vector2 FrameVelocity { get; set; } = Vector2.zero;
 
     // Components
-    public Rigidbody2D RigidBody { get; set; }
+    public Rigidbody2D Rigidbody { get; set; }
     public Animator Animator { get; set; }
 
     public PlayerContext(PlayerMovementController player, PlayerMovementProps props)

@@ -32,6 +32,9 @@ public class PlayerMovementController : MonoBehaviour
         set { _ctx.Rotation = value; } }
     public Vector2 currentVelocity { get; set; } = Vector2.zero; // This doesnt work. Just keeps things happy. Need to decouple.
 
+
+    [SerializeField] private bool _doStuff;
+    private Vector2 collisionVelocity;
     //TODO: end of temporary
 
     #endregion
@@ -40,7 +43,7 @@ public class PlayerMovementController : MonoBehaviour
     private void Awake()
     {
         _ctx = new PlayerContext(this, _movementProps);
-        _ctx.RigidBody = GetComponent<Rigidbody2D>();
+        _ctx.Rigidbody = GetComponent<Rigidbody2D>();
         _ctx.Animator = GetComponent<Animator>();
         _state = new PlayerStateMachine(_ctx);
         _trashBallController = GetComponentInChildren<TrashBallController>();
@@ -51,9 +54,13 @@ public class PlayerMovementController : MonoBehaviour
         SetWeight(_weight);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        _state.Update();
+        if (_doStuff)
+        {
+            UpdateMovement();
+        }
+        collisionVelocity = Vector2.zero;
     }
 
     private void OnDrawGizmos()
@@ -82,6 +89,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnSwipe(InputValue value)
     {
+        _ctx.Rigidbody.AddForce(Vector2.up * 20, ForceMode2D.Impulse);
         //Debug.Log("Swipe");
     }
 
@@ -106,6 +114,38 @@ public class PlayerMovementController : MonoBehaviour
         {
             SceneManager.LoadScene("RebuildScene");
         }
+    }
+
+    [SerializeField] private float maxForce = 10f;
+    [SerializeField] private float forceMultiplier = 10f;
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.rigidbody != null)
+                collisionVelocity += collision.rigidbody.velocity;
+    }
+    
+    // master movement handler using variables modified by state.
+    private void UpdateMovement()
+    {
+
+        _state.Update();
+        // Vector2 velocityDelta = _ctx.FrameVelocity - _ctx.Rigidbody.velocity;
+
+        // Debug.Log("Collision Velocity:" + collisionVelocity);
+        // //Debug.Log("VelocityDelta: " + velocityDelta);
+        // Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta * forceMultiplier, maxForce);
+        // Debug.Log("Velocity: " + clampedForce);
+
+        Debug.Log("Velocity: " + _ctx.FrameVelocity);
+        _ctx.Rigidbody.AddForce(_ctx.FrameVelocity, ForceMode2D.Force);
+
+
+
+
+        _ctx.Animator.SetFloat("Speed", _ctx.MoveSpeed);
+        _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
+
     }
 
 

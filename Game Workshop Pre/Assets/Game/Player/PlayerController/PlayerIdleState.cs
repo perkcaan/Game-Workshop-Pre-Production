@@ -47,7 +47,7 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
         if (input.sqrMagnitude > 0.01f)
         {
             _zeroMoveTimer = 0f;
-            _ctx.MoveVelocity = Mathf.Lerp(_ctx.MoveVelocity, _ctx.MaxWalkSpeed, _ctx.Acceleration * Time.deltaTime);
+            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxWalkSpeed, _ctx.Acceleration * Time.deltaTime);
 
             // dont know whether to use move towards or lerp...
         }
@@ -59,13 +59,11 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
             }
             if (_zeroMoveTimer >= 0.05)
             {
-                _ctx.MoveVelocity = 0f;
+                _ctx.MoveSpeed = 0f;
             }
         }
 
-
-        _ctx.Animator.SetFloat("Speed", _ctx.MoveVelocity);
-        _ctx.RigidBody.velocity = _ctx.MoveVelocity * input.normalized;
+        _ctx.FrameVelocity = _ctx.MoveSpeed * input.normalized;
     }
 
     private void HandleRotation()
@@ -76,7 +74,6 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
         float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.RotationSpeed * Time.deltaTime);
         
         _ctx.Rotation = Mathf.DeltaAngle(0f, newAngle);
-        _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
     }
 
 

@@ -29,12 +29,13 @@ public class PlayerMovementProps
     public float SweepSlowdownSpeed { get { return _sweepSlowdownSpeed; } }
 
 
-
     [Header("Charging Movement")]
     [SerializeField] private float _chargeAngleThreshold;
     public float ChargeAngleThreshold { get { return _chargeAngleThreshold; } }
-    [SerializeField] private float _chargeSpeedThreshold;
-    public float ChargeSpeedThreshold { get { return _chargeSpeedThreshold; } }
+    [SerializeField] private float _enterChargeSpeedThreshold;
+    public float EnterChargeSpeedThreshold { get { return _enterChargeSpeedThreshold; } }
+    [SerializeField] private float _exitChargeSpeedThreshold;
+    public float ExitChargeSpeedThreshold { get { return _exitChargeSpeedThreshold; } }
     [SerializeField] private float _chargeMaxSpeedModifier;
     public float ChargeMaxSpeedModifier { get { return _chargeMaxSpeedModifier; } }
     [SerializeField] private float _chargeAccelationModifier;

@@ -10,10 +10,6 @@ public class PlayerChargingState : BaseState<PlayerStateEnum>
 
     // Fields
     //movement
-    private Vector2 _sweepVelocity = Vector2.zero;
-    private float _zeroMoveTimer = 0f;
-    private float? _lastMovingAngle = null;
-
     public PlayerChargingState(PlayerContext context, PlayerStateMachine state)
     {
         _ctx = context;
@@ -25,8 +21,6 @@ public class PlayerChargingState : BaseState<PlayerStateEnum>
     public override void EnterState()
     {
         _ctx.Animator.SetBool("Sweeping", true);
-        _sweepVelocity = _ctx.MoveVelocity * _ctx.MovementInput.normalized;
-        _lastMovingAngle = null;
 
         // Change rotation to velocity direction
         SetRotationToVelocityDirection();
@@ -54,9 +48,9 @@ public class PlayerChargingState : BaseState<PlayerStateEnum>
     private void SetRotationToVelocityDirection()
     {
         // Only update rotation if moving
-        if (_ctx.RigidBody.velocity.sqrMagnitude > 0.01f)
+        if (_ctx.Rigidbody.velocity.sqrMagnitude > 0.01f)
         {
-            Vector2 velocityDir = _ctx.RigidBody.velocity.normalized;
+            Vector2 velocityDir = _ctx.Rigidbody.velocity.normalized;
 
             float angle = Mathf.Atan2(velocityDir.y, velocityDir.x) * Mathf.Rad2Deg;
 
@@ -83,34 +77,32 @@ public class PlayerChargingState : BaseState<PlayerStateEnum>
         //Acceleration
         if (forwardInput > 0.1f)
         {
-            _ctx.MoveVelocity = Mathf.MoveTowards(_ctx.MoveVelocity, _ctx.MaxChargeSpeed, _ctx.ChargeAcceleration * Time.deltaTime);
+            _ctx.MoveSpeed = Mathf.MoveTowards(_ctx.MoveSpeed, _ctx.MaxChargeSpeed, _ctx.ChargeAcceleration * Time.deltaTime);
         }
 
         //Deceleration
         if (forwardInput < -0.1f)
         {
-            _ctx.MoveVelocity = Mathf.MoveTowards(_ctx.MoveVelocity, 0, _ctx.Props.ChargeDeceleration * Time.deltaTime);
+            _ctx.MoveSpeed = Mathf.MoveTowards(_ctx.MoveSpeed, 0, _ctx.Props.ChargeDeceleration * Time.deltaTime);
         }
 
         //Rotation
         if (Mathf.Abs(sidewaysInput) > 0.1f)
         {
-            float turnSpeed = _ctx.ChargeRotationSpeed / Mathf.Max(_ctx.MoveVelocity / _ctx.MaxWalkSpeed, 1);
+            float turnSpeed = _ctx.ChargeRotationSpeed / Mathf.Max(_ctx.MoveSpeed / _ctx.MaxWalkSpeed, 1);
             float angle =  _ctx.Rotation + sidewaysInput * turnSpeed * Time.deltaTime;
             _ctx.Rotation = Mathf.DeltaAngle(0f, angle);
         }
 
-        _ctx.RigidBody.velocity = forwardAxis * _ctx.MoveVelocity;
+        _ctx.FrameVelocity = forwardAxis * _ctx.MoveSpeed;
 
-        _ctx.Animator.SetFloat("Speed", _ctx.MoveVelocity);
-        _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
     }
 
     //state
     private void TryChangeState()
     {
-        float velocityThreshold = _ctx.Props.ChargeSpeedThreshold;
-        if (_ctx.MoveVelocity < velocityThreshold) _state.ChangeState(PlayerStateEnum.Sweeping);
+        float velocityThreshold = _ctx.Props.ExitChargeSpeedThreshold;
+        if (_ctx.MoveSpeed < velocityThreshold) _state.ChangeState(PlayerStateEnum.Sweeping);
     }
     
 
