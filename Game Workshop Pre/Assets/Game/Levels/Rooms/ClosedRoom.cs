@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ClosedRoom : MonoBehaviour
 {
-    public List<CollectableTrash> trashList;
+ //   public ClosedRoom room = new ClosedRoom();
+    public List<CollectableTrash> trashList = new List<CollectableTrash>();
 
     void OnTriggerEnter2D(Collider2D collision)
     {
