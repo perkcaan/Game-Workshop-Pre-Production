@@ -5,6 +5,12 @@ public class CollectableTrash : PushableObject
 {
     public TrashBall trashBallPrefab;
 
+    void Start()
+    {
+        WorldCleanliness.Instance.startingWorldTrash++;
+        WorldCleanliness.Instance.currentWorldTrash++;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent(out CollectableTrash trash))
@@ -29,5 +35,10 @@ public class CollectableTrash : PushableObject
         // Destroy the collectableTrash
         Destroy(otherTrash.gameObject);
         Destroy(gameObject);
+    }
+
+    public void OnDestroy()
+    {
+        WorldCleanliness.Instance.RemoveTrash();
     }
 }

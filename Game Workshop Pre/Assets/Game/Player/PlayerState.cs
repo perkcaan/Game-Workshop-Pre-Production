@@ -7,7 +7,7 @@ public class PlayerState : MonoBehaviour
    // public UnityEvent<bool> enterRoom;
     public UnityEvent<bool> enterRoom = new UnityEvent<bool>();
     public bool inBattle;
-    public GameObject room; 
+    public ClosedRoom currentRoom; 
 
     void Awake()
     {
@@ -30,10 +30,10 @@ public class PlayerState : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Room"))
+        if (collision.TryGetComponent<ClosedRoom>(out ClosedRoom enteredRoom))
         {
-            room = collision.gameObject;
-            Debug.Log(room.name);
+            currentRoom = enteredRoom;
+            Debug.Log(currentRoom.name);
             enterRoom.Invoke(true);
         }
     }
