@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 public class PlayerState : MonoBehaviour
 {
@@ -7,7 +8,8 @@ public class PlayerState : MonoBehaviour
    // public UnityEvent<bool> enterRoom;
     public UnityEvent<bool> enterRoom = new UnityEvent<bool>();
     public bool inBattle;
-    public ClosedRoom currentRoom; 
+    public ClosedRoom currentRoom;
+    public CircleCollider2D hitbox;
 
     void Awake()
     {
@@ -27,13 +29,12 @@ public class PlayerState : MonoBehaviour
         inBattle = false;
         enterRoom.Invoke(false);
     }
-
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent<ClosedRoom>(out ClosedRoom enteredRoom))
+        if (collision.TryGetComponent(out ClosedRoom enteredRoom))
         {
             currentRoom = enteredRoom;
-            Debug.Log(currentRoom.name);
+            //Debug.Log(currentRoom.name);
             enterRoom.Invoke(true);
         }
     }

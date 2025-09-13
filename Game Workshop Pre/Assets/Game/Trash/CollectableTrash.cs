@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class CollectableTrash : PushableObject
 {
+    public bool mergable;
     public TrashBall trashBallPrefab;
-
     void Start()
     {
         WorldCleanliness.Instance.startingWorldTrash++;
@@ -15,7 +15,7 @@ public class CollectableTrash : PushableObject
     {
         if (other.gameObject.TryGetComponent(out CollectableTrash trash))
         {
-            if (rb.velocity.magnitude < trash.rb.velocity.magnitude)
+            if (rb.velocity.magnitude < trash.rb.velocity.magnitude && trash.mergable)
             {
                 CreateMergedTrashBall(trash);
             }
@@ -32,13 +32,27 @@ public class CollectableTrash : PushableObject
         newTrashBall.consumedTrash.Add(otherTrash);
         newTrashBall.SetSize();
 
-        // Destroy the collectableTrash
-        Destroy(otherTrash.gameObject);
-        Destroy(gameObject);
+        // Disable the collectableTrash
+        otherTrash.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void OnDestroy()
     {
-        WorldCleanliness.Instance.RemoveTrash();
+        if (WorldCleanliness.Instance != null)
+            WorldCleanliness.Instance.RemoveTrash();
     }
+
+    public void Explode()
+    {
+        StartCoroutine(MergeDelay());
+    }
+
+    public IEnumerator MergeDelay()
+    {
+        mergable = false;
+        yield return new WaitForSeconds(1f);
+        mergable = true;
+    }
+    
 }
