@@ -39,7 +39,6 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
     }
 
     //movement
-
     private void HandleMovement()
     {
         Vector2 input = _ctx.MovementInput;

@@ -6,6 +6,12 @@ using UnityEngine;
 public class PlayerMovementProps
 {
     // Properties
+    [Header("Physics Influence")]
+    [SerializeField] private float _maxMovementForce = 20f;
+    public float MaxMovementForce { get { return _maxMovementForce; } }
+    [SerializeField] private float _forceMultiplier = 10f;
+    public float ForceMultiplier { get { return _forceMultiplier; } }
+
     [Header("Base Movement")]
     [SerializeField] private float _baseMaxWalkSpeed;
     public float BaseMaxWalkSpeed { get { return _baseMaxWalkSpeed; } }

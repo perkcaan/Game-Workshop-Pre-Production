@@ -35,6 +35,7 @@ public class PlayerMovementController : MonoBehaviour
 
     [SerializeField] private bool _doStuff;
     private Vector2 collisionVelocity;
+    public Vector2 Input { get { return _ctx.MovementInput; }}
     //TODO: end of temporary
 
     #endregion
@@ -116,31 +117,16 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
-    [SerializeField] private float maxForce = 10f;
-    [SerializeField] private float forceMultiplier = 10f;
-
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.rigidbody != null)
-                collisionVelocity += collision.rigidbody.velocity;
-    }
-    
+    [SerializeField] private float _maxForce = 10f;
+    [SerializeField] private float _forceMultiplier = 10f;
     // master movement handler using variables modified by state.
     private void UpdateMovement()
     {
 
         _state.Update();
-        // Vector2 velocityDelta = _ctx.FrameVelocity - _ctx.Rigidbody.velocity;
-
-        // Debug.Log("Collision Velocity:" + collisionVelocity);
-        // //Debug.Log("VelocityDelta: " + velocityDelta);
-        // Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta * forceMultiplier, maxForce);
-        // Debug.Log("Velocity: " + clampedForce);
-
-        Debug.Log("Velocity: " + _ctx.FrameVelocity);
-        _ctx.Rigidbody.AddForce(_ctx.FrameVelocity, ForceMode2D.Force);
-
-
+        Vector2 velocityDelta = _ctx.FrameVelocity - _ctx.Rigidbody.velocity;
+        Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta * _forceMultiplier, _maxForce);
+        _ctx.Rigidbody.AddForce(clampedForce, ForceMode2D.Force);
 
 
         _ctx.Animator.SetFloat("Speed", _ctx.MoveSpeed);
