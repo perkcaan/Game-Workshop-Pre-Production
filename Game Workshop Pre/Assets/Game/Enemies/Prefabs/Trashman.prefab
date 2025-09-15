@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 7277924055104869603}
   - component: {fileID: 1182469260237406252}
   - component: {fileID: 6806459536021068465}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Trashman
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,14 +134,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 0
   movementSpeed: 1
+  patrol: 0
   leftright: 1
   seeksPlayer: 0
   attackForce: 0
   tumblingTimer: 0
   size: 0
   resistance: 0
+  canMakeTrash: 0
+  trashSpawnTimer: 0
+  trash:
+  - {fileID: 5994726764121174991, guid: 6345002057a82f248a0c4b528cf23cd0, type: 3}
+  - {fileID: 4706229880084740406, guid: ca28ed3a41fa3014ba7f0224f32f21e0, type: 3}
+  canFireProjs: 0
+  shootTime: 0
+  proj: {fileID: 2544545299992300426, guid: 19acca0101d24514ca59d34da7fa53b9, type: 3}
   enemyAnimator: {fileID: 6806459536021068465}
-  moveAnimationName: TrashmanMove
   moveAnimation: {fileID: 7400000, guid: d12357e0a354c6a49b2c0b234dceabc9, type: 2}
 --- !u!50 &7277924055104869603
 Rigidbody2D:
