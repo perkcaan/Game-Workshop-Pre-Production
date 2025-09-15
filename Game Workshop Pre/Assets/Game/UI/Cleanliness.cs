@@ -27,7 +27,7 @@ public class Cleanliness : MonoBehaviour
         cleanBar.gameObject.SetActive(false);
         cleanText.enabled = false;
         PlayerState.Instance.enterRoom.AddListener(OnPlayerEnterRoom);
-       PlayerState.Instance.clean.AddListener(OnPlayerClean);
+        PlayerState.Instance.clean.AddListener(OnPlayerClean);
 
     }
 
@@ -36,14 +36,16 @@ public class Cleanliness : MonoBehaviour
         if (PlayerState.Instance != null)
         {
             PlayerState.Instance.enterRoom.AddListener(OnPlayerEnterRoom);
-            Debug.Log("poisonnnn");
+            
         }
     } */
 
     void OnDisable()
     {
         if (PlayerState.Instance != null)
+        {
             PlayerState.Instance.enterRoom.RemoveListener(OnPlayerEnterRoom);
+        }
     }
 
 
@@ -52,8 +54,11 @@ public class Cleanliness : MonoBehaviour
 
         if (entered)
         {
-             cleanText.enabled = true;
+            //Show HUD
+            cleanText.enabled = true;
             cleanBar.gameObject.SetActive(true);
+
+            //Get room and set values
             room = PlayerState.Instance.room;
             Debug.Log("Player entered " + room.name);
 
@@ -61,29 +66,38 @@ public class Cleanliness : MonoBehaviour
             cleanBar.SetClean(percentClean);
             cleanText.text = percentClean + "% clean";
 
+            //Get room trash values from ClosedRoom script
             currentRoom = PlayerState.Instance.room.GetComponent<ClosedRoom>();
             trashList = currentRoom.trashList;
             trashTotal = trashList.Count;
             trashCollected = 0;
 
-           // Debug.Log(trashList.Count);
+
             UpdateCleanText();
         }
 
         else
         {
-            Debug.Log("Player exited " + room.name);
-            cleanBar.gameObject.SetActive(false);
-            cleanText.enabled = false;
-          //  room = PlayerState.Instance.room;
-            
+            //null check #whatever
+            if (room != null)
+            {
+                Debug.Log("Player exited " + room.name);
+
+                //Disable HUD in hallways
+                cleanBar.gameObject.SetActive(false);
+                cleanText.enabled = false;
+            }
         }
     }
 
+
+    //When player touches trash
     public void OnPlayerClean(bool cleaned)
     {
         if (cleaned)
         {
+
+            //Get weight values from CollectableTrash script
             trash = PlayerState.Instance.trash;
             currentTrash = PlayerState.Instance.trash.GetComponent<CollectableTrash>();
             trashCollected += currentTrash.weight;
@@ -93,8 +107,6 @@ public class Cleanliness : MonoBehaviour
     }
 
 
-
-    // Update is called once per frame
     public void UpdateCleanText()
     {
         percentClean = (trashCollected / trashTotal) * 100;
