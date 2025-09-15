@@ -18,7 +18,11 @@ public class PlayerContext
     //input
     public Vector2 MovementInput { get; set; } = Vector2.zero;
     public Vector2 MouseInput { get; set; } = Vector2.zero;
-    public bool IsSweepPressed { get; set; }
+    public bool IsSweepPressed { get; set; } = false;
+
+    //swiping
+    public bool CanSwipe { get; set; } = true;
+    public float SwipeCooldownTimer { get; set; } = 0f;
 
     //weight adjusted stats
     public float MaxWalkSpeed { get; set; } = 0f;
@@ -40,6 +44,7 @@ public class PlayerContext
     // Components
     public Rigidbody2D Rigidbody { get; set; }
     public Animator Animator { get; set; }
+    public SwipeHandler SwipeHandler { get;  set;}
 
     public PlayerContext(PlayerMovementController player, PlayerMovementProps props)
     {

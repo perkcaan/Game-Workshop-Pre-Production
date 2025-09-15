@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerIdleState : BaseState<PlayerStateEnum>
@@ -18,11 +16,13 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
         _ctx = context;
         _state = state;
     }
+    
 
     // Methods
     //state
     public override void EnterState()
     {
+        _ctx.CanSwipe = true;
         _zeroMoveTimer = 0f;
     }
 
@@ -35,7 +35,7 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
 
     public override void ExitState()
     {
-        
+
     }
 
     //movement
@@ -47,8 +47,6 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
         {
             _zeroMoveTimer = 0f;
             _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxWalkSpeed, _ctx.Acceleration * Time.deltaTime);
-
-            // dont know whether to use move towards or lerp...
         }
         else
         {

@@ -8,7 +8,8 @@ public enum PlayerStateEnum
 {
     Idle,
     Sweeping,
-    Charging
+    Charging,
+    Swiping
 } 
 
 public class PlayerStateMachine : BaseStateMachine<PlayerStateEnum>
@@ -18,11 +19,12 @@ public class PlayerStateMachine : BaseStateMachine<PlayerStateEnum>
     public PlayerStateMachine(PlayerContext context)
     {
         Dictionary<PlayerStateEnum, BaseState<PlayerStateEnum>> states = new Dictionary<PlayerStateEnum, BaseState<PlayerStateEnum>>()
-    {
-        { PlayerStateEnum.Idle, new PlayerIdleState(context, this) },
-        { PlayerStateEnum.Sweeping, new PlayerSweepingState(context, this) },
-        { PlayerStateEnum.Charging, new PlayerChargingState(context, this) }
-    };
+        {
+            { PlayerStateEnum.Idle, new PlayerIdleState(context, this) },
+            { PlayerStateEnum.Sweeping, new PlayerSweepingState(context, this) },
+            { PlayerStateEnum.Charging, new PlayerChargingState(context, this) },
+            { PlayerStateEnum.Swiping, new PlayerSwipingState(context, this) }
+        };
         _ctx = context;
         Setup(states, PlayerStateEnum.Idle);
     }

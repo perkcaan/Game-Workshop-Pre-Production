@@ -21,6 +21,7 @@ public class PlayerChargingState : BaseState<PlayerStateEnum>
     public override void EnterState()
     {
         _ctx.Animator.SetBool("Sweeping", true);
+        _ctx.CanSwipe = false;
 
         // Change rotation to velocity direction
         SetRotationToVelocityDirection();

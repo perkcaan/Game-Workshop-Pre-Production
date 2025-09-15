@@ -8,9 +8,19 @@ public class PlayerMovementController : MonoBehaviour
 {
 
     #region header
-
+  
     // Properties
     [SerializeField] private PlayerMovementProps _movementProps;
+
+    [Header("Swipe Properties")]
+    [SerializeField] private float _swipeForce = 5f;
+    public float SwipeForce { get { return _swipeForce; } }
+    [SerializeField] [Range(0f,2f)] private float _swipeMovementScaler = 0.1f;
+    public float SwipeMovementScaler { get { return _swipeMovementScaler; } }
+    [SerializeField] private float _swipeDuration = 0.5f;
+    public float SwipeDuration { get { return _swipeDuration; } }
+    [SerializeField] private float _swipeCooldown = 1f;
+    public float SwipeCooldown { get { return _swipeCooldown; } }
 
     // Fields
     //weight
@@ -22,20 +32,16 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     //context & state
-    PlayerContext _ctx;
-    PlayerStateMachine _state;
+    private PlayerContext _ctx;
+    private PlayerStateMachine _state;
 
     //TODO: Temporary. Decouple Trash ball!
-    TrashBallController _trashBallController;
-    public float rotation {
+    public float rotation
+    {
         get { return _ctx.Rotation; }
-        set { _ctx.Rotation = value; } }
+        set { _ctx.Rotation = value; }
+    }
     public Vector2 currentVelocity { get; set; } = Vector2.zero; // This doesnt work. Just keeps things happy. Need to decouple.
-
-
-    [SerializeField] private bool _doStuff;
-    private Vector2 collisionVelocity;
-    public Vector2 Input { get { return _ctx.MovementInput; }}
     //TODO: end of temporary
 
     #endregion
@@ -46,8 +52,8 @@ public class PlayerMovementController : MonoBehaviour
         _ctx = new PlayerContext(this, _movementProps);
         _ctx.Rigidbody = GetComponent<Rigidbody2D>();
         _ctx.Animator = GetComponent<Animator>();
+        _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
         _state = new PlayerStateMachine(_ctx);
-        _trashBallController = GetComponentInChildren<TrashBallController>();
     }
 
     private void Start()
@@ -55,20 +61,30 @@ public class PlayerMovementController : MonoBehaviour
         SetWeight(_weight);
     }
 
+    private void Update()
+    {
+        _state.Update();
+        UpdateCooldowns();
+    }
     private void FixedUpdate()
     {
-        if (_doStuff)
+        UpdateMovement();
+    }
+
+    private void UpdateCooldowns()
+    {
+        if (_ctx.SwipeCooldownTimer > 0f)
         {
-            UpdateMovement();
+            _ctx.SwipeCooldownTimer = Mathf.Max(_ctx.SwipeCooldownTimer - Time.deltaTime, 0f); 
         }
-        collisionVelocity = Vector2.zero;
     }
 
     private void OnDrawGizmos()
     {
         if (_state == null) return;
-        _state.OnDrawGizmos();    
+        _state.OnDrawGizmos();
     }
+
 
     //inputs
     private void OnMove(InputValue value)
@@ -90,25 +106,15 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnSwipe(InputValue value)
     {
-        _ctx.Rigidbody.AddForce(Vector2.up * 20, ForceMode2D.Impulse);
-        //Debug.Log("Swipe");
-    }
-
-
-    //collision
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("TrashBall"))
+        if (_ctx.CanSwipe && _ctx.SwipeCooldownTimer <= 0f)
         {
-            //Debug.Log("Reattached to ball");
-            _trashBallController.isAttached = true;
-            _trashBallController.trashBall.transform.parent = transform;
-            _trashBallController.trashRb.bodyType = RigidbodyType2D.Kinematic;
-            _trashBallController.SyncBallScale();
+            _state.ChangeState(PlayerStateEnum.Swiping);
         }
     }
 
+
+
+    //collision
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("EndPoint"))
@@ -117,15 +123,12 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
-    [SerializeField] private float _maxForce = 10f;
-    [SerializeField] private float _forceMultiplier = 10f;
+
     // master movement handler using variables modified by state.
     private void UpdateMovement()
     {
-
-        _state.Update();
         Vector2 velocityDelta = _ctx.FrameVelocity - _ctx.Rigidbody.velocity;
-        Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta * _forceMultiplier, _maxForce);
+        Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta * _movementProps.ForceMultiplier, _movementProps.MaxMovementForce);
         _ctx.Rigidbody.AddForce(clampedForce, ForceMode2D.Force);
 
 

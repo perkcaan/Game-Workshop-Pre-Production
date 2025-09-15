@@ -27,6 +27,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         _ctx.Animator.SetBool("Sweeping", true);
         _sweepVelocity = _ctx.MoveSpeed * _ctx.MovementInput.normalized;
         _lastMovingAngle = null;
+        _ctx.CanSwipe = true;
     }
 
     public override void Update()
