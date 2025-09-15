@@ -9,14 +9,17 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] float baseMaxSpeed;
     [SerializeField] float baseAcceleration;
     [SerializeField] float baseRotationSpeed;
+    [SerializeField] float friction;
     [Header("Movement with Ball")]
     [SerializeField] float speedReduction;
     [SerializeField] float accelerationReduction;
     [SerializeField] float rotationReduction;
+    
 
     float maxSpeed = 0;
     float acceleration = 0;
     float rotationSpeed = 0;
+    float accceleration = 0;
 
     private Vector2 currentVelocity = Vector2.zero;
     private Vector2 targetVelocity = Vector2.zero;
