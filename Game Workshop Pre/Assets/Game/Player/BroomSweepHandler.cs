@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Handles the player's swipe ability
+// Handles the player's sweep ability
 [RequireComponent(typeof(Collider2D))]
-public class SwipeHandler : MonoBehaviour
+public class BroomSweepHandler : MonoBehaviour
 {
 
     // Components
@@ -14,7 +14,7 @@ public class SwipeHandler : MonoBehaviour
 
     // Fields
     private float _rotation = 0f;
-    private float _swipeForce = 1f;
+    private float _sweepForce = 1f;
 
     // Unity methods
     private void Awake()
@@ -22,7 +22,7 @@ public class SwipeHandler : MonoBehaviour
         _parent = transform.parent.GetComponent<PlayerMovementController>();
         if (_parent == null)
         {
-            Debug.LogWarning("Player Swipe Handler cannot find Player.");
+            Debug.LogWarning("Broom Sweep Handler cannot find Player.");
             gameObject.SetActive(false);
             return;
         }
@@ -30,39 +30,41 @@ public class SwipeHandler : MonoBehaviour
         _hitbox.enabled = false;
     }
 
-    // Swipe
-    public void DoSwipe(float rotation, float swipeForce)
+    // Sweep
+    public void BeginSweep(float rotation, float sweepForce)
     {
         _hitbox.enabled = true;
-        _swipeForce = swipeForce;
-        UpdateHitbox(rotation);
+        UpdateHitbox(rotation, sweepForce);
     }
 
-    public void UpdateHitbox(float rotation)
+    public void UpdateHitbox(float rotation, float sweepForce)
     {
+        _sweepForce = sweepForce;
         _rotation = rotation * Mathf.Deg2Rad;
         Vector2 offset = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
 
-        // Set the swipe box position and rotation relative to the player and their rotation
+        // Set the sweep box position and rotation relative to the player and their rotation
         transform.position = _parent.transform.position + ((Vector3)offset * 0.75f);
         transform.rotation = Quaternion.Euler(0, 0, rotation + 90f);
     }
 
-    public void EndSwipe()
+    public void EndSweep()
     {
         _hitbox.enabled = false;
     }
 
+
     // Collision trigger
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         Vector2 direction = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
 
-        ISwipeable swipeableObject = collision.gameObject.GetComponent<ISwipeable>();
-        if (swipeableObject != null)
+        ISweepable sweepableObject = collision.gameObject.GetComponent<ISweepable>();
+        if (sweepableObject != null)
         {
-            swipeableObject.OnSwipe(direction.normalized, _swipeForce);
+            sweepableObject.OnSweep(direction.normalized, _sweepForce);
         }
     }
+
 
 }

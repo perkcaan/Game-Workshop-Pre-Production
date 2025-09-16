@@ -12,6 +12,14 @@ public class PlayerMovementController : MonoBehaviour
     // Properties
     [SerializeField] private PlayerMovementProps _movementProps;
 
+
+    [Header("Sweep Properties")]
+    [SerializeField] private float _sweepForce = 5f;
+    public float SweepForce { get { return _sweepForce; } }
+    [SerializeField] [Range(0f,2f)] private float _sweepMovementScaler = 0.1f;
+    public float SweepMovementScaler { get { return _sweepMovementScaler; } }
+
+
     [Header("Swipe Properties")]
     [SerializeField] private float _swipeForce = 5f;
     public float SwipeForce { get { return _swipeForce; } }
@@ -21,6 +29,7 @@ public class PlayerMovementController : MonoBehaviour
     public float SwipeDuration { get { return _swipeDuration; } }
     [SerializeField] private float _swipeCooldown = 1f;
     public float SwipeCooldown { get { return _swipeCooldown; } }
+
 
     // Fields
     //weight
@@ -53,6 +62,7 @@ public class PlayerMovementController : MonoBehaviour
         _ctx.Rigidbody = GetComponent<Rigidbody2D>();
         _ctx.Animator = GetComponent<Animator>();
         _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
+        _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
         _state = new PlayerStateMachine(_ctx);
     }
 

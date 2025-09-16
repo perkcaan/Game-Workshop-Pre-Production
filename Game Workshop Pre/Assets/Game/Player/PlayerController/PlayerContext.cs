@@ -44,7 +44,8 @@ public class PlayerContext
     // Components
     public Rigidbody2D Rigidbody { get; set; }
     public Animator Animator { get; set; }
-    public SwipeHandler SwipeHandler { get;  set;}
+    public SwipeHandler SwipeHandler { get;  set; }
+    public BroomSweepHandler SweepHandler { get; set; }
 
     public PlayerContext(PlayerMovementController player, PlayerMovementProps props)
     {

@@ -25,16 +25,24 @@ public class PlayerChargingState : BaseState<PlayerStateEnum>
 
         // Change rotation to velocity direction
         SetRotationToVelocityDirection();
+
+        float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepMovementScaler;
+        _ctx.SweepHandler.BeginSweep(_ctx.Rotation, sweepForce);
     }
 
     public override void Update()
     {
         HandleMovementAndRotation();
+
+        float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepMovementScaler;
+        _ctx.SweepHandler.UpdateHitbox(_ctx.Rotation, sweepForce);
+
         TryChangeState();
     }
 
     public override void ExitState()
     {
+        _ctx.SweepHandler.EndSweep();
         _ctx.Animator.SetBool("Sweeping", false);
     }
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Testbox : MonoBehaviour, ISwipeable
+public class Testbox : MonoBehaviour, ISwipeable, ISweepable
 {
     private Rigidbody2D _rigidBody;
 
@@ -14,5 +14,10 @@ public class Testbox : MonoBehaviour, ISwipeable
     public void OnSwipe(Vector2 direction, float force)
     {
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
+    }
+
+    public void OnSweep(Vector2 direction, float force)
+    {
+        _rigidBody.AddForce(direction * force, ForceMode2D.Force);
     }
 }

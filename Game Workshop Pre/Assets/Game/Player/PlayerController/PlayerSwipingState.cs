@@ -25,7 +25,8 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     {
         _ctx.CanSwipe = false;
         GetSwipeRotation();
-        _ctx.SwipeHandler.DoSwipe(_ctx.Rotation, _ctx.MoveSpeed);
+        float swipeForce = _ctx.Player.SwipeForce + _ctx.MoveSpeed * _ctx.Player.SwipeMovementScaler;
+        _ctx.SwipeHandler.DoSwipe(_ctx.Rotation, swipeForce);
         _ctx.Player.StartCoroutine(SwipeDuration());
     }
 
