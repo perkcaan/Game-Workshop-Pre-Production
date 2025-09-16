@@ -15,12 +15,15 @@ public class Cleanliness : MonoBehaviour
     public float trashTotal;
     public float percentClean = 0;
 
+    public District district;
+    public List<CollectableTrash> allTrash;
+    public float totalTrashWeight = 0;
 
     public CleanBar cleanBar;
     public TMP_Text cleanText;
         
 
-
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,11 @@ public class Cleanliness : MonoBehaviour
         cleanText.enabled = false;
         PlayerState.Instance.enterRoom.AddListener(OnPlayerEnterRoom);
         PlayerState.Instance.clean.AddListener(OnPlayerClean);
+
+        district.RefreshTrash();
+        allTrash = district.GetAllTrash();
+        totalTrashWeight = district.totalTrashWeight;
+        Debug.Log("Total trash weight in district: " + totalTrashWeight);
 
     }
 
@@ -101,6 +109,12 @@ public class Cleanliness : MonoBehaviour
             trash = PlayerState.Instance.trash;
             currentTrash = PlayerState.Instance.trash.GetComponent<CollectableTrash>();
             trashCollected += currentTrash.weight;
+
+            // notify district
+            FindObjectOfType<District>()
+                .OnPlayerCleanDistrict(currentTrash);
+
+
             Debug.Log(currentTrash.weight);
             UpdateCleanText();
         }

@@ -16,6 +16,8 @@ public class PlayerState : MonoBehaviour
         if (Instance != null) Destroy(gameObject);
         Instance = this;
         inBattle = false;
+
+
     }
 
     public void EnterRoom()
