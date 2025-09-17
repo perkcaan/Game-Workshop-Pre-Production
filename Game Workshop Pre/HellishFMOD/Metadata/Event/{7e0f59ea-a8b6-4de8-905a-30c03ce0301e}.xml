@@ -5,7 +5,7 @@
 			<value>Clean Step</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{740d1e0e-7d18-4523-a03a-0143db20d807}</destination>
@@ -30,6 +30,9 @@
 		</relationship>
 		<relationship name="timeline">
 			<destination>{6051ef68-8a6d-4dd3-9d3f-c4807a84cf69}</destination>
+		</relationship>
+		<relationship name="banks">
+			<destination>{f1417bbe-be3e-416a-9e1c-307045676c2c}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{162c25a9-4d53-478d-9a09-acce8eea3800}">
@@ -187,9 +190,13 @@
 	<object class="MixerBusEffectChain" id="{defcb485-ca2a-4c1a-bf21-f2f734c33854}">
 		<relationship name="effects">
 			<destination>{e9480d7d-3dc0-403b-aa3e-83e378663cc9}</destination>
+			<destination>{598f0083-d638-492f-a950-c148dc915e63}</destination>
+			<destination>{4a2a4ac7-1946-4a8d-afae-844f314ec8b0}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{f23ffc9f-cfc1-44bc-b798-332f45f7f82c}" />
 	<object class="MixerBusFader" id="{c3f047b8-5bcb-4a1b-bb70-d7c5746767c7}" />
 	<object class="MixerBusFader" id="{e9480d7d-3dc0-403b-aa3e-83e378663cc9}" />
+	<object class="SpatialiserEffect" id="{598f0083-d638-492f-a950-c148dc915e63}" />
+	<object class="SFXReverbEffect" id="{4a2a4ac7-1946-4a8d-afae-844f314ec8b0}" />
 </objects>
