@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.02.02.00">
+<objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{c9c1de43-9a1a-4a07-a723-b11aa049fba2}">
 		<property name="name">
 			<value>SwipeMiss</value>
@@ -83,9 +83,9 @@
 	</object>
 	<object class="Timeline" id="{51f3d10e-5076-4f17-b29e-783c4a2ee1d6}">
 		<relationship name="modules">
+			<destination>{740d1138-8904-4530-b9c8-c869109c2db2}</destination>
 			<destination>{64d62de9-824e-4494-98b9-f143840bbeb5}</destination>
 			<destination>{1412096a-aee9-40b9-b8d6-befcda8a6dc9}</destination>
-			<destination>{740d1138-8904-4530-b9c8-c869109c2db2}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{3f49e667-aa23-45ee-a2d5-171bb3c7a2e7}">

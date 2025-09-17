@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.02.02.00">
+<objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{1b99ae2b-e112-42a0-bb3f-60d0ccdabe54}">
 		<property name="name">
 			<value>SweepTrash</value>
@@ -92,10 +92,10 @@
 	</object>
 	<object class="Timeline" id="{dd7aafec-a3e4-49cf-8a91-6786b12402d5}">
 		<relationship name="modules">
+			<destination>{83f3b418-3052-4975-b2a3-ed5fa5afeb6d}</destination>
 			<destination>{72a49be5-7ad0-43a3-8e9f-8801e0a2df77}</destination>
 			<destination>{789c5c54-3763-4caf-b74c-2f1ce7ad96fc}</destination>
 			<destination>{e1a3d084-898c-4f34-8a58-7d18e8bd95b2}</destination>
-			<destination>{83f3b418-3052-4975-b2a3-ed5fa5afeb6d}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{dab4f1e3-e0c5-4f26-868a-928b3b556864}">
@@ -200,8 +200,8 @@
 			<value>-6</value>
 		</property>
 		<relationship name="modulators">
-			<destination>{4b474818-6695-460e-aa34-267ecb85b908}</destination>
 			<destination>{04a5a9de-6ed4-4c3b-8b5b-7117d03879d9}</destination>
+			<destination>{4b474818-6695-460e-aa34-267ecb85b908}</destination>
 		</relationship>
 		<relationship name="fadeInCurve">
 			<destination>{7533b5da-430e-4536-861d-cd60b9e4b2f6}</destination>
@@ -313,17 +313,17 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{3cf83afc-755f-417d-a165-7f957587d07b}" />
-	<object class="RandomizerModulator" id="{4b474818-6695-460e-aa34-267ecb85b908}">
-		<property name="nameOfPropertyBeingModulated">
-			<value>pitch</value>
-		</property>
-	</object>
 	<object class="RandomizerModulator" id="{04a5a9de-6ed4-4c3b-8b5b-7117d03879d9}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>volume</value>
 		</property>
 		<property name="amount">
 			<value>7.5999999</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{4b474818-6695-460e-aa34-267ecb85b908}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
 		</property>
 	</object>
 	<object class="FadeCurve" id="{7533b5da-430e-4536-861d-cd60b9e4b2f6}">
