@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class ClosedRoom : MonoBehaviour
 {
-    public List<CollectableTrash> trashList;
+    public List<Trash> trashList;
 
     private void OnEnable()
     {
-        // Register with parent District (if exists)
         var district = GetComponentInParent<District>();
         if (district != null)
         {
@@ -34,7 +33,7 @@ public class ClosedRoom : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out CollectableTrash trash))
+        if (collision.gameObject.TryGetComponent(out Trash trash))
         {
             trashList.Add(trash);
         }
@@ -50,13 +49,9 @@ public class ClosedRoom : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out CollectableTrash trash))
+        if (collision.gameObject.TryGetComponent(out Trash trash))
         {
             trashList.Remove(trash);
-            if (trashList.Count <= 0)
-            {
-                PlayerState.Instance.ExitRoom();
-            }
         }
     }
 }

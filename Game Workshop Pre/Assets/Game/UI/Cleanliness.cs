@@ -7,43 +7,21 @@ using TMPro;
 public class Cleanliness : MonoBehaviour
 {
     public ClosedRoom currentPlayerRoom;
-    public GameObject trash;
-    private CollectableTrash currentTrash;
-    private List<CollectableTrash> trashList; // get trash list from room script
-    public float trashCollected;
-    public float trashTotal;
+    private float trashTotal;
+    private float cleanedTrash;
     public float percentClean = 0;
-
     public District district;
-    public List<CollectableTrash> allTrash;
 
     public CleanBar cleanBar;
     public TMP_Text cleanText;
         
-
-   
-    // Start is called before the first frame update
     void Start()
     {
         cleanBar.gameObject.SetActive(false);
         cleanText.enabled = false;
         PlayerState.Instance.enterRoom.AddListener(OnPlayerEnterRoom);
-        PlayerState.Instance.clean.AddListener(OnPlayerClean);
-
-        district.RefreshTrash();
-        allTrash = district.GetAllTrash();
-        Debug.Log("Total trash in district: " + allTrash.Count);
-
+        PlayerState.Instance.trashDeleted.AddListener(OnPlayerClean);
     }
-
-    /*void OnEnable()
-    {
-        if (PlayerState.Instance != null)
-        {
-            PlayerState.Instance.enterRoom.AddListener(OnPlayerEnterRoom);
-            
-        }
-    } */
 
     void OnDisable()
     {
@@ -52,7 +30,6 @@ public class Cleanliness : MonoBehaviour
             PlayerState.Instance.enterRoom.RemoveListener(OnPlayerEnterRoom);
         }
     }
-
 
     private void OnPlayerEnterRoom(bool entered)
     {
@@ -65,13 +42,12 @@ public class Cleanliness : MonoBehaviour
             //Get room and set values
             currentPlayerRoom = PlayerState.Instance.currentRoom;
             percentClean = 0;
+            cleanedTrash = 0;
             cleanBar.SetClean(percentClean);
             cleanText.text = percentClean + "% clean";
 
             //Get room trash values from ClosedRoom script
-            trashList = currentPlayerRoom.trashList;
-            trashTotal = trashList.Count;
-            trashCollected = 0;
+            trashTotal = currentPlayerRoom.trashList.Count;
 
             UpdateCleanText();
         }
@@ -82,32 +58,22 @@ public class Cleanliness : MonoBehaviour
         }
     }
 
-
-    //When player touches trash
-    public void OnPlayerClean(bool cleaned)
+    //When trash is destroyed
+    public void OnPlayerClean(float amountCleaned)
     {
-        if (cleaned)
-        {
-            //Get weight values from CollectableTrash script
-            trash = PlayerState.Instance.trash;
-            currentTrash = PlayerState.Instance.trash.GetComponent<CollectableTrash>();
-            //trashCollected += currentTrash;
-
-            // notify district
-            FindObjectOfType<District>()
-                .OnPlayerCleanDistrict(currentTrash);
-
-            UpdateCleanText();
-        }
+        cleanedTrash += amountCleaned;
+        UpdateCleanText();
     }
-
 
     public void UpdateCleanText()
     {
-        percentClean = (trashCollected / trashTotal) * 100;
+        percentClean = (cleanedTrash / trashTotal) * 100;
         if (percentClean >= 100)
         {
             cleanText.text = "Room Clean!";
+            PlayerState.Instance.ExitRoom();
+            district.OnPlayerCleanRoom(currentPlayerRoom);
+            //currentPlayerRoom.gameObject.SetActive(false);
         }
         else
         {
