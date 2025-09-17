@@ -2,23 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrashBall : MonoBehaviour
+public class TrashBall : Trash
 {
-    [SerializeField] PlayerMovementController playerController;
-    [SerializeField] float distanceFromPlayer;
-    void Start()
-    {
+    [SerializeField] float _scaleMultiplier;
 
+    protected override bool MergePriority { get { return true; } }
+
+    public void Initialize(float size, Vector2 velocity)
+    {
+        Size = size;
+        _rigidBody.velocity = velocity;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnSizeChanged()
     {
-
+        float newSize = _scaleMultiplier * Mathf.Sqrt(Size);
+        transform.localScale = Vector3.one * newSize;
     }
 
-    void HandleRotation()
-    {
-        
-    }
 }

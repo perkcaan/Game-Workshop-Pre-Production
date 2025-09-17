@@ -1,29 +1,22 @@
 using UnityEngine;
 
-public class CollectableTrash : MonoBehaviour
+public class CollectableTrash : Trash
 {
-    public float trashSize;
+    [SerializeField] private GameObject _trashBallPrefab;
 
-    void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTrashMerge(Trash otherTrash)
     {
-
-        if (collision.gameObject.TryGetComponent(out TrashBallController trashBallController) && trashBallController.isAttached)
+        base.OnTrashMerge(otherTrash);
+        GameObject trashBallObject = Instantiate(_trashBallPrefab);
+        trashBallObject.transform.position = transform.position;
+        TrashBall trashBall = trashBallObject.GetComponent<TrashBall>();
+        if (trashBall == null)
         {
-            trashBallController.AddCollectableTrash(this);
-            DestroySelf();
+            Debug.LogWarning("TrashBall prefab prepared incorrectly");
+            Destroy(trashBallObject);
+            return;    
         }
-        // Ball collects trash independently
-        else if (collision.gameObject.TryGetComponent(out BallCollisionHandler ballHandler) && !ballHandler.trashBallController.isAttached)
-        {
-            // You can implement a method in BallCollisionHandler to handle trash collection,
-            // or forward it to the TrashBallController if needed.
-            ballHandler.trashBallController.AddCollectableTrash(this);
-            DestroySelf();
-        }
-
-        void DestroySelf()
-        {
-            Destroy(gameObject);
-        }
+        trashBall.Initialize(Size, _rigidBody.velocity);
+        Destroy(gameObject);
     }
 }

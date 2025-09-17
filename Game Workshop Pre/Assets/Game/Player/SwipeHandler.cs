@@ -54,11 +54,11 @@ public class SwipeHandler : MonoBehaviour
     }
 
     // Collision trigger
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         Vector2 direction = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
 
-        ISwipeable swipeableObject = collision.gameObject.GetComponent<ISwipeable>();
+        ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
         if (swipeableObject != null)
         {
             swipeableObject.OnSwipe(direction.normalized, _swipeForce);

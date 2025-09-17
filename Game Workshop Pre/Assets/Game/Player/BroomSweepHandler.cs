@@ -55,15 +55,16 @@ public class BroomSweepHandler : MonoBehaviour
 
 
     // Collision trigger
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D other)
     {
         Vector2 direction = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
 
-        ISweepable sweepableObject = collision.gameObject.GetComponent<ISweepable>();
+        ISweepable sweepableObject = other.gameObject.GetComponent<ISweepable>();
         if (sweepableObject != null)
         {
             sweepableObject.OnSweep(direction.normalized, _sweepForce);
         }
+        
     }
 
 
