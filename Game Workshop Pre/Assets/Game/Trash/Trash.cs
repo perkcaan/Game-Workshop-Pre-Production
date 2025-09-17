@@ -16,10 +16,10 @@ public abstract class Trash : MonoBehaviour, ISweepable, ISwipeable
 
     [Header("Trash")]
     [SerializeField] private float _size = 1f;
-    public virtual float Size
+    public float Size
     {
         get { return _size; }
-        protected set
+        set
         {
             _size = value;
             OnSizeChanged();
@@ -36,10 +36,13 @@ public abstract class Trash : MonoBehaviour, ISweepable, ISwipeable
         TrashId = _nextId++;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        Trash otherTrash = collision.gameObject.GetComponent<Trash>();
+        Trash otherTrash = other.gameObject.GetComponent<Trash>();
         if (otherTrash == null) return;
+
+        // can only merge trash of the same type
+        if (otherTrash.GetType() != this.GetType()) return;
 
         // Priority- only one of the colliders can run OnTrashMerge
         // first check forced merge priority
@@ -54,7 +57,7 @@ public abstract class Trash : MonoBehaviour, ISweepable, ISwipeable
 
         // since they have equal priority- check speed
         float speed = _rigidBody.velocity.sqrMagnitude;
-        float otherSpeed = collision.rigidbody.velocity.sqrMagnitude;
+        float otherSpeed = otherTrash.GetComponent<Rigidbody2D>().velocity.sqrMagnitude;
 
         if (speed > otherSpeed)
         {
@@ -73,7 +76,18 @@ public abstract class Trash : MonoBehaviour, ISweepable, ISwipeable
 
     }
 
+    // Override to do something when size changes
+    protected virtual void OnSizeChanged() { }
 
+    // Trash merging
+    protected virtual void OnTrashMerge(Trash otherTrash)
+    {
+        Size += otherTrash.Size;
+        Destroy(otherTrash.gameObject);
+    }
+
+
+    // These interfaces can be overriden in a Child class if we want trash that acts differently
     // ISweepable
     public virtual void OnSweep(Vector2 direction, float force)
     {
@@ -86,14 +100,4 @@ public abstract class Trash : MonoBehaviour, ISweepable, ISwipeable
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
-    // Override to do something when size changes
-    protected virtual void OnSizeChanged() { }
-
-    // Trash merging
-    protected virtual void OnTrashMerge(Trash otherTrash)
-    {
-        Size += otherTrash.Size;
-        Destroy(otherTrash.gameObject);
-    }
-    
 }

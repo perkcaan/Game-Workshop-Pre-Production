@@ -20,4 +20,16 @@ public class TrashBall : Trash
         transform.localScale = Vector3.one * newSize;
     }
 
+    // collision
+    protected override void OnTriggerEnter2D(Collider2D other)
+    {
+        base.OnTriggerEnter2D(other);
+
+        IAbsorbable absorbableObject = other.gameObject.GetComponent<IAbsorbable>();
+        if (absorbableObject != null)
+        {
+            absorbableObject.OnAbsorbedByTrashBall(this);
+        }
+    }
+
 }

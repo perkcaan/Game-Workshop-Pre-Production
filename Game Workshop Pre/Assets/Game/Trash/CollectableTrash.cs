@@ -1,6 +1,7 @@
+using System.Collections;
 using UnityEngine;
 
-public class CollectableTrash : Trash
+public class CollectableTrash : Trash, IAbsorbable
 {
     [SerializeField] private GameObject _trashBallPrefab;
 
@@ -14,9 +15,16 @@ public class CollectableTrash : Trash
         {
             Debug.LogWarning("TrashBall prefab prepared incorrectly");
             Destroy(trashBallObject);
-            return;    
+            return;
         }
         trashBall.Initialize(Size, _rigidBody.velocity);
         Destroy(gameObject);
     }
+
+    public void OnAbsorbedByTrashBall(TrashBall trashBall)
+    {
+        trashBall.Size += Size;
+        Destroy(gameObject);
+    }
+
 }
