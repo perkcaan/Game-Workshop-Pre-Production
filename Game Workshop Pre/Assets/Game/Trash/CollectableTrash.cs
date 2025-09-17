@@ -1,33 +1,30 @@
 using System.Collections;
 using UnityEngine;
 
-public class CollectableTrash : PushableObject
+public class CollectableTrash : Trash, IAbsorbable
 {
-    public TrashBall trashBallPrefab;
+    [SerializeField] private GameObject _trashBallPrefab;
 
-    private void OnTriggerEnter2D(Collider2D other)
+    protected override void OnTrashMerge(Trash otherTrash)
     {
-        if (other.gameObject.TryGetComponent(out CollectableTrash trash))
+        base.OnTrashMerge(otherTrash);
+        GameObject trashBallObject = Instantiate(_trashBallPrefab);
+        trashBallObject.transform.position = transform.position;
+        TrashBall trashBall = trashBallObject.GetComponent<TrashBall>();
+        if (trashBall == null)
         {
-            if (rb.velocity.magnitude < trash.rb.velocity.magnitude)
-            {
-                CreateMergedTrashBall(trash);
-            }
+            Debug.LogWarning("TrashBall prefab prepared incorrectly");
+            Destroy(trashBallObject);
+            return;
         }
-    }
-    private void CreateMergedTrashBall(CollectableTrash otherTrash)
-    {
-        // Instantiate the trash ball
-        TrashBall newTrashBall = Instantiate(trashBallPrefab);
-        newTrashBall.transform.position = otherTrash.transform.position;
-        newTrashBall.weight = weight + otherTrash.weight;
-        newTrashBall.rb.velocity = rb.velocity + otherTrash.rb.velocity;
-        newTrashBall.consumedTrash.Add(this);
-        newTrashBall.consumedTrash.Add(otherTrash);
-        newTrashBall.SetSize();
-
-        // Destroy the collectableTrash
-        Destroy(otherTrash.gameObject);
+        trashBall.Initialize(Size, _rigidBody.velocity);
         Destroy(gameObject);
     }
+
+    public void OnAbsorbedByTrashBall(TrashBall trashBall)
+    {
+        trashBall.Size += Size;
+        Destroy(gameObject);
+    }
+
 }

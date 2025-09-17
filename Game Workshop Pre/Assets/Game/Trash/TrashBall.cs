@@ -1,39 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class TrashBall : PushableObject
+public class TrashBall : Trash
 {
-    [SerializeField] float scaleMultiplier;
-    public List<CollectableTrash> consumedTrash = new List<CollectableTrash>();
-    
-    private void OnTriggerEnter2D(Collider2D other)
+    [SerializeField] float _scaleMultiplier;
+
+    protected override bool MergePriority { get { return true; } }
+
+    public void Initialize(float size, Vector2 velocity)
     {
-        if (other.gameObject.TryGetComponent(out CollectableTrash trash))
+        Size = size;
+        _rigidBody.velocity = velocity;
+    }
+
+    protected override void OnSizeChanged()
+    {
+        float newSize = _scaleMultiplier * Mathf.Sqrt(Size);
+        transform.localScale = Vector3.one * newSize;
+    }
+
+    // collision
+    protected override void OnTriggerEnter2D(Collider2D other)
+    {
+        base.OnTriggerEnter2D(other);
+
+        IAbsorbable absorbableObject = other.gameObject.GetComponent<IAbsorbable>();
+        if (absorbableObject != null)
         {
-            consumedTrash.Add(trash);
-            weight += trash.weight;
-            SetSize();
-            Destroy(trash.gameObject);
-            return;
-        }
-        if (other.gameObject.TryGetComponent(out TrashBall trashBall))
-        {
-            if (rb.velocity.magnitude > trashBall.rb.velocity.magnitude)
-            {
-                consumedTrash.AddRange(trashBall.consumedTrash);
-                weight += trashBall.weight;
-                SetSize();
-                Destroy(trashBall.gameObject);
-            }
-            return;
+            absorbableObject.OnAbsorbedByTrashBall(this);
         }
     }
 
-    public void SetSize()
-    {
-        float newSize = scaleMultiplier * Mathf.Sqrt(weight);
-        transform.localScale = Vector3.one * newSize;
-    }
 }
