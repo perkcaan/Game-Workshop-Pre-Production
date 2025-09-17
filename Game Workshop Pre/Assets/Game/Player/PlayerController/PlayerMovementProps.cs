@@ -14,6 +14,8 @@ public class PlayerMovementProps
 
     [Header("Base Movement")]
     [SerializeField] private float _baseMaxWalkSpeed;
+
+    public float _footstepCooldown;
     public float BaseMaxWalkSpeed { get { return _baseMaxWalkSpeed; } }
     [SerializeField] private float _baseAcceleration;
     public float BaseAcceleration { get { return _baseAcceleration; } }

@@ -137,6 +137,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     // master movement handler using variables modified by state.
     private void UpdateMovement()
     {
+        PlayerMovementProps p = _movementProps;
         if (!_ctx.PlayerHasControl)
         {
             _ctx.Animator.SetFloat("Speed", _ctx.Rigidbody.velocity.magnitude);
@@ -151,6 +152,19 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         _ctx.Animator.SetFloat("Speed", _ctx.MoveSpeed);
         _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
 
+
+        p._footstepCooldown -= Time.deltaTime;
+
+        if (_ctx.MoveSpeed > 0.1f && p._footstepCooldown <= 0f)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step",transform.position);
+            p._footstepCooldown = 0.3f;
+
+            if(_ctx.MoveSpeed > _ctx.MaxWalkSpeed)
+            {
+                p._footstepCooldown = 0.15f;
+            }
+        }
     }
 
 
