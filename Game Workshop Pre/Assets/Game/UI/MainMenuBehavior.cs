@@ -13,27 +13,43 @@ public class MainMenuBehavior : MonoBehaviour
     [SerializeField] Button settingsButton;
     [SerializeField] Button creditsButton;
     [SerializeField] Button exitButton;
+    [SerializeField] GameObject settingsMenu;
 
-
+    private bool settingsMenuIsOpen;
 
     public void OnPlayButtonClicked()
     {
+        if (settingsMenuIsOpen)
+            return;
+
         Debug.Log("Play Clicked");
         SceneManager.LoadScene("GatesScene");
     }
 
     public void OnSettingsButtonClicked()
     {
-        Debug.Log("Settings Clicked");
+        if (settingsMenuIsOpen)
+            return;
+        else
+            settingsMenuIsOpen = true;
+
+            Debug.Log("Settings Clicked");
+        settingsMenu.SetActive(true);
     }
 
     public void OnCreditsButtonClicked()
     {
+        if (settingsMenuIsOpen)
+            return;
+
         Debug.Log("Credits Clicked");
     }
 
     public void OnExitButtonClicked()
     {
+        if (settingsMenuIsOpen)
+            return;
+
         Debug.Log("Exit Button Clicked");
         if (Application.isPlaying)
         {
@@ -46,5 +62,9 @@ public class MainMenuBehavior : MonoBehaviour
         }
     }
 
+    public void SettingsMenuClosed(bool isClosed)
+    {
+        settingsMenuIsOpen = isClosed;
+    }
 
 }
