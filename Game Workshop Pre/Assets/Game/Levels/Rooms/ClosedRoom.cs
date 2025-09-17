@@ -4,7 +4,34 @@ using UnityEngine;
 
 public class ClosedRoom : MonoBehaviour
 {
+    //   public ClosedRoom room = new ClosedRoom();
     public List<CollectableTrash> trashList;
+
+    private void OnEnable()
+    {
+        // Register with parent District (if exists)
+        var district = GetComponentInParent<District>();
+        if (district != null)
+        {
+            district.RegisterRoom(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        var district = GetComponentInParent<District>();
+        if (district != null)
+        {
+            district.UnregisterRoom(this);
+        }
+    }
+
+    void Awake()
+    {
+        // Collect all trash already inside the room hierarchy
+        trashList = new List<CollectableTrash>(GetComponentsInChildren<CollectableTrash>(true));
+    }
+
 
     void OnTriggerEnter2D(Collider2D collision)
     {
