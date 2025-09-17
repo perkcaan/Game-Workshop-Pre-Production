@@ -335,7 +335,6 @@ GameObject:
   - component: {fileID: 6053057984653239967}
   - component: {fileID: 6417547411781040880}
   - component: {fileID: 4826857485551569489}
-  - component: {fileID: 809926369401695248}
   - component: {fileID: 5170008795486251839}
   - component: {fileID: 7798754160137196653}
   - component: {fileID: 8569040654837417826}
@@ -499,41 +498,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
---- !u!58 &809926369401695248
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7819092179503157042}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.4
 --- !u!114 &5170008795486251839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -594,6 +558,7 @@ MonoBehaviour:
     _chargeAccelationModifier: 0.2
     _chargeRotationModifier: 8
     _chargeDeceleration: 3
+    _tumbleMaterial: {fileID: 6200000, guid: 3b7af493c3f54b34e99304d3d160a029, type: 2}
     _maxWalkSpeedReduction: 0.1
     _accelerationReduction: 0.5
     _rotationSpeedReduction: 0.8

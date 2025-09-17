@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class PlayerMovementController : MonoBehaviour
+public class PlayerMovementController : MonoBehaviour, ISwipeable
 {
 
     #region header
@@ -97,24 +97,24 @@ public class PlayerMovementController : MonoBehaviour
 
 
     //inputs
-    private void OnMove(InputValue value)
+    private void OnMoveInput(InputValue value)
     {
         _ctx.MovementInput = value.Get<Vector2>();
     }
 
-    private void OnMouseMove(InputValue value)
+    private void OnMouseMoveInput(InputValue value)
     {
         _ctx.MouseInput = value.Get<Vector2>();
     }
 
-    private void OnSweep(InputValue value)
+    private void OnSweepInput(InputValue value)
     {
         _ctx.IsSweepPressed = value.isPressed;
         if (!_ctx.IsSweepPressed) return;
 
     }
 
-    private void OnSwipe(InputValue value)
+    private void OnSwipeInput(InputValue value)
     {
         if (_ctx.CanSwipe && _ctx.SwipeCooldownTimer <= 0f)
         {
@@ -137,6 +137,12 @@ public class PlayerMovementController : MonoBehaviour
     // master movement handler using variables modified by state.
     private void UpdateMovement()
     {
+        if (!_ctx.PlayerHasControl)
+        {
+            _ctx.Animator.SetFloat("Speed", _ctx.Rigidbody.velocity.magnitude);
+            _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
+            return;
+        }
         Vector2 velocityDelta = _ctx.FrameVelocity - _ctx.Rigidbody.velocity;
         Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta * _movementProps.ForceMultiplier, _movementProps.MaxMovementForce);
         _ctx.Rigidbody.AddForce(clampedForce, ForceMode2D.Force);
@@ -167,4 +173,13 @@ public class PlayerMovementController : MonoBehaviour
 
         _weight = weight;
     }
+
+
+    // Swipe puts you into tumble state
+    public void OnSwipe(Vector2 direction, float force)
+    {
+        _state.ChangeState(PlayerStateEnum.Tumble);
+        _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
+    }
+
 }

@@ -28,7 +28,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""id"": ""d048dd87-e634-460b-aaf5-b82f2104ca65"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
+                    ""name"": ""MoveInput"",
                     ""type"": ""Value"",
                     ""id"": ""856f876a-597a-4982-bd71-f4a563828fef"",
                     ""expectedControlType"": ""Vector2"",
@@ -37,7 +37,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Sweep"",
+                    ""name"": ""SweepInput"",
                     ""type"": ""Button"",
                     ""id"": ""41fb8a5a-4716-4629-9523-0fe1dee844b5"",
                     ""expectedControlType"": ""Button"",
@@ -46,7 +46,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Swipe"",
+                    ""name"": ""SwipeInput"",
                     ""type"": ""Button"",
                     ""id"": ""b5141167-00af-4d55-b9ad-12f39ee89e2e"",
                     ""expectedControlType"": ""Button"",
@@ -55,7 +55,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""MouseMove"",
+                    ""name"": ""MouseMoveInput"",
                     ""type"": ""Value"",
                     ""id"": ""eab0adb6-caa3-4262-baec-b6137a4b5ccb"",
                     ""expectedControlType"": ""Vector2"",
@@ -72,7 +72,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveInput"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -83,7 +83,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -94,7 +94,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -105,7 +105,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -116,7 +116,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -127,7 +127,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Sweep"",
+                    ""action"": ""SweepInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -138,7 +138,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Sweep"",
+                    ""action"": ""SweepInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -149,7 +149,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Swipe"",
+                    ""action"": ""SwipeInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -160,7 +160,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Swipe"",
+                    ""action"": ""SwipeInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -171,7 +171,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MouseMove"",
+                    ""action"": ""MouseMoveInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -182,10 +182,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
 }");
         // Default
         m_Default = asset.FindActionMap("Default", throwIfNotFound: true);
-        m_Default_Move = m_Default.FindAction("Move", throwIfNotFound: true);
-        m_Default_Sweep = m_Default.FindAction("Sweep", throwIfNotFound: true);
-        m_Default_Swipe = m_Default.FindAction("Swipe", throwIfNotFound: true);
-        m_Default_MouseMove = m_Default.FindAction("MouseMove", throwIfNotFound: true);
+        m_Default_MoveInput = m_Default.FindAction("MoveInput", throwIfNotFound: true);
+        m_Default_SweepInput = m_Default.FindAction("SweepInput", throwIfNotFound: true);
+        m_Default_SwipeInput = m_Default.FindAction("SwipeInput", throwIfNotFound: true);
+        m_Default_MouseMoveInput = m_Default.FindAction("MouseMoveInput", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -247,18 +247,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // Default
     private readonly InputActionMap m_Default;
     private List<IDefaultActions> m_DefaultActionsCallbackInterfaces = new List<IDefaultActions>();
-    private readonly InputAction m_Default_Move;
-    private readonly InputAction m_Default_Sweep;
-    private readonly InputAction m_Default_Swipe;
-    private readonly InputAction m_Default_MouseMove;
+    private readonly InputAction m_Default_MoveInput;
+    private readonly InputAction m_Default_SweepInput;
+    private readonly InputAction m_Default_SwipeInput;
+    private readonly InputAction m_Default_MouseMoveInput;
     public struct DefaultActions
     {
         private @PlayerControls m_Wrapper;
         public DefaultActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Default_Move;
-        public InputAction @Sweep => m_Wrapper.m_Default_Sweep;
-        public InputAction @Swipe => m_Wrapper.m_Default_Swipe;
-        public InputAction @MouseMove => m_Wrapper.m_Default_MouseMove;
+        public InputAction @MoveInput => m_Wrapper.m_Default_MoveInput;
+        public InputAction @SweepInput => m_Wrapper.m_Default_SweepInput;
+        public InputAction @SwipeInput => m_Wrapper.m_Default_SwipeInput;
+        public InputAction @MouseMoveInput => m_Wrapper.m_Default_MouseMoveInput;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -268,34 +268,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_DefaultActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_DefaultActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
-            @Sweep.started += instance.OnSweep;
-            @Sweep.performed += instance.OnSweep;
-            @Sweep.canceled += instance.OnSweep;
-            @Swipe.started += instance.OnSwipe;
-            @Swipe.performed += instance.OnSwipe;
-            @Swipe.canceled += instance.OnSwipe;
-            @MouseMove.started += instance.OnMouseMove;
-            @MouseMove.performed += instance.OnMouseMove;
-            @MouseMove.canceled += instance.OnMouseMove;
+            @MoveInput.started += instance.OnMoveInput;
+            @MoveInput.performed += instance.OnMoveInput;
+            @MoveInput.canceled += instance.OnMoveInput;
+            @SweepInput.started += instance.OnSweepInput;
+            @SweepInput.performed += instance.OnSweepInput;
+            @SweepInput.canceled += instance.OnSweepInput;
+            @SwipeInput.started += instance.OnSwipeInput;
+            @SwipeInput.performed += instance.OnSwipeInput;
+            @SwipeInput.canceled += instance.OnSwipeInput;
+            @MouseMoveInput.started += instance.OnMouseMoveInput;
+            @MouseMoveInput.performed += instance.OnMouseMoveInput;
+            @MouseMoveInput.canceled += instance.OnMouseMoveInput;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
         {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
-            @Sweep.started -= instance.OnSweep;
-            @Sweep.performed -= instance.OnSweep;
-            @Sweep.canceled -= instance.OnSweep;
-            @Swipe.started -= instance.OnSwipe;
-            @Swipe.performed -= instance.OnSwipe;
-            @Swipe.canceled -= instance.OnSwipe;
-            @MouseMove.started -= instance.OnMouseMove;
-            @MouseMove.performed -= instance.OnMouseMove;
-            @MouseMove.canceled -= instance.OnMouseMove;
+            @MoveInput.started -= instance.OnMoveInput;
+            @MoveInput.performed -= instance.OnMoveInput;
+            @MoveInput.canceled -= instance.OnMoveInput;
+            @SweepInput.started -= instance.OnSweepInput;
+            @SweepInput.performed -= instance.OnSweepInput;
+            @SweepInput.canceled -= instance.OnSweepInput;
+            @SwipeInput.started -= instance.OnSwipeInput;
+            @SwipeInput.performed -= instance.OnSwipeInput;
+            @SwipeInput.canceled -= instance.OnSwipeInput;
+            @MouseMoveInput.started -= instance.OnMouseMoveInput;
+            @MouseMoveInput.performed -= instance.OnMouseMoveInput;
+            @MouseMoveInput.canceled -= instance.OnMouseMoveInput;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -315,9 +315,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public DefaultActions @Default => new DefaultActions(this);
     public interface IDefaultActions
     {
-        void OnMove(InputAction.CallbackContext context);
-        void OnSweep(InputAction.CallbackContext context);
-        void OnSwipe(InputAction.CallbackContext context);
-        void OnMouseMove(InputAction.CallbackContext context);
+        void OnMoveInput(InputAction.CallbackContext context);
+        void OnSweepInput(InputAction.CallbackContext context);
+        void OnSwipeInput(InputAction.CallbackContext context);
+        void OnMouseMoveInput(InputAction.CallbackContext context);
     }
 }

@@ -52,7 +52,9 @@ public class PlayerMovementProps
     [SerializeField] private float _chargeDeceleration;
     public float ChargeDeceleration { get { return _chargeDeceleration; } }
 
-
+    [Header("Tumble")]
+    [SerializeField] private PhysicsMaterial2D _tumbleMaterial;
+    public PhysicsMaterial2D TumbleMaterial { get { return _tumbleMaterial; } }
 
     [Header("Weighted Movement")]
     [SerializeField] private float _maxWalkSpeedReduction;
