@@ -19823,7 +19823,7 @@ MonoBehaviour:
       Data2: 1207415162
       Data3: -1113645673
       Data4: 476402738
-    Path: event:/LavaAmbience
+    Path: event:/LavaEnvironment
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
@@ -21242,6 +21242,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3166521548274898951, guid: f215eb5ebee2e524ea70a79026e49e6a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8504267392779665724, guid: f215eb5ebee2e524ea70a79026e49e6a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.6632042
@@ -21285,6 +21289,10 @@ PrefabInstance:
     - target: {fileID: 8827480705013272739, guid: f215eb5ebee2e524ea70a79026e49e6a, type: 3}
       propertyPath: m_Name
       value: Trashman
+      objectReference: {fileID: 0}
+    - target: {fileID: 8827480705013272739, guid: f215eb5ebee2e524ea70a79026e49e6a, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21410,6 +21418,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 570e8f98e65f62249a8e3e7bc9af4935, type: 3}
+--- !u!1 &1168204325 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7819092179503157042, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+  m_PrefabInstance: {fileID: 3753248377345405967}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1235807341
 GameObject:
   m_ObjectHideFlags: 0
@@ -25118,6 +25131,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9052523528139689855, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+      propertyPath: attenuationObject
+      value: 
+      objectReference: {fileID: 1168204325}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
