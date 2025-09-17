@@ -260,7 +260,7 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     // Trash absorb
     public void OnAbsorbedByTrashBall(TrashBall trashBall)
     {
-        trashBall.Size += 3;
+        //trashBall.Size += 3;
         Destroy(gameObject);
     }
 

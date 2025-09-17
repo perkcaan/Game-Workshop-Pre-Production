@@ -23,6 +23,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     //state
     public override void EnterState()
     {
+        _ctx.Animator.SetBool("Swiping", true);
         _ctx.CanSwipe = false;
         GetSwipeRotation();
         float swipeForce = _ctx.Player.SwipeForce + _ctx.MoveSpeed * _ctx.Player.SwipeMovementScaler;
@@ -40,6 +41,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     {
         _ctx.SwipeHandler.EndSwipe();
         _ctx.SwipeCooldownTimer = _ctx.Player.SwipeCooldown;
+        _ctx.Animator.SetBool("Swiping", false);
     }
 
 
