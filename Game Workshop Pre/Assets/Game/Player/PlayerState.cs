@@ -8,7 +8,7 @@ public class PlayerState : MonoBehaviour
     public UnityEvent<bool> enterRoom = new UnityEvent<bool>();
     public UnityEvent<bool> clean = new UnityEvent<bool>();
     public bool inBattle;
-    public GameObject room;
+    public ClosedRoom currentRoom;
     public GameObject trash;
 
     void Awake()
@@ -16,8 +16,6 @@ public class PlayerState : MonoBehaviour
         if (Instance != null) Destroy(gameObject);
         Instance = this;
         inBattle = false;
-
-
     }
 
     public void EnterRoom()
@@ -34,21 +32,25 @@ public class PlayerState : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Room"))
+        if (collision.TryGetComponent(out ClosedRoom room))
         {
-            room = collision.gameObject;
-            Debug.Log(room.name);
-            enterRoom.Invoke(true);
+            if (room.trashList.Count > 0)
+            {
+                currentRoom = room;
+                enterRoom.Invoke(true);
+            }
         }
     }
 
     public void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Room"))
+        if (collision.TryGetComponent(out ClosedRoom room))
         {
-            Debug.Log("Player left: " + collision.gameObject.name);
-            enterRoom.Invoke(false); // notify that player exited
-            room = null;
+            if (room.trashList.Count == 0)
+            {
+                currentRoom = null;
+                enterRoom.Invoke(false);
+            }
         }
     }
 

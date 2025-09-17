@@ -6,9 +6,8 @@ using TMPro;
 
 public class Cleanliness : MonoBehaviour
 {
-    public GameObject room;
+    public ClosedRoom currentPlayerRoom;
     public GameObject trash;
-    private ClosedRoom currentRoom;
     private CollectableTrash currentTrash;
     private List<CollectableTrash> trashList; // get trash list from room script
     public float trashCollected;
@@ -59,7 +58,6 @@ public class Cleanliness : MonoBehaviour
 
     private void OnPlayerEnterRoom(bool entered)
     {
-
         if (entered)
         {
             //Show HUD
@@ -67,34 +65,22 @@ public class Cleanliness : MonoBehaviour
             cleanBar.gameObject.SetActive(true);
 
             //Get room and set values
-            room = PlayerState.Instance.room;
-            Debug.Log("Player entered " + room.name);
-
+            currentPlayerRoom = PlayerState.Instance.currentRoom;
             percentClean = 0;
             cleanBar.SetClean(percentClean);
             cleanText.text = percentClean + "% clean";
 
             //Get room trash values from ClosedRoom script
-            currentRoom = PlayerState.Instance.room.GetComponent<ClosedRoom>();
-            trashList = currentRoom.trashList;
+            trashList = currentPlayerRoom.trashList;
             trashTotal = trashList.Count;
             trashCollected = 0;
 
-
             UpdateCleanText();
         }
-
-        else
+        else // if player leaves room
         {
-            //null check #whatever
-            if (room != null)
-            {
-                Debug.Log("Player exited " + room.name);
-
-                //Disable HUD in hallways
-                cleanBar.gameObject.SetActive(false);
-                cleanText.enabled = false;
-            }
+            cleanBar.gameObject.SetActive(false);
+            cleanText.enabled = false;
         }
     }
 
@@ -104,7 +90,6 @@ public class Cleanliness : MonoBehaviour
     {
         if (cleaned)
         {
-
             //Get weight values from CollectableTrash script
             trash = PlayerState.Instance.trash;
             currentTrash = PlayerState.Instance.trash.GetComponent<CollectableTrash>();

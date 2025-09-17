@@ -22,7 +22,6 @@ public class District : MonoBehaviour
 
     void Start()
     {
-
         districtCleanBar.SetClean(0);
         districtCleanText.text = "District 0% clean";
         collectedWeight = 0;
