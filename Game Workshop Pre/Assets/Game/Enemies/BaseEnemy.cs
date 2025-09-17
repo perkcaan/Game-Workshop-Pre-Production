@@ -6,7 +6,7 @@ using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.UI.Image;
 
-public class BaseEnemy : MonoBehaviour
+public class BaseEnemy : MonoBehaviour, IAbsorbable
 {
 
    
@@ -104,7 +104,7 @@ public class BaseEnemy : MonoBehaviour
         }
         else if (seeksPlayer && patrol)
         {
-            Debug.Log("Fixed and Search");
+            //Debug.Log("Fixed and Search");
             SeekAndFixedMovement();
         }
 
@@ -119,7 +119,7 @@ public class BaseEnemy : MonoBehaviour
     {
         if (leftright)
         {
-            Debug.Log("Moving Left and Right");
+            //Debug.Log("Moving Left and Right");
             // Move left and right
             rb.velocity = new Vector2(direction * movementSpeed, 0);
         }
@@ -156,7 +156,7 @@ public class BaseEnemy : MonoBehaviour
         }
         else if (!followingPlayer)
         {
-            Debug.Log("Fixed Active");
+            //Debug.Log("Fixed Active");
             FixedMovement();
         }
     }
@@ -190,14 +190,14 @@ public class BaseEnemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         followingPlayer = true;
-        Debug.Log(followingPlayer);
+        //Debug.Log(followingPlayer);
         playerTransform = collision.transform;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         followingPlayer = false;
-        Debug.Log(followingPlayer);
+        //Debug.Log(followingPlayer);
         playerTransform = null;
 
     }
@@ -236,7 +236,7 @@ public class BaseEnemy : MonoBehaviour
             // If no trash detected nearby, spawn one
             if (!trashDetected)
             {
-                Debug.Log("Spawn");
+                //Debug.Log("Spawn");
                 int randomType = Random.Range(0, trash.Length);
                 Instantiate(trash[randomType], transform.position, Quaternion.identity);
             }
@@ -256,6 +256,14 @@ public class BaseEnemy : MonoBehaviour
         }
 
     }
+
+    // Trash absorb
+    public void OnAbsorbedByTrashBall(TrashBall trashBall)
+    {
+        trashBall.Size += 3;
+        Destroy(gameObject);
+    }
+
 
     #endregion
 }

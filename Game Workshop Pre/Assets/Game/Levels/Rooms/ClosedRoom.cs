@@ -10,11 +10,13 @@ public class ClosedRoom : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out CollectableTrash trash))
         {
+            Debug.Log("Populate: " + trashList.Count);
             trashList.Add(trash);
         }
 
         if (collision.gameObject.TryGetComponent(out PlayerMovementController player))
         {
+            Debug.Log("Heyyyyy");
             if (trashList.Count > 0)
             {
                 PlayerState.Instance.EnterRoom();
