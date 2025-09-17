@@ -39,7 +39,8 @@ public class MainMenuBehavior : MonoBehaviour
         {
             Application.Quit();
         }
-        else if (EditorApplication.isPlaying)
+
+        if (EditorApplication.isPlaying)
         {
             EditorApplication.isPlaying = false;
         }
