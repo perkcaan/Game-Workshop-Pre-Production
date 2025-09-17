@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ClosedRoom : MonoBehaviour
 {
-    //   public ClosedRoom room = new ClosedRoom();
     public List<CollectableTrash> trashList;
 
     private void OnEnable()
@@ -29,7 +28,7 @@ public class ClosedRoom : MonoBehaviour
     void Awake()
     {
         // Collect all trash already inside the room hierarchy
-        trashList = new List<CollectableTrash>(GetComponentsInChildren<CollectableTrash>(true));
+        //trashList = new List<CollectableTrash>(GetComponentsInChildren<CollectableTrash>(true));
     }
 
 
@@ -44,7 +43,7 @@ public class ClosedRoom : MonoBehaviour
         {
             if (trashList.Count > 0)
             {
-                PlayerState.Instance.EnterRoom();
+                PlayerState.Instance.EnterRoom(this);
             }
         }
     }

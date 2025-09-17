@@ -18,20 +18,23 @@ public class PlayerState : MonoBehaviour
         inBattle = false;
     }
 
-    public void EnterRoom()
+    public void EnterRoom(ClosedRoom enteredRoom)
     {
+        currentRoom = enteredRoom;
         inBattle = true;
         enterRoom.Invoke(true);
     }
 
     public void ExitRoom()
     {
+        currentRoom = null;
         inBattle = false;
         enterRoom.Invoke(false);
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        /*
         if (collision.TryGetComponent(out ClosedRoom room))
         {
             if (room.trashList.Count > 0)
@@ -40,10 +43,12 @@ public class PlayerState : MonoBehaviour
                 enterRoom.Invoke(true);
             }
         }
+        */
     }
 
     public void OnTriggerExit2D(Collider2D collision)
     {
+        /*
         if (collision.TryGetComponent(out ClosedRoom room))
         {
             if (room.trashList.Count == 0)
@@ -52,15 +57,18 @@ public class PlayerState : MonoBehaviour
                 enterRoom.Invoke(false);
             }
         }
+        */
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
+        /*
         if (collision.gameObject.CompareTag("Trash"))
         {
             trash = collision.gameObject;
             clean.Invoke(true);
         }
+        */
     }
 
 }

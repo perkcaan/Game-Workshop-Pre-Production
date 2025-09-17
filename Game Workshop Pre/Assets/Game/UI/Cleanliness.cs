@@ -16,7 +16,6 @@ public class Cleanliness : MonoBehaviour
 
     public District district;
     public List<CollectableTrash> allTrash;
-    public float totalTrashWeight = 0;
 
     public CleanBar cleanBar;
     public TMP_Text cleanText;
@@ -33,8 +32,7 @@ public class Cleanliness : MonoBehaviour
 
         district.RefreshTrash();
         allTrash = district.GetAllTrash();
-        totalTrashWeight = district.totalTrashWeight;
-        Debug.Log("Total trash weight in district: " + totalTrashWeight);
+        Debug.Log("Total trash in district: " + allTrash.Count);
 
     }
 
@@ -93,14 +91,12 @@ public class Cleanliness : MonoBehaviour
             //Get weight values from CollectableTrash script
             trash = PlayerState.Instance.trash;
             currentTrash = PlayerState.Instance.trash.GetComponent<CollectableTrash>();
-            trashCollected += currentTrash.weight;
+            //trashCollected += currentTrash;
 
             // notify district
             FindObjectOfType<District>()
                 .OnPlayerCleanDistrict(currentTrash);
 
-
-            Debug.Log(currentTrash.weight);
             UpdateCleanText();
         }
     }
