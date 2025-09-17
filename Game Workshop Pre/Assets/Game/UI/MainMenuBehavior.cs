@@ -19,7 +19,7 @@ public class MainMenuBehavior : MonoBehaviour
     public void OnPlayButtonClicked()
     {
         Debug.Log("Play Clicked");
-        SceneManager.LoadScene("LoadingScreen");
+        SceneManager.LoadScene("GatesScene");
     }
 
     public void OnSettingsButtonClicked()
