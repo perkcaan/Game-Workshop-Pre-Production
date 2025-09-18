@@ -27,6 +27,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
         _ctx.CanSwipe = false;
         GetSwipeRotation();
         float swipeForce = _ctx.Player.SwipeForce + _ctx.MoveSpeed * _ctx.Player.SwipeMovementScaler;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe",_ctx.Player.transform.position);
         _ctx.SwipeHandler.DoSwipe(_ctx.Rotation, swipeForce);
         _ctx.Player.StartCoroutine(SwipeDuration());
     }

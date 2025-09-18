@@ -55,11 +55,12 @@ public class MainMenuBehavior : MonoBehaviour
         {
             Application.Quit();
         }
-
+        #if UNITY_EDITOR
         if (EditorApplication.isPlaying)
         {
             EditorApplication.isPlaying = false;
         }
+        #endif
     }
 
     public void SettingsMenuClosed(bool isClosed)
