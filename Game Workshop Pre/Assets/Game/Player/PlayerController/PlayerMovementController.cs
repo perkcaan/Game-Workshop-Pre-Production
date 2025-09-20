@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -12,6 +10,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     // Properties
     [SerializeField] private PlayerMovementProps _movementProps;
 
+
+    [Header("Mouse as Stick Properties")]
+    [SerializeField] private float _mouseStickSensitivity = 10f;
 
     [Header("Sweep Properties")]
     [SerializeField] private float _sweepForce = 5f;
@@ -40,18 +41,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         set { SetWeight(value); }
     }
 
+    private Vector2 _targetStickPos = Vector2.right.normalized;
+
     //context & state
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
 
-    //TODO: Temporary. Decouple Trash ball!
-    public float rotation
-    {
-        get { return _ctx.Rotation; }
-        set { _ctx.Rotation = value; }
-    }
-    public Vector2 currentVelocity { get; set; } = Vector2.zero; // This doesnt work. Just keeps things happy. Need to decouple.
-    //TODO: end of temporary
 
     #endregion
 
@@ -69,6 +64,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     private void Start()
     {
         SetWeight(_weight);
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
@@ -102,16 +98,26 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         _ctx.MovementInput = value.Get<Vector2>();
     }
 
-    private void OnMouseMoveInput(InputValue value)
-    {
-        _ctx.MouseInput = value.Get<Vector2>();
-    }
-
     private void OnSweepInput(InputValue value)
     {
         _ctx.IsSweepPressed = value.isPressed;
-        if (!_ctx.IsSweepPressed) return;
+        if (!_ctx.IsSweepPressed)
+        {
+            _targetStickPos = Vector2.zero;
+            return;
+        }
 
+    }
+
+    private void OnMouseDeltaInput(InputValue value)
+    {
+        Vector2 mouseDelta = value.Get<Vector2>();
+        if (mouseDelta != Vector2.zero)
+        {
+            _targetStickPos += mouseDelta;
+            _targetStickPos = _targetStickPos.normalized;
+        }
+        _ctx.StickInput = Vector2.Lerp(_ctx.StickInput, _targetStickPos, 1f - Mathf.Exp(-_mouseStickSensitivity * Time.deltaTime)).normalized;
     }
 
     private void OnSwipeInput(InputValue value)

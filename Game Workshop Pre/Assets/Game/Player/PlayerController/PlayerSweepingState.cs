@@ -97,12 +97,10 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
 
     private void HandleRotation()
     {
-        Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = mouseWorldPoint - (Vector2)_ctx.Player.transform.position;
-        direction.Normalize();
-        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        float targetAngle = Mathf.Atan2(_ctx.StickInput.y, _ctx.StickInput.x) * Mathf.Rad2Deg;
         // Rotate slower based on speed
-        float rotationSpeedReduction = Mathf.Max(_ctx.MoveSpeed / _ctx.MaxWalkSpeed, 1);
+        // Disabled. I think this feels bad. -Zachs
+        float rotationSpeedReduction = 1f;// Mathf.Max(_ctx.MoveSpeed / _ctx.MaxWalkSpeed, 1);
 
         float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.SweepRotationSpeed / rotationSpeedReduction * Time.deltaTime);
         _ctx.Rotation = Mathf.DeltaAngle(0f, newAngle);

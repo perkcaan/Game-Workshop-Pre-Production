@@ -62,6 +62,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseDeltaInput"",
+                    ""type"": ""Value"",
+                    ""id"": ""80df9cb6-de67-4daa-8513-7fd9f313c3d0"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""StickDeadzone(min=0.01,max=0.01)"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -174,6 +183,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""MouseMoveInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""860a2e37-c5fd-4650-8063-a08a51ba89dc"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseDeltaInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -186,6 +206,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Default_SweepInput = m_Default.FindAction("SweepInput", throwIfNotFound: true);
         m_Default_SwipeInput = m_Default.FindAction("SwipeInput", throwIfNotFound: true);
         m_Default_MouseMoveInput = m_Default.FindAction("MouseMoveInput", throwIfNotFound: true);
+        m_Default_MouseDeltaInput = m_Default.FindAction("MouseDeltaInput", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,6 +272,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_SweepInput;
     private readonly InputAction m_Default_SwipeInput;
     private readonly InputAction m_Default_MouseMoveInput;
+    private readonly InputAction m_Default_MouseDeltaInput;
     public struct DefaultActions
     {
         private @PlayerControls m_Wrapper;
@@ -259,6 +281,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @SweepInput => m_Wrapper.m_Default_SweepInput;
         public InputAction @SwipeInput => m_Wrapper.m_Default_SwipeInput;
         public InputAction @MouseMoveInput => m_Wrapper.m_Default_MouseMoveInput;
+        public InputAction @MouseDeltaInput => m_Wrapper.m_Default_MouseDeltaInput;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -280,6 +303,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseMoveInput.started += instance.OnMouseMoveInput;
             @MouseMoveInput.performed += instance.OnMouseMoveInput;
             @MouseMoveInput.canceled += instance.OnMouseMoveInput;
+            @MouseDeltaInput.started += instance.OnMouseDeltaInput;
+            @MouseDeltaInput.performed += instance.OnMouseDeltaInput;
+            @MouseDeltaInput.canceled += instance.OnMouseDeltaInput;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -296,6 +322,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseMoveInput.started -= instance.OnMouseMoveInput;
             @MouseMoveInput.performed -= instance.OnMouseMoveInput;
             @MouseMoveInput.canceled -= instance.OnMouseMoveInput;
+            @MouseDeltaInput.started -= instance.OnMouseDeltaInput;
+            @MouseDeltaInput.performed -= instance.OnMouseDeltaInput;
+            @MouseDeltaInput.canceled -= instance.OnMouseDeltaInput;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -319,5 +348,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSweepInput(InputAction.CallbackContext context);
         void OnSwipeInput(InputAction.CallbackContext context);
         void OnMouseMoveInput(InputAction.CallbackContext context);
+        void OnMouseDeltaInput(InputAction.CallbackContext context);
     }
 }

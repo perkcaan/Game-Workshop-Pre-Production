@@ -17,7 +17,7 @@ public class PlayerContext
     // Fields
     //input
     public Vector2 MovementInput { get; set; } = Vector2.zero;
-    public Vector2 MouseInput { get; set; } = Vector2.zero;
+    public Vector2 StickInput { get; set; } = Vector2.zero;
     public bool IsSweepPressed { get; set; } = false;
     public bool PlayerHasControl { get; set; } = true;
 

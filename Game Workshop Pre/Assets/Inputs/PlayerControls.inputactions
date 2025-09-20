@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "MouseDeltaInput",
+                    "type": "Value",
+                    "id": "80df9cb6-de67-4daa-8513-7fd9f313c3d0",
+                    "expectedControlType": "Vector2",
+                    "processors": "StickDeadzone(min=0.01,max=0.01)",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -150,6 +159,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "MouseMoveInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "860a2e37-c5fd-4650-8063-a08a51ba89dc",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseDeltaInput",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
