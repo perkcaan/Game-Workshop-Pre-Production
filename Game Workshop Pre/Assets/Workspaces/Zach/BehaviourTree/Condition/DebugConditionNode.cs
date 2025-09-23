@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-[CreateAssetMenu(menuName = "BehaviourTree/Condition/Debug")]
 public class DebugConditionNode : BehaviourTreeNode
 {
-    public override BTNodeState Evaluate(Blackboard blackboard)
+    [SerializeField] private float _nearbyRadius = 2f;
+
+    public override void CheckRequiredComponents(EnemyBase self)
     {
-        if (!blackboard.TryGet("target", out Vector2 target) || !blackboard.TryGet("nearbyRadius", out float nearbyRadius))
+        // No required components
+    }
+
+    protected override void Initialize()
+    {
+        // Nothing to initalize
+    }
+
+    public override BTNodeState Evaluate()
+    {
+        if (!Blackboard.TryGet("target", out Vector2 target) /*|| !blackboard.TryGet("nearbyRadius", out float nearbyRadius)*/)
         {
             return BTNodeState.Failure;
         }
 
-        return (Vector2.Distance(blackboard.btt.transform.position, target) <= nearbyRadius) ? BTNodeState.Success : BTNodeState.Failure;
+        return (Vector2.Distance(Blackboard.Self.transform.position, target) <= _nearbyRadius) ? BTNodeState.Success : BTNodeState.Failure;
     }
 }

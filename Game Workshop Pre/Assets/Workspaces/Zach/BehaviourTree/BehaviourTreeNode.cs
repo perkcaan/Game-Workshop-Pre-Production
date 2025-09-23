@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum BTNodeState { Running, Success, Failure }
@@ -13,9 +14,22 @@ public enum BTNodeState { Running, Success, Failure }
 // Condition nodes evaluate true based on some condition
 // Action nodes perform an action
 
-// If this is confusing to you at all, I will explain it
+// If this is confusing you at all, I will explain it
 //-Zach
-public abstract class BehaviourTreeNode : ScriptableObject
+[Serializable]
+public abstract class BehaviourTreeNode
 {
-    public abstract BTNodeState Evaluate(Blackboard blackboard);
+    // Call Blackboard to get a reference to the enemy blackboard in child objects
+    private EnemyBlackboard _blackboard;
+    protected EnemyBlackboard Blackboard { get { return _blackboard; } }
+
+    public abstract void CheckRequiredComponents(EnemyBase self);
+    protected abstract void Initialize();
+    public abstract BTNodeState Evaluate();
+
+    public void Initialize(EnemyBlackboard blackboard)
+    {
+        _blackboard = blackboard;
+        Initialize();
+    }
 }

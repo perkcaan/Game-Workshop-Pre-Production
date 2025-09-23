@@ -2,12 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "BehaviourTree/Action/Debug")]
 public class DebugActionNode : BehaviourTreeNode
 {
-    public override BTNodeState Evaluate(Blackboard blackboard)
+
+    // Example test for requiring a component
+    public override void CheckRequiredComponents(EnemyBase self)
     {
-        if (blackboard.TryGet("name", out string name))
+        if (!self.TryGetComponent<CircleCollider2D>(out CircleCollider2D component))
+        {
+            Debug.LogWarning("CircleCollider2D component is required to use DebugActionNode. Please add it and set it up properly.");
+        }
+    }
+
+    protected override void Initialize()
+    {
+        // Nothing to initalize
+    }
+
+    public override BTNodeState Evaluate()
+    {
+        if (Blackboard.TryGet("name", out string name))
         {
             Debug.Log("Name: " + name);
         }
