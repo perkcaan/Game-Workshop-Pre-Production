@@ -4,11 +4,36 @@ using UnityEngine;
 
 public class ClosedRoom : MonoBehaviour
 {
-    public List<CollectableTrash> trashList;
+    public List<Trash> trashList;
+
+    private void OnEnable()
+    {
+        var district = GetComponentInParent<District>();
+        if (district != null)
+        {
+            district.RegisterRoom(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        var district = GetComponentInParent<District>();
+        if (district != null)
+        {
+            district.UnregisterRoom(this);
+        }
+    }
+
+    void Awake()
+    {
+        // Collect all trash already inside the room hierarchy
+        //trashList = new List<CollectableTrash>(GetComponentsInChildren<CollectableTrash>(true));
+    }
+
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out CollectableTrash trash))
+        if (collision.gameObject.TryGetComponent(out Trash trash))
         {
             trashList.Add(trash);
         }
@@ -17,20 +42,16 @@ public class ClosedRoom : MonoBehaviour
         {
             if (trashList.Count > 0)
             {
-                PlayerState.Instance.EnterRoom();
+                PlayerState.Instance.EnterRoom(this);
             }
         }
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out CollectableTrash trash))
+        if (collision.gameObject.TryGetComponent(out Trash trash))
         {
             trashList.Remove(trash);
-            if (trashList.Count <= 0)
-            {
-                PlayerState.Instance.ExitRoom();
-            }
         }
     }
 }
