@@ -6,7 +6,6 @@ public class ItemRadius : MonoBehaviour
 {
     private Item parentItem;
 
-
     private void Start()
     {
         parentItem = GetComponentInParent<Item>();

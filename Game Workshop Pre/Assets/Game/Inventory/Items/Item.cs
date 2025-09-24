@@ -7,15 +7,13 @@ public abstract class Item : MonoBehaviour
 {
     [Header("Name and Icon")]
 
-    public string name;
+    public string itemName; // Item name
 
-    public Sprite Icon;
+    public Sprite Icon; // Icon is played in Inventory UI
 
     [SerializeField] private GameObject itemRadius;
 
-    public TextMeshProUGUI itemDescUI;
-
-    [SerializeField] private Inventory Inventory_Ref;
+    [SerializeField] protected Inventory Inventory_Ref; // References Inventory singleton
 
 
 }

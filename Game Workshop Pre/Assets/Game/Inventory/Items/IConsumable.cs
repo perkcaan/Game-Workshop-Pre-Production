@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface IConsumable
 {
-    void Use();
+    void Use(); // Customizable function to determine Item's abilities
+
+    void Equip(); // Equips Item to the Inventory
 }

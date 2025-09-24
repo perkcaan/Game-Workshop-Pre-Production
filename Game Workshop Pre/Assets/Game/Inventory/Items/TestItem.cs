@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class TestItem : Item, IConsumable
 {
-    // Start is called before the first frame update
+
     void Start()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        Inventory_Ref = FindObjectOfType<Inventory>();
     }
 
     public void Use()
     {
         Debug.Log("Test Item Used");
+    }
+
+    public void Equip()
+    {
+        Inventory_Ref.AddItem(this);
     }
         
 

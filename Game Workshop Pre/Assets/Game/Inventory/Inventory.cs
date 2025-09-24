@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,15 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
 
+    // **** Script must be modified to account for UI
+
     private static Inventory Inventory_Instance; // One instance of Inventory
 
-    public Item[] ItemSlots = new Item[4]; // Slots for possessed items. The first is reserved for Mops
+    public Item[] ItemSlots = new Item[4]; // Slots for possessed items. Slot 0 is reserved for Mops
 
-    public int selected_slot;
+    public int selectedSlot; // Points to the Item Slot the player wants to modify
 
-    // * Put ref to UI Inventory Icons
+    // ** Put ref to Inventory UI Icons
 
     private void Awake()
     {
@@ -20,7 +23,6 @@ public class Inventory : MonoBehaviour
         {
                 
             Destroy(gameObject); // Prevent duplicates
-                
             return;
             
         }
@@ -35,28 +37,42 @@ public class Inventory : MonoBehaviour
         {
             ItemSlots[0] = null;
         }
+
+        // ** Maintain Item Icons
     }
 
     public void AddItem(Item item)
     {
-        if (item.tag != "Mop")
+
+        // If the item is not a Mop, assign it to selected slot so long as it's not 0
+        if (item.tag != "Mop" && selectedSlot != 0)
         {
-            if (ItemSlots[selected_slot] != null)
-            {
-                RemoveItem(ItemSlots[selected_slot]);
-            }
-            ItemSlots[selected_slot] = item;
-            RemoveItem(ItemSlots[selected_slot]);
+            RemoveItem(selectedSlot);
+            ItemSlots[selectedSlot] = item;
         }
-        else
+        // If the item is not a Mop and the selected slot is 0, issue a warning
+        else if (item.tag != "Mop" && selectedSlot == 0)
         {
-            RemoveItem(ItemSlots[0]);
+            // ** Issue warning noise. Non-Mop cannot be equipped in Mop slot
+        }
+        // If the item is a Mop, no matter the slot, assign it to 0
+        else if (item.tag == "Mop")
+        {
+            RemoveItem(0);
             ItemSlots[0] = item;
         }
     }
 
-    public void RemoveItem(Item item)
+    public void RemoveItem(int slotNum) // Removes Item from slot if it exists, and instantiates it on the ground
     {
-        // Instantiate the removed item on the ground
+
+        // ** Instantiate the removed Item on the ground
+
+        // Remove what was within the Item Slot
+        if (ItemSlots[slotNum] != null)
+        {
+            ItemSlots[slotNum] = null;
+        }
+        
     }
 }
