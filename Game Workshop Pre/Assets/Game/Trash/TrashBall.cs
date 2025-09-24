@@ -7,7 +7,39 @@ public class TrashBall : PushableObject
 {
     [SerializeField] float scaleMultiplier;
     public List<CollectableTrash> consumedTrash = new List<CollectableTrash>();
-    
+    Animator animator;
+    Vector2 lastMove;   //to remember direction
+
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
+    void Update()
+    {
+        Vector2 dir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+        if (dir.sqrMagnitude > 0.01f) //moving
+        {
+            //send direction to animator
+            dir.Normalize();
+            
+            animator.SetFloat("moveX", dir.x);
+            animator.SetFloat("moveY", dir.x);
+            animator.SetBool("isMoving", true);
+
+            //remember facing direction
+            lastMove = dir;
+        }
+        else
+        {
+            //some idle animation in last direction
+            animator.SetFloat("moveX", lastMove.x);
+            animator.SetFloat("moveY", lastMove.y);
+            animator.SetBool("isMoving", false);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent(out CollectableTrash trash))
