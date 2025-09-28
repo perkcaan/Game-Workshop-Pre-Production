@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.02.02.00">
+<objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{c623609f-3f55-46ec-af9c-26b2dc1f000e}">
 		<property name="name">
 			<value>SlimeySwipe</value>
@@ -84,9 +84,9 @@
 	</object>
 	<object class="Timeline" id="{afd0cba3-c321-4fc4-aaee-db7457062d95}">
 		<relationship name="modules">
+			<destination>{ef8dba38-6bda-4155-9d67-6c348e5f3fb6}</destination>
 			<destination>{5f03e461-e0be-4e99-b27c-4c5e0a78e756}</destination>
 			<destination>{f4873b7c-29af-4608-972f-bc9c15fb2dd5}</destination>
-			<destination>{ef8dba38-6bda-4155-9d67-6c348e5f3fb6}</destination>
 			<destination>{1bee52a2-88c2-4251-b813-dbb130db9a5e}</destination>
 		</relationship>
 	</object>

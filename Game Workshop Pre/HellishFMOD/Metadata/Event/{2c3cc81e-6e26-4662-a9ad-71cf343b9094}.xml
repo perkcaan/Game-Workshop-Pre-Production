@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.02.02.00">
+<objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{2c3cc81e-6e26-4662-a9ad-71cf343b9094}">
 		<property name="name">
 			<value>Walk</value>
@@ -81,13 +81,13 @@
 			<destination>{815d04bc-8700-47c5-8b73-de3344683b20}</destination>
 		</relationship>
 		<relationship name="markers">
-			<destination>{a3acff34-153b-4b33-adbe-dcdc99406f7a}</destination>
 			<destination>{7deb1c7a-f917-4c9f-80f4-d12a385c9232}</destination>
-			<destination>{22fbf424-9d02-486b-8d99-474a191ef3dc}</destination>
-			<destination>{f75629b2-ec45-43da-997f-53b98c71589d}</destination>
-			<destination>{73b87b14-051b-46d3-b12f-b721d7ecc80e}</destination>
 			<destination>{e1f82c51-315f-4210-8961-5b417f266404}</destination>
+			<destination>{f75629b2-ec45-43da-997f-53b98c71589d}</destination>
 			<destination>{d3ef612f-12bb-414b-a07c-c77f18b4f034}</destination>
+			<destination>{73b87b14-051b-46d3-b12f-b721d7ecc80e}</destination>
+			<destination>{a3acff34-153b-4b33-adbe-dcdc99406f7a}</destination>
+			<destination>{22fbf424-9d02-486b-8d99-474a191ef3dc}</destination>
 		</relationship>
 	</object>
 	<object class="ParameterProxy" id="{ca2fec2c-9ffb-473a-a8e8-f94c373a11dd}">
@@ -193,20 +193,6 @@
 			<destination>{c9c08f3f-3b2a-4f50-8f0b-81e942702dc6}</destination>
 		</relationship>
 	</object>
-	<object class="LoopRegion" id="{a3acff34-153b-4b33-adbe-dcdc99406f7a}">
-		<property name="position">
-			<value>0</value>
-		</property>
-		<property name="length">
-			<value>5</value>
-		</property>
-		<relationship name="timeline">
-			<destination>{419795e4-a870-4ba7-b108-739497a6fe13}</destination>
-		</relationship>
-		<relationship name="markerTrack">
-			<destination>{7207e00b-e62e-4b5e-87a4-e25e76048dcf}</destination>
-		</relationship>
-	</object>
 	<object class="TransitionRegion" id="{7deb1c7a-f917-4c9f-80f4-d12a385c9232}">
 		<property name="position">
 			<value>0</value>
@@ -230,18 +216,18 @@
 			<destination>{f88d42a0-615f-4402-84c5-21bb84772239}</destination>
 		</relationship>
 	</object>
-	<object class="NamedMarker" id="{22fbf424-9d02-486b-8d99-474a191ef3dc}">
+	<object class="LoopRegion" id="{e1f82c51-315f-4210-8961-5b417f266404}">
 		<property name="position">
-			<value>0</value>
+			<value>5</value>
 		</property>
-		<property name="name">
-			<value>Tile</value>
+		<property name="length">
+			<value>5</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{419795e4-a870-4ba7-b108-739497a6fe13}</destination>
 		</relationship>
 		<relationship name="markerTrack">
-			<destination>{708af817-14fa-466c-a9fc-3c87763d885f}</destination>
+			<destination>{7207e00b-e62e-4b5e-87a4-e25e76048dcf}</destination>
 		</relationship>
 	</object>
 	<object class="NamedMarker" id="{f75629b2-ec45-43da-997f-53b98c71589d}">
@@ -250,6 +236,20 @@
 		</property>
 		<property name="name">
 			<value>Grime</value>
+		</property>
+		<relationship name="timeline">
+			<destination>{419795e4-a870-4ba7-b108-739497a6fe13}</destination>
+		</relationship>
+		<relationship name="markerTrack">
+			<destination>{708af817-14fa-466c-a9fc-3c87763d885f}</destination>
+		</relationship>
+	</object>
+	<object class="NamedMarker" id="{d3ef612f-12bb-414b-a07c-c77f18b4f034}">
+		<property name="position">
+			<value>10</value>
+		</property>
+		<property name="name">
+			<value>Stop</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{419795e4-a870-4ba7-b108-739497a6fe13}</destination>
@@ -278,9 +278,9 @@
 			<destination>{d3ef612f-12bb-414b-a07c-c77f18b4f034}</destination>
 		</relationship>
 	</object>
-	<object class="LoopRegion" id="{e1f82c51-315f-4210-8961-5b417f266404}">
+	<object class="LoopRegion" id="{a3acff34-153b-4b33-adbe-dcdc99406f7a}">
 		<property name="position">
-			<value>5</value>
+			<value>0</value>
 		</property>
 		<property name="length">
 			<value>5</value>
@@ -292,12 +292,12 @@
 			<destination>{7207e00b-e62e-4b5e-87a4-e25e76048dcf}</destination>
 		</relationship>
 	</object>
-	<object class="NamedMarker" id="{d3ef612f-12bb-414b-a07c-c77f18b4f034}">
+	<object class="NamedMarker" id="{22fbf424-9d02-486b-8d99-474a191ef3dc}">
 		<property name="position">
-			<value>10</value>
+			<value>0</value>
 		</property>
 		<property name="name">
-			<value>Stop</value>
+			<value>Tile</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{419795e4-a870-4ba7-b108-739497a6fe13}</destination>
