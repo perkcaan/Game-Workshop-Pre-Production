@@ -68,7 +68,6 @@ public class PathBlocker : MonoBehaviour
             new Vector2(_margin, -_margin),
             new Vector2(_margin, _margin)
         };
-        if (_colliderToUse.isActiveAndEnabled) Debug.Log(gameObject.name + " is active");
         List<PathfindingNode> nodesToCheck = new List<PathfindingNode>();
         Bounds bounds = _colliderToUse.bounds;
         Grid grid = PathfindingManager.Instance.LayoutGrid;
@@ -94,7 +93,6 @@ public class PathBlocker : MonoBehaviour
                 {
                     if (_colliderToUse.OverlapPoint(node.WorldPos + offset))
                     {
-                        Debug.Log("Works with: " + offset);
                         nodes.Add(node);
                         break;
                     }
