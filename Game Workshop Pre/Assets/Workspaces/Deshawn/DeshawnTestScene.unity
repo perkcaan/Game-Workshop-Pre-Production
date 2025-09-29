@@ -19930,6 +19930,23 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 570e8f98e65f62249a8e3e7bc9af4935, type: 3}
+--- !u!1 &598390112 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2154542791780319770, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+  m_PrefabInstance: {fileID: 3753248377345405967}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &598390120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598390112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ef7dff6047cd31419cbd5788a7ba6a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &601774247
 GameObject:
   m_ObjectHideFlags: 0
@@ -25137,6 +25154,78 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: ShapeModule.type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: ShapeModule.m_Texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 348d2265b48c67342a4db2a7062813fa, type: 3}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: ShapeModule.m_Position.x
+      value: 1.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: ShapeModule.m_Rotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: InitialModule.gravitySource
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime0
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.b
+      value: 0.93725497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.g
+      value: 0.93725497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.r
+      value: 0.93725497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxGradient.key0.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxGradient.key0.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxGradient.key0.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1895518994669284976, guid: 050bd264047659248b45d79c0f51131f, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxGradient.m_ColorSpace
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7205629817809321813, guid: 050bd264047659248b45d79c0f51131f, type: 3}
       propertyPath: m_Name
       value: SwipeParticle
@@ -25210,13 +25299,17 @@ PrefabInstance:
       propertyPath: attenuationObject
       value: 
       objectReference: {fileID: 1168204325}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7292192537079099995, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8430057579774008744, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
       insertIndex: -1
       addedObject: {fileID: 149869143}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2154542791780319770, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 598390120}
   m_SourcePrefab: {fileID: 100100000, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
