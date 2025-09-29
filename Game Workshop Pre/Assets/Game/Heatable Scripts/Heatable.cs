@@ -7,7 +7,7 @@ public class Heatable : MonoBehaviour
 
     //Current Heat Level
     [Header("Objects Current Heat Level")]
-    [SerializeField] int heatLevel;
+    [SerializeField] public int heatLevel;
 
     //Rate at which heat level falls for actor
     [Header("Rate at which heat falls per second")]
@@ -15,7 +15,7 @@ public class Heatable : MonoBehaviour
 
     //Max heat for actor before adverse affects
     [Header("Max Allowed Heat")]
-    [SerializeField] int heatThreshold;
+    [SerializeField] public int heatThreshold;
 
 
     void Start()
