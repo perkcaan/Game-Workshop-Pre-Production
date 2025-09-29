@@ -32,16 +32,11 @@ public class SwipeHandler : MonoBehaviour
         _hitbox.enabled = false;
     }
 
-    private void Update()
-    {
-        UpdateHitbox(_parent.rotation);
-    }
     // Swipe
     public void DoSwipe(float rotation, float swipeForce)
     {
         _hitbox.enabled = true;
         _swipeForce = swipeForce;
-        SpawnSwipeFX(rotation);
         UpdateHitbox(rotation);
     }
 
@@ -71,12 +66,6 @@ public class SwipeHandler : MonoBehaviour
         {
             swipeableObject.OnSwipe(direction.normalized, _swipeForce);
         }
-    }
-
-    private void SpawnSwipeFX(float rotation)
-    {
-        _swipeEffectInstance = Instantiate(_swipeEffect, transform.position, Quaternion.Euler(0, 0, rotation + 90f));
-        _swipeEffectInstance.transform.rotation = transform.rotation;
     }
 
 }

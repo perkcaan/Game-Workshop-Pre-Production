@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable
 {
@@ -30,6 +31,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     public float SwipeDuration { get { return _swipeDuration; } }
     [SerializeField] private float _swipeCooldown = 1f;
     public float SwipeCooldown { get { return _swipeCooldown; } }
+
+    [Header("Audio")]
+    [SerializeField] private float _footstepCooldown = 0f;
 
 
     // Fields
@@ -112,7 +116,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     private void OnMouseDeltaInput(InputValue value)
     {
         Vector2 mouseDelta = value.Get<Vector2>();
-        if (mouseDelta != Vector2.zero)
+        if (mouseDelta.magnitude > 0.5f)
         {
             _targetStickPos += mouseDelta;
             _targetStickPos = _targetStickPos.normalized;
@@ -159,16 +163,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
 
 
-        p._footstepCooldown -= Time.deltaTime;
+        _footstepCooldown -= Time.deltaTime;
 
-        if (_ctx.MoveSpeed > 0.1f && p._footstepCooldown <= 0f)
+        if (_ctx.MoveSpeed > 0.1f && _footstepCooldown <= 0f)
         {
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step",transform.position);
-            p._footstepCooldown = 0.3f;
+            _footstepCooldown = 0.3f;
 
             if(_ctx.MoveSpeed > _ctx.MaxWalkSpeed)
             {
-                p._footstepCooldown = 0.15f;
+                _footstepCooldown = 0.15f;
             }
         }
     }
@@ -181,15 +185,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
 
         _ctx.MaxWalkSpeed = p.BaseMaxWalkSpeed / (1 + weight * p.MaxWalkSpeedReduction);
         _ctx.MaxSweepSpeed = _ctx.MaxWalkSpeed * p.SweepMaxSpeedModifier;
-        _ctx.MaxChargeSpeed = _ctx.MaxWalkSpeed * p.ChargeMaxSpeedModifier;
 
         _ctx.Acceleration = p.BaseAcceleration / (1 + weight * p.AccelerationReduction);
         _ctx.SweepAcceleration = _ctx.Acceleration * p.SweepAccelerationModifier;
-        _ctx.ChargeAcceleration = _ctx.Acceleration * p.ChargeAccelationModifier;
-
-        _ctx.RotationSpeed = p.BaseRotationSpeed / (1 + weight * p.RotationSpeedReduction);
-        _ctx.SweepRotationSpeed = _ctx.RotationSpeed * p.SweepRotationModifier;
-        _ctx.ChargeRotationSpeed = _ctx.RotationSpeed * p.ChargeRotationModifier;
 
         _weight = weight;
     }

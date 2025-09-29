@@ -8,7 +8,6 @@ public enum PlayerStateEnum
 {
     Idle,
     Sweeping,
-    Charging,
     Swiping,
     Tumble
 } 
@@ -23,7 +22,6 @@ public class PlayerStateMachine : BaseStateMachine<PlayerStateEnum>
         {
             { PlayerStateEnum.Idle, new PlayerIdleState(context, this) },
             { PlayerStateEnum.Sweeping, new PlayerSweepingState(context, this) },
-            { PlayerStateEnum.Charging, new PlayerChargingState(context, this) },
             { PlayerStateEnum.Swiping, new PlayerSwipingState(context, this) },
             { PlayerStateEnum.Tumble, new PlayerTumbleState(context, this) }
         };

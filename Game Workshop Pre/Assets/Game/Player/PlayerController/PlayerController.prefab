@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 145a8dfce447f914296d04946d7a5634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _swipeEffect: {fileID: 0}
 --- !u!1 &2154542791780319770
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,7 +252,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 732079687961142825}
-  - component: {fileID: 6499166599866729944}
+  - component: {fileID: 4126286516946362135}
   - component: {fileID: 7292192537079099995}
   m_Layer: 9
   m_Name: Broombox
@@ -275,8 +276,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8430057579774008744}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &6499166599866729944
-CircleCollider2D:
+--- !u!70 &4126286516946362135
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -304,12 +305,12 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.3
+  m_Size: {x: 1.5, y: 0.5}
+  m_Direction: 1
 --- !u!114 &7292192537079099995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,6 +545,7 @@ MonoBehaviour:
     _maxMovementForce: 20
     _forceMultiplier: 10
     _baseMaxWalkSpeed: 6
+    _footstepCooldown: 0
     _baseAcceleration: 4
     _baseRotationSpeed: 8
     _sweepMaxSpeedModifier: 1.5
@@ -562,6 +564,7 @@ MonoBehaviour:
     _maxWalkSpeedReduction: 0.1
     _accelerationReduction: 0.5
     _rotationSpeedReduction: 0.8
+  _mouseStickSensitivity: 10
   _sweepForce: 5
   _sweepMovementScaler: 0.1
   _swipeForce: 5
@@ -583,4 +586,8 @@ MonoBehaviour:
   enterRoom:
     m_PersistentCalls:
       m_Calls: []
+  trashDeleted:
+    m_PersistentCalls:
+      m_Calls: []
   inBattle: 0
+  currentRoom: {fileID: 0}

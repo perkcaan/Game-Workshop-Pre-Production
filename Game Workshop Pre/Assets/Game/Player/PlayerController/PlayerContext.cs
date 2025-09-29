@@ -28,13 +28,8 @@ public class PlayerContext
     //weight adjusted stats
     public float MaxWalkSpeed { get; set; } = 0f;
     public float MaxSweepSpeed { get; set; } = 0f;
-    public float MaxChargeSpeed { get; set; } = 0f;
     public float Acceleration { get; set; } = 0f;
     public float SweepAcceleration { get; set; } = 0f;
-    public float ChargeAcceleration { get; set; } = 0f;
-    public float RotationSpeed { get; set; } = 0f;
-    public float SweepRotationSpeed { get; set; } = 0f;
-    public float ChargeRotationSpeed { get; set; } = 0f;
 
 
     // current values
