@@ -14,7 +14,7 @@ public class Heatable : MonoBehaviour
     [SerializeField] int heatEntropy;
 
     //Max heat for actor before adverse affects
-    [Header("Threshold at which adverse affects start")]
+    [Header("Max Allowed Heat")]
     [SerializeField] int heatThreshold;
 
 
