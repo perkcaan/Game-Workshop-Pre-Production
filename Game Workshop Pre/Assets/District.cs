@@ -44,7 +44,7 @@ public class District : MonoBehaviour
 
     private void UpdateDistrictCleanUI()
     {
-        float percentClean = rooms.Count / totalRooms * 100f;
+        float percentClean = (1 - rooms.Count / totalRooms) * 100f;
 
         if (percentClean >= 100f)
         {
