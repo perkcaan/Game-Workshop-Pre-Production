@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 145a8dfce447f914296d04946d7a5634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _swipeEffect: {fileID: 0}
 --- !u!1 &2154542791780319770
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,6 +339,7 @@ GameObject:
   - component: {fileID: 5170008795486251839}
   - component: {fileID: 7798754160137196653}
   - component: {fileID: 8569040654837417826}
+  - component: {fileID: -1254627966409480536}
   m_Layer: 9
   m_Name: PlayerController
   m_TagString: Player
@@ -544,6 +546,7 @@ MonoBehaviour:
     _maxMovementForce: 20
     _forceMultiplier: 10
     _baseMaxWalkSpeed: 6
+    _footstepCooldown: 0
     _baseAcceleration: 4
     _baseRotationSpeed: 8
     _sweepMaxSpeedModifier: 1.5
@@ -583,4 +586,23 @@ MonoBehaviour:
   enterRoom:
     m_PersistentCalls:
       m_Calls: []
+  trashDeleted:
+    m_PersistentCalls:
+      m_Calls: []
   inBattle: 0
+  currentRoom: {fileID: 0}
+--- !u!114 &-1254627966409480536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7819092179503157042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b35c915163de364c8da549416e34cda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heatLevel: 150
+  heatEntropy: 3
+  heatThreshold: 0
