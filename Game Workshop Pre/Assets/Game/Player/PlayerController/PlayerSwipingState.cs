@@ -91,13 +91,16 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
 
     private void LeaveSwipeState()
     {
-        if (_ctx.IsSweepPressed)
+        if (_ctx.PlayerHasControl)
         {
-            _state.ChangeState(PlayerStateEnum.Sweeping);
-        }
-        else
-        {
-            _state.ChangeState(PlayerStateEnum.Idle);
+            if (_ctx.IsSweepPressed)
+            {
+                _state.ChangeState(PlayerStateEnum.Sweeping);
+            }
+            else
+            {
+                _state.ChangeState(PlayerStateEnum.Idle);
+            }
         }
 
     }

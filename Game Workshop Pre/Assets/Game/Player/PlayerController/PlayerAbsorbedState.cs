@@ -27,6 +27,7 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
         _ctx.Animator.SetBool("Absorbed", true);
         _ctx.CanSwipe = false;
         _ctx.PlayerHasControl = false;
+        _ctx.IsSweepPressed = false;
         _originalMaterial = _ctx.Rigidbody.sharedMaterial;
         _ctx.Rigidbody.sharedMaterial = _ctx.Props.TumbleMaterial;
         _ctx.CircleCollider.enabled = false;
@@ -36,7 +37,8 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
 
     public override void Update()
     {
-        _ctx.Player.transform.position = (Vector2)_ctx.Player.absorbedTrashBall.transform.position;
+        Transform trashBallTranform = _ctx.Player.absorbedTrashBall.transform;
+        _ctx.Player.transform.position = new Vector3(trashBallTranform.position.x, trashBallTranform.position.y, _ctx.Player.transform.position.z);
         TryChangeState();
     }
 

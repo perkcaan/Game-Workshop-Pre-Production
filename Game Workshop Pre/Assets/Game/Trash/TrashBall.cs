@@ -47,7 +47,7 @@ public class TrashBall : Trash
     {
         float newSize = _scaleMultiplier * Mathf.Sqrt(Size);
         _maxHealth = _baseMaxHealth + newSize;
-        transform.localScale = Vector3.one * newSize;
+        transform.localScale = new Vector3(newSize, newSize, 1);
     }
 
     protected void OnTriggerEnter2D(Collider2D other)
