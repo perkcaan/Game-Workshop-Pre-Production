@@ -18,7 +18,7 @@ public class PlayerHeatLevel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        heatable = playerController.GetComponent<Heatable>();
+        heatable = playerController.transform.Find("HeatRadius").GetComponent<Heatable>();
         heatProgress = (float)heatable.heatLevel / (float)heatable.heatThreshold;
         heatProgressBar.fillAmount = heatProgress;
     }

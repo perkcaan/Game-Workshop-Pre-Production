@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Heatable : MonoBehaviour
 {
@@ -17,11 +18,29 @@ public class Heatable : MonoBehaviour
     [Header("Max Allowed Heat")]
     [SerializeField] public int heatThreshold;
 
+    private readonly int PLAYER_BASE_HEAT_FLOOR = 0;
+    private readonly float FLOOR_UPDATE_RATE = 0.5f;
+
+
+    public UnityEvent onRoomEnter;
+
+    private int heatFloor;
+    private List<GameObject> heatableList;
+    private CircleCollider2D heatLevelRadius;
+
+
+
 
     void Start()
     {
+        heatableList = new List<GameObject>();
+        heatLevelRadius = GetComponent<CircleCollider2D>();
+        heatFloor = 0;
         StartCoroutine(HeatEntropy());
+        UpdateHeatFloor();
+
     }
+
 
     public void RaiseHeat(int heatValue)
     {
@@ -42,5 +61,30 @@ public class Heatable : MonoBehaviour
         }
         
     }
+
+    private IEnumerator UpdateHeatFloor()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(FLOOR_UPDATE_RATE);
+            heatFloor = (int)Mathf.Clamp(heatFloor, PLAYER_BASE_HEAT_FLOOR, GetAreaHeat());
+        }
+    }
+
+    private float GetAreaHeat()
+    {
+        return 0f;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+            
+    }
+
 
 }
