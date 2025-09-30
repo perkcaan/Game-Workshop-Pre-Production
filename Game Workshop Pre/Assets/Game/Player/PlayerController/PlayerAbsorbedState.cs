@@ -46,6 +46,7 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
     {
         _ctx.SweepHandler.EndSweep();
         _ctx.Animator.SetBool("Absorbed", false);
+        _ctx.Animator.speed = 1;
         _ctx.PlayerHasControl = true;
         _ctx.Rigidbody.sharedMaterial = _originalMaterial;
         _ctx.CircleCollider.enabled = true;

@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 145a8dfce447f914296d04946d7a5634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _swipeEffect: {fileID: 0}
 --- !u!1 &2154542791780319770
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,6 +545,7 @@ MonoBehaviour:
     _maxMovementForce: 20
     _forceMultiplier: 10
     _baseMaxWalkSpeed: 6
+    _footstepCooldown: 0
     _baseAcceleration: 4
     _baseRotationSpeed: 8
     _sweepMaxSpeedModifier: 1.5
@@ -568,6 +570,8 @@ MonoBehaviour:
   _swipeMovementScaler: 0.2
   _swipeDuration: 0.5
   _swipeCooldown: 0.2
+  _absorbResistance: 50
+  absorbedTrashBall: {fileID: 0}
 --- !u!114 &8569040654837417826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,4 +587,8 @@ MonoBehaviour:
   enterRoom:
     m_PersistentCalls:
       m_Calls: []
+  trashDeleted:
+    m_PersistentCalls:
+      m_Calls: []
   inBattle: 0
+  currentRoom: {fileID: 0}

@@ -215,6 +215,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     {
         if (absorbedTrashBall != null)
         {
+            _ctx.Animator.speed += 0.3f;
             absorbedTrashBall.TakeDamage(1);
         }
     }
