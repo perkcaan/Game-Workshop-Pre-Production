@@ -16,13 +16,14 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
         _ctx = context;
         _state = state;
     }
-    
+
 
     // Methods
     //state
     public override void EnterState()
     {
         _ctx.CanSwipe = true;
+        _ctx.CanDash = true;
         _zeroMoveTimer = 0f;
     }
 

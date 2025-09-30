@@ -25,6 +25,12 @@ public class PlayerContext
     public bool CanSwipe { get; set; } = true;
     public float SwipeCooldownTimer { get; set; } = 0f;
 
+    //dashing
+    public bool CanDash { get; set; } = true;
+    public float DashCooldownTimer { get; set; } = 0f;
+    public float DashRowCooldownTimer { get; set; } = 0f;
+    public int DashesRemaining { get; set; } = 0;
+
     //weight adjusted stats
     public float MaxWalkSpeed { get; set; } = 0f;
     public float MaxSweepSpeed { get; set; } = 0f;
@@ -47,6 +53,7 @@ public class PlayerContext
     {
         Player = player;
         Props = props;
+        DashesRemaining = props.DashRowCount;
     }
 
 

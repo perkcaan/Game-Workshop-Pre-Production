@@ -7,10 +7,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
 {
 
     #region header
-  
+
     // Properties
     [SerializeField] private PlayerMovementProps _movementProps;
 
+    [Header("Start Properties")]
+    [SerializeField][Range(-180, 180)] private float _startAngle = 270f;
 
     [Header("Mouse as Stick Properties")]
     [SerializeField] private float _mouseStickSensitivity = 10f;
@@ -18,14 +20,14 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     [Header("Sweep Properties")]
     [SerializeField] private float _sweepForce = 5f;
     public float SweepForce { get { return _sweepForce; } }
-    [SerializeField] [Range(0f,2f)] private float _sweepMovementScaler = 0.1f;
+    [SerializeField][Range(0f, 2f)] private float _sweepMovementScaler = 0.1f;
     public float SweepMovementScaler { get { return _sweepMovementScaler; } }
 
 
     [Header("Swipe Properties")]
     [SerializeField] private float _swipeForce = 5f;
     public float SwipeForce { get { return _swipeForce; } }
-    [SerializeField] [Range(0f,2f)] private float _swipeMovementScaler = 0.1f;
+    [SerializeField][Range(0f, 2f)] private float _swipeMovementScaler = 0.1f;
     public float SwipeMovementScaler { get { return _swipeMovementScaler; } }
     [SerializeField] private float _swipeDuration = 0.5f;
     public float SwipeDuration { get { return _swipeDuration; } }
@@ -62,6 +64,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         _ctx.Animator = GetComponent<Animator>();
         _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
         _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
+        _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
     }
 
@@ -83,9 +86,27 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
 
     private void UpdateCooldowns()
     {
+
+        // Swipe timer
         if (_ctx.SwipeCooldownTimer > 0f)
         {
-            _ctx.SwipeCooldownTimer = Mathf.Max(_ctx.SwipeCooldownTimer - Time.deltaTime, 0f); 
+            _ctx.SwipeCooldownTimer = Mathf.Max(_ctx.SwipeCooldownTimer - Time.deltaTime, 0f);
+        }
+
+        // Dash timer
+        if (_ctx.DashCooldownTimer > 0f)
+        {
+            _ctx.DashCooldownTimer = Mathf.Max(_ctx.DashCooldownTimer - Time.deltaTime, 0f);
+            if (_ctx.DashCooldownTimer == 0f)
+            {
+                _ctx.DashesRemaining = _movementProps.DashRowCount;
+            }
+        }
+
+        // Dash in a row timer
+        if (_ctx.DashRowCooldownTimer > 0f)
+        {
+            _ctx.DashRowCooldownTimer = Mathf.Max(_ctx.DashRowCooldownTimer - Time.deltaTime, 0f);
         }
     }
 
@@ -93,6 +114,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     {
         if (_state == null) return;
         _state.OnDrawGizmos();
+        DrawDashCooldownGizmo();
     }
 
 
@@ -110,7 +132,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
             _targetStickPos = Vector2.zero;
             return;
         }
+    }
 
+    private void OnDashInput(InputValue value)
+    {
+        if (!value.isPressed) return;
+        if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
+        {
+            _state.ChangeState(PlayerStateEnum.Dash);
+        }
     }
 
     private void OnMouseDeltaInput(InputValue value)
@@ -147,19 +177,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     // master movement handler using variables modified by state.
     private void UpdateMovement()
     {
-        PlayerMovementProps p = _movementProps;
-        if (!_ctx.PlayerHasControl)
-        {
-            _ctx.Animator.SetFloat("Speed", _ctx.Rigidbody.velocity.magnitude);
-            _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
-            return;
-        }
         Vector2 velocityDelta = _ctx.FrameVelocity - _ctx.Rigidbody.velocity;
-        Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta * _movementProps.ForceMultiplier, _movementProps.MaxMovementForce);
+        Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta, _ctx.FrameVelocity.magnitude);
         _ctx.Rigidbody.AddForce(clampedForce, ForceMode2D.Force);
 
 
-        _ctx.Animator.SetFloat("Speed", _ctx.MoveSpeed);
+        _ctx.Animator.SetFloat("Speed", _ctx.FrameVelocity.magnitude);
         _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
 
 
@@ -167,16 +190,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
 
         if (_ctx.MoveSpeed > 0.1f && _footstepCooldown <= 0f)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step",transform.position);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step", transform.position);
             _footstepCooldown = 0.3f;
 
-            if(_ctx.MoveSpeed > _ctx.MaxWalkSpeed)
+            if (_ctx.MoveSpeed > _ctx.MaxWalkSpeed)
             {
                 _footstepCooldown = 0.15f;
             }
         }
     }
-
 
     //weight system
     public void SetWeight(float weight)
@@ -193,11 +215,36 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     }
 
 
-    // Swipe puts you into tumble state
+    // Being swiped puts you into tumble state
     public void OnSwipe(Vector2 direction, float force)
     {
         _state.ChangeState(PlayerStateEnum.Tumble);
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
+
+
+
+    // Gizmo to display the dash cooldowns
+    private void DrawDashCooldownGizmo()
+    {
+        if (_ctx.DashesRemaining > 0)
+        {
+            if (_ctx.DashRowCooldownTimer > 0f)
+            {
+                Gizmos.color = Color.black;
+            }
+            else
+            {
+                Gizmos.color = Color.green;
+            }
+            Gizmos.DrawSphere(_ctx.Player.transform.position + new Vector3(0, 1, 0), _ctx.DashesRemaining / 10f);
+        }
+        else
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawSphere(_ctx.Player.transform.position + new Vector3(0, 1, 0), 0.1f);
+        }
+    }
+    
 }

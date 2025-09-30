@@ -6,12 +6,6 @@ using UnityEngine;
 public class PlayerMovementProps
 {
     // Properties
-    [Header("Physics Influence")]
-    [SerializeField] private float _maxMovementForce = 20f;
-    public float MaxMovementForce { get { return _maxMovementForce; } }
-    [SerializeField] private float _forceMultiplier = 10f;
-    public float ForceMultiplier { get { return _forceMultiplier; } }
-
     [Header("Base Movement")]
     [SerializeField] private float _baseMaxWalkSpeed;
     public float BaseMaxWalkSpeed { get { return _baseMaxWalkSpeed; } }
@@ -20,13 +14,23 @@ public class PlayerMovementProps
     [SerializeField] private float _rotationSpeed;
     public float RotationSpeed { get { return _rotationSpeed; } }
 
-
-
     [Header("Sweeping Movement")]
     [SerializeField] private float _sweepMaxSpeedModifier;
     public float SweepMaxSpeedModifier { get { return _sweepMaxSpeedModifier; } }
     [SerializeField] private float _sweepAccelerationModifier;
     public float SweepAccelerationModifier { get { return _sweepAccelerationModifier; } }
+
+    [Header("Dashing")]
+    [SerializeField] private int _dashRowCount;
+    public int DashRowCount { get { return _dashRowCount; } }
+    [SerializeField] private float _dashForce;
+    public float DashForce { get { return _dashForce; } }
+    [SerializeField] private float _dashDuration;
+    public float DashDuration { get { return _dashDuration; } }
+    [SerializeField] private float _dashRowCooldown;
+    public float DashRowCooldown { get { return _dashRowCooldown; } }
+    [SerializeField] private float _dashCooldown;
+    public float DashCooldown { get { return _dashCooldown; } }
 
 
     [Header("Tumble")]

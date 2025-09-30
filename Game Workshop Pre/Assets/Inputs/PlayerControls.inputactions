@@ -33,6 +33,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "DashInput",
+                    "type": "Button",
+                    "id": "493a177a-5f16-47b8-b79e-82891ed6d1fd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "MouseMoveInput",
                     "type": "Value",
                     "id": "eab0adb6-caa3-4262-baec-b6137a4b5ccb",
@@ -120,17 +129,6 @@
                 },
                 {
                     "name": "",
-                    "id": "19fbd456-f52e-4042-b3d7-61f2f220fd26",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SweepInput",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "d5aacc2f-1881-4e70-aee1-c11e3145c193",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -170,6 +168,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "MouseDeltaInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b6e423a5-4d0a-4660-85c7-15eee2030539",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DashInput",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

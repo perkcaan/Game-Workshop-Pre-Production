@@ -9,6 +9,7 @@ public enum PlayerStateEnum
     Idle,
     Sweeping,
     Swiping,
+    Dash,
     Tumble
 } 
 
@@ -23,6 +24,7 @@ public class PlayerStateMachine : BaseStateMachine<PlayerStateEnum>
             { PlayerStateEnum.Idle, new PlayerIdleState(context, this) },
             { PlayerStateEnum.Sweeping, new PlayerSweepingState(context, this) },
             { PlayerStateEnum.Swiping, new PlayerSwipingState(context, this) },
+            { PlayerStateEnum.Dash, new PlayerDashState(context, this) },
             { PlayerStateEnum.Tumble, new PlayerTumbleState(context, this) }
         };
         _ctx = context;

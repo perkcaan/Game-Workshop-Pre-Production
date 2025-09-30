@@ -305,7 +305,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -450,7 +450,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1
+  m_LinearDrag: 5
   m_AngularDrag: 0.1
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -542,35 +542,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movementProps:
-    _maxMovementForce: 20
-    _forceMultiplier: 10
-    _baseMaxWalkSpeed: 6
-    _footstepCooldown: 0
-    _baseAcceleration: 4
-    _baseRotationSpeed: 8
-    _sweepMaxSpeedModifier: 1.5
-    _sweepAccelerationModifier: 0.5
-    _sweepRotationModifier: 1
-    _sweepSlowdownAngle: 120
-    _sweepSlowdownSpeed: 2
-    _chargeAngleThreshold: 60
-    _enterChargeSpeedThreshold: 200
-    _exitChargeSpeedThreshold: 3
-    _chargeMaxSpeedModifier: 2
-    _chargeAccelationModifier: 0.2
-    _chargeRotationModifier: 8
-    _chargeDeceleration: 3
+    _baseMaxWalkSpeed: 30
+    _baseAcceleration: 18
+    _rotationSpeed: 8
+    _sweepMaxSpeedModifier: 0.8
+    _sweepAccelerationModifier: 1
+    _dashRowCount: 3
+    _dashForce: 14
+    _dashDuration: 0.2
+    _dashRowCooldown: 0.2
+    _dashCooldown: 3
     _tumbleMaterial: {fileID: 6200000, guid: 3b7af493c3f54b34e99304d3d160a029, type: 2}
     _maxWalkSpeedReduction: 0.1
     _accelerationReduction: 0.5
     _rotationSpeedReduction: 0.8
+  _startAngle: -90
   _mouseStickSensitivity: 10
   _sweepForce: 5
   _sweepMovementScaler: 0.1
   _swipeForce: 5
   _swipeMovementScaler: 0.2
-  _swipeDuration: 0.5
+  _swipeDuration: 0.34
   _swipeCooldown: 0.2
+  _footstepCooldown: 0
 --- !u!114 &8569040654837417826
 MonoBehaviour:
   m_ObjectHideFlags: 0
