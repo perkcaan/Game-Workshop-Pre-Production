@@ -17,7 +17,7 @@ public class PlayerContext
     // Fields
     //input
     public Vector2 MovementInput { get; set; } = Vector2.zero;
-    public Vector2 MouseInput { get; set; } = Vector2.zero;
+    public Vector2 StickInput { get; set; } = Vector2.zero;
     public bool IsSweepPressed { get; set; } = false;
     public bool PlayerHasControl { get; set; } = true;
 
@@ -25,16 +25,17 @@ public class PlayerContext
     public bool CanSwipe { get; set; } = true;
     public float SwipeCooldownTimer { get; set; } = 0f;
 
+    //dashing
+    public bool CanDash { get; set; } = true;
+    public float DashCooldownTimer { get; set; } = 0f;
+    public float DashRowCooldownTimer { get; set; } = 0f;
+    public int DashesRemaining { get; set; } = 0;
+
     //weight adjusted stats
     public float MaxWalkSpeed { get; set; } = 0f;
     public float MaxSweepSpeed { get; set; } = 0f;
-    public float MaxChargeSpeed { get; set; } = 0f;
     public float Acceleration { get; set; } = 0f;
     public float SweepAcceleration { get; set; } = 0f;
-    public float ChargeAcceleration { get; set; } = 0f;
-    public float RotationSpeed { get; set; } = 0f;
-    public float SweepRotationSpeed { get; set; } = 0f;
-    public float ChargeRotationSpeed { get; set; } = 0f;
 
 
     // current values
@@ -52,6 +53,7 @@ public class PlayerContext
     {
         Player = player;
         Props = props;
+        DashesRemaining = props.DashRowCount;
     }
 
 

@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 145a8dfce447f914296d04946d7a5634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _swipeEffect: {fileID: 0}
 --- !u!1 &2154542791780319770
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,7 +252,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 732079687961142825}
-  - component: {fileID: 6499166599866729944}
+  - component: {fileID: 4126286516946362135}
   - component: {fileID: 7292192537079099995}
   m_Layer: 9
   m_Name: Broombox
@@ -275,8 +276,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8430057579774008744}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &6499166599866729944
-CircleCollider2D:
+--- !u!70 &4126286516946362135
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -308,8 +309,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.3
+  m_Size: {x: 1.5, y: 0.5}
+  m_Direction: 1
 --- !u!114 &7292192537079099995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,7 +450,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1
+  m_LinearDrag: 5
   m_AngularDrag: 0.1
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -541,33 +542,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movementProps:
-    _maxMovementForce: 20
-    _forceMultiplier: 10
-    _baseMaxWalkSpeed: 6
-    _baseAcceleration: 4
-    _baseRotationSpeed: 8
-    _sweepMaxSpeedModifier: 1.5
-    _sweepAccelerationModifier: 0.5
-    _sweepRotationModifier: 1
-    _sweepSlowdownAngle: 120
-    _sweepSlowdownSpeed: 2
-    _chargeAngleThreshold: 60
-    _enterChargeSpeedThreshold: 200
-    _exitChargeSpeedThreshold: 3
-    _chargeMaxSpeedModifier: 2
-    _chargeAccelationModifier: 0.2
-    _chargeRotationModifier: 8
-    _chargeDeceleration: 3
+    _baseMaxWalkSpeed: 30
+    _baseAcceleration: 18
+    _rotationSpeed: 8
+    _sweepMaxSpeedModifier: 0.8
+    _sweepAccelerationModifier: 1
+    _dashRowCount: 3
+    _dashForce: 14
+    _dashDuration: 0.2
+    _dashRowCooldown: 0.2
+    _dashCooldown: 3
     _tumbleMaterial: {fileID: 6200000, guid: 3b7af493c3f54b34e99304d3d160a029, type: 2}
     _maxWalkSpeedReduction: 0.1
     _accelerationReduction: 0.5
     _rotationSpeedReduction: 0.8
+  _startAngle: -90
+  _mouseStickSensitivity: 10
   _sweepForce: 5
   _sweepMovementScaler: 0.1
   _swipeForce: 5
   _swipeMovementScaler: 0.2
-  _swipeDuration: 0.5
+  _swipeDuration: 0.34
   _swipeCooldown: 0.2
+  _footstepCooldown: 0
 --- !u!114 &8569040654837417826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,4 +580,8 @@ MonoBehaviour:
   enterRoom:
     m_PersistentCalls:
       m_Calls: []
+  trashDeleted:
+    m_PersistentCalls:
+      m_Calls: []
   inBattle: 0
+  currentRoom: {fileID: 0}

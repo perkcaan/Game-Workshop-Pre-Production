@@ -25,6 +25,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     {
         _ctx.Animator.SetBool("Swiping", true);
         _ctx.CanSwipe = false;
+        _ctx.CanDash = false;
         GetSwipeRotation();
         float swipeForce = _ctx.Player.SwipeForce + _ctx.MoveSpeed * _ctx.Player.SwipeMovementScaler;
         FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe",_ctx.Player.transform.position);
@@ -55,10 +56,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     //rotation
     private void GetSwipeRotation()
     {
-        Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = mouseWorldPoint - (Vector2)_ctx.Player.transform.position;
-        direction.Normalize();
-        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        float targetAngle = Mathf.Atan2(_ctx.StickInput.y, _ctx.StickInput.x) * Mathf.Rad2Deg;
 
         _ctx.Rotation = Mathf.DeltaAngle(0f, targetAngle); 
     }

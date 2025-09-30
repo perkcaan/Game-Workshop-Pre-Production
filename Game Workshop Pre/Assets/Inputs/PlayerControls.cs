@@ -55,11 +55,29 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""DashInput"",
+                    ""type"": ""Button"",
+                    ""id"": ""493a177a-5f16-47b8-b79e-82891ed6d1fd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""MouseMoveInput"",
                     ""type"": ""Value"",
                     ""id"": ""eab0adb6-caa3-4262-baec-b6137a4b5ccb"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseDeltaInput"",
+                    ""type"": ""Value"",
+                    ""id"": ""80df9cb6-de67-4daa-8513-7fd9f313c3d0"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""StickDeadzone(min=0.01,max=0.01)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 }
@@ -133,17 +151,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""19fbd456-f52e-4042-b3d7-61f2f220fd26"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SweepInput"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""d5aacc2f-1881-4e70-aee1-c11e3145c193"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -174,6 +181,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""MouseMoveInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""860a2e37-c5fd-4650-8063-a08a51ba89dc"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseDeltaInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6e423a5-4d0a-4660-85c7-15eee2030539"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DashInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,7 +214,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Default_MoveInput = m_Default.FindAction("MoveInput", throwIfNotFound: true);
         m_Default_SweepInput = m_Default.FindAction("SweepInput", throwIfNotFound: true);
         m_Default_SwipeInput = m_Default.FindAction("SwipeInput", throwIfNotFound: true);
+        m_Default_DashInput = m_Default.FindAction("DashInput", throwIfNotFound: true);
         m_Default_MouseMoveInput = m_Default.FindAction("MouseMoveInput", throwIfNotFound: true);
+        m_Default_MouseDeltaInput = m_Default.FindAction("MouseDeltaInput", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -250,7 +281,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_MoveInput;
     private readonly InputAction m_Default_SweepInput;
     private readonly InputAction m_Default_SwipeInput;
+    private readonly InputAction m_Default_DashInput;
     private readonly InputAction m_Default_MouseMoveInput;
+    private readonly InputAction m_Default_MouseDeltaInput;
     public struct DefaultActions
     {
         private @PlayerControls m_Wrapper;
@@ -258,7 +291,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @MoveInput => m_Wrapper.m_Default_MoveInput;
         public InputAction @SweepInput => m_Wrapper.m_Default_SweepInput;
         public InputAction @SwipeInput => m_Wrapper.m_Default_SwipeInput;
+        public InputAction @DashInput => m_Wrapper.m_Default_DashInput;
         public InputAction @MouseMoveInput => m_Wrapper.m_Default_MouseMoveInput;
+        public InputAction @MouseDeltaInput => m_Wrapper.m_Default_MouseDeltaInput;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -277,9 +312,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwipeInput.started += instance.OnSwipeInput;
             @SwipeInput.performed += instance.OnSwipeInput;
             @SwipeInput.canceled += instance.OnSwipeInput;
+            @DashInput.started += instance.OnDashInput;
+            @DashInput.performed += instance.OnDashInput;
+            @DashInput.canceled += instance.OnDashInput;
             @MouseMoveInput.started += instance.OnMouseMoveInput;
             @MouseMoveInput.performed += instance.OnMouseMoveInput;
             @MouseMoveInput.canceled += instance.OnMouseMoveInput;
+            @MouseDeltaInput.started += instance.OnMouseDeltaInput;
+            @MouseDeltaInput.performed += instance.OnMouseDeltaInput;
+            @MouseDeltaInput.canceled += instance.OnMouseDeltaInput;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -293,9 +334,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwipeInput.started -= instance.OnSwipeInput;
             @SwipeInput.performed -= instance.OnSwipeInput;
             @SwipeInput.canceled -= instance.OnSwipeInput;
+            @DashInput.started -= instance.OnDashInput;
+            @DashInput.performed -= instance.OnDashInput;
+            @DashInput.canceled -= instance.OnDashInput;
             @MouseMoveInput.started -= instance.OnMouseMoveInput;
             @MouseMoveInput.performed -= instance.OnMouseMoveInput;
             @MouseMoveInput.canceled -= instance.OnMouseMoveInput;
+            @MouseDeltaInput.started -= instance.OnMouseDeltaInput;
+            @MouseDeltaInput.performed -= instance.OnMouseDeltaInput;
+            @MouseDeltaInput.canceled -= instance.OnMouseDeltaInput;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -318,6 +365,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnMoveInput(InputAction.CallbackContext context);
         void OnSweepInput(InputAction.CallbackContext context);
         void OnSwipeInput(InputAction.CallbackContext context);
+        void OnDashInput(InputAction.CallbackContext context);
         void OnMouseMoveInput(InputAction.CallbackContext context);
+        void OnMouseDeltaInput(InputAction.CallbackContext context);
     }
 }
