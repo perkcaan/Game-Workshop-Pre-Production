@@ -46,7 +46,7 @@ public class CollectableTrash : Trash, IAbsorbable
     {
         StartCoroutine(MergeDelay());
         transform.position = trashBall.transform.position;
-        float explosionForce = _explosionMultiplier * trashBall.Size;
+        float explosionForce = (1 - trashBall.Size) * _explosionMultiplier;
         Vector2 randomForce = new Vector2(Random.Range(-explosionForce, explosionForce), Random.Range(-explosionForce, explosionForce));
         _rigidBody.velocity = randomForce;
     }

@@ -7,8 +7,8 @@ public class TrashBall : Trash
 {
     [SerializeField] float _scaleMultiplier;
     [SerializeField] float _baseMaxHealth;
+    [SerializeField] float _healthGainedPerSizeIncrease;
     [SerializeField] float _idleDecayMultiplier;
-    [SerializeField] float _minimumSizeToExplode;
     private float _maxHealth;
     private float _health;
     public List<IAbsorbable> absorbedObjects = new List<IAbsorbable>();
@@ -23,17 +23,14 @@ public class TrashBall : Trash
 
     public void Update()
     {
-        if (Size >= _minimumSizeToExplode)
+        if (_rigidBody.velocity.magnitude < 2)
         {
-            if (_rigidBody.velocity.magnitude < 2)
-            {
-                _health -= Time.deltaTime * _idleDecayMultiplier;
-                if (_health < 0) ExplodeTrashBall();
-            }
-            else if (_health < _maxHealth)
-            {
-                _health += Time.deltaTime * _idleDecayMultiplier;
-            }
+            _health -= Time.deltaTime * _idleDecayMultiplier;
+            if (_health < 0) ExplodeTrashBall();
+        }
+        else if (_health < _maxHealth)
+        {
+            _health += Time.deltaTime * _idleDecayMultiplier;
         }
     }
 
@@ -46,7 +43,9 @@ public class TrashBall : Trash
     protected override void OnSizeChanged()
     {
         float newSize = _scaleMultiplier * Mathf.Sqrt(Size);
-        _maxHealth = _baseMaxHealth + newSize;
+
+        _health += (_baseMaxHealth + newSize * _healthGainedPerSizeIncrease) - _maxHealth;
+        _maxHealth = _baseMaxHealth + (newSize * _healthGainedPerSizeIncrease);
         transform.localScale = new Vector3(newSize, newSize, 1);
     }
 
