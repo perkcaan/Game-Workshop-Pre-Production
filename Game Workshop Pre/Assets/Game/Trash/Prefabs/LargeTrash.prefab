@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2056799769416364825, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2056799769416364825, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_LinearDrag
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2902927161834031695, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_Radius
@@ -43,6 +43,14 @@ PrefabInstance:
     - target: {fileID: 5177245775491380141, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_Offset.y
       value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5523424973601746774, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
+      propertyPath: _size
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5523424973601746774, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
+      propertyPath: _explosionMultiplier
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8463100783619515745, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_LocalPosition.x

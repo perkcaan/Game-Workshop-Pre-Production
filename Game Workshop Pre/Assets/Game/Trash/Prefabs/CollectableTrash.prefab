@@ -97,7 +97,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 3256710037636330818}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 78a4f07e8df37694183fa6d442202683, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -199,3 +199,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _size: 1
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
+  _velocityToTurnIntoTrash: 5
+  _explosionMultiplier: 1

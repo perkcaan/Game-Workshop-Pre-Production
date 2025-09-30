@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class PlayerMovementController : MonoBehaviour, ISwipeable
+public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
 {
 
     #region header
-  
+
     // Properties
     [SerializeField] private PlayerMovementProps _movementProps;
 
@@ -16,14 +16,14 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     [Header("Sweep Properties")]
     [SerializeField] private float _sweepForce = 5f;
     public float SweepForce { get { return _sweepForce; } }
-    [SerializeField] [Range(0f,2f)] private float _sweepMovementScaler = 0.1f;
+    [SerializeField][Range(0f, 2f)] private float _sweepMovementScaler = 0.1f;
     public float SweepMovementScaler { get { return _sweepMovementScaler; } }
 
 
     [Header("Swipe Properties")]
     [SerializeField] private float _swipeForce = 5f;
     public float SwipeForce { get { return _swipeForce; } }
-    [SerializeField] [Range(0f,2f)] private float _swipeMovementScaler = 0.1f;
+    [SerializeField][Range(0f, 2f)] private float _swipeMovementScaler = 0.1f;
     public float SwipeMovementScaler { get { return _swipeMovementScaler; } }
     [SerializeField] private float _swipeDuration = 0.5f;
     public float SwipeDuration { get { return _swipeDuration; } }
@@ -60,6 +60,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     {
         _ctx = new PlayerContext(this, _movementProps);
         _ctx.Rigidbody = GetComponent<Rigidbody2D>();
+        _ctx.CircleCollider = GetComponent<CircleCollider2D>();
         _ctx.Animator = GetComponent<Animator>();
         _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
         _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
@@ -85,7 +86,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     {
         if (_ctx.SwipeCooldownTimer > 0f)
         {
-            _ctx.SwipeCooldownTimer = Mathf.Max(_ctx.SwipeCooldownTimer - Time.deltaTime, 0f); 
+            _ctx.SwipeCooldownTimer = Mathf.Max(_ctx.SwipeCooldownTimer - Time.deltaTime, 0f);
         }
     }
 
@@ -157,10 +158,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
 
         if (_ctx.MoveSpeed > 0.1f && p._footstepCooldown <= 0f)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step",transform.position);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step", transform.position);
             p._footstepCooldown = 0.3f;
 
-            if(_ctx.MoveSpeed > _ctx.MaxWalkSpeed)
+            if (_ctx.MoveSpeed > _ctx.MaxWalkSpeed)
             {
                 p._footstepCooldown = 0.15f;
             }
@@ -196,4 +197,31 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
+
+    // eba changes
+    [SerializeField] float _absorbResistance;
+    public TrashBall absorbedTrashBall;
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    {
+        if (forcedAbsorb || absorbingPower > _absorbResistance)
+        {
+            trashBall.absorbedObjects.Add(this);
+            absorbedTrashBall = trashBall;
+            _state.ChangeState(PlayerStateEnum.Absorbed);
+        }
+    }
+
+    private void OnEscapeTrashBallInput(InputValue value)
+    {
+        if (absorbedTrashBall != null)
+        {
+            absorbedTrashBall.TakeDamage(1);
+        }
+    }
+
+    public void OnTrashBallExplode(TrashBall trashBall)
+    {
+        absorbedTrashBall = null;
+        _state.ChangeState(PlayerStateEnum.Idle);
+    }
 }

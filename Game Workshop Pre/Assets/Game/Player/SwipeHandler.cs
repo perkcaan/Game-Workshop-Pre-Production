@@ -41,7 +41,7 @@ public class SwipeHandler : MonoBehaviour
     {
         _hitbox.enabled = true;
         _swipeForce = swipeForce;
-        SpawnSwipeFX(rotation);
+        //SpawnSwipeFX(rotation);
         UpdateHitbox(rotation);
     }
 

@@ -3,28 +3,58 @@ using UnityEngine;
 
 public class CollectableTrash : Trash, IAbsorbable
 {
-    [SerializeField] private GameObject _trashBallPrefab;
-
-    protected override void OnTrashMerge(Trash otherTrash)
+    [SerializeField] GameObject _trashBallPrefab;
+    [SerializeField] float _velocityToTurnIntoTrash;
+    [SerializeField] float _explosionMultiplier;
+    private bool mergable = true;
+    void Update()
     {
-        base.OnTrashMerge(otherTrash);
+        if (_rigidBody.velocity.magnitude > _velocityToTurnIntoTrash * Size && mergable)
+        {
+            CreateTrashBall();
+        }
+    }
+
+    protected void CreateTrashBall()
+    {
         GameObject trashBallObject = Instantiate(_trashBallPrefab);
         trashBallObject.transform.position = transform.position;
         TrashBall trashBall = trashBallObject.GetComponent<TrashBall>();
+
         if (trashBall == null)
         {
             Debug.LogWarning("TrashBall prefab prepared incorrectly");
             Destroy(trashBallObject);
             return;
         }
-        trashBall.Initialize(Size, _rigidBody.velocity);
-        Destroy(gameObject);
+
+        trashBall.absorbedObjects.Add(this);
+        trashBall.Size = Size;
+        gameObject.SetActive(false);
     }
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall)
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
     {
-        trashBall.Size += Size;
-        Destroy(gameObject);
+        trashBall.absorbedObjects.Add(this);
+        if (!forcedAbsorb){
+            trashBall.Size += Size;
+            gameObject.SetActive(false);
+        }
     }
 
+    public void OnTrashBallExplode(TrashBall trashBall)
+    {
+        StartCoroutine(MergeDelay());
+        transform.position = trashBall.transform.position;
+        float explosionForce = _explosionMultiplier * trashBall.Size;
+        Vector2 randomForce = new Vector2(Random.Range(-explosionForce, explosionForce), Random.Range(-explosionForce, explosionForce));
+        _rigidBody.velocity = randomForce;
+    }
+
+    public IEnumerator MergeDelay()
+    {
+        mergable = false;
+        yield return new WaitForSeconds(1.5f);
+        mergable = true;
+    }
 }
