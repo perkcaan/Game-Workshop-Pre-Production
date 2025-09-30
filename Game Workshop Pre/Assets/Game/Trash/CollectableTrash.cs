@@ -35,11 +35,13 @@ public class CollectableTrash : Trash, IAbsorbable
 
     public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
     {
-        trashBall.absorbedObjects.Add(this);
-        if (!forcedAbsorb){
+        if (forcedAbsorb || Size <= trashBall.Size)
+        {
+            trashBall.absorbedObjects.Add(this);
             trashBall.Size += Size;
             gameObject.SetActive(false);
         }
+
     }
 
     public void OnTrashBallExplode(TrashBall trashBall)

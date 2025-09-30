@@ -197,13 +197,14 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
-
+    [Header("Absorbed Properties")]
     // eba changes
     [SerializeField] float _absorbResistance;
+    [SerializeField] float _minTrashSizeToAbsorb;
     public TrashBall absorbedTrashBall;
     public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
     {
-        if (forcedAbsorb || absorbingPower > _absorbResistance)
+        if (forcedAbsorb || (absorbingPower > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
         {
             trashBall.absorbedObjects.Add(this);
             absorbedTrashBall = trashBall;

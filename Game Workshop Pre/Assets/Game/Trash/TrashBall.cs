@@ -51,16 +51,21 @@ public class TrashBall : Trash
 
     protected void OnTriggerEnter2D(Collider2D other)
     {
+        if (!other.isTrigger) return;
+
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
             float absorbingPower = _rigidBody.velocity.magnitude * Size;
             absorbableObject.OnAbsorbedByTrashBall(this, absorbingPower, false);
+            return;
         }
 
         if (other.gameObject.TryGetComponent(out TrashBall otherTrashBall))
         {
+            if (!otherTrashBall.isActiveAndEnabled) return;
             // Priority- only one of the colliders can run OnTrashMerge
             // first check forced merge priority
+
             if (MergePriority && !otherTrashBall.MergePriority)
             {
                 OnTrashBallMerge(otherTrashBall);
@@ -70,17 +75,13 @@ public class TrashBall : Trash
             if (MergePriority != otherTrashBall.MergePriority)
                 return;
 
-            // since they have equal priority- check speed
-            float speed = _rigidBody.velocity.sqrMagnitude;
-            float otherSpeed = otherTrashBall.GetComponent<Rigidbody2D>().velocity.sqrMagnitude;
-
-            if (speed > otherSpeed)
+            if (Size > otherTrashBall.Size)
             {
                 OnTrashBallMerge(otherTrashBall);
                 return;
             }
 
-            if (speed < otherSpeed)
+            if (Size < otherTrashBall.Size)
                 return;
 
             // If same speed, force winner to be based on the arbitrary TrashId
@@ -91,16 +92,17 @@ public class TrashBall : Trash
         }
     }
 
-    protected void OnTrashBallMerge(TrashBall otherTrash)
+    protected void OnTrashBallMerge(TrashBall otherTrashBall)
     {
-        Size += otherTrash.Size;
+        //if (!otherTrashBall.isActiveAndEnabled) return;
 
-        foreach (IAbsorbable absorbable in otherTrash.absorbedObjects)
+        foreach (IAbsorbable absorbable in otherTrashBall.absorbedObjects)
         {
             absorbable.OnAbsorbedByTrashBall(this, 0, true);
         }
 
-        Destroy(otherTrash.gameObject);
+        otherTrashBall.enabled = false;
+        Destroy(otherTrashBall.gameObject);
     }
 
     private void BurnTrashBall()
@@ -124,5 +126,4 @@ public class TrashBall : Trash
         }
         Destroy(gameObject);
     }
-
 }
