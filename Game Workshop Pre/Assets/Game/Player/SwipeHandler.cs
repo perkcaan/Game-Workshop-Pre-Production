@@ -35,6 +35,7 @@ public class SwipeHandler : MonoBehaviour
     // Swipe
     public void DoSwipe(float rotation, float swipeForce)
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", _parent.transform.position);
         _hitbox.enabled = true;
         _swipeForce = swipeForce;
         UpdateHitbox(rotation);

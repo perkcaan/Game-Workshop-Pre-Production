@@ -26,7 +26,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         _ctx.Animator.SetBool("Sweeping", true);
         _ctx.CanSwipe = true;
         _ctx.CanDash = true;
-        float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepMovementScaler;
+        float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
         _ctx.SweepHandler.BeginSweep(_ctx.Rotation, sweepForce);
     }
 
@@ -34,7 +34,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     {
         HandleMovement();
         HandleRotation();
-        float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepMovementScaler;
+        float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
         _ctx.SweepHandler.UpdateHitbox(_ctx.Rotation, sweepForce);
         TryChangeState();
     }

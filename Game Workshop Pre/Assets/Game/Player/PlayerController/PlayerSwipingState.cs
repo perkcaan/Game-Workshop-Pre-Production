@@ -11,6 +11,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     // Fields
     //movement
     private float _zeroMoveTimer = 0f;
+    private bool _hasSwipeBeenActivated = false;
 
     // Constructor
     public PlayerSwipingState(PlayerContext context, PlayerStateMachine state)
@@ -23,20 +24,17 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     //state
     public override void EnterState()
     {
-        _ctx.Animator.SetBool("Swiping", true);
+        _ctx.Animator.SetBool("HoldingSwipe", true);
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
-        GetSwipeRotation();
-        float swipeForce = _ctx.Player.SwipeForce + _ctx.MoveSpeed * _ctx.Player.SwipeMovementScaler;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe",_ctx.Player.transform.position);
-        _ctx.SwipeHandler.DoSwipe(_ctx.Rotation, swipeForce);
-        _ctx.Player.StartCoroutine(SwipeDuration());
+        _hasSwipeBeenActivated = false;
     }
 
     public override void Update()
     {
         HandleMovement();
-        _ctx.SwipeHandler.UpdateHitbox(_ctx.Rotation);
+        if (!_ctx.IsSwipePressed && !_hasSwipeBeenActivated) DoSwipe();
+        if (_hasSwipeBeenActivated) _ctx.SwipeHandler.UpdateHitbox(_ctx.Rotation);
     }
 
     public override void ExitState()
@@ -53,12 +51,19 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
         LeaveSwipeState();
     }
 
-    //rotation
-    private void GetSwipeRotation()
+    //swipe
+    private void DoSwipe()
     {
+        Debug.Log("Release swipe");
+        _ctx.Animator.SetBool("Swiping", true);
+        _ctx.Animator.SetBool("HoldingSwipe", false);
+        _hasSwipeBeenActivated = true;
         float targetAngle = Mathf.Atan2(_ctx.StickInput.y, _ctx.StickInput.x) * Mathf.Rad2Deg;
-
         _ctx.Rotation = Mathf.DeltaAngle(0f, targetAngle); 
+        float swipeForce = _ctx.Player.BaseSwipeForce + _ctx.MoveSpeed * _ctx.Player.SwipeForceMovementScaler;
+
+        _ctx.SwipeHandler.DoSwipe(_ctx.Rotation, swipeForce);
+        _ctx.Player.StartCoroutine(SwipeDuration());
     }
 
     //movement

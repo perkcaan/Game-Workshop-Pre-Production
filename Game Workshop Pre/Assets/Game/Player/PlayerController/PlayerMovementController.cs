@@ -20,19 +20,29 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     [Header("Sweep Properties")]
     [SerializeField] private float _sweepForce = 5f;
     public float SweepForce { get { return _sweepForce; } }
-    [SerializeField][Range(0f, 2f)] private float _sweepMovementScaler = 0.1f;
-    public float SweepMovementScaler { get { return _sweepMovementScaler; } }
+    [SerializeField][Range(0f, 2f)] private float _sweepForceMovementScaler = 0.1f;
+    public float SweepForceMovementScaler { get { return _sweepForceMovementScaler; } }
 
 
     [Header("Swipe Properties")]
-    [SerializeField] private float _swipeForce = 5f;
-    public float SwipeForce { get { return _swipeForce; } }
-    [SerializeField][Range(0f, 2f)] private float _swipeMovementScaler = 0.1f;
-    public float SwipeMovementScaler { get { return _swipeMovementScaler; } }
+    [SerializeField] private float _baseSwipeForce = 5f;
+    public float BaseSwipeForce { get { return _baseSwipeForce; } }
+    [SerializeField] private float _fullChargeSwipeForce = 10f;
+    public float FullChargeSwipeForce { get { return _fullChargeSwipeForce; } }
+    [SerializeField][Range(0f, 2f)] private float _swipeForceMovementScaler = 0.1f;
+    public float SwipeForceMovementScaler { get { return _swipeForceMovementScaler; } }
+    [SerializeField] private float _swipeFullChargeTime = 5f;
+    public float SwipeFullChargeTime { get { return _swipeFullChargeTime; } }
     [SerializeField] private float _swipeDuration = 0.5f;
     public float SwipeDuration { get { return _swipeDuration; } }
     [SerializeField] private float _swipeCooldown = 1f;
     public float SwipeCooldown { get { return _swipeCooldown; } }
+        
+    [Header("Swipe Visual Line")]
+    [SerializeField] private float _swipeVisualLineDistance = 10f;
+    public float SwipeVisualLineDistance { get { return _swipeVisualLineDistance; } }
+    [SerializeField] private int _swipeVisualLineSegments = 20;
+    public int SwipeVisualLineSegments { get { return _swipeVisualLineSegments; } }
 
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
@@ -114,7 +124,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     {
         if (_state == null) return;
         _state.OnDrawGizmos();
-        DrawDashCooldownGizmo();
+        //DrawDashCooldownGizmo();
     }
 
 
@@ -156,6 +166,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
 
     private void OnSwipeInput(InputValue value)
     {
+        _ctx.IsSwipePressed = value.isPressed;
         if (_ctx.CanSwipe && _ctx.SwipeCooldownTimer <= 0f)
         {
             _state.ChangeState(PlayerStateEnum.Swiping);
