@@ -191,7 +191,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     private void OnSwipeInput(InputValue value)
     {
         _ctx.IsSwipePressed = value.isPressed;
-        if (_ctx.CanSwipe && _ctx.SwipeCooldownTimer <= 0f)
+        if (_ctx.CanSwipe && _ctx.SwipeCooldownTimer <= 0f && value.isPressed)
         {
             _state.ChangeState(PlayerStateEnum.Swiping);
         }
