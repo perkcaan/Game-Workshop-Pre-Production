@@ -59,7 +59,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         if (input.sqrMagnitude > 0.01f)
         {
             _zeroMoveTimer = 0f;
-            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxSweepSpeed, _ctx.SweepAcceleration * Time.deltaTime);
+            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxSweepWalkSpeed, _ctx.SweepAcceleration * Time.deltaTime);
          
         }
         else
@@ -79,13 +79,16 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
 
     private void HandleRotation()
     {
-        float targetAngle = Mathf.Atan2(_ctx.StickInput.y, _ctx.StickInput.x) * Mathf.Rad2Deg;
-        // Rotate slower based on speed
-        // Disabled. I think this feels bad. -Zachs
-        //float rotationSpeedReduction = Mathf.Max(_ctx.MoveSpeed / _ctx.MaxWalkSpeed, 1);
-        //float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.SweepRotationSpeed / rotationSpeedReduction * Time.deltaTime);
+        Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = mouseWorldPoint - (Vector2)_ctx.Player.transform.position;
+        direction.Normalize();
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        // Rotate slower based on speed - Disabled because I didnt like it. -Zach
+        float rotationSpeedReduction = 1f; //Mathf.Max(_ctx.MoveSpeed / _ctx.MaxWalkSpeed, 1);
 
-        _ctx.Rotation = Mathf.DeltaAngle(0f, targetAngle);
+        float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.Props.RotationSpeed / rotationSpeedReduction * Time.deltaTime);
+        _ctx.Rotation = Mathf.DeltaAngle(0f, newAngle);
+        
         
     }
 

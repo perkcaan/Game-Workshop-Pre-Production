@@ -17,7 +17,7 @@ public class PlayerContext
     // Fields
     //input
     public Vector2 MovementInput { get; set; } = Vector2.zero;
-    public Vector2 StickInput { get; set; } = Vector2.zero;
+    public Vector2 MouseInput { get; set; } = Vector2.zero;
     public bool IsSweepPressed { get; set; } = false;
     public bool IsSwipePressed { get; set; } = false;
     public bool PlayerHasControl { get; set; } = true;
@@ -34,9 +34,11 @@ public class PlayerContext
 
     //weight adjusted stats
     public float MaxWalkSpeed { get; set; } = 0f;
-    public float MaxSweepSpeed { get; set; } = 0f;
+    public float MaxSweepWalkSpeed { get; set; } = 0f;
+    public float MaxSwipeWalkSpeed { get; set; } = 0f;
     public float Acceleration { get; set; } = 0f;
     public float SweepAcceleration { get; set; } = 0f;
+    public float SwipeAcceleration { get; set; } = 0f;
 
 
     // current values

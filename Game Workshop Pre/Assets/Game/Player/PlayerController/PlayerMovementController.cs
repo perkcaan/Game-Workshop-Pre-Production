@@ -14,9 +14,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     [Header("Start Properties")]
     [SerializeField][Range(-180, 180)] private float _startAngle = 270f;
 
-    [Header("Mouse as Stick Properties")]
-    [SerializeField] private float _mouseStickSensitivity = 10f;
-
     [Header("Sweep Properties")]
     [SerializeField] private float _sweepForce = 5f;
     public float SweepForce { get { return _sweepForce; } }
@@ -31,13 +28,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     public float FullChargeSwipeForce { get { return _fullChargeSwipeForce; } }
     [SerializeField][Range(0f, 2f)] private float _swipeForceMovementScaler = 0.1f;
     public float SwipeForceMovementScaler { get { return _swipeForceMovementScaler; } }
-    [SerializeField] private float _swipeFullChargeTime = 5f;
-    public float SwipeFullChargeTime { get { return _swipeFullChargeTime; } }
+    [SerializeField] private float _swipeTimeUntilHold = 1f;
+    public float SwipeTimeUntilHold { get { return _swipeTimeUntilHold; } }
+    [SerializeField] private float _swipeHoldChargeTime = 5f;
+    public float SwipeHoldChargeTime { get { return _swipeHoldChargeTime; } }
     [SerializeField] private float _swipeDuration = 0.5f;
     public float SwipeDuration { get { return _swipeDuration; } }
     [SerializeField] private float _swipeCooldown = 1f;
     public float SwipeCooldown { get { return _swipeCooldown; } }
-        
+
+
     [Header("Swipe Visual Line")]
     [SerializeField] private float _swipeVisualLineDistance = 10f;
     public float SwipeVisualLineDistance { get { return _swipeVisualLineDistance; } }
@@ -81,7 +81,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     private void Start()
     {
         SetWeight(_weight);
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void Update()
@@ -153,6 +153,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         }
     }
 
+    private void OnMouseMoveInput(InputValue value)
+    {
+        _ctx.MouseInput = value.Get<Vector2>();
+    }
+
     private void OnMouseDeltaInput(InputValue value)
     {
         Vector2 mouseDelta = value.Get<Vector2>();
@@ -161,7 +166,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
             _targetStickPos += mouseDelta;
             _targetStickPos = _targetStickPos.normalized;
         }
-        _ctx.StickInput = Vector2.Lerp(_ctx.StickInput, _targetStickPos, 1f - Mathf.Exp(-_mouseStickSensitivity * Time.deltaTime)).normalized;
+        //_ctx.StickInput = Vector2.Lerp(_ctx.StickInput, _targetStickPos, 1f - Mathf.Exp(-_mouseStickSensitivity * Time.deltaTime)).normalized;
     }
 
     private void OnSwipeInput(InputValue value)
@@ -217,10 +222,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         PlayerMovementProps p = _movementProps; //For shorthand access
 
         _ctx.MaxWalkSpeed = p.BaseMaxWalkSpeed / (1 + weight * p.MaxWalkSpeedReduction);
-        _ctx.MaxSweepSpeed = _ctx.MaxWalkSpeed * p.SweepMaxSpeedModifier;
+        _ctx.MaxSweepWalkSpeed = _ctx.MaxWalkSpeed * p.SweepMaxSpeedModifier;
+        _ctx.MaxSwipeWalkSpeed = _ctx.MaxWalkSpeed * p.SwipeMaxSpeedModifier;
 
         _ctx.Acceleration = p.BaseAcceleration / (1 + weight * p.AccelerationReduction);
         _ctx.SweepAcceleration = _ctx.Acceleration * p.SweepAccelerationModifier;
+        _ctx.SwipeAcceleration = _ctx.Acceleration * p.SwipeAccelerationModifier;
 
         _weight = weight;
     }

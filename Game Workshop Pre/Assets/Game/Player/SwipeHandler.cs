@@ -9,10 +9,9 @@ public class SwipeHandler : MonoBehaviour
 {
 
     // Components
+    [SerializeField] private DottedParticleLine _dottedLine;
     private PlayerMovementController _parent;
     private Collider2D _hitbox;
-    [SerializeField] public ParticleSystem _swipeEffect;
-    private ParticleSystem _swipeEffectInstance;
 
     // Fields
     private float _rotation = 0f;
@@ -48,8 +47,19 @@ public class SwipeHandler : MonoBehaviour
 
         // Set the swipe box position and rotation relative to the player and their rotation
         transform.position = _parent.transform.position + ((Vector3)offset * 0.75f);
-        transform.rotation = Quaternion.Euler(0, 0, rotation + 90f);
-       
+        transform.rotation = Quaternion.Euler(0, 0, rotation + 90f);  
+    }
+
+    public void UpdateLine(float rotation, float lineDist, int linePoints)
+    {
+        float radians = rotation * Mathf.Deg2Rad;
+        Vector2 point = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * lineDist;
+        _dottedLine.UpdateLine(point, linePoints);
+    }
+
+    public void HideLine()
+    {
+        _dottedLine.HideLine();
     }
 
     public void EndSwipe()

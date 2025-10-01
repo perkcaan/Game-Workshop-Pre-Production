@@ -6,30 +6,12 @@ using UnityEngine;
 public class DottedParticleLine : MonoBehaviour
 {
     private ParticleSystem _particleSystem;
-    private float rotation = 0f;
-    private float lineDist = 5f;
-
     private void Awake()
     {
         _particleSystem = GetComponent<ParticleSystem>();
     }
 
-    private void Start()
-    {
-        float radians = rotation * Mathf.Deg2Rad;
-        Vector2 point = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * lineDist;
-        ShowLine(point, 10);
-    }
-
-    private void Update()
-    {
-        rotation++;
-        float radians = rotation * Mathf.Deg2Rad;
-        Vector2 point = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * lineDist;
-        UpdateLine(point, 10);
-    }
-
-    public void ShowLine(Vector2 endPos, int count)
+    public void UpdateLine(Vector2 endPos, int count)
     {
         _particleSystem.Clear();
         ParticleSystem.Particle[] particles = new ParticleSystem.Particle[count];
@@ -41,27 +23,7 @@ public class DottedParticleLine : MonoBehaviour
 
             particles[i].position = pos;
             particles[i].position = pos;
-            particles[i].startSize = 0.5f;
-            particles[i].startColor = Color.white;
-            particles[i].remainingLifetime = float.PositiveInfinity;
-            particles[i].startLifetime = float.PositiveInfinity;
-        }
-
-        _particleSystem.SetParticles(particles, particles.Length);
-    }
-
-    public void UpdateLine(Vector2 endPos, int count)
-    {
-        ParticleSystem.Particle[] particles = new ParticleSystem.Particle[count];
-
-        for (int i = 0; i < count; i++)
-        {
-            float t = i / (float)(count - 1); // go from 0 → 1 inclusive
-            Vector2 pos = Vector2.Lerp(Vector2.zero, endPos, t);
-
-            particles[i].position = pos;
-            particles[i].position = pos;
-            particles[i].startSize = 0.5f;
+            particles[i].startSize = 0.3f;
             particles[i].startColor = Color.white;
             particles[i].remainingLifetime = float.PositiveInfinity;
             particles[i].startLifetime = float.PositiveInfinity;
