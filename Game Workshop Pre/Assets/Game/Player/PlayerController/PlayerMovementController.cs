@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System.Collections;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable
 {
@@ -12,6 +13,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     [SerializeField] private PlayerMovementProps _movementProps;
     [SerializeField] ParticleSystem _dashfx;
     ParticleSystem _dashfxInstance;
+    public ParticleSystemForceField _forceField;
 
     [Header("Start Properties")]
     [SerializeField][Range(-180, 180)] private float _startAngle = 270f;
@@ -238,6 +240,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         //_dashfxInstance.transform.position = transform.position;
         _dashfxInstance.Play();
         _dashfxInstance.gameObject.transform.SetParent(this.transform);
+        StartCoroutine(DashGravDelay());
     }
 
 
@@ -263,6 +266,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
             Gizmos.color = Color.magenta;
             Gizmos.DrawSphere(_ctx.Player.transform.position + new Vector3(0, 1, 0), 0.1f);
         }
+    }
+
+    private IEnumerator DashGravDelay()
+    {
+        yield return new WaitForSeconds(_dashfx.duration - 1.5f);
+        Debug.Log("Gravity On");
+        _forceField.gameObject.SetActive(true);
+        yield return new WaitForSeconds(.5f);
+        _forceField.gameObject.SetActive(false);
+        
     }
     
 }
