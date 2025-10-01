@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class Heatable : MonoBehaviour
 {
 
-    //Current Heat Level
+    //Current Heat Level; Serialized for testing purposes
     [Header("Objects Current Heat Level")]
     [SerializeField] public int heatLevel;
 
@@ -18,15 +18,24 @@ public class Heatable : MonoBehaviour
     [Header("Max Allowed Heat")]
     [SerializeField] public int heatThreshold;
 
+    //Level of heat emitted by object
+    [Header("Heat Emmission")]
+    [SerializeField] int heatEmmission;
+
     private readonly int PLAYER_BASE_HEAT_FLOOR = 0;
-    private readonly float FLOOR_UPDATE_RATE = 0.5f;
+    private readonly float UPDATE_HEAT_TICK_RATE = 0.5f;
+    private readonly float ABSORPTION_TICK_RATE = 0.15f;
+    private readonly float ENTROPY_TICK_RATE = 1f;
+    private string NAME;
 
 
     public UnityEvent onRoomEnter;
 
-    private int heatFloor;
+    
     private List<GameObject> heatableList;
-    private CircleCollider2D heatLevelRadius;
+    private CircleCollider2D heatDetectionRadius;
+    private Coroutine entropyCoroutine;
+    private Coroutine absorptionCoroutine;
 
 
 
@@ -34,10 +43,11 @@ public class Heatable : MonoBehaviour
     void Start()
     {
         heatableList = new List<GameObject>();
-        heatLevelRadius = GetComponent<CircleCollider2D>();
-        heatFloor = 0;
-        StartCoroutine(HeatEntropy());
-        UpdateHeatFloor();
+        heatDetectionRadius = GetComponent<CircleCollider2D>();
+        NAME = transform.parent.name;
+        
+
+        StartCoroutine(UpdateHeat());
 
     }
 
@@ -54,36 +64,96 @@ public class Heatable : MonoBehaviour
 
     private IEnumerator HeatEntropy()
     {
-        while (true)
+
+        while (heatLevel > 0)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(ENTROPY_TICK_RATE);
             LowerHeat(heatEntropy);
         }
-        
+
+        heatLevel = 0;
     }
 
-    private IEnumerator UpdateHeatFloor()
+    private IEnumerator AbsorbHeat(int heatValue)
+    {
+        while (heatLevel <= heatValue)
+        {
+            yield return new WaitForSeconds(ABSORPTION_TICK_RATE);
+            heatLevel += (int)(heatValue * ABSORPTION_TICK_RATE);
+        }
+        StopCoroutine(absorptionCoroutine);
+        absorptionCoroutine = null;
+    }
+
+    private IEnumerator UpdateHeat()
     {
         while (true)
         {
-            yield return new WaitForSeconds(FLOOR_UPDATE_RATE);
-            heatFloor = (int)Mathf.Clamp(heatFloor, PLAYER_BASE_HEAT_FLOOR, GetAreaHeat());
+            yield return new WaitForSeconds(UPDATE_HEAT_TICK_RATE);
+            GetAreaHeat();
         }
     }
 
-    private float GetAreaHeat()
+    private void GetAreaHeat()
     {
-        return 0f;
+
+        if (heatableList.Count < 1)
+        {
+            if (entropyCoroutine == null)
+            {
+                entropyCoroutine = StartCoroutine(HeatEntropy());
+            }
+            return;
+        }
+
+        if (entropyCoroutine != null)
+        {
+            StopCoroutine(entropyCoroutine);
+            entropyCoroutine = null;
+        }
+
+        int total = 0;
+
+        foreach (GameObject other in heatableList)
+        {
+            float distanceBetween = Vector2.Distance(this.transform.position, other.transform.position);
+
+            //Check to make sure center of enemy is within the affecting proximity
+            if (distanceBetween > heatDetectionRadius.radius)
+            {
+                continue;
+            }
+
+            //Offset to get max heat effects on player when enemy is standing right next to player
+            float selfOffset = transform.parent.GetComponent<CircleCollider2D>().radius;
+            float otherOffset = other.GetComponent<CircleCollider2D>().radius;
+            float miniumDistanceBound = selfOffset + otherOffset;
+            float heatProximityRatio = (heatDetectionRadius.radius - distanceBetween) / (heatDetectionRadius.radius - miniumDistanceBound);
+            float otherHeatEmmissionLevel = other.transform.Find("HeatRadius").GetComponent<Heatable>().heatEmmission;
+
+
+            total += (int)Mathf.Clamp((otherHeatEmmissionLevel * heatProximityRatio), 0f, otherHeatEmmissionLevel);
+        }
+
+        if (total > this.heatLevel && absorptionCoroutine == null)
+        {
+            absorptionCoroutine = StartCoroutine(AbsorbHeat(total));
+        }
+        else
+        {
+            entropyCoroutine = StartCoroutine(HeatEntropy());
+        }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         
+        heatableList.Add(collision.gameObject);
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-            
+        heatableList.Remove(collision.gameObject);
     }
 
 
