@@ -90,6 +90,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     {
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
     }
 
     private void Update()
@@ -168,6 +169,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         if (!value.isPressed) return;
         if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
         {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash", transform.position);
             _state.ChangeState(PlayerStateEnum.Dash);
         }
     }
