@@ -25,17 +25,16 @@ public class PlayerDashState : BaseState<PlayerStateEnum>
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
         _ctx.DashesRemaining -= 1;
-        Vector2 velocityToUse = _ctx.FrameVelocity.normalized;
         _ctx.FrameVelocity = Vector2.zero;
         _ctx.Player.StartCoroutine(DashDuration());
 
-        // Fallback to using rotation instead of current velocity if you're standing still
-        if (velocityToUse == Vector2.zero)
-        {
-            float radians = _ctx.Rotation * Mathf.Deg2Rad;
-            velocityToUse = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)).normalized;
-        }
-        _ctx.Rigidbody.AddForce(velocityToUse * _ctx.Props.DashForce, ForceMode2D.Impulse);
+        // Set rotation and apply dash force
+        Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = mouseWorldPoint - (Vector2)_ctx.Player.transform.position;
+        direction.Normalize();
+        float radAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        _ctx.Rotation = Mathf.DeltaAngle(0f, radAngle);
+        _ctx.Rigidbody.AddForce(direction * _ctx.Props.DashForce, ForceMode2D.Impulse);
     }
 
     public override void Update()
