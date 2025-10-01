@@ -48,6 +48,7 @@ public class PlayerContext
 
     // Components
     public Rigidbody2D Rigidbody { get; set; }
+    public CircleCollider2D CircleCollider { get; set; }
     public Animator Animator { get; set; }
     public SwipeHandler SwipeHandler { get;  set; }
     public BroomSweepHandler SweepHandler { get; set; }

@@ -10,15 +10,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2056799769416364825, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_Mass
-      value: 12
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056799769416364825, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
+      propertyPath: m_LinearDrag
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2902927161834031695, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_Radius
-      value: 0.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 2902927161834031695, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_Offset.y
-      value: -0.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2902927161834031695, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_IsTrigger
@@ -42,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5177245775491380141, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_Offset.y
-      value: -0.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5177245775491380141, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_IsTrigger
@@ -50,7 +54,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5177245775491380141, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits
-      value: 2176
+      value: 2048
+      objectReference: {fileID: 0}
+    - target: {fileID: 5523424973601746774, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
+      propertyPath: _size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5523424973601746774, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
+      propertyPath: _explosionMultiplier
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5523424973601746774, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
+      propertyPath: _velocityToTurnIntoTrash
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 8463100783619515745, guid: fdc8193baf16b1d49a5944dd63583a6f, type: 3}
       propertyPath: m_LocalPosition.x
