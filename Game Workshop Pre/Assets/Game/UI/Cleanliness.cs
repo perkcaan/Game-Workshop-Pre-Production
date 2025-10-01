@@ -33,6 +33,8 @@ public class Cleanliness : MonoBehaviour
 
     private void OnPlayerEnterRoom(bool entered)
     {
+        if (PlayerState.Instance.currentRoom == currentPlayerRoom) return;
+
         if (entered)
         {
             //Show HUD
@@ -57,6 +59,7 @@ public class Cleanliness : MonoBehaviour
         }
         else // if player leaves room
         {
+            currentPlayerRoom = null;
             cleanBar.gameObject.SetActive(false);
             cleanText.enabled = false;
         }
