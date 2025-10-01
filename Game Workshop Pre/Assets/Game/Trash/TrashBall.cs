@@ -109,7 +109,7 @@ public class TrashBall : Trash
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
-            trashMono.gameObject.SetActive(true);
+            if (trashMono != null) trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallExplode(this);
         }
         Destroy(gameObject);
@@ -123,6 +123,17 @@ public class TrashBall : Trash
             trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallExplode(this);
         }
+        Destroy(gameObject);
+    }
+
+    public void TempMelt() //TODO: temporary rework melting / burning to destroy objects inside
+    {
+        foreach (IAbsorbable absorbable in absorbedObjects)
+        {
+            MonoBehaviour trashMono = absorbable as MonoBehaviour;
+            Destroy(trashMono.gameObject);
+        }
+        absorbedObjects.Clear();
         Destroy(gameObject);
     }
 }

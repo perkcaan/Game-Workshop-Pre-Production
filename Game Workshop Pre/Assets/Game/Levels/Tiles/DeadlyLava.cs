@@ -14,7 +14,8 @@ public class DeadlyLava : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out TrashBall trashBall))
         {
             // TODO: replace damage with heat and put this into a trigger enter. Heat mechanics haven't been added yet.
-            trashBall.TakeDamage(999);
+            trashBall.TempMelt();
+            PlayerState.Instance.trashDeleted.Invoke(trashBall.Size);
         }
     }
 }
