@@ -2,71 +2,155 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class EnemySpawnData
+{
+    public BaseEnemy enemy; // Reference to the enemy prefab
+    [Range(0f, 5f)] // Max of 5 Enemy Types
+    public float spawnChance; // Spawn chance
+}
+
 public class EnemySpawner : MonoBehaviour
 {
+    [Header("Enemy Types")]
+    [SerializeField] private List<EnemySpawnData> enemiesToSpawn; // Editable list of potential Enemies
 
-    [SerializeField] private BaseEnemy[] enemyTypes; // Types of enemies instantiated by the spawner
+    [Header("Spawn Settings")]
+    public bool active; // Is spawner active?
+    public float spawnInterval; // Spawn interval
+    public float spawnRadius; // Spawn radius
 
-    public float interval; // Spawn interval
+    // Wave Manager
+    private WaveManager wm;
+    private bool wave; // Toggle wave activity
+    private float wave_interval; // Duration between waves
 
-    public float spawnRadius;
-
-
+    #region START_&_UPDATE
     private void Start()
     {
-        StartCoroutine(EnemySpawnTimer(interval));
+        // Connect spawner to WaveManager
+        wm = FindFirstObjectByType<WaveManager>();
+        wave_interval = wm.GetGlobalWaveInterval();
+
+        // Start coroutines for wave timing and enemy spawning
+        StartCoroutine(WaveCycle());
+        StartCoroutine(EnemySpawnTimer());
     }
 
     void Update()
     {
-        SpawnEnemies();
+        AdjustSpawnChance();
     }
+    #endregion
 
+    #region ENEMY_SPAWNING
     private void SpawnEnemies()
     {
-        // Pick random enemy
-        int randSelect = Random.Range(0, (enemyTypes.Length - 1));
+        BaseEnemy newEnemy = GetRandomEnemy();
 
-        // Find spawn position
-        Vector2 spawnPos = FindSpawnPos();
+        Vector2 spawnPos = FindSpawnPos(); // Locates open spawn position within dedicated radius
 
-        // Spawn enemy at spawn pos
-        BaseEnemy newEnemy = Instantiate(enemyTypes[randSelect], spawnPos, Quaternion.identity);
-
-        Debug.Log("Enemy Spawned");
-
+        Instantiate(newEnemy, spawnPos, Quaternion.identity);
+        Debug.Log(newEnemy.name + " spawned");
     }
 
     private Vector2 FindSpawnPos()
     {
-
-        for (int i = 0; i < 20; i++) // Will attempt twenty times
+        for (int i = 0; i < 20; i++)
         {
-
-            // Fin random position in radius
             Vector2 randomOffset = Random.insideUnitCircle * spawnRadius;
             Vector2 foundPos = (Vector2)transform.position + randomOffset;
-            
-            // Check position for collision
+
             RaycastHit2D hit = Physics2D.Raycast(transform.position, randomOffset.normalized, spawnRadius);
 
-            // If no collision found, return pos
             if (hit.collider == null || !hit.collider.CompareTag("Wall"))
             {
                 return foundPos;
             }
         }
-        
+
         return Vector2.zero;
     }
 
-    IEnumerator EnemySpawnTimer(float time)
+    private BaseEnemy GetRandomEnemy()
+    {
+        float sum = 0f;
+        foreach (var enemyInfo in enemiesToSpawn)
+        {
+            sum += enemyInfo.spawnChance;
+        }
+
+        float randNum = Random.value * sum;
+
+        // Checks which enemy's spawn chance the randNum falls under
+        foreach (var enemyInfo in enemiesToSpawn)
+        {
+            if (randNum < enemyInfo.spawnChance)
+                return enemyInfo.enemy;
+            randNum -= enemyInfo.spawnChance;
+        }
+
+        return enemiesToSpawn[0].enemy;
+    }
+    #endregion
+
+    #region TIMERS
+
+    IEnumerator EnemySpawnTimer()
     {
         while (true)
         {
-            SpawnEnemies();
-            yield return new WaitForSeconds(time);
+            if (active && wave)
+                SpawnEnemies();
+
+            yield return new WaitForSeconds(spawnInterval);
         }
-        
     }
+
+    IEnumerator WaveCycle()
+    {
+        while (true)
+        {
+            // Start wave
+            wave = true;
+            float waveDuration = wave_interval; // Wave duration inherits from global wave interval
+            Debug.Log("Wave start");
+            yield return new WaitForSeconds(waveDuration);
+
+            // End wave
+            wave = false;
+            Debug.Log("Wave end.");
+            yield return new WaitForSeconds(wave_interval); // Time between waves
+        }
+    }
+    #endregion
+
+    #region SPAWN_CHANCE
+    private void AdjustSpawnChance()
+    {
+        // Checks if collective spawn chance = 100
+        float sum = 0f;
+        foreach (var enemyInfo in enemiesToSpawn)
+            sum += enemyInfo.spawnChance;
+        if (Mathf.Approximately(sum, 100f))
+            return;
+
+        // If not, adjusts all enemy spawn chances proportional to others
+        float diff = 100f - sum;
+
+        foreach (var enemyInfo in enemiesToSpawn)
+        {
+            enemyInfo.spawnChance += (enemyInfo.spawnChance / sum) * diff;
+        }
+    }
+
+    public void SetSpawnChance(BaseEnemy enemy, float newSpawnChance)
+    {
+        var data = enemiesToSpawn.Find(d => d.enemy == enemy);
+        if (data == null) return;
+
+        data.spawnChance = Mathf.Clamp(newSpawnChance, 0f, 100f);
+        AdjustSpawnChance();
+    }
+    #endregion
 }
