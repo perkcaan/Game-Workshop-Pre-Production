@@ -112,6 +112,10 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2667248249660854184, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3a999aa45d62de14b95805e69ba7f611, type: 2}
     - target: {fileID: 9053396123853963788, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
       propertyPath: m_Radius
       value: 0.5
@@ -123,5 +127,26 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1034961219214558266, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1392418573012059267}
   m_SourcePrefab: {fileID: 100100000, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
+--- !u!1 &5539619968716534511 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1034961219214558266, guid: 9d8fe522c15c3fd4ca61f7e93f790a39, type: 3}
+  m_PrefabInstance: {fileID: 4808794077335434965}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1392418573012059267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5539619968716534511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 599858fa253ce074d8ef941b77c9b6b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heatLevel: 0

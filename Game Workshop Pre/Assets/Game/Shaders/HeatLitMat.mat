@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeatLitMat
-  m_Shader: {fileID: -6465566751694194690, guid: 7e8becf8106200f48b3d0be239a41313, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 877ada6d4050b1b44a4b7eb506eaca6c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -54,6 +54,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _GlowMulti: 1.5
     - _Heat: 0
     - _MinTint: 0.3
     - _QueueControl: 0
