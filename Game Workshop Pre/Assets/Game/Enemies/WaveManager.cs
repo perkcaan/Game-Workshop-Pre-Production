@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class WaveManager : MonoBehaviour
+public class WaveManager : MonoBehaviour // Singleton that should be assigned to one game object only
 {
 
     public static WaveManager Instance { get; private set; }
@@ -23,6 +23,8 @@ public class WaveManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject); // Exists across all scenes
     }
+
+    
 
     public int GetGlobalWaveInterval()
     {
