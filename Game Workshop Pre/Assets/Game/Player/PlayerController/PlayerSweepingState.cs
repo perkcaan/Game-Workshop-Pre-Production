@@ -44,7 +44,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         _ctx.SweepHandler.EndSweep();
         _ctx.Animator.SetBool("Sweeping", false);
     }
-    
+
     public override void OnDrawGizmos()
     {
         DrawRotationGizmo();
@@ -60,7 +60,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         {
             _zeroMoveTimer = 0f;
             _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxSweepSpeed, _ctx.SweepAcceleration * Time.deltaTime);
-         
+
         }
         else
         {
@@ -86,7 +86,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         //float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.SweepRotationSpeed / rotationSpeedReduction * Time.deltaTime);
 
         _ctx.Rotation = Mathf.DeltaAngle(0f, targetAngle);
-        
+
     }
 
     //state
@@ -107,6 +107,6 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawSphere(circlePos, circleRadius);
-        
+
     }
 }

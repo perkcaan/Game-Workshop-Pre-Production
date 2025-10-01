@@ -10,6 +10,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
 
     // Properties
     [SerializeField] private PlayerMovementProps _movementProps;
+    [SerializeField] ParticleSystem _dashfx;
+    ParticleSystem _dashfxInstance;
 
     [Header("Start Properties")]
     [SerializeField][Range(-180, 180)] private float _startAngle = 270f;
@@ -72,12 +74,17 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     {
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Locked;
+        
+
     }
 
     private void Update()
     {
         _state.Update();
         UpdateCooldowns();
+        Transform transform = this.transform;
+        //_dashfxInstance = Instantiate(_dashfx, transform.position, Quaternion.Euler(0, 0, 0));
+        _dashfx.gameObject.transform.SetParent(this.transform);
     }
     private void FixedUpdate()
     {
@@ -96,10 +103,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         // Dash timer
         if (_ctx.DashCooldownTimer > 0f)
         {
+            
             _ctx.DashCooldownTimer = Mathf.Max(_ctx.DashCooldownTimer - Time.deltaTime, 0f);
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
+                SpawnDashFX();
             }
         }
 
@@ -220,6 +229,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     {
         _state.ChangeState(PlayerStateEnum.Tumble);
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
+    }
+
+    private void SpawnDashFX()
+    {
+        
+        _dashfxInstance = Instantiate(_dashfx, transform.position, Quaternion.Euler(0, 0, 0));
+        //_dashfxInstance.transform.position = transform.position;
+        _dashfxInstance.Play();
+        _dashfxInstance.gameObject.transform.SetParent(this.transform);
     }
 
 

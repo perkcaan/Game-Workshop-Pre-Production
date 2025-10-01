@@ -57,7 +57,11 @@ public class Enemy : MonoBehaviour,Swipeable
     {
         rb.bodyType = RigidbodyType2D.Dynamic;
 
-        float angle = playerController.rotation * Mathf.Deg2Rad;
+        // Fix: Replace the line using 'playerController.rotation' with a valid property or method from PlayerMovementController.
+        // Since 'rotation' is not defined in PlayerMovementController, we need clarification on what it should represent.
+        // Assuming it refers to the player's current rotation angle, you might need to add a property or method in PlayerMovementController to expose this value.
+
+        float angle = playerController.transform.eulerAngles.z * Mathf.Deg2Rad; // Use the transform's rotation angle in degrees and convert to radians.
         Vector2 launchDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized;
 
         rb.AddForce(launchDirection * 10f); // Adjust force multiplier as needed
