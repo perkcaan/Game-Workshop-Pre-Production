@@ -70,16 +70,21 @@ public class Heatable : MonoBehaviour
             yield return new WaitForSeconds(ENTROPY_TICK_RATE);
             LowerHeat(heatEntropy);
         }
-
         heatLevel = 0;
     }
 
     private IEnumerator AbsorbHeat(int heatValue)
     {
-        while (heatLevel <= heatValue)
+        while (this.heatLevel < heatValue)
         {
+            float incrementAmount = heatValue * ABSORPTION_TICK_RATE;
             yield return new WaitForSeconds(ABSORPTION_TICK_RATE);
-            heatLevel += (int)(heatValue * ABSORPTION_TICK_RATE);
+            if (incrementAmount < 1)
+            {
+                heatLevel += 1;
+            }
+            else
+                heatLevel += (int)(heatValue * ABSORPTION_TICK_RATE);
         }
         StopCoroutine(absorptionCoroutine);
         absorptionCoroutine = null;
@@ -117,6 +122,7 @@ public class Heatable : MonoBehaviour
         foreach (GameObject other in heatableList)
         {
             float distanceBetween = Vector2.Distance(this.transform.position, other.transform.position);
+            Debug.Log($"Loop for: {other.transform.name} for {NAME}");
 
             //Check to make sure center of enemy is within the affecting proximity
             if (distanceBetween > heatDetectionRadius.radius)
@@ -139,15 +145,16 @@ public class Heatable : MonoBehaviour
         {
             absorptionCoroutine = StartCoroutine(AbsorbHeat(total));
         }
-        else
+        else if (total < this.heatLevel && entropyCoroutine == null && absorptionCoroutine != null) 
         {
+            StopCoroutine(absorptionCoroutine);
             entropyCoroutine = StartCoroutine(HeatEntropy());
+            absorptionCoroutine = null;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
         heatableList.Add(collision.gameObject);
     }
 
