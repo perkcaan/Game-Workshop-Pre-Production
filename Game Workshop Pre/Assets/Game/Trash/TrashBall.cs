@@ -51,7 +51,6 @@ public class TrashBall : Trash
 
     protected void OnTriggerEnter2D(Collider2D other)
     {
-
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
             float absorbingPower = _rigidBody.velocity.magnitude * Size;
@@ -61,6 +60,7 @@ public class TrashBall : Trash
 
         if (other.gameObject.TryGetComponent(out TrashBall otherTrashBall))
         {
+            if (otherTrashBall == null) return;
             if (!otherTrashBall.isActiveAndEnabled) return;
             // Priority- only one of the colliders can run OnTrashMerge
             // first check forced merge priority
@@ -84,6 +84,7 @@ public class TrashBall : Trash
                 return;
 
             // If same speed, force winner to be based on the arbitrary TrashId
+            
             if (TrashId > otherTrashBall.TrashId)
             {
                 OnTrashBallMerge(otherTrashBall);
@@ -93,7 +94,7 @@ public class TrashBall : Trash
 
     protected void OnTrashBallMerge(TrashBall otherTrashBall)
     {
-        //if (!otherTrashBall.isActiveAndEnabled) return;
+        if (!otherTrashBall.isActiveAndEnabled) return;
 
         foreach (IAbsorbable absorbable in otherTrashBall.absorbedObjects)
         {

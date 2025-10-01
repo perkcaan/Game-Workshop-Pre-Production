@@ -11,7 +11,6 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
 
     // original material
     private PhysicsMaterial2D _originalMaterial;
-    private bool _isAbsorbed;
 
     // Fields
     public PlayerAbsorbedState(PlayerContext context, PlayerStateMachine state)
@@ -31,15 +30,12 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
         _originalMaterial = _ctx.Rigidbody.sharedMaterial;
         _ctx.Rigidbody.sharedMaterial = _ctx.Props.TumbleMaterial;
         _ctx.CircleCollider.enabled = false;
-
-        _isAbsorbed = true;
     }
 
     public override void Update()
     {
         Transform trashBallTranform = _ctx.Player.absorbedTrashBall.transform;
         _ctx.Player.transform.position = new Vector3(trashBallTranform.position.x, trashBallTranform.position.y, _ctx.Player.transform.position.z);
-        TryChangeState();
     }
 
     public override void ExitState()
@@ -50,17 +46,6 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
         _ctx.PlayerHasControl = true;
         _ctx.Rigidbody.sharedMaterial = _originalMaterial;
         _ctx.CircleCollider.enabled = true;
-
-        _isAbsorbed = false;
-    }
-
-    //state
-    private void TryChangeState()
-    {
-        if (!_isAbsorbed)
-        {
-            _state.ChangeState(PlayerStateEnum.Idle);
-        }
     }
 
 }
