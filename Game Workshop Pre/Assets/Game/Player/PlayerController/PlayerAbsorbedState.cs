@@ -9,10 +9,6 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
 
-    // original material
-    private PhysicsMaterial2D _originalMaterial;
-    private bool _isAbsorbed;
-
     // Fields
     public PlayerAbsorbedState(PlayerContext context, PlayerStateMachine state)
     {
@@ -26,20 +22,16 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
     {
         _ctx.Animator.SetBool("Absorbed", true);
         _ctx.CanSwipe = false;
+        _ctx.CanDash = false;
         _ctx.PlayerHasControl = false;
         _ctx.IsSweepPressed = false;
-        _originalMaterial = _ctx.Rigidbody.sharedMaterial;
-        _ctx.Rigidbody.sharedMaterial = _ctx.Props.TumbleMaterial;
-        _ctx.CircleCollider.enabled = false;
-
-        _isAbsorbed = true;
+        _ctx.Collider.enabled = false;
     }
 
     public override void Update()
     {
-        Transform trashBallTranform = _ctx.Player.absorbedTrashBall.transform;
+        Transform trashBallTranform = _ctx.AbsorbedTrashBall.transform;
         _ctx.Player.transform.position = new Vector3(trashBallTranform.position.x, trashBallTranform.position.y, _ctx.Player.transform.position.z);
-        TryChangeState();
     }
 
     public override void ExitState()
@@ -48,19 +40,7 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
         _ctx.Animator.SetBool("Absorbed", false);
         _ctx.Animator.speed = 1;
         _ctx.PlayerHasControl = true;
-        _ctx.Rigidbody.sharedMaterial = _originalMaterial;
-        _ctx.CircleCollider.enabled = true;
-
-        _isAbsorbed = false;
-    }
-
-    //state
-    private void TryChangeState()
-    {
-        if (!_isAbsorbed)
-        {
-            _state.ChangeState(PlayerStateEnum.Idle);
-        }
+        _ctx.Collider.enabled = true;
     }
 
 }

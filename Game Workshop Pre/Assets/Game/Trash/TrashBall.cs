@@ -93,7 +93,7 @@ public class TrashBall : Trash
 
     protected void OnTrashBallMerge(TrashBall otherTrashBall)
     {
-        //if (!otherTrashBall.isActiveAndEnabled) return;
+        if (!otherTrashBall.isActiveAndEnabled) return;
 
         foreach (IAbsorbable absorbable in otherTrashBall.absorbedObjects)
         {

@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 145a8dfce447f914296d04946d7a5634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dottedLine: {fileID: 0}
+  _dottedLine: {fileID: 3943152292553313007}
 --- !u!1 &2154542791780319770
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,6 +548,8 @@ MonoBehaviour:
     _rotationSpeed: 8
     _sweepMaxSpeedModifier: 0.8
     _sweepAccelerationModifier: 1
+    _swipeMaxSpeedModifier: 0.5
+    _swipeAccelerationModifier: 0.7
     _dashRowCount: 3
     _dashForce: 14
     _dashDuration: 0.2
@@ -558,18 +560,19 @@ MonoBehaviour:
     _accelerationReduction: 0.5
     _rotationSpeedReduction: 0.8
   _startAngle: -90
-  _mouseStickSensitivity: 10
   _sweepForce: 5
   _sweepForceMovementScaler: 0.1
   _baseSwipeForce: 5
   _fullChargeSwipeForce: 10
   _swipeForceMovementScaler: 0.1
-  _swipeTimeUntilHold: 0.4
+  _swipeTimeUntilHold: 0.25
   _swipeHoldChargeTime: 2
   _swipeDuration: 0.34
   _swipeCooldown: 0.2
-  _swipeVisualLineDistance: 10
-  _swipeVisualLineSegments: 20
+  _absorbResistance: 125
+  _minTrashSizeToAbsorb: 3
+  _swipeVisualLineDistance: 3
+  _swipeVisualLineSegments: 5
   _footstepCooldown: 0
 --- !u!114 &8569040654837417826
 MonoBehaviour:
@@ -619,7 +622,7 @@ Transform:
   m_GameObject: {fileID: 7946498309218380465}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

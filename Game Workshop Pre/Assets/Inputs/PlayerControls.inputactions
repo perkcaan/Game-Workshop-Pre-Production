@@ -42,6 +42,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "EscapeTrashBallInput",
+                    "type": "Button",
+                    "id": "a49fb0ae-fa53-45dd-be0b-c564aa32df92",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "MouseMoveInput",
                     "type": "Value",
                     "id": "eab0adb6-caa3-4262-baec-b6137a4b5ccb",
@@ -179,6 +188,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "DashInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7ad0e07b-30f5-459c-80fd-1c08c5eb097a",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EscapeTrashBallInput",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

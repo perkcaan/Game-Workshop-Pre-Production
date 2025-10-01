@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class PlayerMovementController : MonoBehaviour, ISwipeable
+public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
 {
 
     #region header
@@ -36,6 +36,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     public float SwipeDuration { get { return _swipeDuration; } }
     [SerializeField] private float _swipeCooldown = 1f;
     public float SwipeCooldown { get { return _swipeCooldown; } }
+
+    [Header("Absorbed Properties")]
+    [SerializeField] private float _absorbResistance;
+    [SerializeField] private float _minTrashSizeToAbsorb;
 
 
     [Header("Swipe Visual Line")]
@@ -74,6 +78,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         _ctx.Animator = GetComponent<Animator>();
         _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
         _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
+        _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
     }
@@ -179,6 +184,14 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     }
 
 
+    private void OnEscapeTrashBallInput(InputValue value)
+    {
+        if (_ctx.AbsorbedTrashBall != null)
+        {
+            _ctx.Animator.speed += 0.3f;
+            _ctx.AbsorbedTrashBall.TakeDamage(1);
+        }
+    }
 
     //collision
     private void OnCollisionEnter2D(Collision2D collision)
@@ -265,4 +278,21 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         }
     }
     
+
+
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    {
+        if (forcedAbsorb || (absorbingPower > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
+        {
+            trashBall.absorbedObjects.Add(this);
+            _ctx.AbsorbedTrashBall = trashBall;
+            _state.ChangeState(PlayerStateEnum.Absorbed);
+        }
+    }
+
+    public void OnTrashBallExplode(TrashBall trashBall)
+    {
+        _ctx.AbsorbedTrashBall = null;
+        _state.ChangeState(PlayerStateEnum.Idle);
+    }
 }

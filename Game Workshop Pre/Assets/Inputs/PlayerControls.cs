@@ -64,6 +64,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""EscapeTrashBallInput"",
+                    ""type"": ""Button"",
+                    ""id"": ""a49fb0ae-fa53-45dd-be0b-c564aa32df92"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""MouseMoveInput"",
                     ""type"": ""Value"",
                     ""id"": ""eab0adb6-caa3-4262-baec-b6137a4b5ccb"",
@@ -203,6 +212,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""DashInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ad0e07b-30f5-459c-80fd-1c08c5eb097a"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EscapeTrashBallInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -215,6 +235,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Default_SweepInput = m_Default.FindAction("SweepInput", throwIfNotFound: true);
         m_Default_SwipeInput = m_Default.FindAction("SwipeInput", throwIfNotFound: true);
         m_Default_DashInput = m_Default.FindAction("DashInput", throwIfNotFound: true);
+        m_Default_EscapeTrashBallInput = m_Default.FindAction("EscapeTrashBallInput", throwIfNotFound: true);
         m_Default_MouseMoveInput = m_Default.FindAction("MouseMoveInput", throwIfNotFound: true);
         m_Default_MouseDeltaInput = m_Default.FindAction("MouseDeltaInput", throwIfNotFound: true);
     }
@@ -282,6 +303,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_SweepInput;
     private readonly InputAction m_Default_SwipeInput;
     private readonly InputAction m_Default_DashInput;
+    private readonly InputAction m_Default_EscapeTrashBallInput;
     private readonly InputAction m_Default_MouseMoveInput;
     private readonly InputAction m_Default_MouseDeltaInput;
     public struct DefaultActions
@@ -292,6 +314,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @SweepInput => m_Wrapper.m_Default_SweepInput;
         public InputAction @SwipeInput => m_Wrapper.m_Default_SwipeInput;
         public InputAction @DashInput => m_Wrapper.m_Default_DashInput;
+        public InputAction @EscapeTrashBallInput => m_Wrapper.m_Default_EscapeTrashBallInput;
         public InputAction @MouseMoveInput => m_Wrapper.m_Default_MouseMoveInput;
         public InputAction @MouseDeltaInput => m_Wrapper.m_Default_MouseDeltaInput;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
@@ -315,6 +338,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DashInput.started += instance.OnDashInput;
             @DashInput.performed += instance.OnDashInput;
             @DashInput.canceled += instance.OnDashInput;
+            @EscapeTrashBallInput.started += instance.OnEscapeTrashBallInput;
+            @EscapeTrashBallInput.performed += instance.OnEscapeTrashBallInput;
+            @EscapeTrashBallInput.canceled += instance.OnEscapeTrashBallInput;
             @MouseMoveInput.started += instance.OnMouseMoveInput;
             @MouseMoveInput.performed += instance.OnMouseMoveInput;
             @MouseMoveInput.canceled += instance.OnMouseMoveInput;
@@ -337,6 +363,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DashInput.started -= instance.OnDashInput;
             @DashInput.performed -= instance.OnDashInput;
             @DashInput.canceled -= instance.OnDashInput;
+            @EscapeTrashBallInput.started -= instance.OnEscapeTrashBallInput;
+            @EscapeTrashBallInput.performed -= instance.OnEscapeTrashBallInput;
+            @EscapeTrashBallInput.canceled -= instance.OnEscapeTrashBallInput;
             @MouseMoveInput.started -= instance.OnMouseMoveInput;
             @MouseMoveInput.performed -= instance.OnMouseMoveInput;
             @MouseMoveInput.canceled -= instance.OnMouseMoveInput;
@@ -366,6 +395,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSweepInput(InputAction.CallbackContext context);
         void OnSwipeInput(InputAction.CallbackContext context);
         void OnDashInput(InputAction.CallbackContext context);
+        void OnEscapeTrashBallInput(InputAction.CallbackContext context);
         void OnMouseMoveInput(InputAction.CallbackContext context);
         void OnMouseDeltaInput(InputAction.CallbackContext context);
     }
