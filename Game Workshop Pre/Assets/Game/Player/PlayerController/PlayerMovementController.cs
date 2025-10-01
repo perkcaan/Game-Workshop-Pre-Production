@@ -51,6 +51,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
 
+    [Header("Effects")]
+    [SerializeField] private ParticleSystem _dashRestoreParticles; // Remove when particle manager is made
+
 
     // Fields
     //weight
@@ -115,6 +118,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
+                _dashRestoreParticles.Play();
             }
         }
 
@@ -130,6 +134,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         if (_state == null) return;
         _state.OnDrawGizmos();
         //DrawDashCooldownGizmo();
+    }
+
+
+    //collision
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("EndPoint"))
+        {
+            SceneManager.LoadScene("RebuildScene");
+        }
     }
 
 
@@ -193,15 +207,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         }
     }
 
-    //collision
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("EndPoint"))
-        {
-            SceneManager.LoadScene("RebuildScene");
-        }
-    }
-
 
     // master movement handler using variables modified by state.
     private void UpdateMovement()
@@ -253,6 +258,23 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
+    // IAbsorbable
+
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    {
+        if (forcedAbsorb || (absorbingPower > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
+        {
+            trashBall.absorbedObjects.Add(this);
+            _ctx.AbsorbedTrashBall = trashBall;
+            _state.ChangeState(PlayerStateEnum.Absorbed);
+        }
+    }
+
+    public void OnTrashBallExplode(TrashBall trashBall)
+    {
+        _ctx.AbsorbedTrashBall = null;
+        _state.ChangeState(PlayerStateEnum.Idle);
+    }
 
 
 
@@ -277,22 +299,5 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
             Gizmos.DrawSphere(_ctx.Player.transform.position + new Vector3(0, 1, 0), 0.1f);
         }
     }
-    
 
-
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
-    {
-        if (forcedAbsorb || (absorbingPower > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
-        {
-            trashBall.absorbedObjects.Add(this);
-            _ctx.AbsorbedTrashBall = trashBall;
-            _state.ChangeState(PlayerStateEnum.Absorbed);
-        }
-    }
-
-    public void OnTrashBallExplode(TrashBall trashBall)
-    {
-        _ctx.AbsorbedTrashBall = null;
-        _state.ChangeState(PlayerStateEnum.Idle);
-    }
 }

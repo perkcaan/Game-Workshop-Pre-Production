@@ -52,7 +52,6 @@ public class PlayerContext
     public Animator Animator { get; set; }
     public SwipeHandler SwipeHandler { get;  set; }
     public BroomSweepHandler SweepHandler { get; set; }
-
     public TrashBall AbsorbedTrashBall { get; set; }
 
     public PlayerContext(PlayerMovementController player, PlayerMovementProps props)
