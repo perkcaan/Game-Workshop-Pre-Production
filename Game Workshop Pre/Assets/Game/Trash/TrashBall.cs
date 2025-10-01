@@ -51,7 +51,6 @@ public class TrashBall : Trash
 
     protected void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.isTrigger) return;
 
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
