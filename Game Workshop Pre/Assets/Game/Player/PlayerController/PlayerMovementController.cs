@@ -40,7 +40,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     [Header("Absorbed Properties")]
     [SerializeField] private float _absorbResistance;
     [SerializeField] private float _minTrashSizeToAbsorb;
-
+    [SerializeField] private int _playerEscapeDamage;
 
     [Header("Swipe Visual Line")]
     [SerializeField] private float _swipeVisualLineDistance = 10f;
@@ -205,7 +205,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         if (_ctx.AbsorbedTrashBall != null)
         {
             _ctx.Animator.speed += 0.3f;
-            _ctx.AbsorbedTrashBall.TakeDamage(1);
+            _ctx.AbsorbedTrashBall.TakeDamage(_playerEscapeDamage);
         }
     }
 
