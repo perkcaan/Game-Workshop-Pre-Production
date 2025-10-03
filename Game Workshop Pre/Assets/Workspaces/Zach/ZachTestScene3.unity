@@ -20966,10 +20966,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7819092179503157042, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
-      insertIndex: 7
-      addedObject: {fileID: 1883027962}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
 --- !u!4 &683845520 stripped
 Transform:
@@ -29478,6 +29475,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SmallTrash
       objectReference: {fileID: 0}
+    - target: {fileID: 7382410124666988906, guid: 0cc53447708e0644f8ff791c9d814292, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3a999aa45d62de14b95805e69ba7f611, type: 2}
     - target: {fileID: 7940897791297903626, guid: 0cc53447708e0644f8ff791c9d814292, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.857072
@@ -29640,7 +29641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e35ddcfb90ff584ba386e5b463eec39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseTemperature: 30
+  _baseTemperature: 100
 --- !u!1001 &1526300763
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31919,25 +31920,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cc53447708e0644f8ff791c9d814292, type: 3}
---- !u!1 &1883027953 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7819092179503157042, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
-  m_PrefabInstance: {fileID: 671151977}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1883027962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1883027953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f15b54fd5202f44097d52e2dfee6476, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _heat: 0
-  _heatRelaxationRate: 1
 --- !u!4 &1886639317 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1691545582168769348, guid: 7ea53b469f21753458e0d1342451c092, type: 3}

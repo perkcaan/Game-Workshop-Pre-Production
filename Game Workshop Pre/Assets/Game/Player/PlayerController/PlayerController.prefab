@@ -5206,6 +5206,7 @@ GameObject:
   - component: {fileID: 4826857485551569489}
   - component: {fileID: 5170008795486251839}
   - component: {fileID: 7798754160137196653}
+  - component: {fileID: 8808070966336400160}
   - component: {fileID: 8569040654837417826}
   m_Layer: 9
   m_Name: PlayerController
@@ -5254,7 +5255,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 25e1d5e9a5e21ca4781576e75e644703, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5444,6 +5445,23 @@ MonoBehaviour:
   _swipeVisualLineSegments: 5
   _footstepCooldown: 0
   _dashRestoreParticles: {fileID: 6132845749109893591}
+--- !u!114 &8808070966336400160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7819092179503157042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f15b54fd5202f44097d52e2dfee6476, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heat: 0
+  _heatRelaxationRate: 5
+  _warningThreshold: 60
+  _ignitionThreshold: 90
+  _maxFlashFrequency: 7
 --- !u!114 &8569040654837417826
 MonoBehaviour:
   m_ObjectHideFlags: 0
