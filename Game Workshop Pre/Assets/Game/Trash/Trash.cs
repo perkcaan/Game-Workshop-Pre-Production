@@ -7,10 +7,6 @@ public abstract class Trash : MonoBehaviour, IAbsorbable
 {
     [SerializeField] protected GameObject _trashBallPrefab;
     [SerializeField] protected float _explosionMultiplier;
-    // Trash IDs to solve trash merge ties
-    private static int _nextId = 0;
-    public int TrashId { get; private set; }
-
 
     [Header("Trash")]
     [SerializeField] public float Size;
@@ -24,7 +20,6 @@ public abstract class Trash : MonoBehaviour, IAbsorbable
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _mergableDelay = 1f;
-        TrashId = _nextId++;
     }
 
     protected void CreateTrashBall()
