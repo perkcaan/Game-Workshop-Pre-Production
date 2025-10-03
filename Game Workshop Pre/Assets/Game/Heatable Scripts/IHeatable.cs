@@ -7,8 +7,7 @@ using UnityEngine;
 
 public interface IHeatable
 {
-    public void OnIgnition()
-    {
-        
-    }
+    public void OnIgnite(HeatMechanic heat);
 }
+
+

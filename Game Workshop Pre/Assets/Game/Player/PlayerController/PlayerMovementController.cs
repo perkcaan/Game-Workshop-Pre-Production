@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
+public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable
 {
 
     #region header
@@ -276,6 +276,13 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     {
         _ctx.AbsorbedTrashBall = null;
         _state.ChangeState(PlayerStateEnum.Idle);
+    }
+
+    // IHeatable
+    public void OnIgnite(HeatMechanic heat)
+    {
+        transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
+        heat.Reset();
     }
 
 

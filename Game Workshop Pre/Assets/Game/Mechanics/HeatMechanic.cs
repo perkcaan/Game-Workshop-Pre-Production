@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HeatMechanic : MonoBehaviour
@@ -16,7 +17,6 @@ public class HeatMechanic : MonoBehaviour
     public int Heat
     {
         get { return Mathf.RoundToInt(_heat); }
-        set { _heat = Mathf.Clamp(value, LOWEST_HEAT_VALUE, HIGHEST_HEAT_VALUE); }
     }
 
     [Tooltip("The rate per second at which heat returns to room temperature.")]
@@ -27,12 +27,16 @@ public class HeatMechanic : MonoBehaviour
     [Tooltip("The heat level at which this object ignites into flame.")]
     [SerializeField] private int _ignitionThreshold = 80;
 
+    [Tooltip("The time spent past the ignition threshold until this object ignites.")]
+    [SerializeField] private float _ignitionTime = 1f;
 
     [Tooltip("The maximum rate per second at which this object flashes.")]
     [SerializeField] private float _maxFlashFrequency = 10f;
 
-    private float _flashPhase; // This is the time spent in the warning threshold. Used for shader.
 
+    private float _flashPhase = 0f; // This is the time spent in the warning threshold. Used for shader.
+    private float _ignitionTimer = 0f; // Current time until ignition. Ignites when reaches _ignitionTime
+    private bool _hasIgnited = false; // Whether or not this object has ignited and should currently be burning up.
 
     // Components
     private Room _currentRoom;
@@ -49,13 +53,14 @@ public class HeatMechanic : MonoBehaviour
 
     private void Start()
     {
-        SetHeatToRoom();
+        _heat = DistrictManager.Instance.Temperature;
     }
 
     private void Update()
     {
         RelaxHeat();
         UpdateHeatShader();
+        CheckForIgnition();
     }
 
 
@@ -74,19 +79,19 @@ public class HeatMechanic : MonoBehaviour
         }
     }
 
+    public void Reset()
+    {
+        _flashPhase = 0f;
+        _ignitionTimer = 0f;
+        _hasIgnited = false;
+        _heat = DistrictManager.Instance.Temperature;
+    }
 
     // Heat mechanics
     //call to set heat
-    public void ModifyHeat(int change)
+    public void ModifyHeat(float change)
     {
         _heat = Mathf.Clamp(_heat + change, LOWEST_HEAT_VALUE, HIGHEST_HEAT_VALUE);
-    }
-
-    private void SetHeatToRoom()
-    {
-        int roomTemperature = DistrictManager.Instance.Temperature;
-        if (_currentRoom != null) roomTemperature = _currentRoom.Temperature;
-        _heat = roomTemperature;
     }
 
     private void RelaxHeat()
@@ -99,6 +104,35 @@ public class HeatMechanic : MonoBehaviour
             _heat = Mathf.MoveTowards(_heat, roomTemperature, _heatRelaxationRate * Time.deltaTime);
         }
     }
+
+    private void CheckForIgnition()
+    {
+        if (_heat >= _ignitionThreshold)
+        {
+            if (!_hasIgnited) _ignitionTimer += Time.deltaTime;
+        }
+        else
+        {
+            _ignitionTimer = 0f;
+            //_hasIgnited = false; 
+            // Currently there is no way to unignite.
+            // Once ignited, this component considers itself burnt to a crisp and wont ignite again.
+            // Unless it is Reset()
+            // Might need to change this later?
+        }
+
+        if (_ignitionTimer >= _ignitionTime && !_hasIgnited)
+        {
+            _hasIgnited = true;
+            IHeatable[] heatables = GetComponents<MonoBehaviour>().OfType<IHeatable>().ToArray();
+            foreach (IHeatable heatable in heatables)
+            {
+                heatable.OnIgnite(this);
+            }
+        }
+    }
+
+
 
     // update shader... Maybe move all the shader stuff into a shader controller if it becomes more than just heat related
     private void UpdateHeatShader()
