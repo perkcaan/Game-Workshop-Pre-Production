@@ -24,9 +24,11 @@ public class PlayerTumbleState : BaseState<PlayerStateEnum>
     {
         _ctx.Animator.SetBool("Tumbling", true);
         _ctx.CanSwipe = false;
+        _ctx.CanDash = false;
         _ctx.PlayerHasControl = false;
         _originalMaterial = _ctx.Rigidbody.sharedMaterial;
         _ctx.Rigidbody.sharedMaterial = _ctx.Props.TumbleMaterial;
+        _ctx.FrameVelocity = Vector2.zero;
     }
 
     public override void Update()

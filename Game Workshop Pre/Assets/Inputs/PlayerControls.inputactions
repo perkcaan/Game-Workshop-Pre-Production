@@ -29,6 +29,24 @@
                     "id": "b5141167-00af-4d55-b9ad-12f39ee89e2e",
                     "expectedControlType": "Button",
                     "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DashInput",
+                    "type": "Button",
+                    "id": "493a177a-5f16-47b8-b79e-82891ed6d1fd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "EscapeTrashBallInput",
+                    "type": "Button",
+                    "id": "a49fb0ae-fa53-45dd-be0b-c564aa32df92",
+                    "expectedControlType": "Button",
+                    "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
                 },
@@ -42,13 +60,13 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "EscapeTrashBallInput",
-                    "type": "Button",
-                    "id": "3d4fba4f-679f-441d-ab07-4b0d23a840c2",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press(behavior=2)",
-                    "initialStateCheck": false
+                    "name": "MouseDeltaInput",
+                    "type": "Value",
+                    "id": "80df9cb6-de67-4daa-8513-7fd9f313c3d0",
+                    "expectedControlType": "Vector2",
+                    "processors": "StickDeadzone(min=0.01,max=0.01)",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -120,17 +138,6 @@
                 },
                 {
                     "name": "",
-                    "id": "19fbd456-f52e-4042-b3d7-61f2f220fd26",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SweepInput",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "d5aacc2f-1881-4e70-aee1-c11e3145c193",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -164,7 +171,29 @@
                 },
                 {
                     "name": "",
-                    "id": "12fcf529-dc09-42f2-9b4f-978c83a21e0c",
+                    "id": "860a2e37-c5fd-4650-8063-a08a51ba89dc",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseDeltaInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b6e423a5-4d0a-4660-85c7-15eee2030539",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DashInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7ad0e07b-30f5-459c-80fd-1c08c5eb097a",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
