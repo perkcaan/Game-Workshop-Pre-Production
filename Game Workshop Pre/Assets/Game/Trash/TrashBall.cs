@@ -131,7 +131,16 @@ public class TrashBall : Trash
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
-            Destroy(trashMono.gameObject);
+            if (trashMono == null) continue;
+
+            if (absorbable is PlayerMovementController)
+            {
+                trashMono.transform.position = new Vector2(-6.5f, 2);
+            }
+            else
+            {
+                Destroy(trashMono.gameObject);
+            }
         }
         absorbedObjects.Clear();
         Destroy(gameObject);
