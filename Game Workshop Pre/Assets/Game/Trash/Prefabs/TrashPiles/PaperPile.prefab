@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2716786571889162198, guid: 6c2f273bed9c9204b9549851a0247e6c, type: 3}
       propertyPath: _onExplodeForce
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2716786571889162198, guid: 6c2f273bed9c9204b9549851a0247e6c, type: 3}
       propertyPath: _trashSpreadRange
@@ -122,7 +122,11 @@ PrefabInstance:
       objectReference: {fileID: 6185485914860793685, guid: 67d6865d842946443b37e0f136c6dadb, type: 3}
     - target: {fileID: 8883276804959432784, guid: 6c2f273bed9c9204b9549851a0247e6c, type: 3}
       propertyPath: m_Radius
-      value: 0.6
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8883276804959432784, guid: 6c2f273bed9c9204b9549851a0247e6c, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 8889948046069165903, guid: 6c2f273bed9c9204b9549851a0247e6c, type: 3}
       propertyPath: m_Sprite
