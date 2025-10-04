@@ -14,6 +14,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
     public List<IAbsorbable> absorbedObjects = new List<IAbsorbable>();
 
     // Trash IDs to solve trash merge ties
+    private static int _nextId = 0;
     public int TrashId { get; private set; }
     [SerializeField] private float _size = 1f;
     Rigidbody2D _rigidBody;
@@ -31,6 +32,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _maxHealth = _baseMaxHealth;
+        TrashId = _nextId++;
         _health = _maxHealth;
     }
 
@@ -83,18 +85,23 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
         {
             if (otherTrashBall == null) return;
             if (!otherTrashBall.isActiveAndEnabled) return;
+            _health = _maxHealth;
 
             if (Size > otherTrashBall.Size)
             {
                 OnTrashBallMerge(otherTrashBall);
                 return;
             }
+            else if (Size < otherTrashBall.Size) return;
 
-            if (Size < otherTrashBall.Size)
+            if (_rigidBody.velocity.magnitude > otherTrashBall._rigidBody.velocity.magnitude)
+            {
+                OnTrashBallMerge(otherTrashBall);
                 return;
+            }
+            else if (_rigidBody.velocity.magnitude < otherTrashBall._rigidBody.velocity.magnitude) return;
 
-            // If same size, force winner to be based on the arbitrary TrashId
-
+            // If same size and speed, force winner to be based on the arbitrary TrashId
             if (TrashId > otherTrashBall.TrashId)
             {
                 OnTrashBallMerge(otherTrashBall);

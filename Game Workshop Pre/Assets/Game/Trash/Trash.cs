@@ -38,6 +38,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable
 
         trashBall.absorbedObjects.Add(this);
         trashBall.Size = Size;
+        trashBall.GetComponent<Rigidbody2D>().velocity = _rigidBody.velocity;
         gameObject.SetActive(false);
     }
 

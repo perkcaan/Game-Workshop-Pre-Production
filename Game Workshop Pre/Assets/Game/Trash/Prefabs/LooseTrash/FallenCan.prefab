@@ -10,7 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -4672675960217237935, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: m_Radius
-      value: 0.3
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: -4672675960217237935, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 570386271243998645, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -54,36 +58,52 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 839211426633960580, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: m_Name
-      value: FlatPaper
+      value: FallenCan
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _isSwipable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _playerShoveForce
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _explosionMultiplier
-      value: 0.5
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _velocityToTurnIntoTrash
-      value: 1.5
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _sweepDurationToBecomeBall
-      value: 0.3
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 7298980779152083279, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: m_Mass
-      value: 0.3
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7298980779152083279, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: m_LinearDrag
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8883276804959432784, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: m_Radius
-      value: 0.3
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8883276804959432784, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8883276804959432784, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 8889948046069165903, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -612681627, guid: d3c5255e780c1854d935e2ce20c0899c, type: 3}
+      objectReference: {fileID: -1592720340, guid: d3c5255e780c1854d935e2ce20c0899c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
