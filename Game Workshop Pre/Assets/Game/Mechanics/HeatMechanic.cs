@@ -14,9 +14,9 @@ public class HeatMechanic : MonoBehaviour
     [Tooltip("The current heat value of the object. View only.")]
     [ReadOnly]
     [SerializeField, Range(LOWEST_HEAT_VALUE, HIGHEST_HEAT_VALUE)] private float _heat = 20;
-    public int Heat
+    public float Heat
     {
-        get { return Mathf.RoundToInt(_heat); }
+        get { return _heat; }
     }
 
     [Tooltip("The rate per second at which heat returns to room temperature.")]
@@ -92,6 +92,7 @@ public class HeatMechanic : MonoBehaviour
     public void ModifyHeat(float change)
     {
         _heat = Mathf.Clamp(_heat + change, LOWEST_HEAT_VALUE, HIGHEST_HEAT_VALUE);
+        //TODO: Dont relax immediately after modifying heat.
     }
 
     private void RelaxHeat()
