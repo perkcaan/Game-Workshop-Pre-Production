@@ -21,6 +21,8 @@ public class HeatMechanic : MonoBehaviour
 
     [Tooltip("The rate per second at which heat returns to room temperature.")]
     [SerializeField] private float _heatRelaxationRate = 0.5f;
+    [Tooltip("The time after heat changes until it begins to relax.")]
+    [SerializeField] private float _timeBeforeRelax = 1f;
     [Tooltip("The heat level at which this object begins to glow.")]
     [SerializeField] private int _warningThreshold = 60;
 
@@ -35,6 +37,7 @@ public class HeatMechanic : MonoBehaviour
 
 
     private float _flashPhase = 0f; // This is the time spent in the warning threshold. Used for shader.
+    private float _relaxationTimer = 0f;
     private float _ignitionTimer = 0f; // Current time until ignition. Ignites when reaches _ignitionTime
     private bool _hasIgnited = false; // Whether or not this object has ignited and should currently be burning up.
 
@@ -88,15 +91,27 @@ public class HeatMechanic : MonoBehaviour
     }
 
     // Heat mechanics
-    //call to set heat
+    //call to add heat
     public void ModifyHeat(float change)
     {
+        ModifyHeat(change, true);
+    }
+
+    // doRelaxDelay determines whether or not there should be a relax delay should be delayed afterwards
+    public void ModifyHeat(float change, bool doRelaxDelay)
+    {
         _heat = Mathf.Clamp(_heat + change, LOWEST_HEAT_VALUE, HIGHEST_HEAT_VALUE);
-        //TODO: Dont relax immediately after modifying heat.
+        if (doRelaxDelay) _relaxationTimer = _timeBeforeRelax;
     }
 
     private void RelaxHeat()
     {
+        if (_relaxationTimer > 0f)
+        {
+            _relaxationTimer = Mathf.MoveTowards(_relaxationTimer, 0, Time.deltaTime);
+            return;
+        }
+
         int roomTemperature = DistrictManager.Instance.Temperature;
         if (_currentRoom != null) roomTemperature = _currentRoom.Temperature;
 
