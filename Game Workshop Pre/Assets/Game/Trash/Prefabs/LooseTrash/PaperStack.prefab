@@ -61,12 +61,36 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _tripOnExit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _playerTripForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerShoveForce
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _explosionMultiplier
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _playerExitKnockback
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _playerExitTripForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _playerEnterKnockback
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _playerEnterTripForce
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _velocityToTurnIntoTrash

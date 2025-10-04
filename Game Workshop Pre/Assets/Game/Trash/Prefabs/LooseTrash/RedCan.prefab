@@ -13,6 +13,10 @@ PrefabInstance:
       value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: -4672675960217237935, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -4672675960217237935, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: m_Offset.y
       value: -0.05
       objectReference: {fileID: 0}
@@ -65,12 +69,24 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _playerTripForce
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerShoveForce
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _explosionMultiplier
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _playerEnterKnockback
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _playerEnterTripForce
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _velocityToTurnIntoTrash
@@ -92,6 +108,10 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.25
       objectReference: {fileID: 0}
+    - target: {fileID: 8883276804959432784, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 7e1863a397bd8ff4b95e28a1b2274dd3, type: 2}
     - target: {fileID: 8883276804959432784, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: m_Offset.y
       value: -0.05
