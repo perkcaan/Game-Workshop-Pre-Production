@@ -3,7 +3,7 @@ using UnityEngine;
 
 // An abstract class for Trash. All types of Trash can inherit from this.
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class Trash : MonoBehaviour, IAbsorbable
+public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
 {
     [SerializeField] protected GameObject _trashBallPrefab;
     [SerializeField] protected float _explosionMultiplier;
@@ -61,7 +61,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable
         _rigidBody.velocity = randomForce;
     }
 
-    public void OnIgnite()
+    public void OnIgnite(HeatMechanic heat)
     {
         Destroy(gameObject);
     }

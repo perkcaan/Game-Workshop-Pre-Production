@@ -50,7 +50,7 @@ public class HeatMechanic : MonoBehaviour
     // Unity methods
     private void Awake()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _block = new MaterialPropertyBlock();
     }
 

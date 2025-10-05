@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
+public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 {
     [SerializeField] float _scaleMultiplier;
     [SerializeField] float _baseMaxHealth;
@@ -163,8 +163,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
         absorbedObjects.Clear();
         Destroy(gameObject);
     }
-    
-    public void OnIgnite()
+
+    public void OnIgnite(HeatMechanic heat)
     {
         foreach (IAbsorbable absorbable in absorbedObjects)
         {

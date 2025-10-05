@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerExitTripForce
-      value: 160
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerEnterKnockback
@@ -87,6 +87,10 @@ PrefabInstance:
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerExitSlideForce
       value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _randomDirectionRange
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerEnterSlideForce

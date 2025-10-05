@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8883276804959432784}
   - component: {fileID: 7298980779152083279}
   - component: {fileID: 2716786571889162198}
+  - component: {fileID: -4139108686608868786}
   m_Layer: 7
   m_Name: '!TrashPilePrefab'
   m_TagString: Untagged
@@ -117,6 +118,25 @@ MonoBehaviour:
   _onDamagedShakeForce: 0
   _onExplodeForce: 15
   _startingStoredTrash: []
+--- !u!114 &-4139108686608868786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839211426633960580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f15b54fd5202f44097d52e2dfee6476, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heat: 20
+  _heatRelaxationRate: 5
+  _timeBeforeRelax: 1
+  _warningThreshold: 60
+  _ignitionThreshold: 80
+  _ignitionTime: 0.5
+  _maxFlashFrequency: 50
 --- !u!1 &4045244157879140489
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,7 +189,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 25e1d5e9a5e21ca4781576e75e644703, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
