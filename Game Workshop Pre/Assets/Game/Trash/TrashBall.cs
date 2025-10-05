@@ -1,16 +1,17 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 
-public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
+public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 {
     [SerializeField] float _scaleMultiplier;
     [SerializeField] float _baseMaxHealth;
     [SerializeField] float _healthGainedPerSizeIncrease;
     [SerializeField] float _idleDecayMultiplier;
+    [SerializeField] float _onDamagedShakeForce;
     private float _maxHealth;
     private float _health;
+    private SpriteRenderer _sprite;
     public List<IAbsorbable> absorbedObjects = new List<IAbsorbable>();
 
     // Trash IDs to solve trash merge ties
@@ -27,10 +28,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
             OnSizeChanged();
         }
     }
-
-    public void Start()
+    [SerializeField] List<TrashBallSize> trashBallSizes;
+    public void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
+        _sprite = GetComponent<SpriteRenderer>();
         _maxHealth = _baseMaxHealth;
         TrashId = _nextId++;
         _health = _maxHealth;
@@ -38,9 +40,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
 
     public void Update()
     {
+        transform.localScale = Vector2.Lerp(transform.localScale, Vector2.one, 5f);
         if (_rigidBody.velocity.magnitude < 1)
         {
-            _health -= Time.deltaTime * _idleDecayMultiplier;
             if (_health < 0) ExplodeTrashBall();
         }
         else
@@ -61,14 +63,27 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
     public void TakeDamage(int damage)
     {
         _health -= damage;
-        if (_health < 0) ExplodeTrashBall();
+        transform.localScale *= 1.1f;
+        if (_health < 0)
+        {
+            ExplodeTrashBall();
+        }
     }
 
     protected void OnSizeChanged()
     {
-        float newSize = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
-        transform.localScale = new Vector3(newSize, newSize, 1);
         _maxHealth = Size;
+        for (int i = 0; i < trashBallSizes.Count; i++)
+        {
+            if (Size <= trashBallSizes[i].trashSize )
+            {
+                if (_sprite.sprite == trashBallSizes[i].ballSprite) return;
+                _sprite.sprite = trashBallSizes[i].ballSprite;
+                foreach (CircleCollider2D cc in GetComponents<CircleCollider2D>()) cc.radius = 0.125f * (i + 2);
+                return;
+            }
+        }
+        
     }
 
     protected void OnTriggerEnter2D(Collider2D other)
@@ -164,7 +179,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
         Destroy(gameObject);
     }
     
-    public void OnIgnite()
+    public void OnIgnite(HeatMechanic heat)
     {
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
