@@ -35,6 +35,7 @@ public class ClosedRoom : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out Trash trash))
         {
+            if (trashList.Contains(trash)) return;
             trashList.Add(trash);
         }
 

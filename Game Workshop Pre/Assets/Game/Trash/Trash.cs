@@ -19,7 +19,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _mergableDelay = 1f;
+        _mergableDelay = 0.5f;
     }
 
     protected void CreateTrashBall()
@@ -54,7 +54,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable
 
     public void OnTrashBallExplode(TrashBall trashBall)
     {
-        _mergableDelay = 2f;
+        _mergableDelay = 1f;
         transform.position = trashBall.transform.position;
         float explosionForce = (1 - trashBall.Size) * _explosionMultiplier;
         Vector2 randomForce = new Vector2(Random.Range(-explosionForce, explosionForce), Random.Range(-explosionForce, explosionForce));

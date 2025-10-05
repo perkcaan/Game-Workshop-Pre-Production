@@ -75,7 +75,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
     {
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
-            float absorbingPower = _rigidBody.velocity.magnitude * Size;
+            float absorbingPower = (2 - _rigidBody.velocity.magnitude / 2) * Size;
             absorbableObject.OnAbsorbedByTrashBall(this, absorbingPower, false);
             _health = _maxHealth;
             return;
@@ -83,8 +83,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
 
         if (other.gameObject.TryGetComponent(out TrashBall otherTrashBall))
         {
-            if (otherTrashBall == null) return;
-            if (!otherTrashBall.isActiveAndEnabled) return;
+            if (otherTrashBall == null || gameObject == null) return;
+            if (!otherTrashBall.isActiveAndEnabled || !isActiveAndEnabled) return;
             _health = _maxHealth;
 
             if (Size > otherTrashBall.Size)
@@ -105,6 +105,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
             if (TrashId > otherTrashBall.TrashId)
             {
                 OnTrashBallMerge(otherTrashBall);
+                return;
             }
         }
     }

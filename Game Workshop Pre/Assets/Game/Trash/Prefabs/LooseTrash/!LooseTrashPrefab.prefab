@@ -51,7 +51,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 1664
+    m_Bits: 3712
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -148,7 +148,12 @@ MonoBehaviour:
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 0.4
   Size: 1
-  _velocityToTurnIntoTrash: 1
+  _sweepDurationToBecomeBall: 0
+  _playerEnterKnockback: 0
+  _playerEnterTripForce: 0
+  _playerExitKnockback: 0
+  _playerExitTripForce: 0
+  _isSwipable: 0
 --- !u!1 &4045244157879140489
 GameObject:
   m_ObjectHideFlags: 0
