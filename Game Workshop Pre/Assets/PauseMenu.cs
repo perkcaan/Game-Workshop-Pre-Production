@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -28,6 +29,19 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
+    }
+
+    public void Restart()
+    {
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        if (sceneIndex < 0)
+        {
+            Debug.LogError("Current scene is not in Build Settings! Add it to be able to reload.");
+            return;
+        }
+
+        SceneManager.LoadScene(sceneIndex);
     }
 
     void Pause()
