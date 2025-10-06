@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class PlayerSweepingState : BaseState<PlayerStateEnum>
@@ -10,9 +11,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
 
     // Fields
     //movement
-    private Vector2 _sweepVelocity = Vector2.zero;
     private float _zeroMoveTimer = 0f;
-    private float? _lastMovingAngle = null;
 
     public PlayerSweepingState(PlayerContext context, PlayerStateMachine state)
     {
@@ -25,10 +24,9 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     public override void EnterState()
     {
         _ctx.Animator.SetBool("Sweeping", true);
-        _sweepVelocity = _ctx.MoveSpeed * _ctx.MovementInput.normalized;
-        _lastMovingAngle = null;
         _ctx.CanSwipe = true;
-        float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepMovementScaler;
+        _ctx.CanDash = true;
+        float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
         _ctx.SweepHandler.BeginSweep(_ctx.Rotation, sweepForce);
     }
 
@@ -36,7 +34,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     {
         HandleMovement();
         HandleRotation();
-        float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepMovementScaler;
+        float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
         _ctx.SweepHandler.UpdateHitbox(_ctx.Rotation, sweepForce);
         TryChangeState();
     }
@@ -61,23 +59,8 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         if (input.sqrMagnitude > 0.01f)
         {
             _zeroMoveTimer = 0f;
-            _ctx.MoveSpeed = Mathf.MoveTowards(_ctx.MoveSpeed, _ctx.MaxSweepSpeed, _ctx.SweepAcceleration * Time.deltaTime);
-            //angle based threshold slowdown
-            //TODO: idea not sure about... Maybe something better
-            Vector2 rotationVector = new Vector2(Mathf.Cos(_ctx.Rotation * Mathf.Deg2Rad), Mathf.Sin(_ctx.Rotation * Mathf.Deg2Rad));
-            float angle = Vector2.SignedAngle(rotationVector, input.normalized);
-
-            if (_lastMovingAngle.HasValue)
-            {
-                float angleDiff = Mathf.Abs(Mathf.DeltaAngle(_lastMovingAngle.Value, angle));
-                if (angleDiff > _ctx.Props.SweepSlowdownAngle)
-                {
-                    _ctx.MoveSpeed = Mathf.Min(_ctx.MoveSpeed, _ctx.Props.SweepSlowdownSpeed);
-                }
-
-            }
-            _lastMovingAngle = angle;
-            //end idea not sure about
+            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxSweepWalkSpeed, _ctx.SweepAcceleration * Time.deltaTime);
+         
         }
         else
         {
@@ -88,7 +71,6 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
             if (_zeroMoveTimer >= 0.05)
             {
                 _ctx.MoveSpeed = 0f;
-                _lastMovingAngle = null;
             }
         }
 
@@ -101,23 +83,18 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         Vector2 direction = mouseWorldPoint - (Vector2)_ctx.Player.transform.position;
         direction.Normalize();
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        // Rotate slower based on speed
-        float rotationSpeedReduction = Mathf.Max(_ctx.MoveSpeed / _ctx.MaxWalkSpeed, 1);
+        // Rotate slower based on speed - Disabled because I didnt like it. -Zach
+        float rotationSpeedReduction = 1f; //Mathf.Max(_ctx.MoveSpeed / _ctx.MaxWalkSpeed, 1);
 
-        float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.SweepRotationSpeed / rotationSpeedReduction * Time.deltaTime);
+        float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.Props.RotationSpeed / rotationSpeedReduction * Time.deltaTime);
         _ctx.Rotation = Mathf.DeltaAngle(0f, newAngle);
+        
         
     }
 
     //state
     private void TryChangeState()
     {
-        float velocityThreshold = _ctx.Props.EnterChargeSpeedThreshold;
-        float angleThreshold = _ctx.Props.ChargeAngleThreshold;
-        if (_lastMovingAngle.HasValue)
-        {
-            if (Mathf.Abs(_lastMovingAngle.Value) <= angleThreshold * 0.5 && _ctx.MoveSpeed >= velocityThreshold) _state.ChangeState(PlayerStateEnum.Charging);
-        }
         if (!_ctx.IsSweepPressed) _state.ChangeState(PlayerStateEnum.Idle);
     }
 
