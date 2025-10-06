@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -11,8 +12,6 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
     [Header("Trash")]
     [SerializeField] public int Size;
     public Color trashColor;
-    protected float _mergableDelay;
-
     //Components
     protected Rigidbody2D _rigidBody;
 
@@ -20,12 +19,9 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _mergableDelay = 0.5f;
     }
-
     protected void CreateTrashBall()
     {
-        if (_mergableDelay > 0) return;
         GameObject trashBallObject = Instantiate(_trashBallPrefab);
         trashBallObject.transform.position = transform.position;
         TrashBall trashBall = trashBallObject.GetComponent<TrashBall>();
@@ -37,8 +33,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
             return;
         }
 
-        trashBall.absorbedObjects.Add(this);
-        trashBall.Size = Size;
+        trashBall.AbsorbTrash(this);
         trashBall.GetComponent<Rigidbody2D>().velocity = _rigidBody.velocity;
         gameObject.SetActive(false);
     }
@@ -53,14 +48,19 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
 
     public void OnTrashBallExplode(TrashBall trashBall)
     {
-        _mergableDelay = 1f;
+        gameObject.SetActive(true);
         transform.position = trashBall.transform.position;
-        float explosionForce = (1 - trashBall.Size) * _explosionMultiplier;
-        Vector2 randomForce = new Vector2(Random.Range(-explosionForce, explosionForce), Random.Range(-explosionForce, explosionForce));
+        float explosionForce = (float)(Math.Sqrt(trashBall.Size) * _explosionMultiplier);
+        Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
         _rigidBody.velocity = randomForce;
     }
 
     public void OnIgnite(HeatMechanic heat)
+    {
+        Destroy(gameObject);
+    }
+
+    public void OnTrashBallIgnite()
     {
         Destroy(gameObject);
     }

@@ -13,7 +13,7 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
     public void OnSweep(Vector2 direction, float force)
     {
         if (!isActiveAndEnabled) return;
-        _sweepTimer += Time.deltaTime;
+        _sweepTimer += Time.deltaTime * 2;
         _rigidBody.AddForce(direction * force, ForceMode2D.Force);
         if (_sweepTimer > _sweepDurationToBecomeBall)
         {
@@ -29,10 +29,7 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
 
     void Update()
     {
-        if (_mergableDelay >= 0f)
-        {
-            _mergableDelay -= Time.deltaTime;
-        }
+        if (_sweepTimer >= 0) _sweepTimer -= Time.deltaTime / 2;
     }
 
     void OnTriggerEnter2D(Collider2D other)
