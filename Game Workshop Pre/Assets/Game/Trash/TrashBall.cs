@@ -28,12 +28,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
     }
 
+
     public void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _maxHealth = _baseMaxHealth;
         TrashId = _nextId++;
         _health = _maxHealth;
+        SetColor();
     }
 
     public void Update()
@@ -64,6 +66,30 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (_health < 0) ExplodeTrashBall();
     }
 
+    public void AbsorbTrash(Trash trash)
+    {
+        absorbedObjects.Add(trash);
+        Size += trash.Size;
+        trash.gameObject.SetActive(false);
+        SetColor();
+    }
+
+    void SetColor()
+    {
+        Color totalColor = Color.black;
+        float totalTrashInBall = 0;
+        foreach (IAbsorbable absorbable in absorbedObjects)
+        {
+            if (absorbable is Trash trashMono)
+            {
+                totalColor += trashMono.trashColor * trashMono.Size;
+                totalTrashInBall += trashMono.Size;
+            }
+        }
+        Color averageColor = totalColor / totalTrashInBall;
+        GetComponent<SpriteRenderer>().color = averageColor;
+    }
+
     protected void OnSizeChanged()
     {
         float newSize = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
@@ -75,7 +101,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
-            float absorbingPower = (2 - _rigidBody.velocity.magnitude / 2) * Size;
+            float absorbingPower = (_rigidBody.velocity.magnitude - 3) * Size;
             absorbableObject.OnAbsorbedByTrashBall(this, absorbingPower, false);
             _health = _maxHealth;
             return;

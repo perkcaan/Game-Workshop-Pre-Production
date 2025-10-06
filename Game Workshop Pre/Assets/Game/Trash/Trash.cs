@@ -9,7 +9,8 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
     [SerializeField] protected float _explosionMultiplier;
 
     [Header("Trash")]
-    [SerializeField] public float Size;
+    [SerializeField] public int Size;
+    public Color trashColor;
     protected float _mergableDelay;
 
     //Components
@@ -46,9 +47,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
     {
         if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled))
         {
-            trashBall.absorbedObjects.Add(this);
-            trashBall.Size += Size;
-            gameObject.SetActive(false);
+            trashBall.AbsorbTrash(this);
         }
     }
 
