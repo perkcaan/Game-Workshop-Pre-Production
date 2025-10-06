@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable
+public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
 {
 
     #region header
@@ -40,7 +40,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     [Header("Absorbed Properties")]
     [SerializeField] private float _absorbResistance;
     [SerializeField] private float _minTrashSizeToAbsorb;
-    [SerializeField] private int _playerEscapeDamage;
+
 
     [Header("Swipe Visual Line")]
     [SerializeField] private float _swipeVisualLineDistance = 10f;
@@ -205,7 +205,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         if (_ctx.AbsorbedTrashBall != null)
         {
             _ctx.Animator.speed += 0.3f;
-            _ctx.AbsorbedTrashBall.TakeDamage(_playerEscapeDamage);
+            _ctx.AbsorbedTrashBall.TakeDamage(1);
         }
     }
 
@@ -276,13 +276,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         _ctx.AbsorbedTrashBall = null;
         _state.ChangeState(PlayerStateEnum.Idle);
-    }
-
-    // IHeatable
-    public void OnIgnite(HeatMechanic heat)
-    {
-        transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
-        heat.Reset();
     }
 
 

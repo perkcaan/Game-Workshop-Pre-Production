@@ -1,16 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
 // An abstract class for Trash. All types of Trash can inherit from this.
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class Trash : MonoBehaviour, IAbsorbable
+public abstract class Trash : MonoBehaviour, ISweepable, ISwipeable
 {
-    [SerializeField] protected GameObject _trashBallPrefab;
-    [SerializeField] protected float _explosionMultiplier;
+
+    // Trash IDs to solve trash merge ties
+    private static int _nextId = 0;
+    public int TrashId { get; private set; }
+    protected virtual bool MergePriority { get { return false; } }
+
 
     [Header("Trash")]
-    [SerializeField] public float Size;
-    protected float _mergableDelay;
+    [SerializeField] private float _size = 1f;
+    public float Size
+    {
+        get { return _size; }
+        set
+        {
+            _size = value;
+            OnSizeChanged();
+        }
+    }
 
     //Components
     protected Rigidbody2D _rigidBody;
@@ -19,50 +33,23 @@ public abstract class Trash : MonoBehaviour, IAbsorbable
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _mergableDelay = 0.5f;
+        TrashId = _nextId++;
     }
 
-    protected void CreateTrashBall()
+    // Override to do something when size changes
+    protected virtual void OnSizeChanged() { }
+
+    // These interfaces can be overriden in a Child class if we want trash that acts differently
+    // ISweepable
+    public virtual void OnSweep(Vector2 direction, float force)
     {
-        if (_mergableDelay > 0) return;
-        GameObject trashBallObject = Instantiate(_trashBallPrefab);
-        trashBallObject.transform.position = transform.position;
-        TrashBall trashBall = trashBallObject.GetComponent<TrashBall>();
-
-        if (trashBall == null)
-        {
-            Debug.LogWarning("TrashBall prefab prepared incorrectly");
-            Destroy(trashBallObject);
-            return;
-        }
-
-        trashBall.absorbedObjects.Add(this);
-        trashBall.Size = Size;
-        trashBall.GetComponent<Rigidbody2D>().velocity = _rigidBody.velocity;
-        gameObject.SetActive(false);
+        _rigidBody.AddForce(direction * force, ForceMode2D.Force);
     }
 
-    public virtual void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    //ISwipeable
+    public virtual void OnSwipe(Vector2 direction, float force)
     {
-        if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled))
-        {
-            trashBall.absorbedObjects.Add(this);
-            trashBall.Size += Size;
-            gameObject.SetActive(false);
-        }
+        _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
-    public void OnTrashBallExplode(TrashBall trashBall)
-    {
-        _mergableDelay = 1f;
-        transform.position = trashBall.transform.position;
-        float explosionForce = (1 - trashBall.Size) * _explosionMultiplier;
-        Vector2 randomForce = new Vector2(Random.Range(-explosionForce, explosionForce), Random.Range(-explosionForce, explosionForce));
-        _rigidBody.velocity = randomForce;
-    }
-
-    public void OnIgnite()
-    {
-        Destroy(gameObject);
-    }
 }

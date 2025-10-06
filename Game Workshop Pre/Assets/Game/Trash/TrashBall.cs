@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
+public class TrashBall : Trash
 {
     [SerializeField] float _scaleMultiplier;
     [SerializeField] float _baseMaxHealth;
@@ -13,49 +13,25 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
     private float _health;
     public List<IAbsorbable> absorbedObjects = new List<IAbsorbable>();
 
-    // Trash IDs to solve trash merge ties
-    private static int _nextId = 0;
-    public int TrashId { get; private set; }
-    [SerializeField] private float _size = 1f;
-    Rigidbody2D _rigidBody;
-    public float Size
-    {
-        get { return _size; }
-        set
-        {
-            _size = value;
-            OnSizeChanged();
-        }
-    }
+    protected override bool MergePriority { get { return true; } }
 
     public void Start()
     {
-        _rigidBody = GetComponent<Rigidbody2D>();
         _maxHealth = _baseMaxHealth;
-        TrashId = _nextId++;
         _health = _maxHealth;
     }
 
     public void Update()
     {
-        if (_rigidBody.velocity.magnitude < 1)
+        if (_rigidBody.velocity.magnitude < 2)
         {
             _health -= Time.deltaTime * _idleDecayMultiplier;
             if (_health < 0) ExplodeTrashBall();
         }
-        else
+        else if (_health < _maxHealth)
         {
-            _health = _maxHealth;
+            _health += Time.deltaTime * _idleDecayMultiplier;
         }
-    }
-
-    public void OnSweep(Vector2 direction, float force)
-    {
-        _rigidBody.AddForce(direction * force, ForceMode2D.Force);
-    }
-    public void OnSwipe(Vector2 direction, float force)
-    {
-        _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
     public void TakeDamage(int damage)
@@ -64,48 +40,53 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
         if (_health < 0) ExplodeTrashBall();
     }
 
-    protected void OnSizeChanged()
+    protected override void OnSizeChanged()
     {
-        float newSize = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
+        float newSize = _scaleMultiplier * Mathf.Sqrt(Size);
+
+        _health += (_baseMaxHealth + newSize * _healthGainedPerSizeIncrease) - _maxHealth;
+        _maxHealth = _baseMaxHealth + (newSize * _healthGainedPerSizeIncrease);
         transform.localScale = new Vector3(newSize, newSize, 1);
-        _maxHealth = Size;
     }
 
     protected void OnTriggerEnter2D(Collider2D other)
     {
+
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
-            float absorbingPower = (2 - _rigidBody.velocity.magnitude / 2) * Size;
+            float absorbingPower = _rigidBody.velocity.magnitude * Size;
             absorbableObject.OnAbsorbedByTrashBall(this, absorbingPower, false);
-            _health = _maxHealth;
             return;
         }
 
         if (other.gameObject.TryGetComponent(out TrashBall otherTrashBall))
         {
-            if (otherTrashBall == null || gameObject == null) return;
-            if (!otherTrashBall.isActiveAndEnabled || !isActiveAndEnabled) return;
-            _health = _maxHealth;
+            if (!otherTrashBall.isActiveAndEnabled) return;
+            // Priority- only one of the colliders can run OnTrashMerge
+            // first check forced merge priority
+
+            if (MergePriority && !otherTrashBall.MergePriority)
+            {
+                OnTrashBallMerge(otherTrashBall);
+                return;
+            }
+            // make sure to return if this loses
+            if (MergePriority != otherTrashBall.MergePriority)
+                return;
 
             if (Size > otherTrashBall.Size)
             {
                 OnTrashBallMerge(otherTrashBall);
                 return;
             }
-            else if (Size < otherTrashBall.Size) return;
 
-            if (_rigidBody.velocity.magnitude > otherTrashBall._rigidBody.velocity.magnitude)
-            {
-                OnTrashBallMerge(otherTrashBall);
+            if (Size < otherTrashBall.Size)
                 return;
-            }
-            else if (_rigidBody.velocity.magnitude < otherTrashBall._rigidBody.velocity.magnitude) return;
 
-            // If same size and speed, force winner to be based on the arbitrary TrashId
+            // If same speed, force winner to be based on the arbitrary TrashId
             if (TrashId > otherTrashBall.TrashId)
             {
                 OnTrashBallMerge(otherTrashBall);
-                return;
             }
         }
     }
@@ -113,6 +94,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
     protected void OnTrashBallMerge(TrashBall otherTrashBall)
     {
         if (!otherTrashBall.isActiveAndEnabled) return;
+
         foreach (IAbsorbable absorbable in otherTrashBall.absorbedObjects)
         {
             absorbable.OnAbsorbedByTrashBall(this, 0, true);
@@ -145,26 +127,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
     }
 
     public void TempMelt() //TODO: temporary rework melting / burning to destroy objects inside
-    {
-        foreach (IAbsorbable absorbable in absorbedObjects)
-        {
-            MonoBehaviour trashMono = absorbable as MonoBehaviour;
-            if (trashMono == null) continue;
-
-            if (absorbable is PlayerMovementController)
-            {
-                trashMono.transform.position = new Vector2(-6.5f, 2);
-            }
-            else
-            {
-                Destroy(trashMono.gameObject);
-            }
-        }
-        absorbedObjects.Clear();
-        Destroy(gameObject);
-    }
-    
-    public void OnIgnite()
     {
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
