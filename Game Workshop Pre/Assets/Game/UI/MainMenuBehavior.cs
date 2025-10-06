@@ -23,7 +23,7 @@ public class MainMenuBehavior : MonoBehaviour
             return;
 
         Debug.Log("Play Clicked");
-        SceneManager.LoadScene("October Level");
+        SceneManager.LoadScene("Tinkerfest Level");
     }
 
     public void OnSettingsButtonClicked()

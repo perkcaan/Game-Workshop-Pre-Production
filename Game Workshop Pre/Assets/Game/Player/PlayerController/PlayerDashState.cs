@@ -35,8 +35,6 @@ public class PlayerDashState : BaseState<PlayerStateEnum>
             float radians = _ctx.Rotation * Mathf.Deg2Rad;
             velocityToUse = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)).normalized;
         }
-        float radAngle = Mathf.Atan2(velocityToUse.y, velocityToUse.x) * Mathf.Rad2Deg;
-        _ctx.Rotation = Mathf.DeltaAngle(0f, radAngle);
         _ctx.Rigidbody.AddForce(velocityToUse * _ctx.Props.DashForce, ForceMode2D.Impulse);
     }
 

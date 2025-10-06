@@ -5,7 +5,7 @@ using UnityEngine;
 public class BaseEnemy : MonoBehaviour, IAbsorbable
 {
 
-
+   
     [Header("Enemy Movement")]
 
     private Rigidbody2D rb;
@@ -37,8 +37,6 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
 
     public float resistance; // How much resistance the enemy puts up against an unattended trash ball
 
-    public float trashBallEscapingPower;
-
 
     [Header("Trash Spawning")]
 
@@ -65,7 +63,6 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     //public string moveAnimationName;
 
     public AnimationClip moveAnimation;
-    private bool isAbsorbed;
 
     private void Start()
     {
@@ -92,23 +89,24 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
 
     private void FixedUpdate()
     {
-        if (!isAbsorbed)
+
+        if (seeksPlayer && !patrol)
         {
-            if (seeksPlayer && !patrol)
-            {
-                SeekPlayerMovement();
-            }
-            else if (!seeksPlayer && patrol)
-            {
-                FixedMovement();
-            }
-            else if (seeksPlayer && patrol)
-            {
-                //Debug.Log("Fixed and Search");
-                SeekAndFixedMovement();
-            } 
-            AnimateEnemy();
+            SeekPlayerMovement();
         }
+        else if (!seeksPlayer && patrol)
+        {
+            FixedMovement();
+        }
+        else if (seeksPlayer && patrol)
+        {
+            //Debug.Log("Fixed and Search");
+            SeekAndFixedMovement();
+        }
+
+        AnimateEnemy();
+
+        
     }
 
 
@@ -134,10 +132,10 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
         {
             direction = 0;
         }
-
+            
         if (followingPlayer)
         {
-
+           
             // Follows Player
             Vector2 followPos = Vector2.MoveTowards(rb.position, playerTransform.position, movementSpeed * Time.fixedDeltaTime);
             rb.MovePosition(followPos);
@@ -249,32 +247,19 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
 
             if (playerTransform != null)
             {
-                Instantiate(proj, transform.position, Quaternion.identity);
+               Instantiate(proj, transform.position, Quaternion.identity);
             }
         }
 
     }
 
-    // eba changes
-
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    // Trash absorb
+    public void OnAbsorbedByTrashBall(TrashBall trashBall)
     {
-        if (forcedAbsorb || absorbingPower > resistance)
-        {
-            trashBall.absorbedObjects.Add(this);
-            isAbsorbed = true;
-            gameObject.SetActive(false);
-        }
+        //trashBall.Size += 3;
+        Destroy(gameObject);
     }
 
-    public void OnTrashBallExplode(TrashBall trashBall)
-    {
-        transform.position = trashBall.transform.position;
-        float explosionForce = 1 + (1 * trashBall.absorbedObjects.Count);
-        Vector2 randomForce = new Vector2(Random.Range(-explosionForce, explosionForce), Random.Range(-explosionForce, explosionForce));
-
-        rb.AddForce(randomForce);
-    }
 
     #endregion
 }

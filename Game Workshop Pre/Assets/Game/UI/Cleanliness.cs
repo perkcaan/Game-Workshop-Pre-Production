@@ -33,8 +33,6 @@ public class Cleanliness : MonoBehaviour
 
     private void OnPlayerEnterRoom(bool entered)
     {
-        if (PlayerState.Instance.currentRoom == currentPlayerRoom) return;
-
         if (entered)
         {
             //Show HUD
@@ -49,17 +47,12 @@ public class Cleanliness : MonoBehaviour
             cleanText.text = percentClean + "% clean";
 
             //Get room trash values from ClosedRoom script
-            trashTotal = 0;
-            foreach (Trash trash in currentPlayerRoom.trashList)
-            {
-                trashTotal += trash.Size;
-            }
-            
+            trashTotal = currentPlayerRoom.trashList.Count;
+
             UpdateCleanText();
         }
         else // if player leaves room
         {
-            currentPlayerRoom = null;
             cleanBar.gameObject.SetActive(false);
             cleanText.enabled = false;
         }

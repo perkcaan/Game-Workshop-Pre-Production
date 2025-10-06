@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System.Collections;
 
-public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
+public class PlayerMovementController : MonoBehaviour, ISwipeable
 {
 
     #region header
@@ -17,45 +18,28 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     [Header("Start Properties")]
     [SerializeField][Range(-180, 180)] private float _startAngle = 270f;
 
+    [Header("Mouse as Stick Properties")]
+    [SerializeField] private float _mouseStickSensitivity = 10f;
+
     [Header("Sweep Properties")]
     [SerializeField] private float _sweepForce = 5f;
     public float SweepForce { get { return _sweepForce; } }
-    [SerializeField][Range(0f, 2f)] private float _sweepForceMovementScaler = 0.1f;
-    public float SweepForceMovementScaler { get { return _sweepForceMovementScaler; } }
+    [SerializeField][Range(0f, 2f)] private float _sweepMovementScaler = 0.1f;
+    public float SweepMovementScaler { get { return _sweepMovementScaler; } }
 
 
     [Header("Swipe Properties")]
-    [SerializeField] private float _baseSwipeForce = 5f;
-    public float BaseSwipeForce { get { return _baseSwipeForce; } }
-    [SerializeField] private float _fullChargeSwipeForce = 10f;
-    public float FullChargeSwipeForce { get { return _fullChargeSwipeForce; } }
-    [SerializeField][Range(0f, 2f)] private float _swipeForceMovementScaler = 0.1f;
-    public float SwipeForceMovementScaler { get { return _swipeForceMovementScaler; } }
-    [SerializeField] private float _swipeTimeUntilHold = 1f;
-    public float SwipeTimeUntilHold { get { return _swipeTimeUntilHold; } }
-    [SerializeField] private float _swipeHoldChargeTime = 5f;
-    public float SwipeHoldChargeTime { get { return _swipeHoldChargeTime; } }
+    [SerializeField] private float _swipeForce = 5f;
+    public float SwipeForce { get { return _swipeForce; } }
+    [SerializeField][Range(0f, 2f)] private float _swipeMovementScaler = 0.1f;
+    public float SwipeMovementScaler { get { return _swipeMovementScaler; } }
     [SerializeField] private float _swipeDuration = 0.5f;
     public float SwipeDuration { get { return _swipeDuration; } }
     [SerializeField] private float _swipeCooldown = 1f;
     public float SwipeCooldown { get { return _swipeCooldown; } }
 
-    [Header("Absorbed Properties")]
-    [SerializeField] private float _absorbResistance;
-    [SerializeField] private float _minTrashSizeToAbsorb;
-
-
-    [Header("Swipe Visual Line")]
-    [SerializeField] private float _swipeVisualLineDistance = 10f;
-    public float SwipeVisualLineDistance { get { return _swipeVisualLineDistance; } }
-    [SerializeField] private int _swipeVisualLineSegments = 20;
-    public int SwipeVisualLineSegments { get { return _swipeVisualLineSegments; } }
-
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
-
-    [Header("Effects")]
-    [SerializeField] private ParticleSystem _dashRestoreParticles; // Remove when particle manager is made
 
 
     // Fields
@@ -84,7 +68,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         _ctx.Animator = GetComponent<Animator>();
         _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
         _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
-        _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
     }
@@ -92,8 +75,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     private void Start()
     {
         SetWeight(_weight);
-        Cursor.lockState = CursorLockMode.Confined;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
+        //Cursor.lockState = CursorLockMode.Locked;
+        
+        
+
     }
 
     private void Update()
@@ -122,11 +107,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         // Dash timer
         if (_ctx.DashCooldownTimer > 0f)
         {
+            
             _ctx.DashCooldownTimer = Mathf.Max(_ctx.DashCooldownTimer - Time.deltaTime, 0f);
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                _dashRestoreParticles.Play();
+                SpawnDashFX();
             }
         }
 
@@ -141,17 +127,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     {
         if (_state == null) return;
         _state.OnDrawGizmos();
-        //DrawDashCooldownGizmo();
-    }
-
-
-    //collision
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("EndPoint"))
-        {
-            SceneManager.LoadScene("RebuildScene");
-        }
+        DrawDashCooldownGizmo();
     }
 
 
@@ -176,14 +152,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         if (!value.isPressed) return;
         if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash", transform.position);
             _state.ChangeState(PlayerStateEnum.Dash);
         }
-    }
-
-    private void OnMouseMoveInput(InputValue value)
-    {
-        _ctx.MouseInput = value.Get<Vector2>();
     }
 
     private void OnMouseDeltaInput(InputValue value)
@@ -194,25 +164,25 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
             _targetStickPos += mouseDelta;
             _targetStickPos = _targetStickPos.normalized;
         }
-        //_ctx.StickInput = Vector2.Lerp(_ctx.StickInput, _targetStickPos, 1f - Mathf.Exp(-_mouseStickSensitivity * Time.deltaTime)).normalized;
+        _ctx.StickInput = Vector2.Lerp(_ctx.StickInput, _targetStickPos, 1f - Mathf.Exp(-_mouseStickSensitivity * Time.deltaTime)).normalized;
     }
 
     private void OnSwipeInput(InputValue value)
     {
-        _ctx.IsSwipePressed = value.isPressed;
-        if (_ctx.CanSwipe && _ctx.SwipeCooldownTimer <= 0f && value.isPressed)
+        if (_ctx.CanSwipe && _ctx.SwipeCooldownTimer <= 0f)
         {
             _state.ChangeState(PlayerStateEnum.Swiping);
         }
     }
 
 
-    private void OnEscapeTrashBallInput(InputValue value)
+
+    //collision
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_ctx.AbsorbedTrashBall != null)
+        if (collision.gameObject.CompareTag("EndPoint"))
         {
-            _ctx.Animator.speed += 0.3f;
-            _ctx.AbsorbedTrashBall.TakeDamage(1);
+            SceneManager.LoadScene("RebuildScene");
         }
     }
 
@@ -249,12 +219,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         PlayerMovementProps p = _movementProps; //For shorthand access
 
         _ctx.MaxWalkSpeed = p.BaseMaxWalkSpeed / (1 + weight * p.MaxWalkSpeedReduction);
-        _ctx.MaxSweepWalkSpeed = _ctx.MaxWalkSpeed * p.SweepMaxSpeedModifier;
-        _ctx.MaxSwipeWalkSpeed = _ctx.MaxWalkSpeed * p.SwipeMaxSpeedModifier;
+        _ctx.MaxSweepSpeed = _ctx.MaxWalkSpeed * p.SweepMaxSpeedModifier;
 
         _ctx.Acceleration = p.BaseAcceleration / (1 + weight * p.AccelerationReduction);
         _ctx.SweepAcceleration = _ctx.Acceleration * p.SweepAccelerationModifier;
-        _ctx.SwipeAcceleration = _ctx.Acceleration * p.SwipeAccelerationModifier;
 
         _weight = weight;
     }
@@ -267,23 +235,17 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
-    // IAbsorbable
-
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    private void SpawnDashFX()
     {
-        if (forcedAbsorb || (absorbingPower > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
-        {
-            trashBall.absorbedObjects.Add(this);
-            _ctx.AbsorbedTrashBall = trashBall;
-            _state.ChangeState(PlayerStateEnum.Absorbed);
-        }
+        
+        _dashfxInstance = Instantiate(ParticleManager.Instance._dashfx, transform.position, Quaternion.Euler(0, 0, 0));
+        
+        //_dashfxInstance.transform.position = transform.position;
+        _dashfxInstance.Play();
+        //_dashfxInstance.gameObject.transform.SetParent(this.transform);
+        StartCoroutine(DashGravDelay());
     }
 
-    public void OnTrashBallExplode(TrashBall trashBall)
-    {
-        _ctx.AbsorbedTrashBall = null;
-        _state.ChangeState(PlayerStateEnum.Idle);
-    }
 
 
 
@@ -309,4 +271,14 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         }
     }
 
+    private IEnumerator DashGravDelay()
+    {
+        yield return new WaitForSeconds(_dashfxInstance.duration - 1.5f);
+        Debug.Log("Gravity On");
+        _forceField.gameObject.SetActive(true);
+        yield return new WaitForSeconds(.5f);
+        _forceField.gameObject.SetActive(false);
+        
+    }
+    
 }
