@@ -9,10 +9,10 @@ public class SwipeHandler : MonoBehaviour
 {
 
     // Components
+    [SerializeField] private DottedParticleLine _dottedLine;
+    [SerializeField] private ParticleSystem _swipeEffect;
     private PlayerMovementController _parent;
     private Collider2D _hitbox;
-    [SerializeField] public ParticleSystem _swipeEffect;
-    private ParticleSystem _swipeEffectInstance;
 
     // Fields
     private float _rotation = 0f;
@@ -40,6 +40,7 @@ public class SwipeHandler : MonoBehaviour
     // Swipe
     public void DoSwipe(float rotation, float swipeForce)
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", _parent.transform.position);
         _hitbox.enabled = true;
         _swipeForce = swipeForce;
         
@@ -53,8 +54,19 @@ public class SwipeHandler : MonoBehaviour
 
         // Set the swipe box position and rotation relative to the player and their rotation
         transform.position = _parent.transform.position + ((Vector3)offset * 0.75f);
-        transform.rotation = Quaternion.Euler(0, 0, rotation + 90f);
-       
+        transform.rotation = Quaternion.Euler(0, 0, rotation + 90f);  
+    }
+
+    public void UpdateLine(float rotation, float lineDist, int linePoints)
+    {
+        float radians = rotation * Mathf.Deg2Rad;
+        Vector2 point = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * lineDist;
+        _dottedLine.UpdateLine(point, linePoints);
+    }
+
+    public void HideLine()
+    {
+        _dottedLine.HideLine();
     }
 
     public void EndSwipe()
@@ -70,12 +82,12 @@ public class SwipeHandler : MonoBehaviour
         ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
         if (swipeableObject != null)
         {
-            SpawnSwipeFX(_rotation);
+            SwipeFX(other.ClosestPoint(transform.position), _rotation);
             swipeableObject.OnSwipe(direction.normalized, _swipeForce);
         }
     }
 
-    private void SpawnSwipeFX(float rotation)
+    private void SwipeFX(Vector2 position, float rotation)
     {
 
         //_swipeEffectInstance = Instantiate(ParticleManager.Instance._swipeFX, _parent.transform.position, Quaternion.Euler(0, 0, rotation + 90f));
@@ -83,6 +95,10 @@ public class SwipeHandler : MonoBehaviour
         _swipeEffectInstance.Play();
         
         
+        ParticleSystem.ShapeModule shape = _swipeEffect.shape;
+        shape.position = _swipeEffect.transform.InverseTransformPoint(position);
+        shape.rotation = new Vector3(0, 0, rotation + 90f);
+        _swipeEffect.Play();  
     }
 
     private IEnumerator FXDelay()

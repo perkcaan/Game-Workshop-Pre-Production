@@ -56,7 +56,14 @@
 			<destination>{c893bc8b-0639-4601-baef-ee39dc787ade}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{b6a5fe0c-ccd0-44bd-9ec7-1115c0a362ad}" />
+	<object class="EventAutomatableProperties" id="{b6a5fe0c-ccd0-44bd-9ec7-1115c0a362ad}">
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
+		<property name="maximumDistance">
+			<value>0.800000012</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{fd86cdcd-6b23-42d5-9f90-0175daf46369}" />
 	<object class="GroupTrack" id="{8bc7ea06-7fbd-4ed7-b078-0b42f7d1f918}">
 		<relationship name="modules">
@@ -196,7 +203,15 @@
 	</object>
 	<object class="MixerBusPanner" id="{2601f649-640d-4a6b-b940-b62c9fa40a13}" />
 	<object class="MixerBusFader" id="{46a78a5f-4af6-4225-ab5d-d516084c01d7}" />
-	<object class="SpatialiserEffect" id="{eda28ea5-8e3e-444c-a901-76c18b94fbc6}" />
-	<object class="SFXReverbEffect" id="{2fa6f0a7-87e3-4419-a160-f8ed2c2fc723}" />
+	<object class="SpatialiserEffect" id="{eda28ea5-8e3e-444c-a901-76c18b94fbc6}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
+	</object>
+	<object class="SFXReverbEffect" id="{2fa6f0a7-87e3-4419-a160-f8ed2c2fc723}">
+		<property name="decayTime">
+			<value>1100</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{0b1f1ab7-2177-4c24-bd62-9fcf599612cc}" />
 </objects>

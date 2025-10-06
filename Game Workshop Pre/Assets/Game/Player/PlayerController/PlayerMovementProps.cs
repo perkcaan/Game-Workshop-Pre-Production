@@ -20,6 +20,12 @@ public class PlayerMovementProps
     [SerializeField] private float _sweepAccelerationModifier;
     public float SweepAccelerationModifier { get { return _sweepAccelerationModifier; } }
 
+    [Header("Swipe Movement")]
+    [SerializeField] private float _swipeMaxSpeedModifier;
+    public float SwipeMaxSpeedModifier { get { return _swipeMaxSpeedModifier; } }
+    [SerializeField] private float _swipeAccelerationModifier;
+    public float SwipeAccelerationModifier { get { return _swipeAccelerationModifier; } }
+
     [Header("Dashing")]
     [SerializeField] private int _dashRowCount;
     public int DashRowCount { get { return _dashRowCount; } }
