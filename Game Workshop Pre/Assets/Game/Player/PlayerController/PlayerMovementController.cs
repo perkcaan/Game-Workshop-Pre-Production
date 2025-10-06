@@ -11,7 +11,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
 
     // Properties
     [SerializeField] private PlayerMovementProps _movementProps;
-    [SerializeField] ParticleSystem _dashfx;
+    public ParticleManager _particles;
     ParticleSystem _dashfxInstance;
     public ParticleSystemForceField _forceField;
 
@@ -75,7 +75,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     private void Start()
     {
         SetWeight(_weight);
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
+        
         
 
     }
@@ -86,7 +87,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
         UpdateCooldowns();
         Transform transform = this.transform;
         //_dashfxInstance = Instantiate(_dashfx, transform.position, Quaternion.Euler(0, 0, 0));
-        _dashfx.gameObject.transform.SetParent(this.transform);
+        if(_dashfxInstance != null) 
+        _dashfxInstance.gameObject.transform.SetParent(this.transform);
     }
     private void FixedUpdate()
     {
@@ -236,10 +238,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
     private void SpawnDashFX()
     {
         
-        _dashfxInstance = Instantiate(_dashfx, transform.position, Quaternion.Euler(0, 0, 0));
+        _dashfxInstance = Instantiate(ParticleManager.Instance._dashfx, transform.position, Quaternion.Euler(0, 0, 0));
+        
         //_dashfxInstance.transform.position = transform.position;
         _dashfxInstance.Play();
-        _dashfxInstance.gameObject.transform.SetParent(this.transform);
+        //_dashfxInstance.gameObject.transform.SetParent(this.transform);
         StartCoroutine(DashGravDelay());
     }
 
@@ -270,7 +273,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable
 
     private IEnumerator DashGravDelay()
     {
-        yield return new WaitForSeconds(_dashfx.duration - 1.5f);
+        yield return new WaitForSeconds(_dashfxInstance.duration - 1.5f);
         Debug.Log("Gravity On");
         _forceField.gameObject.SetActive(true);
         yield return new WaitForSeconds(.5f);

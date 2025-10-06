@@ -30,11 +30,12 @@ public class SwipeHandler : MonoBehaviour
         }
         _hitbox = GetComponent<Collider2D>();
         _hitbox.enabled = false;
+        _swipeEffect = ParticleManager.Instance._swipeFX;
     }
 
     private void Update()
     {
-        
+        if (_swipeEffectInstance != null) _swipeEffectInstance.transform.rotation = transform.rotation;
     }
     // Swipe
     public void DoSwipe(float rotation, float swipeForce)
@@ -76,10 +77,17 @@ public class SwipeHandler : MonoBehaviour
 
     private void SpawnSwipeFX(float rotation)
     {
+
+        //_swipeEffectInstance = Instantiate(ParticleManager.Instance._swipeFX, _parent.transform.position, Quaternion.Euler(0, 0, rotation + 90f));
+        _swipeEffectInstance = Instantiate(_swipeEffect, _parent.transform.position, Quaternion.Euler(0, 0, rotation + 90f));
+        _swipeEffectInstance.Play();
         
-        _swipeEffectInstance = Instantiate(_swipeEffect, transform.position, Quaternion.Euler(0, 0, rotation + 90f));
-        _swipeEffectInstance.transform.rotation = transform.rotation;
         
+    }
+
+    private IEnumerator FXDelay()
+    {
+       yield return new WaitForSeconds(.1f);
     }
 
 }
