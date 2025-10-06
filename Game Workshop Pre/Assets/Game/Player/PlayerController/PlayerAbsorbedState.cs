@@ -30,6 +30,11 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
 
     public override void Update()
     {
+        if (_ctx.AbsorbedTrashBall == null)
+        {
+            _state.ChangeState(PlayerStateEnum.Idle);
+            return;
+        } 
         Transform trashBallTranform = _ctx.AbsorbedTrashBall.transform;
         _ctx.Player.transform.position = new Vector3(trashBallTranform.position.x, trashBallTranform.position.y, _ctx.Player.transform.position.z);
     }
