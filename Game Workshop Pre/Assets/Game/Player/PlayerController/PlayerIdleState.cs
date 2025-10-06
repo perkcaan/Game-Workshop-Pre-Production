@@ -16,13 +16,14 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
         _ctx = context;
         _state = state;
     }
-    
+
 
     // Methods
     //state
     public override void EnterState()
     {
         _ctx.CanSwipe = true;
+        _ctx.CanDash = true;
         _zeroMoveTimer = 0f;
     }
 
@@ -65,11 +66,14 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
 
     private void HandleRotation()
     {
-        Vector2 input = _ctx.MovementInput;
-        if (input.sqrMagnitude <= 0.01f) return;
-        float targetAngle = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg;
-        float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.RotationSpeed * Time.deltaTime);
-        
+        Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = mouseWorldPoint - (Vector2)_ctx.Player.transform.position;
+        direction.Normalize();
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        // Rotate slower based on speed - Disabled because I didnt like it. -Zach
+        float rotationSpeedReduction = 1f; //Mathf.Max(_ctx.MoveSpeed / _ctx.MaxWalkSpeed, 1);
+
+        float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.Props.RotationSpeed / rotationSpeedReduction * Time.deltaTime);
         _ctx.Rotation = Mathf.DeltaAngle(0f, newAngle);
     }
 

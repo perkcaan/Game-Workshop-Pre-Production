@@ -36,56 +36,8 @@ public abstract class Trash : MonoBehaviour, ISweepable, ISwipeable
         TrashId = _nextId++;
     }
 
-    protected virtual void OnTriggerEnter2D(Collider2D other)
-    {
-        Trash otherTrash = other.gameObject.GetComponent<Trash>();
-        if (otherTrash == null) return;
-
-        // can only merge trash of the same type
-        if (otherTrash.GetType() != this.GetType()) return;
-
-        // Priority- only one of the colliders can run OnTrashMerge
-        // first check forced merge priority
-        if (MergePriority && !otherTrash.MergePriority)
-        {
-            OnTrashMerge(otherTrash);
-            return;
-        }
-        // make sure to return if this loses
-        if (MergePriority != otherTrash.MergePriority)
-            return;
-
-        // since they have equal priority- check speed
-        float speed = _rigidBody.velocity.sqrMagnitude;
-        float otherSpeed = otherTrash.GetComponent<Rigidbody2D>().velocity.sqrMagnitude;
-
-        if (speed > otherSpeed)
-        {
-            OnTrashMerge(otherTrash);
-            return;
-        }
-
-        if (speed < otherSpeed)
-            return;
-
-        // If same speed, force winner to be based on the arbitrary TrashId
-        if (TrashId > otherTrash.TrashId)
-        {
-            OnTrashMerge(otherTrash);
-        }
-
-    }
-
     // Override to do something when size changes
     protected virtual void OnSizeChanged() { }
-
-    // Trash merging
-    protected virtual void OnTrashMerge(Trash otherTrash)
-    {
-        Size += otherTrash.Size;
-        Destroy(otherTrash.gameObject);
-    }
-
 
     // These interfaces can be overriden in a Child class if we want trash that acts differently
     // ISweepable
