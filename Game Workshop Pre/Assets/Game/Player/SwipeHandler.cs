@@ -10,7 +10,7 @@ public class SwipeHandler : MonoBehaviour
 
     // Components
     [SerializeField] private DottedParticleLine _dottedLine;
-    [SerializeField] private ParticleSystem _swipeEffect;
+    ParticleSystem _swipeEffectInstance;
     private PlayerMovementController _parent;
     private Collider2D _hitbox;
 
@@ -28,6 +28,7 @@ public class SwipeHandler : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
+        
         _hitbox = GetComponent<Collider2D>();
         _hitbox.enabled = false;
     }
@@ -88,10 +89,13 @@ public class SwipeHandler : MonoBehaviour
 
     private void SwipeFX(Vector2 position, float rotation)
     {
-        ParticleSystem.ShapeModule shape = _swipeEffect.shape;
-        shape.position = _swipeEffect.transform.InverseTransformPoint(position);
+        _swipeEffectInstance = Instantiate(ParticleManager.Instance._swipeFX, position, Quaternion.Euler(0, 0, rotation + 90f));
+        ParticleSystem.ShapeModule shape = _swipeEffectInstance.shape;
+        shape.position = _swipeEffectInstance.transform.InverseTransformPoint(position);
         shape.rotation = new Vector3(0, 0, rotation + 90f);
-        _swipeEffect.Play();  
+        _swipeEffectInstance.Play();
+        
+        //_swipeEffectInstance.Play();
     }
 
 }

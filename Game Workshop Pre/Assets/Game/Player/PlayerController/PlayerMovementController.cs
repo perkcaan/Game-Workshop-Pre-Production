@@ -52,7 +52,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     [SerializeField] private float _footstepCooldown = 0f;
 
     [Header("Effects")]
-    [SerializeField] private ParticleSystem _dashRestoreParticles; // Remove when particle manager is made
+    public ParticleManager _particles;
+    ParticleSystem _dashRestoreInstance;
+
+
 
 
     // Fields
@@ -97,6 +100,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     {
         _state.Update();
         UpdateCooldowns();
+        if (_dashRestoreInstance != null)
+            _dashRestoreInstance.gameObject.transform.SetParent(this.transform);
     }
     private void FixedUpdate()
     {
@@ -119,7 +124,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                _dashRestoreParticles.Play();
+                SpawnDashFX();
             }
         }
 
@@ -147,6 +152,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         }
     }
 
+    private void SpawnDashFX()
+    {
+
+        _dashRestoreInstance = Instantiate(_particles._dashRestoreFX, transform.position, Quaternion.Euler(0, 0, 0));
+
+        //_dashRestoreInstance.transform.position = transform.position;
+        _dashRestoreInstance.Play();
+        //_dashRestoreInstance.gameObject.transform.SetParent(this.transform);
+        
+    }
 
     //inputs
     private void OnMoveInput(InputValue value)
