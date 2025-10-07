@@ -124,16 +124,21 @@ public class EnemySpawner : MonoBehaviour
 
     private void ReleaseWave()
     {
-        // Release a wave for every threshold that is passed
-        foreach (var wt in zwm.waveThresholds)
+   
+
+        // Release a wave of enemies for every threshold that is passed
+        var keys = new List<float>(zwm.waveThresholds.Keys);
+
+        foreach (var key in keys)
         {
-            if (zwm.cm.percentClean < wt.Key && wt.Value.Equals(false))
+            // Once the threshold is passed for hte first time, set it to true so it cannot be passed it again
+            if (zwm.GetCleanlinessValue() > key && zwm.waveThresholds[key] == false)
             {
                 SpawnEnemies();
-                wt.Value.Equals(true);
+                zwm.waveThresholds[key] = true;
             }
         }
-        
+
     }
 
     #endregion
