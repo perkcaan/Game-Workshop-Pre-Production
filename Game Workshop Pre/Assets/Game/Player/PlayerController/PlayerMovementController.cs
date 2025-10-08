@@ -154,13 +154,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
 
     private void SpawnDashFX()
     {
-
-        _dashRestoreInstance = Instantiate(_particles._dashRestoreFX, transform.position, Quaternion.Euler(0, 0, 0));
-
-        //_dashRestoreInstance.transform.position = transform.position;
-        _dashRestoreInstance.Play();
-        //_dashRestoreInstance.gameObject.transform.SetParent(this.transform);
-        
+        // Corrected the method call to match the expected parameter types
+        ParticleManager.Instance.Play("dash", transform.position, Quaternion.Euler(0, 0, _ctx.Rotation), transform);
     }
 
     //inputs

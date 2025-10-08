@@ -78,24 +78,19 @@ public class SwipeHandler : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Vector2 direction = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
+        Vector3 contactPoint = other.ClosestPoint(transform.position);
+        
+
 
         ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
         if (swipeableObject != null)
         {
-            SwipeFX(other.ClosestPoint(transform.position), _rotation);
+
+            ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
             swipeableObject.OnSwipe(direction.normalized, _swipeForce);
         }
     }
 
-    private void SwipeFX(Vector2 position, float rotation)
-    {
-        _swipeEffectInstance = Instantiate(ParticleManager.Instance._swipeFX, position, Quaternion.Euler(0, 0, rotation + 90f));
-        ParticleSystem.ShapeModule shape = _swipeEffectInstance.shape;
-        shape.position = _swipeEffectInstance.transform.InverseTransformPoint(position);
-        shape.rotation = new Vector3(0, 0, rotation + 90f);
-        _swipeEffectInstance.Play();
-        
-        //_swipeEffectInstance.Play();
-    }
+ 
 
 }
