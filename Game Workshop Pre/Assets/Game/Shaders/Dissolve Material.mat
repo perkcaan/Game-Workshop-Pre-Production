@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1423833666948862756
+--- !u!114 &-1287242674773480720
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HeatLitMat
-  m_Shader: {fileID: -6465566751694194690, guid: 877ada6d4050b1b44a4b7eb506eaca6c, type: 3}
+  m_Name: Dissolve Material
+  m_Shader: {fileID: -6465566751694194690, guid: d20d624d4ecf32d439f0eac1d3f56b33, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -54,15 +54,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DissolveAmount: 0
+    - _DissolveAmount: 1
     - _GlowMulti: 1.5
     - _Heat: 0
-    - _MinTint: 0.3
-    - _QueueControl: 0
-    - _QueueOffset: 0
+    - _MinTint: 0.65
     m_Colors:
-    - _GlowColor: {r: 0, g: 0, b: 0, a: 0}
-    - _High: {r: 1, g: 1, b: 1, a: 1}
-    - _Low: {r: 1, g: 0.4818554, b: 0, a: 1}
-    - _Med: {r: 1, g: 0, b: 0, a: 1}
+    - _High: {r: 1, g: 0.7515723, b: 0.7515723, a: 0}
+    - _Low: {r: 1, g: 0.33722278, b: 0, a: 0}
+    - _Med: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
