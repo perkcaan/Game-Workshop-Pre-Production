@@ -11,6 +11,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     [SerializeField] float _decayTrashDropRate;
     [SerializeField] TrashMaterial _baseMaterial;
     [SerializeField] TrashMaterial _genericMaterial;
+    [SerializeField] float _dominantThreshold;
+    [SerializeField] float _primaryThreshold;
+    [SerializeField] float _secondaryThreshold;
+
     private float _maxHealth;
     private float _health;
     private bool _activelyDecaying = false;
@@ -21,8 +25,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private List<Trash> absorbedTrash = new List<Trash>();
     private List<TrashMaterial> _trashMaterialCounts = new List<TrashMaterial>();
     private List<int> _trashMaterialSize = new List<int>();
-    private TrashMaterial _primarytrashMaterial;
-    private TrashMaterial _secondarytrashMaterial;
+    private TrashMaterial _primaryTrashMaterial;
+    private TrashMaterial _secondaryTrashMaterial;
     private PhysicsMaterial2D _physicsMaterial2D;
     
     // Trash IDs to solve trash merge ties
@@ -54,14 +58,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _maxHealth = _baseMaxHealth;
         TrashId = _nextId++;
         _health = _maxHealth;
-        _primarytrashMaterial = _baseMaterial;
-        _secondarytrashMaterial = _baseMaterial;
+        _primaryTrashMaterial = _baseMaterial;
+        _primaryTrashMaterial = _baseMaterial;
         _physicsMaterial2D = Instantiate(_rigidBody.sharedMaterial);
     }
 
     public void Update()
     {
-        _primarytrashMaterial.whenBallRolls();
+        _primaryTrashMaterial.whenBallRolls();
         if (_rigidBody.velocity.magnitude < 1)
         {
             _health -= Time.deltaTime * _idleDecayMultiplier * _decayMultiplier;
@@ -156,25 +160,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     void CheckMaterial()
     {
-        /*
-        Color totalColor = Color.black;
-        _rigidBody.drag = _baseMaterial.drag;
-        _rigidBody.mass = _baseMaterial.mass;
-        _physicsMaterial2D.bounciness = _baseMaterial.bounciness;
-
-        foreach (Trash trash in absorbedTrash)
-        {
-            totalColor += trash.trashMaterial.color * trash.Size / Size;
-            _rigidBody.drag += trash.trashMaterial.drag * trash.Size / Size;
-            _rigidBody.mass += trash.trashMaterial.mass * trash.Size / Size;
-            _physicsMaterial2D.bounciness += trash.trashMaterial.bounciness * trash.Size / Size;
-        }
-        _rigidBody.sharedMaterial = _physicsMaterial2D;
-        _spriteRenderer.color = totalColor;
-        */
-
-        TrashMaterial primaryTrashMaterial = _genericMaterial;
-        TrashMaterial secondaryTrashMaterial = _genericMaterial;
+        _primaryTrashMaterial = _genericMaterial;
+        _secondaryTrashMaterial = _genericMaterial;
 
         _physicsMaterial2D.bounciness = _baseMaterial.bounciness;
         _spriteRenderer.color = _baseMaterial.color;
@@ -184,30 +171,35 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _damageMultiplier = _baseMaterial.damageMultiplier;
         _absorbMultiplier = _baseMaterial.absorbMultiplier;
 
-        float highestPrecent = 0.5f;
-        float secondHighestPrecent = 0.25f;
+        float highestPrecent = _primaryThreshold;
+        float secondHighestPrecent = _secondaryThreshold;
         for (int i = 0; i < _trashMaterialSize.Count; i++)
         {
             if (_trashMaterialSize[i] / Size > highestPrecent)
             {
+                if (highestPrecent != _primaryThreshold)
+                {
+                    secondHighestPrecent = highestPrecent;
+                    _secondaryTrashMaterial = _primaryTrashMaterial;
+                }
                 highestPrecent = _trashMaterialSize[i] / Size;
-                primaryTrashMaterial = _trashMaterialCounts[i];
+                _primaryTrashMaterial = _trashMaterialCounts[i];
             }
             else if (_trashMaterialSize[i] / Size > secondHighestPrecent)
             {
                 secondHighestPrecent = _trashMaterialSize[i] / Size;
-                secondaryTrashMaterial = _trashMaterialCounts[i];
+                _secondaryTrashMaterial = _trashMaterialCounts[i];
             }
         }
 
-        if (highestPrecent > 0.9)
+        if (highestPrecent > _dominantThreshold)
         {
-            ApplyTrashMaterial(primaryTrashMaterial, 1f);
+            ApplyTrashMaterial(_primaryTrashMaterial, 1f);
         }
         else
         {
-            ApplyTrashMaterial(primaryTrashMaterial, 0.7f);
-            ApplyTrashMaterial(secondaryTrashMaterial, 0.3f);
+            ApplyTrashMaterial(_primaryTrashMaterial, 0.66f);
+            ApplyTrashMaterial(_secondaryTrashMaterial, 0.33f);
         }
 
         _rigidBody.sharedMaterial = _physicsMaterial2D;
