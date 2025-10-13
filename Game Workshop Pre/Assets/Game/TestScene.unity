@@ -4524,16 +4524,20 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
-      propertyPath: _movementProps._dashForce
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
       propertyPath: _movementProps._dashCooldown
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
       propertyPath: _movementProps._dashDuration
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+      propertyPath: _movementProps._baseAcceleration
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+      propertyPath: _movementProps._baseMaxWalkSpeed
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7819092179503157042, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
       propertyPath: m_Name
