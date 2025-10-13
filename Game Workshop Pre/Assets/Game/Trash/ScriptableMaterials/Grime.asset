@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Grime
   m_EditorClassIdentifier: 
   color: {r: 0.1633395, g: 0.23529412, b: 0.13725491, a: 1}
-  material: {fileID: 6200000, guid: cc785174be641804bae257b4958005ab, type: 2}
-  mass: 1
-  drag: 1.25
-  decayMultiplier: 0.75
-  damageMultiplier: 0.75
-  absorbMultiplier: 1.5
+  bounciness: 0
+  mass: 0
+  drag: 0.25
+  decayMultiplier: -0.25
+  damageMultiplier: -0.25
+  absorbMultiplier: 0.5

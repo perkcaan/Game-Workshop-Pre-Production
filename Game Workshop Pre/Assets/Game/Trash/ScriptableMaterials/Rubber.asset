@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Rubber
   m_EditorClassIdentifier: 
   color: {r: 0.17346315, g: 0.16887681, b: 0.21698111, a: 1}
-  material: {fileID: 6200000, guid: 09ad8493be1b6e941bff70fdef7bf716, type: 2}
-  mass: 1
-  drag: 0.5
-  decayMultiplier: 1
-  damageMultiplier: 1.5
-  absorbMultiplier: 0.75
+  bounciness: 0
+  mass: 0
+  drag: -0.5
+  decayMultiplier: 0
+  damageMultiplier: 0.5
+  absorbMultiplier: -0.25

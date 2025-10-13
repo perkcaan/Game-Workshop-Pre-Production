@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Metal
   m_EditorClassIdentifier: 
   color: {r: 0.26579747, g: 0.29614636, b: 0.31132078, a: 1}
-  material: {fileID: 6200000, guid: 42c81a646c9dc4b4f9c79b723d72fced, type: 2}
-  mass: 1.25
-  drag: 1.25
-  decayMultiplier: 1.5
-  damageMultiplier: 0.75
-  absorbMultiplier: 0.75
+  bounciness: 0
+  mass: 0.25
+  drag: 0.25
+  decayMultiplier: 0.5
+  damageMultiplier: -0.25
+  absorbMultiplier: -0.25

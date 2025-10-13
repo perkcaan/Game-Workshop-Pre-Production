@@ -15,16 +15,16 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private bool _activelyDecaying = false;
     public List<IAbsorbable> absorbedObjects = new List<IAbsorbable>();
     private List<Trash> absorbedTrash = new List<Trash>();
-    private List<TrashMaterial> _trashMaterialCounts = new List<TrashMaterial>();
-    private List<int> _trashMaterialSize = new List<int>();
     private TrashMaterial _trashMaterial;
-
+    
     // Trash IDs to solve trash merge ties
     private static int _nextId = 0;
     public int TrashId { get; private set; }
     [SerializeField] private float _size = 1f;
 
     Rigidbody2D _rigidBody;
+    SpriteRenderer _spriteRenderer;
+    PhysicsMaterial2D _physicsMaterial2D;
     public float Size
     {
         get { return _size; }
@@ -43,14 +43,17 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     public void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         _maxHealth = _baseMaxHealth;
         TrashId = _nextId++;
         _health = _maxHealth;
         _trashMaterial = _baseMaterial;
+        _physicsMaterial2D = Instantiate(_rigidBody.sharedMaterial);
     }
 
     public void Update()
     {
+        _trashMaterial.whenBallRolls();
         if (_rigidBody.velocity.magnitude < 1)
         {
             _health -= Time.deltaTime * _idleDecayMultiplier * _trashMaterial.decayMultiplier;
@@ -95,14 +98,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
         int randomTrashRemove = Random.Range(0, absorbedTrash.Count);
 
-        for (int i = 0; i < _trashMaterialCounts.Count; i++)
-        {
-            if (absorbedTrash[randomTrashRemove].trashMaterial == _trashMaterialCounts[i])
-            {
-                _trashMaterialSize[i] -= absorbedTrash[randomTrashRemove].Size;
-                break;
-            }
-        }
         Size -= absorbedTrash[randomTrashRemove].Size;
         absorbedTrash[randomTrashRemove].OnTrashBallExplode(this);
         absorbedObjects.Remove(absorbedTrash[randomTrashRemove]);
@@ -128,38 +123,26 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         trash.gameObject.SetActive(false);
         Size += trash.Size;
         _health = _maxHealth = Size + _baseMaxHealth;
-
-        for (int i = 0; i < _trashMaterialCounts.Count; i++)
-        {
-            if (trash.trashMaterial == _trashMaterialCounts[i])
-            {
-                _trashMaterialSize[i] += trash.Size;
-                CheckMaterial();
-                return;
-            }
-        }
-        _trashMaterialCounts.Add(trash.trashMaterial);
-        _trashMaterialSize.Add(trash.Size);
         CheckMaterial();
     }
 
     void CheckMaterial()
     {
-        TrashMaterial mostTrashMaterial = _baseMaterial;
-        float highestPrecent = 0f;
-        for (int i = 0; i < _trashMaterialSize.Count; i++)
+        Color totalColor = Color.black;
+        _rigidBody.drag = _baseMaterial.drag;
+        _rigidBody.mass = _baseMaterial.mass;
+        _physicsMaterial2D.bounciness = _baseMaterial.bounciness;
+
+        foreach (Trash trash in absorbedTrash)
         {
-            if (_trashMaterialSize[i] / Size > highestPrecent)
-            {
-                highestPrecent = _trashMaterialSize[i] / Size;
-                mostTrashMaterial = _trashMaterialCounts[i];
-            }
+            totalColor += trash.trashMaterial.color * trash.Size / Size;
+            _rigidBody.drag += trash.trashMaterial.drag * trash.Size / Size;
+            _rigidBody.mass += trash.trashMaterial.mass * trash.Size / Size;
+            _physicsMaterial2D.bounciness += trash.trashMaterial.bounciness * trash.Size / Size;
         }
-        _trashMaterial = mostTrashMaterial;
-        _rigidBody.sharedMaterial = mostTrashMaterial.material;
-        _rigidBody.drag = mostTrashMaterial.drag;
-        _rigidBody.mass = mostTrashMaterial.mass;
-        GetComponent<SpriteRenderer>().color = mostTrashMaterial.color;
+
+        _rigidBody.sharedMaterial = _physicsMaterial2D;
+        _spriteRenderer.color = totalColor;
     }
 
 
