@@ -283,6 +283,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
         heat.Reset();
+        LayerMask layerMask = new LayerMask();
+        _ctx.Collider.excludeLayers = layerMask;
     }
 
 

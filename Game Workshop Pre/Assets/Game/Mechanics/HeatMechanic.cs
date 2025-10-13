@@ -159,7 +159,7 @@ public class HeatMechanic : MonoBehaviour
         // If above warning threshold, flash according to frequency and heat
         if (_heat >= _warningThreshold)
         {
-            float heatFlashRamp = 2f; // This can be serialized if we move
+            float heatFlashRamp = 2f; // This can be serialized if we make a shader controller script
             float xExp = Mathf.Pow(heat01, heatFlashRamp);
             float flashSpeed = Mathf.Lerp(0, _maxFlashFrequency, xExp);
             _flashPhase += Time.deltaTime * flashSpeed;
