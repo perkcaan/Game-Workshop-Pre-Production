@@ -73,6 +73,10 @@ PrefabInstance:
       value: 0.8207547
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: trashMaterial
+      value: 
+      objectReference: {fileID: 11400000, guid: e943255a8d159fc4cb1c341cc129201c, type: 2}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerTripForce
       value: 200
       objectReference: {fileID: 0}
@@ -90,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerExitTripForce
-      value: 300
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerEnterKnockback
@@ -98,7 +102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerEnterTripForce
-      value: -120
+      value: -240
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerExitSlideForce

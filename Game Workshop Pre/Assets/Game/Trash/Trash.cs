@@ -7,14 +7,14 @@ using UnityEngine;
 public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
 {
     [SerializeField] protected GameObject _trashBallPrefab;
+    
     [SerializeField] protected float _explosionMultiplier;
 
     [Header("Trash")]
-    [SerializeField] public int Size;
-    public Color trashColor;
+    public int Size;
+    public TrashMaterial trashMaterial;
     //Components
     protected Rigidbody2D _rigidBody;
-
     // Unity methods
     private void Awake()
     {
@@ -57,11 +57,13 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
 
     public void OnIgnite(HeatMechanic heat)
     {
+        PlayerState.Instance.trashDeleted.Invoke(Size);
         Destroy(gameObject);
     }
 
     public void OnTrashBallIgnite()
     {
+        PlayerState.Instance.trashDeleted.Invoke(Size);
         Destroy(gameObject);
     }
 }
