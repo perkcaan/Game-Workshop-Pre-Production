@@ -40,8 +40,8 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
             Quaternion randomRotation = Quaternion.Euler(0, 0, Random.Range(-_randomDirectionRange, _randomDirectionRange));
             Vector3 direction = randomRotation * (transform.position - player.transform.position).normalized;
 
-            _rigidBody.AddForce(direction * _playerEnterKnockback * (1 + playerRb.velocity.magnitude/3));
-            playerRb.AddForce(-direction * _playerEnterTripForce * (1 + playerRb.velocity.magnitude/3));
+            _rigidBody.AddForce(direction * _playerEnterKnockback * (1 + playerRb.velocity.magnitude/3), ForceMode2D.Impulse);
+            playerRb.AddForce(-direction * _playerEnterTripForce * (1 + playerRb.velocity.magnitude/3), ForceMode2D.Impulse);
         }
     }
     void OnTriggerExit2D(Collider2D other)
@@ -52,8 +52,8 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
             Quaternion randomRotation = Quaternion.Euler(0, 0, Random.Range(-_randomDirectionRange, _randomDirectionRange));
             Vector3 direction = randomRotation * (transform.position - player.transform.position).normalized;
 
-            _rigidBody.AddForce(direction * _playerExitKnockback * (1 + playerRb.velocity.magnitude/3));
-            playerRb.AddForce(-direction * _playerExitTripForce * (1 + playerRb.velocity.magnitude/3));
+            _rigidBody.AddForce(direction * _playerExitKnockback * (1 + playerRb.velocity.magnitude/3), ForceMode2D.Impulse);
+            playerRb.AddForce(-direction * _playerExitTripForce * (1 + playerRb.velocity.magnitude/3), ForceMode2D.Impulse);
         }
     }
 }
