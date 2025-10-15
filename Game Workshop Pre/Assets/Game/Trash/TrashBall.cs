@@ -67,6 +67,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         _primaryTrashMaterial.whenBallRolls();
 
+        // Trash ball rotation
         Vector3 rotationAxis = new Vector3(-_rigidBody.velocity.y, _rigidBody.velocity.x, 0);
         float distance = _rigidBody.velocity.magnitude * Time.deltaTime;
         float circumference = 2 * Mathf.PI * transform.localScale.x;
