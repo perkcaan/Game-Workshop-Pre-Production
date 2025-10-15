@@ -35,7 +35,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     [SerializeField] private float _size = 1f;
 
     Rigidbody2D _rigidBody;
-    SpriteRenderer _spriteRenderer;
+    MeshRenderer _meshRenderer;
     public float Size
     {
         get { return _size; }
@@ -48,13 +48,13 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     void SetSize()
     {
         float newSize = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
-        transform.localScale = new Vector3(newSize, newSize, 1);
+        transform.localScale = new Vector3(newSize, newSize, newSize);
     }
 
     public void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _meshRenderer = GetComponentInChildren<MeshRenderer>();
         _maxHealth = _baseMaxHealth;
         TrashId = _nextId++;
         _health = _maxHealth;
@@ -66,6 +66,13 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     public void Update()
     {
         _primaryTrashMaterial.whenBallRolls();
+
+        Vector3 rotationAxis = new Vector3(-_rigidBody.velocity.y, _rigidBody.velocity.x, 0);
+        float distance = _rigidBody.velocity.magnitude * Time.deltaTime;
+        float circumference = 2 * Mathf.PI * transform.localScale.x;
+        float rotationAngle = (distance / circumference) * 360f;
+        _meshRenderer.transform.Rotate(rotationAxis, rotationAngle, Space.World);
+
         if (_rigidBody.velocity.magnitude < 1)
         {
             _health -= Time.deltaTime * _idleDecayMultiplier * _decayMultiplier;
@@ -164,7 +171,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _secondaryTrashMaterial = _genericMaterial;
 
         _physicsMaterial2D.bounciness = _baseMaterial.bounciness;
-        _spriteRenderer.color = _baseMaterial.color;
+        //_spriteRenderer.color = _baseMaterial.color;
         _rigidBody.drag = _baseMaterial.drag;
         _rigidBody.mass = _baseMaterial.mass;
         _decayMultiplier = _baseMaterial.decayMultiplier;
@@ -211,7 +218,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _physicsMaterial2D.bounciness += material.bounciness * precentOf;
         _rigidBody.drag += material.drag * precentOf;
         _rigidBody.mass += material.mass * precentOf;
-        _spriteRenderer.color += material.color * precentOf;
+        //_spriteRenderer.color += material.color * precentOf;
         _decayMultiplier += material.decayMultiplier * precentOf;
         _damageMultiplier += material.damageMultiplier * precentOf;
         _absorbMultiplier += material.absorbMultiplier * precentOf;
