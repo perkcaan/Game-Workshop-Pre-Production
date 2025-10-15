@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System.Collections;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
 {
@@ -54,6 +55,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     [Header("Effects")]
     public ParticleManager _particles;
     ParticleSystem _dashRestoreInstance;
+    [SerializeField] private TrailRenderer _dashTrail;
 
 
 
@@ -155,7 +157,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     private void SpawnDashFX()
     {
         // Corrected the method call to match the expected parameter types
-        ParticleManager.Instance.Play("dash", transform.position, Quaternion.Euler(0, 0, _ctx.Rotation), transform);
+        if (ParticleManager.Instance != null)
+            ParticleManager.Instance.Play("dashBack", transform.position, Quaternion.Euler(0, 0, _ctx.Rotation), transform);
     }
 
     //inputs
@@ -179,8 +182,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         if (!value.isPressed) return;
         if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
         {
+            
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash", transform.position);
+            ;// SpawnDashTrail();
             _state.ChangeState(PlayerStateEnum.Dash);
+            StartCoroutine(Dashing());
         }
     }
 
@@ -288,7 +294,13 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         _state.ChangeState(PlayerStateEnum.Idle);
     }
 
-
+    //public void SpawnDashTrail()
+    //{
+    //    Vector3 offset = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        
+    //    if (ParticleManager.Instance != null)
+    //        ParticleManager.Instance.Play("dash", offset, Quaternion.Euler(0, 0, _ctx.Rotation + 90), null);
+    //}
 
     // Gizmo to display the dash cooldowns
     private void DrawDashCooldownGizmo()
@@ -310,6 +322,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
             Gizmos.color = Color.magenta;
             Gizmos.DrawSphere(_ctx.Player.transform.position + new Vector3(0, 1, 0), 0.1f);
         }
+    }
+
+    private IEnumerator Dashing()
+    {
+        _ctx.IsDashing = true;
+        _dashTrail.emitting = true;
+        yield return new WaitForSeconds(0.25f);
+        _dashTrail.emitting = false;
+        _ctx.IsDashing = false;
+
     }
 
 }

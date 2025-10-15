@@ -13,7 +13,11 @@ public class ParticleManager : Singleton<ParticleManager>
 
     public void Play(string pCode,Vector3 position)
     {
-        
+        if (_particles.ContainsKey(pCode))
+        {
+            ParticleSystem psInstance = Instantiate(_particles[pCode], position, Quaternion.identity, null);
+            psInstance.Play();
+        }
     }
 
     public void Play(string pCode, Vector3 position, Quaternion rotation, Transform parent = null)
