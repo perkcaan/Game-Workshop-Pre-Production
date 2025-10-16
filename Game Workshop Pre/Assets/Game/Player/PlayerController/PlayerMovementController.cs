@@ -287,8 +287,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Collider.excludeLayers = layerMask;
     }
 
-
-
     // Gizmo to display the dash cooldowns
     private void DrawDashCooldownGizmo()
     {
@@ -311,4 +309,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         }
     }
 
+    public void OnTrashBallIgnite()
+    {
+        // Also temporary need a death function
+        transform.position = new Vector3(-6.5f, 2f, transform.position.z);
+    }
 }

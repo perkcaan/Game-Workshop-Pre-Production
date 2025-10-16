@@ -57,8 +57,24 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2120376021545760926, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
+      propertyPath: trashColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2120376021545760926, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
+      propertyPath: trashColor.b
+      value: 0.1509879
+      objectReference: {fileID: 0}
+    - target: {fileID: 2120376021545760926, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
+      propertyPath: trashColor.g
+      value: 0.2735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 2120376021545760926, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
+      propertyPath: trashColor.r
+      value: 0.17171654
+      objectReference: {fileID: 0}
+    - target: {fileID: 2120376021545760926, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
       propertyPath: _explosionMultiplier
-      value: 0.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2120376021545760926, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
       propertyPath: _velocityToTurnIntoTrash
@@ -66,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2120376021545760926, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
       propertyPath: _sweepDurationToBecomeBall
-      value: 1
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7298980779152083279, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
       propertyPath: m_Mass

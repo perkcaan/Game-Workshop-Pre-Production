@@ -81,8 +81,11 @@ public class SwipeHandler : MonoBehaviour
         ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
         if (swipeableObject != null)
         {
-            SwipeFX(other.ClosestPoint(transform.position), _rotation);
             swipeableObject.OnSwipe(direction.normalized, _swipeForce);
+            // temporary check to stop it from hitting loose trash
+            if (other.TryGetComponent(out LooseTrash trash)) return;
+
+            SwipeFX(other.ClosestPoint(transform.position), _rotation);
         }
     }
 

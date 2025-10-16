@@ -43,14 +43,15 @@ public class HeatMechanic : MonoBehaviour
 
     // Components
     private Room _currentRoom;
-    private SpriteRenderer _spriteRenderer;
+    private Renderer _spriteRenderer;
     private MaterialPropertyBlock _block;
-
+    [SerializeField] Texture mainTexture;
 
     // Unity methods
     private void Awake()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponentInChildren<Renderer>();
+        if (_spriteRenderer == null) Debug.Log("damn");
         _block = new MaterialPropertyBlock();
     }
 
@@ -172,9 +173,7 @@ public class HeatMechanic : MonoBehaviour
         _spriteRenderer.GetPropertyBlock(_block);
         _block.SetFloat("_Heat", heat01);
         _block.SetFloat("_FlashPhase", _flashPhase);
+        if (mainTexture != null)  _block.SetTexture("_MainTex", mainTexture); 
         _spriteRenderer.SetPropertyBlock(_block);
     }
-
-
-
 }

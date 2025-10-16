@@ -20,15 +20,7 @@ public class TrashPile : Trash, ISwipeable
         }
         _sprite = GetComponentInChildren<SpriteRenderer>();
     }
-
-    void Update()
-    {
-        if (_mergableDelay >= 0f)
-        {
-            _mergableDelay -= Time.deltaTime;
-        }
-    }
-
+    
     public void OnSwipe(Vector2 direction, float force)
     {
         TakeDamage(1, direction, force);

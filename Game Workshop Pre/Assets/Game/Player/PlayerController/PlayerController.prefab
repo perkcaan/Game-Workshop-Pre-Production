@@ -5369,7 +5369,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.25
 --- !u!114 &5170008795486251839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5439,9 +5439,9 @@ MonoBehaviour:
   _swipeHoldChargeTime: 2
   _swipeDuration: 0.34
   _swipeCooldown: 0.2
-  _absorbResistance: 200
+  _absorbResistance: 160
   _minTrashSizeToAbsorb: 5
-  _playerEscapeDamage: 10
+  _playerEscapeDamage: 16
   _swipeVisualLineDistance: 3
   _swipeVisualLineSegments: 5
   _footstepCooldown: 0
@@ -5460,9 +5460,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _heat: 0
   _heatRelaxationRate: 1
+  _timeBeforeRelax: 1
   _warningThreshold: 60
   _ignitionThreshold: 90
-  _ignitionTime: 1
+  _ignitionTime: 0.2
   _maxFlashFrequency: 7
 --- !u!114 &8569040654837417826
 MonoBehaviour:

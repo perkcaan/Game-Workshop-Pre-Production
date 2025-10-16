@@ -3,79 +3,235 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
+public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 {
     [SerializeField] float _scaleMultiplier;
     [SerializeField] float _baseMaxHealth;
-    [SerializeField] float _healthGainedPerSizeIncrease;
     [SerializeField] float _idleDecayMultiplier;
+    [SerializeField] float _decayTrashDropRate;
+    [SerializeField] TrashMaterial _baseMaterial;
+    [SerializeField] TrashMaterial _genericMaterial;
+    [SerializeField] float _dominantThreshold;
+    [SerializeField] float _primaryThreshold;
+    [SerializeField] float _secondaryThreshold;
+
     private float _maxHealth;
     private float _health;
+    private bool _activelyDecaying = false;
+    private float _damageMultiplier;
+    private float _decayMultiplier;
+    private float _absorbMultiplier;
     public List<IAbsorbable> absorbedObjects = new List<IAbsorbable>();
-
+    private List<Trash> absorbedTrash = new List<Trash>();
+    private List<TrashMaterial> _trashMaterialCounts = new List<TrashMaterial>();
+    private List<int> _trashMaterialSize = new List<int>();
+    private TrashMaterial _primaryTrashMaterial;
+    private TrashMaterial _secondaryTrashMaterial;
+    private PhysicsMaterial2D _physicsMaterial2D;
+    
     // Trash IDs to solve trash merge ties
     private static int _nextId = 0;
     public int TrashId { get; private set; }
     [SerializeField] private float _size = 1f;
+
     Rigidbody2D _rigidBody;
+    MeshRenderer _meshRenderer;
     public float Size
     {
         get { return _size; }
         set
         {
             _size = value;
-            OnSizeChanged();
+            SetSize();
         }
     }
+    void SetSize()
+    {
+        float newSize = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
+        transform.localScale = new Vector3(newSize, newSize, newSize);
+    }
 
-    public void Start()
+    public void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
+        _meshRenderer = GetComponentInChildren<MeshRenderer>();
         _maxHealth = _baseMaxHealth;
         TrashId = _nextId++;
         _health = _maxHealth;
+        _primaryTrashMaterial = _baseMaterial;
+        _primaryTrashMaterial = _baseMaterial;
+        _physicsMaterial2D = Instantiate(_rigidBody.sharedMaterial);
     }
 
     public void Update()
     {
+        _primaryTrashMaterial.whenBallRolls();
+
+        // Trash ball rotation
+        Vector3 rotationAxis = new Vector3(-_rigidBody.velocity.y, _rigidBody.velocity.x, 0);
+        float distance = _rigidBody.velocity.magnitude * Time.deltaTime;
+        float circumference = 2 * Mathf.PI * transform.localScale.x;
+        float rotationAngle = (distance / circumference) * 360f;
+        _meshRenderer.transform.Rotate(rotationAxis, rotationAngle, Space.World);
+
         if (_rigidBody.velocity.magnitude < 1)
         {
-            _health -= Time.deltaTime * _idleDecayMultiplier;
-            if (_health < 0) ExplodeTrashBall();
-        }
-        else
-        {
-            _health = _maxHealth;
+            _health -= Time.deltaTime * _idleDecayMultiplier * _decayMultiplier;
+            if (_health < 0)
+            {
+                DegradeTrashBall();
+                _health += _decayTrashDropRate;
+            }
         }
     }
 
     public void OnSweep(Vector2 direction, float force)
     {
+        SetDecaying(false);
+        _health = _maxHealth;
         _rigidBody.AddForce(direction * force, ForceMode2D.Force);
     }
     public void OnSwipe(Vector2 direction, float force)
     {
+        SetDecaying(false);
+        _health = _maxHealth;
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
     public void TakeDamage(int damage)
     {
-        _health -= damage;
+        float damageTaken = damage * _damageMultiplier;
+        _health -= damageTaken;
+        _maxHealth -= damageTaken;
         if (_health < 0) ExplodeTrashBall();
+        else DegradeTrashBall();
     }
 
-    protected void OnSizeChanged()
+    public void DegradeTrashBall()
     {
-        float newSize = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
-        transform.localScale = new Vector3(newSize, newSize, 1);
-        _maxHealth = Size;
+        SetDecaying(true);
+
+        if (absorbedTrash.Count <= 1)
+        {
+            ExplodeTrashBall();
+            return;
+        }
+        int randomTrashRemove = Random.Range(0, absorbedTrash.Count);
+
+        for (int i = 0; i < _trashMaterialCounts.Count; i++)
+        {
+            if (absorbedTrash[randomTrashRemove].trashMaterial == _trashMaterialCounts[i])
+            {
+                _trashMaterialSize[i] -= absorbedTrash[randomTrashRemove].Size;
+                break;
+            }
+        }
+        Size -= absorbedTrash[randomTrashRemove].Size;
+        absorbedTrash[randomTrashRemove].OnTrashBallExplode(this);
+        absorbedObjects.Remove(absorbedTrash[randomTrashRemove]);
+        absorbedTrash.RemoveAt(randomTrashRemove);
     }
 
-    protected void OnTriggerEnter2D(Collider2D other)
+    private void SetDecaying(bool isDecaying)
+    {
+        if (isDecaying == _activelyDecaying) return;
+        _activelyDecaying = isDecaying;
+        LayerMask mask = _rigidBody.excludeLayers;
+        int trashBit = 1 << LayerMask.NameToLayer("Trash");
+
+        if (isDecaying) mask |= trashBit;
+        else mask &= ~trashBit;
+        _rigidBody.excludeLayers = mask;
+    }
+
+    public void AbsorbTrash(Trash trash)
+    {
+        absorbedObjects.Add(trash);
+        absorbedTrash.Add(trash);
+        trash.gameObject.SetActive(false);
+        Size += trash.Size;
+        _health = _maxHealth = Size + _baseMaxHealth;
+
+        for (int i = 0; i < _trashMaterialCounts.Count; i++)
+        {
+            if (trash.trashMaterial == _trashMaterialCounts[i])
+            {
+                _trashMaterialSize[i] += trash.Size;
+                CheckMaterial();
+                return;
+            }
+        }
+        _trashMaterialCounts.Add(trash.trashMaterial);
+        _trashMaterialSize.Add(trash.Size);
+        CheckMaterial();
+    }
+
+    void CheckMaterial()
+    {
+        _primaryTrashMaterial = _genericMaterial;
+        _secondaryTrashMaterial = _genericMaterial;
+
+        _physicsMaterial2D.bounciness = _baseMaterial.bounciness;
+        //_spriteRenderer.color = _baseMaterial.color;
+        _rigidBody.drag = _baseMaterial.drag;
+        _rigidBody.mass = _baseMaterial.mass;
+        _decayMultiplier = _baseMaterial.decayMultiplier;
+        _damageMultiplier = _baseMaterial.damageMultiplier;
+        _absorbMultiplier = _baseMaterial.absorbMultiplier;
+
+        float highestPrecent = _primaryThreshold;
+        float secondHighestPrecent = _secondaryThreshold;
+        for (int i = 0; i < _trashMaterialSize.Count; i++)
+        {
+            if (_trashMaterialSize[i] / Size > highestPrecent)
+            {
+                if (highestPrecent != _primaryThreshold)
+                {
+                    secondHighestPrecent = highestPrecent;
+                    _secondaryTrashMaterial = _primaryTrashMaterial;
+                }
+                highestPrecent = _trashMaterialSize[i] / Size;
+                _primaryTrashMaterial = _trashMaterialCounts[i];
+            }
+            else if (_trashMaterialSize[i] / Size > secondHighestPrecent)
+            {
+                secondHighestPrecent = _trashMaterialSize[i] / Size;
+                _secondaryTrashMaterial = _trashMaterialCounts[i];
+            }
+        }
+
+        if (highestPrecent > _dominantThreshold)
+        {
+            ApplyTrashMaterial(_primaryTrashMaterial, 1f);
+        }
+        else
+        {
+            ApplyTrashMaterial(_primaryTrashMaterial, 0.66f);
+            ApplyTrashMaterial(_secondaryTrashMaterial, 0.33f);
+        }
+
+        _rigidBody.sharedMaterial = _physicsMaterial2D;
+    }
+
+    private void ApplyTrashMaterial(TrashMaterial material, float precentOf)
+    {
+        //Debug.Log("I am " + precentOf * 100 + "% made of "+material.name);
+        _physicsMaterial2D.bounciness += material.bounciness * precentOf;
+        _rigidBody.drag += material.drag * precentOf;
+        _rigidBody.mass += material.mass * precentOf;
+        //_spriteRenderer.color += material.color * precentOf;
+        _decayMultiplier += material.decayMultiplier * precentOf;
+        _damageMultiplier += material.damageMultiplier * precentOf;
+        _absorbMultiplier += material.absorbMultiplier * precentOf;
+    }
+
+
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
-            float absorbingPower = (2 - _rigidBody.velocity.magnitude / 2) * Size;
+            if (_activelyDecaying) return;
+            float absorbingPower = (_rigidBody.velocity.magnitude - 2) * Size * _absorbMultiplier;
             absorbableObject.OnAbsorbedByTrashBall(this, absorbingPower, false);
             _health = _maxHealth;
             return;
@@ -110,7 +266,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
         }
     }
 
-    protected void OnTrashBallMerge(TrashBall otherTrashBall)
+    void OnTrashBallMerge(TrashBall otherTrashBall)
     {
         if (!otherTrashBall.isActiveAndEnabled) return;
         foreach (IAbsorbable absorbable in otherTrashBall.absorbedObjects)
@@ -120,17 +276,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
 
         otherTrashBall.enabled = false;
         Destroy(otherTrashBall.gameObject);
-    }
-
-    private void BurnTrashBall()
-    {
-        foreach (IAbsorbable absorbable in absorbedObjects)
-        {
-            MonoBehaviour trashMono = absorbable as MonoBehaviour;
-            if (trashMono != null) trashMono.gameObject.SetActive(true);
-            absorbable.OnTrashBallExplode(this);
-        }
-        Destroy(gameObject);
     }
 
     private void ExplodeTrashBall()
@@ -144,34 +289,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable
         Destroy(gameObject);
     }
 
-    public void TempMelt() //TODO: temporary rework melting / burning to destroy objects inside
+    public void OnIgnite(HeatMechanic heat)
     {
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
-            MonoBehaviour trashMono = absorbable as MonoBehaviour;
-            if (trashMono == null) continue;
-
-            if (absorbable is PlayerMovementController)
-            {
-                trashMono.transform.position = new Vector2(-6.5f, 2);
-            }
-            else
-            {
-                Destroy(trashMono.gameObject);
-            }
+            absorbable.OnTrashBallIgnite();
         }
         absorbedObjects.Clear();
-        Destroy(gameObject);
-    }
-    
-    public void OnIgnite()
-    {
-        foreach (IAbsorbable absorbable in absorbedObjects)
-        {
-            MonoBehaviour trashMono = absorbable as MonoBehaviour;
-            Destroy(trashMono.gameObject);
-        }
-        absorbedObjects.Clear();
+        absorbedTrash.Clear();
         Destroy(gameObject);
     }
 }

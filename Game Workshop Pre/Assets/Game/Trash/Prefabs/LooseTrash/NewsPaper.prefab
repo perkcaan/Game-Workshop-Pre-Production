@@ -65,6 +65,22 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: trashColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: trashColor.b
+      value: 0.8352941
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: trashColor.g
+      value: 0.89411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: trashColor.r
+      value: 0.91764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerTripForce
       value: -5
       objectReference: {fileID: 0}
@@ -74,23 +90,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _explosionMultiplier
-      value: 0.3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerExitKnockback
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerExitTripForce
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerEnterKnockback
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _playerEnterTripForce
-      value: 10
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
+      propertyPath: _randomDirectionRange
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _velocityToTurnIntoTrash
@@ -98,7 +118,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1861094509799274036, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: _sweepDurationToBecomeBall
-      value: 0.5
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7298980779152083279, guid: a81ca26d6f4943f408ec6bf36138db2c, type: 3}
       propertyPath: m_Mass

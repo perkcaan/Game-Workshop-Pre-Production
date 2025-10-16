@@ -1,30 +1,27 @@
+using System;
 using UnityEngine;
 
 
 // An abstract class for Trash. All types of Trash can inherit from this.
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class Trash : MonoBehaviour, IAbsorbable
+public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
 {
     [SerializeField] protected GameObject _trashBallPrefab;
+    
     [SerializeField] protected float _explosionMultiplier;
 
     [Header("Trash")]
-    [SerializeField] public float Size;
-    protected float _mergableDelay;
-
+    public int Size;
+    public TrashMaterial trashMaterial;
     //Components
     protected Rigidbody2D _rigidBody;
-
     // Unity methods
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _mergableDelay = 0.5f;
     }
-
     protected void CreateTrashBall()
     {
-        if (_mergableDelay > 0) return;
         GameObject trashBallObject = Instantiate(_trashBallPrefab);
         trashBallObject.transform.position = transform.position;
         TrashBall trashBall = trashBallObject.GetComponent<TrashBall>();
@@ -36,8 +33,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable
             return;
         }
 
-        trashBall.absorbedObjects.Add(this);
-        trashBall.Size = Size;
+        trashBall.AbsorbTrash(this);
         trashBall.GetComponent<Rigidbody2D>().velocity = _rigidBody.velocity;
         gameObject.SetActive(false);
     }
@@ -46,23 +42,28 @@ public abstract class Trash : MonoBehaviour, IAbsorbable
     {
         if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled))
         {
-            trashBall.absorbedObjects.Add(this);
-            trashBall.Size += Size;
-            gameObject.SetActive(false);
+            trashBall.AbsorbTrash(this);
         }
     }
 
     public void OnTrashBallExplode(TrashBall trashBall)
     {
-        _mergableDelay = 1f;
+        gameObject.SetActive(true);
         transform.position = trashBall.transform.position;
-        float explosionForce = (1 - trashBall.Size) * _explosionMultiplier;
-        Vector2 randomForce = new Vector2(Random.Range(-explosionForce, explosionForce), Random.Range(-explosionForce, explosionForce));
+        float explosionForce = (float)(Math.Sqrt(trashBall.Size) * _explosionMultiplier);
+        Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
         _rigidBody.velocity = randomForce;
     }
 
-    public void OnIgnite()
+    public void OnIgnite(HeatMechanic heat)
     {
+        PlayerState.Instance.trashDeleted.Invoke(Size);
+        Destroy(gameObject);
+    }
+
+    public void OnTrashBallIgnite()
+    {
+        PlayerState.Instance.trashDeleted.Invoke(Size);
         Destroy(gameObject);
     }
 }
