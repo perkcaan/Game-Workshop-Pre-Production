@@ -15,4 +15,6 @@ public class DistrictManager : StaticInstance<DistrictManager>
     {
         RoomPolygonGenerator.GeneratePolygonColliders(transform, _roomTilemap);
     }
+    
+
 }

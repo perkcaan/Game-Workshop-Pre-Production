@@ -1,13 +1,22 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public static class RoomPolygonGenerator
+public class RoomPolygonGenerator
 {
 
     public static void GeneratePolygonColliders(Transform parent, Tilemap roomTilemap)
     {
+        // Get prefab
+        GameObject roomPrefab = Resources.Load<GameObject>("Prefabs/Levels/Room");
+        if (roomPrefab == null)
+        {
+            Debug.LogError("Room prefab not found. Please assure it is located at 'Assets/Resources/Prefab/SourceLevels/Room'");
+            return;
+        }
+
         // Step 1 - Get positions of tiles and which tile.
         Dictionary<Vector2Int, TileBase> tilePositions = GetTilesFromTilemap(roomTilemap);
 
@@ -18,9 +27,14 @@ public static class RoomPolygonGenerator
         // Step 3 - Outline tracing algorithm to generate vertices of outline of region and use that for a polygon collider
         for (int i = 0; i < regions.Count; i++)
         {
-            GameObject newObject = new GameObject("Room" + i);
+            GameObject newObject = (GameObject)PrefabUtility.InstantiatePrefab(roomPrefab, parent);
             newObject.transform.parent = parent;
-            PolygonCollider2D polyCollider = newObject.AddComponent<PolygonCollider2D>();
+            PolygonCollider2D polyCollider = newObject.GetComponent<PolygonCollider2D>();
+            newObject.name = "Room" + i;
+            if (polyCollider == null)
+            {
+                polyCollider = newObject.AddComponent<PolygonCollider2D>();
+            }
             polyCollider.isTrigger = true;
 
             List<List<Vector2>> loops = GetLoops(regions[i]);
@@ -172,8 +186,8 @@ public static class RoomPolygonGenerator
                 current = chosenCandidate;
                 if (current == start) break; // end loop we got it boys
             }
-            
-            
+
+
             //convert integer corner points to Vector2 in tile map-space, create a loop
             List<Vector2> loop = new List<Vector2>();
             for (int i = 0; i < loopInts.Count; i++)
