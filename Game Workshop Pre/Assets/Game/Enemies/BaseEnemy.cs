@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,6 +68,13 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     public AnimationClip moveAnimation;
     private bool isAbsorbed;
 
+
+    [Header("Score Parameters")]
+    [SerializeField] int absorbScoreVal;
+    [SerializeField] int destroyScoreVal;
+
+    public static event Action<int> ScoreEvent;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -109,6 +117,14 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
             } 
             AnimateEnemy();
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (!isAbsorbed)
+            ScoreEvent.Invoke(destroyScoreVal);
+        else
+            ScoreEvent.Invoke(destroyScoreVal * 2);
     }
 
 
@@ -235,7 +251,7 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
             if (!trashDetected)
             {
                 //Debug.Log("Spawn");
-                int randomType = Random.Range(0, trash.Length);
+                int randomType = UnityEngine.Random.Range(0, trash.Length);
                 Instantiate(trash[randomType], transform.position, Quaternion.identity);
             }
         }
@@ -261,6 +277,7 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     {
         if (forcedAbsorb || absorbingPower > resistance)
         {
+            ScoreEvent?.Invoke(absorbScoreVal);
             trashBall.absorbedObjects.Add(this);
             isAbsorbed = true;
             gameObject.SetActive(false);
@@ -271,7 +288,7 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     {
         transform.position = trashBall.transform.position;
         float explosionForce = 1 + (1 * trashBall.absorbedObjects.Count);
-        Vector2 randomForce = new Vector2(Random.Range(-explosionForce, explosionForce), Random.Range(-explosionForce, explosionForce));
+        Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
 
         rb.AddForce(randomForce);
     }
