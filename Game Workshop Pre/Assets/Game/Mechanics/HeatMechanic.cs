@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class HeatMechanic : MonoBehaviour
 {
@@ -114,7 +115,8 @@ public class HeatMechanic : MonoBehaviour
             return;
         }
 
-        int roomTemperature = DistrictManager.Instance.Temperature;
+        int roomTemperature = 20; //this should never be applied.
+        if (DistrictManager.Instance != null) roomTemperature = DistrictManager.Instance.Temperature;
         if (CurrentRoom != null) roomTemperature = CurrentRoom.Temperature;
 
         if (_heat != roomTemperature)

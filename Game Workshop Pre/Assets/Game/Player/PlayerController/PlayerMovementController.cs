@@ -51,9 +51,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
 
-    [Header("Effects")]
-    [SerializeField] private ParticleSystem _dashRestoreParticles; // Remove when particle manager is made
-
 
     // Fields
     //weight
@@ -119,7 +116,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                _dashRestoreParticles.Play();
+                ParticleManager.Instance.Play("dashBack", transform.position);
             }
         }
 
