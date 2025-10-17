@@ -13,14 +13,14 @@ public class TrashPile : Trash, ISwipeable
 
     void Awake()
     {
-        Size = 0;
+        _size = 0;
         foreach (Trash trash in _startingStoredTrash)
         {
-            Size += trash.Size;
+            _size += trash.Size;
         }
         _sprite = GetComponentInChildren<SpriteRenderer>();
     }
-    
+
     public void OnSwipe(Vector2 direction, float force)
     {
         TakeDamage(1, direction, force);
@@ -62,6 +62,7 @@ public class TrashPile : Trash, ISwipeable
         foreach (Trash trash in _startingStoredTrash)
         {
             Trash releasedTrash = Instantiate(trash);
+            _parentRoom.AddCleanableToRoom(releasedTrash);
             releasedTrash.transform.position = transform.position;
             if (direction != null)
             {
@@ -71,6 +72,10 @@ public class TrashPile : Trash, ISwipeable
                 releasedTrash.GetComponent<Rigidbody2D>().AddForce(randomDirection.normalized * randomForce, ForceMode2D.Force);
             }
         }
+        _parentRoom.ObjectCleaned(this);
         Destroy(gameObject);
     }
+
+
+
 }

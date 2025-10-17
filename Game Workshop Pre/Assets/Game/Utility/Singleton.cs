@@ -7,11 +7,6 @@ public class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour{
 
     // Methods
     protected virtual void Awake() => Instance = this as T;
-
-    protected virtual void OnApplicationQuit() {
-        Instance = null;
-        Destroy(gameObject);
-    }
 }
 
 //if this gets put into a scene alongside another one, it will delete itself

@@ -45,7 +45,6 @@ public class RoomPolygonGenerator
                 polyCollider.SetPath(p, loops[p].ToArray());
             }
         }
-
     }
 
     // Step 1 - Get positions of tiles and which tile.

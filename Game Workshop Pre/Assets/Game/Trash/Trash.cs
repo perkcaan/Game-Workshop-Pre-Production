@@ -4,15 +4,19 @@ using UnityEngine;
 
 // An abstract class for Trash. All types of Trash can inherit from this.
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
+public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 {
     [SerializeField] protected GameObject _trashBallPrefab;
-    
+
     [SerializeField] protected float _explosionMultiplier;
 
     [Header("Trash")]
-    public int Size;
+    [SerializeField] protected int _size;
+    public int Size { get { return _size; } }
     public TrashMaterial trashMaterial;
+
+
+    protected Room _parentRoom;
     //Components
     protected Rigidbody2D _rigidBody;
     // Unity methods
@@ -57,13 +61,19 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable
 
     public void OnIgnite(HeatMechanic heat)
     {
-        PlayerState.Instance.trashDeleted.Invoke(Size);
+        _parentRoom.ObjectCleaned(this);
         Destroy(gameObject);
     }
 
     public void OnTrashBallIgnite()
     {
-        PlayerState.Instance.trashDeleted.Invoke(Size);
+        _parentRoom.ObjectCleaned(this);
         Destroy(gameObject);
     }
+
+    public void SetRoom(Room room)
+    {
+        _parentRoom = room;
+    }
+    
 }

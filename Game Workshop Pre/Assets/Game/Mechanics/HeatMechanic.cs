@@ -42,7 +42,8 @@ public class HeatMechanic : MonoBehaviour
     private bool _hasIgnited = false; // Whether or not this object has ignited and should currently be burning up.
 
     // Components
-    private Room _currentRoom;
+    private List<Room> _currentRooms = new List<Room>();
+    public Room CurrentRoom { get { return _currentRooms.Count > 0 ? _currentRooms[0] : null; } }
     private Renderer _spriteRenderer;
     private MaterialPropertyBlock _block;
     [SerializeField] Texture mainTexture;
@@ -71,15 +72,15 @@ public class HeatMechanic : MonoBehaviour
     // Room subscribing
     public void EnterRoom(Room room)
     {
-        _currentRoom = room;
+        _currentRooms.Add(room);
     }
 
     // Room unsubscribing
     public void ExitRoom(Room room)
     {
-        if (_currentRoom == room)
+        if (_currentRooms.Contains(room))
         {
-            _currentRoom = null;
+            _currentRooms.Remove(room);
         }
     }
 
@@ -114,7 +115,7 @@ public class HeatMechanic : MonoBehaviour
         }
 
         int roomTemperature = DistrictManager.Instance.Temperature;
-        if (_currentRoom != null) roomTemperature = _currentRoom.Temperature;
+        if (CurrentRoom != null) roomTemperature = CurrentRoom.Temperature;
 
         if (_heat != roomTemperature)
         {
