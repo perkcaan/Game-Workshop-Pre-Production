@@ -28,6 +28,7 @@ public class PlayerContext
 
     //dashing
     public bool CanDash { get; set; } = true;
+    public bool IsDashing { get; set; } = false;
     public float DashCooldownTimer { get; set; } = 0f;
     public float DashRowCooldownTimer { get; set; } = 0f;
     public int DashesRemaining { get; set; } = 0;
