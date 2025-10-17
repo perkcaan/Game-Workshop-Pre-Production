@@ -19,22 +19,27 @@ public class PlayerContext
     public Vector2 MovementInput { get; set; } = Vector2.zero;
     public Vector2 MouseInput { get; set; } = Vector2.zero;
     public bool IsSweepPressed { get; set; } = false;
+    public bool IsSwipePressed { get; set; } = false;
     public bool PlayerHasControl { get; set; } = true;
 
     //swiping
     public bool CanSwipe { get; set; } = true;
     public float SwipeCooldownTimer { get; set; } = 0f;
 
+    //dashing
+    public bool CanDash { get; set; } = true;
+    public bool IsDashing { get; set; } = false;
+    public float DashCooldownTimer { get; set; } = 0f;
+    public float DashRowCooldownTimer { get; set; } = 0f;
+    public int DashesRemaining { get; set; } = 0;
+
     //weight adjusted stats
     public float MaxWalkSpeed { get; set; } = 0f;
-    public float MaxSweepSpeed { get; set; } = 0f;
-    public float MaxChargeSpeed { get; set; } = 0f;
+    public float MaxSweepWalkSpeed { get; set; } = 0f;
+    public float MaxSwipeWalkSpeed { get; set; } = 0f;
     public float Acceleration { get; set; } = 0f;
     public float SweepAcceleration { get; set; } = 0f;
-    public float ChargeAcceleration { get; set; } = 0f;
-    public float RotationSpeed { get; set; } = 0f;
-    public float SweepRotationSpeed { get; set; } = 0f;
-    public float ChargeRotationSpeed { get; set; } = 0f;
+    public float SwipeAcceleration { get; set; } = 0f;
 
 
     // current values
@@ -44,14 +49,17 @@ public class PlayerContext
 
     // Components
     public Rigidbody2D Rigidbody { get; set; }
+    public Collider2D Collider { get; set; }
     public Animator Animator { get; set; }
     public SwipeHandler SwipeHandler { get;  set; }
     public BroomSweepHandler SweepHandler { get; set; }
+    public TrashBall AbsorbedTrashBall { get; set; }
 
     public PlayerContext(PlayerMovementController player, PlayerMovementProps props)
     {
         Player = player;
         Props = props;
+        DashesRemaining = props.DashRowCount;
     }
 
 

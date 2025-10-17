@@ -1,103 +1,79 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 
 // An abstract class for Trash. All types of Trash can inherit from this.
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class Trash : MonoBehaviour, ISweepable, ISwipeable
+public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 {
+    [SerializeField] protected GameObject _trashBallPrefab;
 
-    // Trash IDs to solve trash merge ties
-    private static int _nextId = 0;
-    public int TrashId { get; private set; }
-    protected virtual bool MergePriority { get { return false; } }
-
+    [SerializeField] protected float _explosionMultiplier;
 
     [Header("Trash")]
-    [SerializeField] private float _size = 1f;
-    public float Size
-    {
-        get { return _size; }
-        set
-        {
-            _size = value;
-            OnSizeChanged();
-        }
-    }
+    [SerializeField] protected int _size;
+    public int Size { get { return _size; } }
+    public TrashMaterial trashMaterial;
 
+
+    protected Room _parentRoom;
     //Components
     protected Rigidbody2D _rigidBody;
-
     // Unity methods
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        TrashId = _nextId++;
     }
-
-    protected virtual void OnTriggerEnter2D(Collider2D other)
+    protected void CreateTrashBall()
     {
-        Trash otherTrash = other.gameObject.GetComponent<Trash>();
-        if (otherTrash == null) return;
+        GameObject trashBallObject = Instantiate(_trashBallPrefab);
+        trashBallObject.transform.position = transform.position;
+        TrashBall trashBall = trashBallObject.GetComponent<TrashBall>();
 
-        // can only merge trash of the same type
-        if (otherTrash.GetType() != this.GetType()) return;
-
-        // Priority- only one of the colliders can run OnTrashMerge
-        // first check forced merge priority
-        if (MergePriority && !otherTrash.MergePriority)
+        if (trashBall == null)
         {
-            OnTrashMerge(otherTrash);
-            return;
-        }
-        // make sure to return if this loses
-        if (MergePriority != otherTrash.MergePriority)
-            return;
-
-        // since they have equal priority- check speed
-        float speed = _rigidBody.velocity.sqrMagnitude;
-        float otherSpeed = otherTrash.GetComponent<Rigidbody2D>().velocity.sqrMagnitude;
-
-        if (speed > otherSpeed)
-        {
-            OnTrashMerge(otherTrash);
+            Debug.LogWarning("TrashBall prefab prepared incorrectly");
+            Destroy(trashBallObject);
             return;
         }
 
-        if (speed < otherSpeed)
-            return;
+        trashBall.AbsorbTrash(this);
+        trashBall.GetComponent<Rigidbody2D>().velocity = _rigidBody.velocity;
+        gameObject.SetActive(false);
+    }
 
-        // If same speed, force winner to be based on the arbitrary TrashId
-        if (TrashId > otherTrash.TrashId)
+    public virtual void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    {
+        if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled))
         {
-            OnTrashMerge(otherTrash);
+            trashBall.AbsorbTrash(this);
         }
-
     }
 
-    // Override to do something when size changes
-    protected virtual void OnSizeChanged() { }
-
-    // Trash merging
-    protected virtual void OnTrashMerge(Trash otherTrash)
+    public void OnTrashBallExplode(TrashBall trashBall)
     {
-        Size += otherTrash.Size;
-        Destroy(otherTrash.gameObject);
+        gameObject.SetActive(true);
+        transform.position = trashBall.transform.position;
+        float explosionForce = (float)(Math.Sqrt(trashBall.Size) * _explosionMultiplier);
+        Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
+        _rigidBody.velocity = randomForce;
     }
 
-
-    // These interfaces can be overriden in a Child class if we want trash that acts differently
-    // ISweepable
-    public virtual void OnSweep(Vector2 direction, float force)
+    public void OnIgnite(HeatMechanic heat)
     {
-        _rigidBody.AddForce(direction * force, ForceMode2D.Force);
+        _parentRoom.ObjectCleaned(this);
+        Destroy(gameObject);
     }
 
-    //ISwipeable
-    public virtual void OnSwipe(Vector2 direction, float force)
+    public void OnTrashBallIgnite()
     {
-        _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
+        _parentRoom.ObjectCleaned(this);
+        Destroy(gameObject);
     }
 
+    public void SetRoom(Room room)
+    {
+        _parentRoom = room;
+    }
+    
 }
