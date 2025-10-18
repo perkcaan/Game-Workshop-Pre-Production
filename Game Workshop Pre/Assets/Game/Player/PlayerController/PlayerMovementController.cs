@@ -116,7 +116,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                ParticleManager.Instance.Play("dashBack", transform.position);
+                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,transform);
             }
         }
 
