@@ -98,6 +98,12 @@ public class SwipeHandler : MonoBehaviour
             connecting = true;
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", contactPoint);
             Debug.Log("Swiped object: " + other.gameObject.name);
+            if(connecting)
+            {
+                _swipeSoundInstance.setParameterByName("Texture", 0);
+                _swipeSoundInstance.start();
+                //_swipeSoundInstance.
+            }
             ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
             swipeableObject.OnSwipe(direction.normalized, _swipeForce);
         }
