@@ -73,7 +73,10 @@ public class HeatMechanic : MonoBehaviour
     // Room subscribing
     public void EnterRoom(Room room)
     {
-        _currentRooms.Add(room);
+        if (!_currentRooms.Contains(room))
+        {
+            _currentRooms.Add(room);
+        }
     }
 
     // Room unsubscribing
