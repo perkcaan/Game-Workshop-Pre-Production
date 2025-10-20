@@ -47,7 +47,8 @@ public class SwipeHandler : MonoBehaviour
         {
             _swipeSoundInstance.setParameterByName("Texture", 1);
             _swipeSoundInstance.start();
-            connecting = false;
+            _swipeSoundInstance.release();
+
         }
         
         _hitbox.enabled = true;
@@ -101,7 +102,7 @@ public class SwipeHandler : MonoBehaviour
             if(connecting)
             {
                 _swipeSoundInstance.setParameterByName("Texture", 0);
-                _swipeSoundInstance.start();
+                //_swipeSoundInstance.start();
                 //_swipeSoundInstance.
             }
             ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
