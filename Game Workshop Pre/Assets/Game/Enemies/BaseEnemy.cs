@@ -276,5 +276,10 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
         rb.AddForce(randomForce);
     }
 
+    public void OnTrashBallIgnite()
+    {
+        Destroy(gameObject);
+    }
+
     #endregion
 }

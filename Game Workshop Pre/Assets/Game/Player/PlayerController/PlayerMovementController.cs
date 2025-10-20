@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
+public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable
 {
 
     #region header
@@ -40,7 +40,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     [Header("Absorbed Properties")]
     [SerializeField] private float _absorbResistance;
     [SerializeField] private float _minTrashSizeToAbsorb;
-
+    [SerializeField] private int _playerEscapeDamage;
 
     [Header("Swipe Visual Line")]
     [SerializeField] private float _swipeVisualLineDistance = 10f;
@@ -50,9 +50,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
 
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
-
-    [Header("Effects")]
-    [SerializeField] private ParticleSystem _dashRestoreParticles; // Remove when particle manager is made
 
 
     // Fields
@@ -119,7 +116,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                _dashRestoreParticles.Play();
+                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,transform);
             }
         }
 
@@ -205,7 +202,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         if (_ctx.AbsorbedTrashBall != null)
         {
             _ctx.Animator.speed += 0.3f;
-            _ctx.AbsorbedTrashBall.TakeDamage(1);
+            _ctx.AbsorbedTrashBall.TakeDamage(_playerEscapeDamage);
         }
     }
 
@@ -278,7 +275,14 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         _state.ChangeState(PlayerStateEnum.Idle);
     }
 
-
+    // IHeatable
+    public void OnIgnite(HeatMechanic heat)
+    {
+        transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
+        heat.Reset();
+        LayerMask layerMask = new LayerMask();
+        _ctx.Collider.excludeLayers = layerMask;
+    }
 
     // Gizmo to display the dash cooldowns
     private void DrawDashCooldownGizmo()
@@ -302,4 +306,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         }
     }
 
+    public void OnTrashBallIgnite()
+    {
+        // Also temporary need a death function
+        transform.position = new Vector3(-6.5f, 2f, transform.position.z);
+    }
 }
