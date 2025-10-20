@@ -5,7 +5,7 @@
 			<value>Grimy Step</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{740d1e0e-7d18-4523-a03a-0143db20d807}</destination>
@@ -131,7 +131,6 @@
 	<object class="MixerBusEffectChain" id="{b0903119-a292-46e3-8b15-97099841f14a}">
 		<relationship name="effects">
 			<destination>{46a78a5f-4af6-4225-ab5d-d516084c01d7}</destination>
-			<destination>{eda28ea5-8e3e-444c-a901-76c18b94fbc6}</destination>
 			<destination>{2fa6f0a7-87e3-4419-a160-f8ed2c2fc723}</destination>
 		</relationship>
 	</object>
@@ -203,11 +202,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{2601f649-640d-4a6b-b940-b62c9fa40a13}" />
 	<object class="MixerBusFader" id="{46a78a5f-4af6-4225-ab5d-d516084c01d7}" />
-	<object class="SpatialiserEffect" id="{eda28ea5-8e3e-444c-a901-76c18b94fbc6}">
-		<property name="bypass">
-			<value>true</value>
-		</property>
-	</object>
 	<object class="SFXReverbEffect" id="{2fa6f0a7-87e3-4419-a160-f8ed2c2fc723}">
 		<property name="decayTime">
 			<value>1100</value>
