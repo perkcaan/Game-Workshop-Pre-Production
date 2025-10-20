@@ -184,7 +184,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         {
             
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash", transform.position);
-            ;// SpawnDashTrail();
+            // SpawnDashTrail();
             _state.ChangeState(PlayerStateEnum.Dash);
             StartCoroutine(Dashing());
         }
