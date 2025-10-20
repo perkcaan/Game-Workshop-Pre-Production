@@ -55,7 +55,11 @@
 			<destination>{226d84b9-2c40-492d-a3a7-2b063141b0cc}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{6f1fe63e-56d6-48c5-87d2-78562155397e}" />
+	<object class="EventAutomatableProperties" id="{6f1fe63e-56d6-48c5-87d2-78562155397e}">
+		<property name="triggerCooldown">
+			<value>1</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{d844c3ac-3200-42e4-818a-6e827af512dd}" />
 	<object class="GroupTrack" id="{aa7256c8-2d0c-4412-92a2-10337910a0f2}">
 		<relationship name="modules">
@@ -91,6 +95,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{095f563d-de7f-4fc9-8a35-58e09ab6393b}">
+		<relationship name="modulators">
+			<destination>{987e9d19-8ea1-4bcd-b1dc-a1ffe28ddf4d}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{7b867b05-b37c-4cb3-b68d-a0a3c9bf65e0}</destination>
 		</relationship>
@@ -247,6 +254,17 @@
 		<relationship name="output">
 			<destination>{095f563d-de7f-4fc9-8a35-58e09ab6393b}</destination>
 		</relationship>
+	</object>
+	<object class="RandomizerModulator" id="{987e9d19-8ea1-4bcd-b1dc-a1ffe28ddf4d}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="clockSource">
+			<value>1</value>
+		</property>
+		<property name="amount">
+			<value>3</value>
+		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{7b867b05-b37c-4cb3-b68d-a0a3c9bf65e0}">
 		<relationship name="effects">

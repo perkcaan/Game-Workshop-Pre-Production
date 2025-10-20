@@ -59,7 +59,11 @@
 			<destination>{226d84b9-2c40-492d-a3a7-2b063141b0cc}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{a1314e9a-d68c-4c8b-81b9-a06afec31653}" />
+	<object class="EventAutomatableProperties" id="{a1314e9a-d68c-4c8b-81b9-a06afec31653}">
+		<property name="triggerCooldown">
+			<value>600</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{293a5710-d20c-413b-968d-91a11a9305f0}" />
 	<object class="GroupTrack" id="{a1dcf00f-037b-4744-9fec-abdf21b353cc}">
 		<relationship name="modules">
@@ -82,7 +86,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{ac499f04-511b-4475-9a16-e1acab141145}">
 		<property name="volume">
-			<value>10</value>
+			<value>8</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{e6c5b419-7701-4d18-8e1f-d6f24a78ed2b}</destination>
@@ -116,7 +120,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{508ebb5b-79de-4417-9ee1-a2a53e4c99c2}">
 		<property name="name">
-			<value>HitEnemy</value>
+			<value>Swipe</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{6a0b9c70-4f68-4699-8263-fb4e94aef048}</destination>
