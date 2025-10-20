@@ -39,7 +39,6 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 
         trashBall.AbsorbTrash(this);
         trashBall.GetComponent<Rigidbody2D>().velocity = _rigidBody.velocity;
-        gameObject.SetActive(false);
     }
 
     public virtual void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
