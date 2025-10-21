@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{0770f099-5f04-4a35-bc51-2ae7294c1d8f}">
+		<property name="name">
+			<value>Wall Collision</value>
+		</property>
+		<relationship name="folder">
+			<destination>{d2d00e70-f7e4-46c7-ac85-3c2406e406df}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{7011dba1-0fcb-44d8-b359-743b9b3410f6}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{7011dba1-0fcb-44d8-b359-743b9b3410f6}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

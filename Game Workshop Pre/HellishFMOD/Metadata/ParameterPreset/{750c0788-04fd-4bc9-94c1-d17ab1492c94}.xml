@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{750c0788-04fd-4bc9-94c1-d17ab1492c94}">
+		<property name="name">
+			<value>Turn</value>
+		</property>
+		<relationship name="folder">
+			<destination>{d2d00e70-f7e4-46c7-ac85-3c2406e406df}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{278a13e6-3a70-496f-95d7-d29ef89e2c8d}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{278a13e6-3a70-496f-95d7-d29ef89e2c8d}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
