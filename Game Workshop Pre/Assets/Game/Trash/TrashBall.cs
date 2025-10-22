@@ -85,11 +85,16 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
     }
 
-    public void OnSweep(Vector2 direction, float force)
+    public void OnSweep(Vector2 center, Vector2 direction, float force)
     {
         SetDecaying(false);
         _health = _maxHealth;
-        _rigidBody.AddForce(direction * force, ForceMode2D.Force);
+
+        Vector3 centerPoint = center + (direction * Mathf.Pow(Size, 1f / 3f) / Mathf.PI);
+        float distance = Vector2.Distance(transform.position, centerPoint);
+        float newForce = force * distance * (1 + (10 / Size));
+        Vector2 directionToCenterPoint = (centerPoint - transform.position).normalized;
+        _rigidBody.AddForce(directionToCenterPoint * newForce, ForceMode2D.Force);
     }
     public void OnSwipe(Vector2 direction, float force)
     {
@@ -234,7 +239,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
             if (_activelyDecaying) return;
-            float absorbingPower = (_rigidBody.velocity.magnitude - 2) * Size * _absorbMultiplier;
+            float absorbingPower = (_rigidBody.velocity.magnitude - 8) * Size * _absorbMultiplier;
             absorbableObject.OnAbsorbedByTrashBall(this, absorbingPower, false);
             _health = _maxHealth;
             return;
