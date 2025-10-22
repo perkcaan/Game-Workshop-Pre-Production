@@ -2,26 +2,20 @@ using UnityEngine;
 
 public class Gate : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
-    private BoxCollider2D boxCollider2D;
-    private void Start()
+    SpriteRenderer spriteRenderer;
+    BoxCollider2D boxCollider2D;
+    void Start()
     {
-        DistrictManager.Instance.OnGateFlip += SetGates;
+        PlayerState.Instance.enterRoom.AddListener(EnterRoom);
         transform.position += new Vector3(0, 0, -3);
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
-        SetGates(DistrictManager.Instance.AreGatesUp);
+        EnterRoom(false);
     }
 
-    private void OnDisable()
+    public void EnterRoom(bool entering)
     {
-        if (DistrictManager.Instance == null) return;
-        DistrictManager.Instance.OnGateFlip -= SetGates;
-    }
-
-    public void SetGates(bool gateStatus)
-    {
-        if (gateStatus)
+        if (entering)
         {
             spriteRenderer.enabled = true;
             boxCollider2D.enabled = true;

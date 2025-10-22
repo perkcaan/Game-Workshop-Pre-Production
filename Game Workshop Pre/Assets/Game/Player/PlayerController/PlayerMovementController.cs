@@ -51,6 +51,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
 
+    [Header("Effects")]
+    public ParticleManager _particles;
+    ParticleSystem _dashRestoreInstance;
+
+
+
 
     // Fields
     //weight
@@ -94,6 +100,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     {
         _state.Update();
         UpdateCooldowns();
+        if (_dashRestoreInstance != null)
+            _dashRestoreInstance.gameObject.transform.SetParent(this.transform);
     }
     private void FixedUpdate()
     {
@@ -116,7 +124,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,transform);
+                SpawnDashFX();
             }
         }
 
@@ -144,6 +152,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         }
     }
 
+    private void SpawnDashFX()
+    {
+        // Corrected the method call to match the expected parameter types
+        ParticleManager.Instance.Play("dash", transform.position, Quaternion.Euler(0, 0, _ctx.Rotation), transform);
+    }
 
     //inputs
     private void OnMoveInput(InputValue value)
@@ -275,18 +288,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         _state.ChangeState(PlayerStateEnum.Idle);
     }
 
-<<<<<<< HEAD
 
-=======
-    // IHeatable
-    public void OnIgnite(HeatMechanic heat)
-    {
-        transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
-        heat.Reset();
-        LayerMask layerMask = new LayerMask();
-        _ctx.Collider.excludeLayers = layerMask;
-    }
->>>>>>> main
 
     // Gizmo to display the dash cooldowns
     private void DrawDashCooldownGizmo()
@@ -310,9 +312,4 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         }
     }
 
-    public void OnTrashBallIgnite()
-    {
-        // Also temporary need a death function
-        transform.position = new Vector3(-6.5f, 2f, transform.position.z);
-    }
 }
