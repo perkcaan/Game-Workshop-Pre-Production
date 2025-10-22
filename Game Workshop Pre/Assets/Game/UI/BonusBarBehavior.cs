@@ -1,7 +1,4 @@
-<<<<<<< Updated upstream
 using System;
-=======
->>>>>>> Stashed changes
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,12 +26,9 @@ public class BonusBarBehavior : MonoBehaviour
     private readonly string BONUS_PRETEXT = "Bonus: +";
     private readonly string CURRENT_SCORE_PRETEXT = "Score: ";
 
-<<<<<<< Updated upstream
     private event Action ResetBonusTimeEvent;
     private event Action ResetBonusEvent;
-=======
     public delegate void IncreaseScoreEvent(int score);
->>>>>>> Stashed changes
     
 
     // Start is called before the first frame update
@@ -45,14 +39,11 @@ public class BonusBarBehavior : MonoBehaviour
             bonusTimeLimit = DEFAULT_TIME;
 
         visualBonusBar.fillAmount = 1f;
-<<<<<<< Updated upstream
 
         BaseEnemy.ScoreEvent += IncreaseScore;
         ResetBonusTimeEvent += ResetTimer;
         ResetBonusEvent += ResetBonus;
 
-=======
->>>>>>> Stashed changes
     }
 
     // Update is called once per frame
@@ -61,7 +52,6 @@ public class BonusBarBehavior : MonoBehaviour
         if (barDepreciating)
         {
             visualBonusBar.fillAmount -= ( Time.deltaTime / bonusTimeLimit);
-<<<<<<< Updated upstream
             Debug.Log(visualBonusBar.fillAmount);
         }
 
@@ -69,11 +59,9 @@ public class BonusBarBehavior : MonoBehaviour
         {
             Debug.Log("Hit");
             ResetBonusEvent.Invoke();
-=======
         }
         else if (visualBonusBar.fillAmount <= 0f)
         {
->>>>>>> Stashed changes
             visualBonusBar.fillAmount = 0f;
             barDepreciating = false;
         }
@@ -86,25 +74,19 @@ public class BonusBarBehavior : MonoBehaviour
     private void IncreaseScore(int score)
     {
         this.score += score;
-<<<<<<< Updated upstream
         ResetBonusTimeEvent?.Invoke();
     }
 
     private void ResetTimer()
     {
         visualBonusBar.fillAmount = 1f;
-=======
         ResetBonus();
->>>>>>> Stashed changes
     }
 
     private void ResetBonus()
     {
-<<<<<<< Updated upstream
         this.currentBonus = 0;
-=======
         visualBonusBar.fillAmount = 1f;
->>>>>>> Stashed changes
     }
 
 }
