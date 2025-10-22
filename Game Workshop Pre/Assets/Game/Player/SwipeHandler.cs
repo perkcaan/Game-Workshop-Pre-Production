@@ -85,8 +85,8 @@ public class SwipeHandler : MonoBehaviour
         ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
         if (swipeableObject != null)
         {
-
-            ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
+            if(ParticleManager.Instance != null)
+                ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
             swipeableObject.OnSwipe(direction.normalized, _swipeForce);
         }
     }

@@ -8,7 +8,9 @@ public class ZoneWaveManager : MonoBehaviour // Assign a ZoneWaveManager to each
 
     public bool cleanMeterWaves; // Is the spawner tied to cleanliness meter or not
 
-    private Cleanliness cm; // References the room's cleanliness meter
+    //TODO: This needs to be fixed. Cleanliness doesnt exist as a singleton anymore.
+    //private Cleanliness cm; // References the room's cleanliness meter
+    private float cm = 1f;
 
     public Dictionary<float, bool> waveThresholds = new Dictionary<float, bool>(); // Tracks the thresholds that trigger a wave, and if they've already been triggered
 
@@ -24,6 +26,6 @@ public class ZoneWaveManager : MonoBehaviour // Assign a ZoneWaveManager to each
 
     public float GetCleanlinessValue()
     {
-        return cm.percentClean;
+        return cm;
     }
 }

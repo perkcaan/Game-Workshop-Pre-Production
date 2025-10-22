@@ -7,7 +7,7 @@ public class PlayerDashState : BaseState<PlayerStateEnum>
     // Context & State
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
-
+    private Coroutine _dashCoroutine;
     // Fields
 
     // Constructor
@@ -27,7 +27,7 @@ public class PlayerDashState : BaseState<PlayerStateEnum>
         _ctx.DashesRemaining -= 1;
         Vector2 velocityToUse = _ctx.FrameVelocity.normalized;
         _ctx.FrameVelocity = Vector2.zero;
-        _ctx.Player.StartCoroutine(DashDuration());
+        _dashCoroutine = _ctx.Player.StartCoroutine(DashDuration());
 
         // Fallback to using rotation instead of current velocity if you're standing still
         if (velocityToUse == Vector2.zero)
@@ -48,6 +48,7 @@ public class PlayerDashState : BaseState<PlayerStateEnum>
     public override void ExitState()
     {
         _ctx.SwipeHandler.EndSwipe();
+        if (_dashCoroutine != null) _ctx.Player.StopCoroutine(_dashCoroutine);
         _ctx.DashCooldownTimer = _ctx.Props.DashCooldown;
         _ctx.DashRowCooldownTimer = _ctx.Props.DashRowCooldown;
         _ctx.Animator.SetBool("Dashing", false);
