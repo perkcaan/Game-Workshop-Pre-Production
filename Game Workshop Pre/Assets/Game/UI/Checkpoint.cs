@@ -8,6 +8,10 @@ public class Checkpoint : MonoBehaviour
 
     private CheckpointManager Checkpoint_Manager;
 
+    private bool checkGained = false;
+
+    public bool starterPoint;
+
     private void Start()
     {
         Checkpoint_Manager = FindObjectOfType<CheckpointManager>();
@@ -20,9 +24,21 @@ public class Checkpoint : MonoBehaviour
 
     private void Update()
     {
-        if (assignedRoom.Cleanliness >= 1)
+        if ((assignedRoom.Cleanliness == 1 && !checkGained) || (starterPoint && !checkGained))
         {
+            
             Checkpoint_Manager.checkpoints.Add(this);
+            checkGained = true;
+
+            Debug.Log("Checkpoint Gained");
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player" && Checkpoint_Manager.respawnChoice && Checkpoint_Manager.activeCheckpoint != this)
+        {
+            Checkpoint_Manager.ManualCheckpointSelect(this);
         }
     }
 

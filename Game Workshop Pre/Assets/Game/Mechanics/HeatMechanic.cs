@@ -151,6 +151,7 @@ public class HeatMechanic : MonoBehaviour
             foreach (IHeatable heatable in heatables)
             {
                 heatable.OnIgnite(this);
+                Debug.Log("Respawn");
             }
         }
     }
