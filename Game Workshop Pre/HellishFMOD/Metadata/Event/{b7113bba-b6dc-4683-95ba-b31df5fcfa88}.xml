@@ -28,6 +28,7 @@
 		<relationship name="groupTracks">
 			<destination>{5901d4f7-9ade-4b81-b8e0-0344e36747d7}</destination>
 			<destination>{1315e88c-59fa-4023-be4a-e5d17000b8f4}</destination>
+			<destination>{6218c0a7-8352-4431-b9b8-2bad70667579}</destination>
 		</relationship>
 		<relationship name="timeline">
 			<destination>{7bc2636a-53a7-4e6b-bc88-3c1512671c6a}</destination>
@@ -82,6 +83,11 @@
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{521c01d7-2af6-4dec-b232-8353ac1b77a6}</destination>
+		</relationship>
+	</object>
+	<object class="GroupTrack" id="{6218c0a7-8352-4431-b9b8-2bad70667579}">
+		<relationship name="mixerGroup">
+			<destination>{462a13b0-8936-40b2-994f-005b842a6af1}</destination>
 		</relationship>
 	</object>
 	<object class="Timeline" id="{7bc2636a-53a7-4e6b-bc88-3c1512671c6a}">
@@ -193,6 +199,20 @@
 			<destination>{d03110cb-b91f-4ea0-b62e-f04f2364bac6}</destination>
 		</relationship>
 	</object>
+	<object class="EventMixerGroup" id="{462a13b0-8936-40b2-994f-005b842a6af1}">
+		<property name="name">
+			<value>Glass</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{8b4fa0b9-1e1d-400e-a1ed-a0aed52f1729}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{684ca081-e2a8-4caa-b91a-369937138d13}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{d03110cb-b91f-4ea0-b62e-f04f2364bac6}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusEffectChain" id="{4ec4380c-770a-4559-9e35-b6a5ce315e6f}">
 		<relationship name="effects">
 			<destination>{a25b2f41-b8b3-469d-b125-afd29edaa3f9}</destination>
@@ -251,6 +271,12 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2ff1c23c-3c33-4f1d-9c21-86dfc8ee3aa0}" />
+	<object class="MixerBusEffectChain" id="{8b4fa0b9-1e1d-400e-a1ed-a0aed52f1729}">
+		<relationship name="effects">
+			<destination>{4c2246a8-b3aa-41ba-b419-0bd7c59b9d9b}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{684ca081-e2a8-4caa-b91a-369937138d13}" />
 	<object class="MixerBusFader" id="{a25b2f41-b8b3-469d-b125-afd29edaa3f9}" />
 	<object class="MixerSend" id="{18fd0762-766a-4166-be57-93d8950337dd}">
 		<property name="level">
@@ -283,6 +309,7 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{7eb8e570-1a35-4f5b-812f-5a088471618c}" />
+	<object class="MixerBusFader" id="{4c2246a8-b3aa-41ba-b419-0bd7c59b9d9b}" />
 	<object class="AutomationPoint" id="{a619e88f-535e-4570-9ef1-7cb96115f849}">
 		<property name="position">
 			<value>0</value>
