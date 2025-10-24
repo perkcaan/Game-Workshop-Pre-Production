@@ -5,10 +5,10 @@
 			<value>Trash Ball 2</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>5</value>
 		</property>
 		<relationship name="folder">
-			<destination>{5eaf48a5-e749-484f-ae4d-760896bb32db}</destination>
+			<destination>{86491f99-bebe-4c74-bd2c-748e586c9b08}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{20ca4c3a-3ceb-406c-9adc-fc0fc0c84289}</destination>
@@ -86,6 +86,9 @@
 		</relationship>
 	</object>
 	<object class="GroupTrack" id="{6218c0a7-8352-4431-b9b8-2bad70667579}">
+		<relationship name="modules">
+			<destination>{035f74c5-668f-42ad-80b2-6af066dd0465}</destination>
+		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{462a13b0-8936-40b2-994f-005b842a6af1}</destination>
 		</relationship>
@@ -99,6 +102,7 @@
 		<relationship name="modules">
 			<destination>{cfbba02f-4f35-4b24-977c-c9cd6e735ef9}</destination>
 			<destination>{0dc59fe7-b006-4cef-99f9-4b49e7262325}</destination>
+			<destination>{035f74c5-668f-42ad-80b2-6af066dd0465}</destination>
 		</relationship>
 		<relationship name="preset">
 			<destination>{de8307fb-c45b-4b9c-9c43-9a60a7222b52}</destination>
@@ -199,9 +203,20 @@
 			<destination>{d03110cb-b91f-4ea0-b62e-f04f2364bac6}</destination>
 		</relationship>
 	</object>
+	<object class="EventSound" id="{035f74c5-668f-42ad-80b2-6af066dd0465}">
+		<property name="length">
+			<value>100</value>
+		</property>
+		<relationship name="parameters">
+			<destination>{b578b0fa-43b8-469b-b7f5-bb154fe47452}</destination>
+		</relationship>
+		<relationship name="event">
+			<destination>{cc21a000-d107-4183-86fb-1e26e232dfa1}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerGroup" id="{462a13b0-8936-40b2-994f-005b842a6af1}">
 		<property name="name">
-			<value>Glass</value>
+			<value>Trash</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{8b4fa0b9-1e1d-400e-a1ed-a0aed52f1729}</destination>
@@ -271,6 +286,11 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2ff1c23c-3c33-4f1d-9c21-86dfc8ee3aa0}" />
+	<object class="ParameterProperty" id="{b578b0fa-43b8-469b-b7f5-bb154fe47452}">
+		<relationship name="parameter">
+			<destination>{84091838-506a-4f24-a342-c427df883bfc}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusEffectChain" id="{8b4fa0b9-1e1d-400e-a1ed-a0aed52f1729}">
 		<relationship name="effects">
 			<destination>{4c2246a8-b3aa-41ba-b419-0bd7c59b9d9b}</destination>
@@ -283,7 +303,7 @@
 			<value>-14</value>
 		</property>
 		<property name="inputFormat">
-			<value>1</value>
+			<value>5</value>
 		</property>
 		<relationship name="mixerReturn">
 			<destination>{2d843aba-be1c-43cd-9af4-5cd271c3507b}</destination>
