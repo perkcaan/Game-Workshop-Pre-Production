@@ -213,6 +213,9 @@
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{d7f5245c-1915-40d0-9091-f1e657ebdc2a}">
+		<property name="isCutoff">
+			<value>true</value>
+		</property>
 		<property name="start">
 			<value>5</value>
 		</property>
@@ -344,6 +347,7 @@
 			<destination>{dad61a33-c2b3-4104-8a9d-ec32816916d9}</destination>
 			<destination>{b941f318-24f8-4377-92ee-6fb5728d4859}</destination>
 			<destination>{84d7b86c-65f8-4c25-981a-a9fc03940893}</destination>
+			<destination>{ee88cf14-a449-4f82-8a25-99001c3cf1a8}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{33fb42a6-6a36-4620-a7fc-25c65f20d9a8}" />
@@ -390,6 +394,17 @@
 		</property>
 		<property name="value">
 			<value>5</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{ee88cf14-a449-4f82-8a25-99001c3cf1a8}">
+		<property name="position">
+			<value>2.5880758807588076</value>
+		</property>
+		<property name="value">
+			<value>-80</value>
+		</property>
+		<property name="curveShape">
+			<value>0.125856251</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{cc9e267d-6f5c-429b-a295-dffb92749dd2}">
