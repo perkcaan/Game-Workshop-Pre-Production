@@ -5,10 +5,31 @@ using UnityEngine;
 
 public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 {
+    [Header("Base Stats")]
     [SerializeField] float _scaleMultiplier;
-    [SerializeField] float _baseMaxHealth;
+    [SerializeField] float _baseMaxHealth;      
+    [SerializeField] private float _size = 1f;
+    public float Size
+    {
+        get { return _size; }
+        set
+        {
+            _size = value;
+            SetSize();
+        }
+    }
+
+    [Header("Decay Properties")]
+
     [SerializeField] float _idleDecayMultiplier;
     [SerializeField] float _decayTrashDropRate;
+
+    [Header("OnSweep Properties")]
+    [SerializeField] float _vacuumForce;
+    [SerializeField] float _minimumVacuumForce;
+    [SerializeField] float _sizeMultiplier;
+
+    [Header("Trash Material Properties")]
     [SerializeField] TrashMaterial _baseMaterial;
     [SerializeField] TrashMaterial _genericMaterial;
     [SerializeField] float _dominantThreshold;
@@ -32,19 +53,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     // Trash IDs to solve trash merge ties
     private static int _nextId = 0;
     public int TrashId { get; private set; }
-    [SerializeField] private float _size = 1f;
+
 
     Rigidbody2D _rigidBody;
     MeshRenderer _meshRenderer;
-    public float Size
-    {
-        get { return _size; }
-        set
-        {
-            _size = value;
-            SetSize();
-        }
-    }
+
     void SetSize()
     {
         float newSize = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
@@ -92,11 +105,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         Vector3 centerPoint = center + (direction * Mathf.Pow(Size, 1f / 3f) / Mathf.PI);
         float distance = Vector2.Distance(transform.position, centerPoint);
-        float newForce = force * distance * (1 + (10 / Size));
+        float newForce = force * distance * (_minimumVacuumForce + (_vacuumForce / Size * _sizeMultiplier));
         Vector2 directionToCenterPoint = (centerPoint - transform.position).normalized;
         _rigidBody.AddForce(directionToCenterPoint * newForce, ForceMode2D.Force);
     }
-    public void OnSwipe(Vector2 direction, float force)
+    public void OnSwipe(Vector2 direction, float force) 
     {
         SetDecaying(false);
         _health = _maxHealth;

@@ -64,7 +64,7 @@ public class Inventory : MonoBehaviour
 
     public bool EquipItem(Item item)
     {
-        if (equippedItems.Count > maxItemSlots)
+        if (equippedItems.Count >= maxItemSlots)
         {
             displayedItemTitle.SetText("Max Item slots!");
             displayedItemText.SetText("unequip something first");
