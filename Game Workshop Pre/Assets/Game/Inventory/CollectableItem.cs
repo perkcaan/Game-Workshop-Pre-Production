@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
+// This is the actual object in the world that sparkles and gets picked up then destroyed
 public class CollectableItem : MonoBehaviour
 {
+    // Item is the item that ends up in the inventory, CollectableItem is the prefab in the world
     public Item item;
 
     [Header("Sparkle Effects")]
@@ -27,7 +29,8 @@ public class CollectableItem : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (isCollected) return;
-        if (other.TryGetComponent(out PlayerMovementController player)) {
+        if (other.TryGetComponent(out PlayerMovementController player))
+        {
             isCollected = true;
             Sequence sequence = DOTween.Sequence();
             sequence.Append(transform.DOScale(new Vector3(1.2f, 1.2f, 1), 0.4f).SetEase(Ease.OutQuad));
