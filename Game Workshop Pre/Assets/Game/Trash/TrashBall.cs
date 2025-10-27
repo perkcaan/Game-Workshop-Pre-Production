@@ -7,7 +7,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 {
     [Header("Base Stats")]
     [SerializeField] float _scaleMultiplier;
-    [SerializeField] float _baseMaxHealth;      
+    [SerializeField] float _baseMaxHealth;
+    [SerializeField] float _minimumSpeedToAbsorbPlayer;
     [SerializeField] private float _size = 1f;
     public float Size
     {
@@ -252,7 +253,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
             if (_activelyDecaying) return;
-            float absorbingPower = (_rigidBody.velocity.magnitude - 8) * Size * _absorbMultiplier;
+            float absorbingPower = (_rigidBody.velocity.magnitude - _minimumSpeedToAbsorbPlayer) * Size * _absorbMultiplier;
             absorbableObject.OnAbsorbedByTrashBall(this, absorbingPower, false);
             _health = _maxHealth;
             return;

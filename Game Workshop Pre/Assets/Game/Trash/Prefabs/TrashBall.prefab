@@ -149,11 +149,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scaleMultiplier: 0.6
   _baseMaxHealth: 30
+  _minimumSpeedToAbsorbPlayer: 5
   _size: 0
   _idleDecayMultiplier: 10
   _decayTrashDropRate: 1.2
-  _vacuumForce: 6
-  _minimumVacuumForce: 0.5
+  _vacuumForce: 2.5
+  _minimumVacuumForce: 0.3
   _sizeMultiplier: 2
   _baseMaterial: {fileID: 11400000, guid: 6fb7000f493002749ba7cdd0bb70878d, type: 2}
   _genericMaterial: {fileID: 11400000, guid: dd963f5861bb9344da6b0d92692fad6c, type: 2}

@@ -11,7 +11,6 @@ public class Inventory : MonoBehaviour
     [SerializeField] int maxItemSlots;
     [SerializeField] TextMeshProUGUI displayedItemText;
     [SerializeField] TextMeshProUGUI displayedItemTitle;
-    [SerializeField] TextMeshProUGUI displayedItemSlotsText;
     [SerializeField] GameObject itemSlotsObject;
     [SerializeField] List<Item> equippedItems = new List<Item>();
     List<ItemSlot> itemSlots = new List<ItemSlot>();
@@ -30,7 +29,6 @@ public class Inventory : MonoBehaviour
         Instance = this;
         displayedItemText.text = "";
         displayedItemTitle.text = "";
-        displayedItemSlotsText.text = equippedItems.Count + "/" + maxItemSlots;
         DontDestroyOnLoad(gameObject);
     }
     
@@ -74,7 +72,6 @@ public class Inventory : MonoBehaviour
             return false;
         }
         equippedItems.Add(item);
-        displayedItemSlotsText.text = equippedItems.Count + "/" + maxItemSlots;
         item.EquipItem();
         return true;
     }
@@ -83,7 +80,6 @@ public class Inventory : MonoBehaviour
     public bool UnequipItem(Item item)
     {
         equippedItems.Remove(item);
-        displayedItemSlotsText.text = equippedItems.Count + "/" + maxItemSlots;
         item.UnequipItem();
         return true;
     }
