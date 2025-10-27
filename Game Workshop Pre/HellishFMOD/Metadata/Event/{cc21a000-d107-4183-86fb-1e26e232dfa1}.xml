@@ -63,7 +63,7 @@
 	<object class="MarkerTrack" id="{6ab71f85-4f13-4496-b2a2-fd51af5923e9}" />
 	<object class="GroupTrack" id="{b316b24c-a6cf-4740-8f7e-93e9cb573705}">
 		<relationship name="automationTracks">
-			<destination>{4490f6d4-772e-4a97-bd71-6be6ff9c1788}</destination>
+			<destination>{f4a2d05a-6b4e-4124-b8fa-1be1cc4b98e4}</destination>
 		</relationship>
 		<relationship name="modules">
 			<destination>{4972bd5f-07c3-486d-a1cd-4bf3ccd95476}</destination>
@@ -125,7 +125,7 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{e2f0f687-3ee5-47ec-92a9-ca5bef89a4db}" />
-	<object class="AutomationTrack" id="{4490f6d4-772e-4a97-bd71-6be6ff9c1788}">
+	<object class="AutomationTrack" id="{f4a2d05a-6b4e-4124-b8fa-1be1cc4b98e4}">
 		<relationship name="automator">
 			<destination>{5f3c236a-97f6-4c9a-97c2-00c69fdfd193}</destination>
 		</relationship>
@@ -144,7 +144,7 @@
 			<value>-8</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>6000</value>
+			<value>3000</value>
 		</property>
 		<property name="minimumScatterDistance">
 			<value>0</value>
@@ -287,6 +287,9 @@
 		</relationship>
 	</object>
 	<object class="MultiSound" id="{b6c45267-21c5-43d5-addc-1ffc8c7ccf0a}">
+		<property name="playlistMode">
+			<value>1</value>
+		</property>
 		<relationship name="sounds">
 			<destination>{64d2daa9-5282-4960-a6e9-e5e6d920a5f7}</destination>
 			<destination>{3d14c061-be50-4575-96bc-9da74df6f47d}</destination>
@@ -358,7 +361,7 @@
 			<value>0.4065040650406504</value>
 		</property>
 		<property name="value">
-			<value>100</value>
+			<value>75</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{7fd1f4dc-3efe-49c9-98ad-36821c0f3665}">

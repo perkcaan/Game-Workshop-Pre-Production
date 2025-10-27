@@ -215,6 +215,9 @@
 		<property name="length">
 			<value>100</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{4f12d3e6-d4e2-4f53-8a02-f156346627d4}</destination>
+		</relationship>
 		<relationship name="parameters">
 			<destination>{b578b0fa-43b8-469b-b7f5-bb154fe47452}</destination>
 			<destination>{363d0c1f-95c8-4c3d-ad44-aad63b39fc18}</destination>
@@ -298,6 +301,17 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2ff1c23c-3c33-4f1d-9c21-86dfc8ee3aa0}" />
+	<object class="AutopitchModulator" id="{4f12d3e6-d4e2-4f53-8a02-f156346627d4}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="root">
+			<value>90</value>
+		</property>
+		<property name="pitchAtMinimum">
+			<value>1</value>
+		</property>
+	</object>
 	<object class="ParameterProperty" id="{b578b0fa-43b8-469b-b7f5-bb154fe47452}">
 		<relationship name="parameter">
 			<destination>{84091838-506a-4f24-a342-c427df883bfc}</destination>
@@ -411,15 +425,15 @@
 			<value>-80</value>
 		</property>
 		<property name="curveShape">
-			<value>0.285576642</value>
+			<value>0.549222469</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{17428566-349e-4c6f-8488-f94e202d7801}">
 		<property name="position">
-			<value>20</value>
+			<value>30</value>
 		</property>
 		<property name="value">
-			<value>-15</value>
+			<value>-14</value>
 		</property>
 		<property name="curveShape">
 			<value>0.86049825</value>
@@ -430,7 +444,7 @@
 			<value>99.593495934959336</value>
 		</property>
 		<property name="value">
-			<value>-10</value>
+			<value>-8</value>
 		</property>
 	</object>
 </objects>
