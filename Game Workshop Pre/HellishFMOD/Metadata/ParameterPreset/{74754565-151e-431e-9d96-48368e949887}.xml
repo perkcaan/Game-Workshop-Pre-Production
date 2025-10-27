@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{74754565-151e-431e-9d96-48368e949887}">
+		<property name="name">
+			<value>Trash Type</value>
+		</property>
+		<relationship name="folder">
+			<destination>{d2d00e70-f7e4-46c7-ac85-3c2406e406df}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{7df5ab95-498a-4bc8-8d26-15c96eba069f}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{7df5ab95-498a-4bc8-8d26-15c96eba069f}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>3</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>Glass</value>
+			<value>Trash</value>
+			<value>Slop</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="velocity">
+			<value>-0.75</value>
+		</property>
+	</object>
+</objects>
