@@ -20124,11 +20124,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 570e8f98e65f62249a8e3e7bc9af4935, type: 3}
---- !u!198 &577143584 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 4931791013033891442, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
-  m_PrefabInstance: {fileID: 3753248377345405967}
-  m_PrefabAsset: {fileID: 0}
 --- !u!198 &578439076 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 869658520718488219, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
@@ -21660,8 +21655,8 @@ MonoBehaviour:
       Value: {fileID: 265053983}
     - Key: dashBack
       Value: {fileID: 1118952061}
-    - Key: dash
-      Value: {fileID: 577143584}
+    - Key: 
+      Value: {fileID: 0}
     - Key: swipe
       Value: {fileID: 578439076}
   _swipeFX: {fileID: 0}
@@ -21854,7 +21849,7 @@ TrailRenderer:
       m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 0
+    numCornerVertices: 14
     numCapVertices: 0
     alignment: 0
     textureMode: 0
@@ -26144,7 +26139,8 @@ PrefabInstance:
     - {fileID: 7292192537079099995, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
     - {fileID: 2111930097105643081, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
     - {fileID: 4396851851700154634, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6863211550267429334, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7819092179503157042, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
