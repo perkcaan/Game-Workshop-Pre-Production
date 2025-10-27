@@ -334,4 +334,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
 
     }
 
+    public void OnTrashBallIgnite()
+    {
+        throw new System.NotImplementedException();
+    }
 }
