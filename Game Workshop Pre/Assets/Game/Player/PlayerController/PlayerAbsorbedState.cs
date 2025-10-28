@@ -20,7 +20,7 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
     //state
     public override void EnterState()
     {
-        _ctx.Animator.SetBool("Absorbed", true);
+        _ctx.PlayerAnimator.SetAbsorbed(true);
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
         _ctx.PlayerHasControl = false;
@@ -42,8 +42,7 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
     public override void ExitState()
     {
         _ctx.SweepHandler.EndSweep();
-        _ctx.Animator.SetBool("Absorbed", false);
-        _ctx.Animator.speed = 1;
+        _ctx.PlayerAnimator.SetAbsorbed(false);
         _ctx.PlayerHasControl = true;
         _ctx.Collider.enabled = true;
     }

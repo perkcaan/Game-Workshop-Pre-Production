@@ -22,7 +22,7 @@ public class PlayerTumbleState : BaseState<PlayerStateEnum>
     //state
     public override void EnterState()
     {
-        _ctx.Animator.SetBool("Tumbling", true);
+        //_ctx.Animator.SetBool("Tumbling", true);
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
         _ctx.PlayerHasControl = false;
@@ -39,7 +39,7 @@ public class PlayerTumbleState : BaseState<PlayerStateEnum>
     public override void ExitState()
     {
         _ctx.SweepHandler.EndSweep();
-        _ctx.Animator.SetBool("Tumbling", false);
+        //_ctx.Animator.SetBool("Tumbling", false);
         _ctx.PlayerHasControl = true;
         _ctx.Rigidbody.sharedMaterial = _originalMaterial;
     }

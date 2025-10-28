@@ -75,7 +75,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         _ctx = new PlayerContext(this, _movementProps);
         _ctx.Rigidbody = GetComponent<Rigidbody2D>();
-        _ctx.Animator = GetComponent<Animator>();
+        _ctx.PlayerAnimator = GetComponentInChildren<PlayerAnimator>();
         _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
         _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
         _ctx.Collider = GetComponent<Collider2D>();
@@ -201,7 +201,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         if (_ctx.AbsorbedTrashBall != null)
         {
-            _ctx.Animator.speed += 0.3f;
             _ctx.AbsorbedTrashBall.TakeDamage(_playerEscapeDamage);
         }
     }
@@ -215,8 +214,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Rigidbody.AddForce(clampedForce, ForceMode2D.Force);
 
 
-        _ctx.Animator.SetFloat("Speed", _ctx.FrameVelocity.magnitude);
-        _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
+        _ctx.PlayerAnimator.SetSpeed(_ctx.FrameVelocity.magnitude);
+        _ctx.PlayerAnimator.SetRotation(_ctx.Rotation);
 
 
         _footstepCooldown -= Time.deltaTime;
