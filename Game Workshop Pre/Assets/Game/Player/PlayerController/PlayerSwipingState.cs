@@ -26,7 +26,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     //state
     public override void EnterState()
     {
-        _ctx.PlayerAnimator.SetHoldingSwipe(true);
+        _ctx.PlayerAnimator.ChangeState(PlayerAnimationState.HoldingSwipe, true);
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
         _hasSwipeBeenActivated = false;
@@ -61,7 +61,8 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
         if (_swipeCoroutine != null) _ctx.Player.StopCoroutine(_swipeCoroutine);
         _ctx.SwipeHandler.EndSwipe();
         _ctx.SwipeCooldownTimer = _ctx.Player.SwipeCooldown;
-        _ctx.PlayerAnimator.SetHoldingSwipe(false);
+        _ctx.PlayerAnimator.ChangeState(PlayerAnimationState.Swiping, false);
+        _ctx.PlayerAnimator.ChangeState(PlayerAnimationState.HoldingSwipe, false);
     }
 
 
@@ -74,8 +75,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     //swipe
     private void DoSwipe()
     {
-        _ctx.PlayerAnimator.SetSwiping(true);
-        _ctx.PlayerAnimator.SetHoldingSwipe(false);
+        _ctx.PlayerAnimator.ChangeState(PlayerAnimationState.Swiping, true);
         _hasSwipeBeenActivated = true;
         _ctx.SwipeHandler.HideLine();
 
