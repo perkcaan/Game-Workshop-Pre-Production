@@ -23,7 +23,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     //state
     public override void EnterState()
     {
-        _ctx.PlayerAnimator.SetSweeping(true);
+        _ctx.Animator.SetBool("Sweeping", true);
         _ctx.CanSwipe = true;
         _ctx.CanDash = true;
         float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
@@ -42,7 +42,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     public override void ExitState()
     {
         _ctx.SweepHandler.EndSweep();
-        _ctx.PlayerAnimator.SetSweeping(false);
+        _ctx.Animator.SetBool("Sweeping", false);
     }
     
     public override void OnDrawGizmos()
