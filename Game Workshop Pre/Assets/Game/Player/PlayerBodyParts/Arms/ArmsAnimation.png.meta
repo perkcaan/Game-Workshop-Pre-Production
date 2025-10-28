@@ -105,7 +105,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -126,7 +126,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,7 +147,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -168,7 +168,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,7 +189,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -205,12 +205,12 @@ TextureImporter:
       name: ArmsAnimation_8
       rect:
         serializedVersion: 2
-        x: 0
+        x: 48
         y: 96
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -226,12 +226,12 @@ TextureImporter:
       name: ArmsAnimation_9
       rect:
         serializedVersion: 2
-        x: 16
+        x: 64
         y: 96
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -247,12 +247,12 @@ TextureImporter:
       name: ArmsAnimation_10
       rect:
         serializedVersion: 2
-        x: 32
-        y: 96
+        x: 0
+        y: 80
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -265,36 +265,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ArmsAnimation_11
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 96
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f45a399f9c16d0c4c8ed5c2fd37d3350
-      internalID: -957989429
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: ArmsAnimation_12
       rect:
         serializedVersion: 2
-        x: 64
-        y: 96
+        x: 32
+        y: 80
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -310,12 +289,12 @@ TextureImporter:
       name: ArmsAnimation_16
       rect:
         serializedVersion: 2
-        x: 0
-        y: 80
+        x: 16
+        y: 64
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -331,12 +310,12 @@ TextureImporter:
       name: ArmsAnimation_17
       rect:
         serializedVersion: 2
-        x: 16
-        y: 80
+        x: 32
+        y: 64
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -352,12 +331,12 @@ TextureImporter:
       name: ArmsAnimation_18
       rect:
         serializedVersion: 2
-        x: 32
-        y: 80
+        x: 48
+        y: 64
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -370,7 +349,49 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ArmsAnimation_19
+      name: ArmsAnimation_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b9c621a12519674c9a53713cc421472
+      internalID: -117513771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArmsAnimation_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8770fcc149ae50649a85eff0d3f851f4
+      internalID: 907953893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArmsAnimation_13
       rect:
         serializedVersion: 2
         x: 48
@@ -378,20 +399,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4a02f2eb1b751964dbba71de1a979da1
-      internalID: -586026675
+      spriteID: 230b3be594c28ed468c1e4506d170c1e
+      internalID: 1953896550
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ArmsAnimation_20
+      name: ArmsAnimation_14
       rect:
         serializedVersion: 2
         x: 64
@@ -399,14 +420,98 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e5ab0ec1ec7a1444db35be583f364784
-      internalID: -1554709854
+      spriteID: 31d1b703a4352d346a7ca14ad997fdb3
+      internalID: -634708670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArmsAnimation_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 048bdb533a6366246bc8d9376d078a01
+      internalID: -634449866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArmsAnimation_7
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9269a249df857a4b9d7669acd66fe7f
+      internalID: 1148069856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArmsAnimation_11
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4257e75dc75591e46a4ed742cf83733b
+      internalID: -957989429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArmsAnimation_19
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d450e290a5d73ef4290df8e4ef1d1a6d
+      internalID: -586026675
       vertices: []
       indices: 
       edges: []
@@ -435,10 +540,6 @@ TextureImporter:
       ArmsAnimation_18: -2075095
       ArmsAnimation_19: -586026675
       ArmsAnimation_2: -1226798641
-      ArmsAnimation_20: -1554709854
-      ArmsAnimation_21: -1676788616
-      ArmsAnimation_22: 2047969908
-      ArmsAnimation_23: -880419565
       ArmsAnimation_3: -1682982192
       ArmsAnimation_4: -1878035931
       ArmsAnimation_5: -117513771
