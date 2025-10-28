@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{b7113bba-b6dc-4683-95ba-b31df5fcfa88}">
 		<property name="name">
-			<value>Second Attempt</value>
+			<value>TrashBall</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -155,7 +155,7 @@
 			<value>-6</value>
 		</property>
 		<property name="name">
-			<value>Audio 2</value>
+			<value>SlimeRoll</value>
 		</property>
 		<relationship name="automators">
 			<destination>{7f5e7d02-d9a0-494b-9382-8b3078d25369}</destination>
@@ -191,7 +191,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{521c01d7-2af6-4dec-b232-8353ac1b77a6}">
 		<property name="name">
-			<value>Audio 3</value>
+			<value>TrashRoll</value>
 		</property>
 		<relationship name="automators">
 			<destination>{182bf142-e44c-4852-ad01-0ed6f326ca5e}</destination>
@@ -338,9 +338,6 @@
 	<object class="MixerBusPanner" id="{684ca081-e2a8-4caa-b91a-369937138d13}" />
 	<object class="MixerBusFader" id="{a25b2f41-b8b3-469d-b125-afd29edaa3f9}" />
 	<object class="MixerSend" id="{18fd0762-766a-4166-be57-93d8950337dd}">
-		<property name="level">
-			<value>-14</value>
-		</property>
 		<property name="inputFormat">
 			<value>1</value>
 		</property>
@@ -425,7 +422,7 @@
 			<value>-80</value>
 		</property>
 		<property name="curveShape">
-			<value>0.549222469</value>
+			<value>0.220180064</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{17428566-349e-4c6f-8488-f94e202d7801}">
@@ -433,7 +430,7 @@
 			<value>30</value>
 		</property>
 		<property name="value">
-			<value>-14</value>
+			<value>-6</value>
 		</property>
 		<property name="curveShape">
 			<value>0.86049825</value>
@@ -444,7 +441,7 @@
 			<value>99.593495934959336</value>
 		</property>
 		<property name="value">
-			<value>-8</value>
+			<value>0</value>
 		</property>
 	</object>
 </objects>
