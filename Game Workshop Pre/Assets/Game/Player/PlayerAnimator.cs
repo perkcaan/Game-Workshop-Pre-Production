@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.U2D.Animation;
+
 
 public enum PlayerAnimationState
 {
@@ -13,20 +15,22 @@ public enum PlayerAnimationState
     Tumble,
     Absorbed
 }
-
 public class PlayerAnimator : MonoBehaviour
 {
-    [SerializeField] BodyPart body;
-    [SerializeField] BodyPart head;
-    [SerializeField] BodyPart legs;
-    [SerializeField] BodyPart arms;
-    [SerializeField] BodyPart broom;
+    [SerializeField] SpriteLibraryAsset bodyAnimation;
+    [SerializeField] SpriteLibraryAsset headAnimation;
+    [SerializeField] SpriteLibraryAsset legsAnimation;
+    [SerializeField] SpriteLibraryAsset armsAnimation;
+    [SerializeField] SpriteRenderer body;
+    [SerializeField] SpriteRenderer head;
+    [SerializeField] SpriteRenderer legs;
+    [SerializeField] SpriteRenderer arms;
     [SerializeField] float animationSpeed;
-    [SerializeField] float runAnimationThreshold;
     private PlayerAnimationState playerState;
+
     private float currentMovementSpeed;
-    private int rotation;
-    private int mirroredRotation;
+    private int rotation = 0;
+
     private float animationTimer;
     private int animationStep;
 
@@ -49,26 +53,26 @@ public class PlayerAnimator : MonoBehaviour
 
     void PlayAnimation()
     {
+        body.transform.localPosition = new Vector3(0, 0, body.transform.localPosition.z);
+        head.transform.localPosition = new Vector3(0, 0.125f, head.transform.localPosition.z);
+        legs.transform.localPosition = new Vector3(0, -0.125f, legs.transform.localPosition.z);
+        arms.transform.localPosition = new Vector3(0, 0, arms.transform.localPosition.z);
+        
         switch (playerState)
         {
             case PlayerAnimationState.Idle:
-                broom.sr.enabled = false;
                 IdleAnimation();
                 break;
             case PlayerAnimationState.HoldingSwipe:
-                broom.sr.enabled = true;
                 HoldingSwipeAnimation();
                 break;
             case PlayerAnimationState.Swiping:
-                broom.sr.enabled = true;
                 SwipeAnimation();
                 break;
             case PlayerAnimationState.Sweeping:
-                broom.sr.enabled = true;
                 SweepAnimation();
                 break;
             case PlayerAnimationState.Dash:
-                broom.sr.enabled = false;
                 DashAnimation();
                 break;
             default:
@@ -76,42 +80,59 @@ public class PlayerAnimator : MonoBehaviour
         }
     }
 
-    void BaseMoveAnimation()
-    {
-        body.SetSprite("Idle", mirroredRotation);
-        head.SetSprite("Idle", mirroredRotation);
-        arms.SetSprite("Idle", mirroredRotation);
-        legs.SetSprite("Idle", mirroredRotation);
-
-        if (currentMovementSpeed > runAnimationThreshold && animationStep % 2 == 0)
-        {
-            arms.SetSpriteOnStep(animationStep / 2, "Run", mirroredRotation);
-            legs.SetSpriteOnStep(animationStep / 2, "Run", mirroredRotation);
-        }
-    }
-
     void IdleAnimation()
     {
-        BaseMoveAnimation();
-        if (currentMovementSpeed < runAnimationThreshold)
+        string mirroredRotation = MirroredRotation().ToString();
+        body.sprite = bodyAnimation.GetSprite("Idle", mirroredRotation);
+        head.sprite = headAnimation.GetSprite("Idle", mirroredRotation);
+
+        if (currentMovementSpeed < 0.5f)
         {
-            head.OffsetSpriteOnStep(animationStep,
-            Vector2.zero, Vector2.down, Vector2.down, Vector2.zero);
-            arms.OffsetSpriteOnStep(animationStep,
-            Vector2.zero, Vector2.zero, Vector2.down, Vector2.down);
+            legs.sprite = legsAnimation.GetSprite("Idle", mirroredRotation);
+            arms.sprite = armsAnimation.GetSprite("Idle", mirroredRotation);
+            IdleHeadBob();
+        }
+        else
+        {
+            if ((animationStep + 1) % 2 == 0)
+            {
+                legs.sprite = legsAnimation.GetSprite("Idle", mirroredRotation);
+                arms.sprite = armsAnimation.GetSprite("Idle", mirroredRotation);
+            }
+            else
+            {
+                mirroredRotation += (animationStep / 2).ToString();
+                legs.sprite = legsAnimation.GetSprite("Run", mirroredRotation);
+                arms.sprite = armsAnimation.GetSprite("Run", mirroredRotation);
+            }
         }
     }
     
+    void IdleHeadBob()
+    {
+        switch (animationStep)
+        {
+            case 0:
+                head.transform.localPosition += new Vector3(0, 0);
+                arms.transform.localPosition += new Vector3(0, 0);
+                break;
+            case 1:
+                head.transform.localPosition += new Vector3(0, -0.0625f);
+                arms.transform.localPosition += new Vector3(0, 0);
+                break;
+            case 2:
+                head.transform.localPosition += new Vector3(0, -0.0625f);
+                arms.transform.localPosition += new Vector3(0, -0.0625f);
+                break;
+            case 3:
+                head.transform.localPosition += new Vector3(0, 0);
+                arms.transform.localPosition += new Vector3(0, -0.0625f);
+                break;
+        }
+    }
     void HoldingSwipeAnimation()
     {
-        BaseMoveAnimation();
         
-        int offsetRotation = mirroredRotation + 1;
-        if (mirroredRotation == 4)
-
-        head.SetSprite("Idle", offsetRotation);
-        arms.SetSprite("Sweep", mirroredRotation);
-        broom.SetSprite("Sweep", mirroredRotation);
     }
     void SwipeAnimation()
     {
@@ -119,47 +140,32 @@ public class PlayerAnimator : MonoBehaviour
     }
     void SweepAnimation()
     {
-        BaseMoveAnimation();
-        arms.SetSprite("Sweep", mirroredRotation);
-        broom.SetSprite("Sweep", mirroredRotation);
 
-        int Xoffset = 0;
-        int Yoffset = 0;
-        if (Math.Abs(mirroredRotation) > 2) Yoffset = 1;
-        else if (Math.Abs(mirroredRotation) < 2) Yoffset = -1;
-        if (rotation > 4) Xoffset = -1;
-        else if (rotation > 0 && rotation < 4) Xoffset = 1;
-
-        arms.OffsetSpriteOnStep(animationStep,
-        Vector2.zero, new Vector2(Xoffset, Yoffset), Vector2.zero, new Vector2(Xoffset, Yoffset));
-        broom.OffsetSpriteOnStep(animationStep,
-        Vector2.zero, new Vector2(Xoffset, Yoffset), Vector2.zero, new Vector2(Xoffset, Yoffset));
     }
-
     void DashAnimation()
     {
 
     }
 
-    private void MirroredRotation()
+    private int MirroredRotation()
     {
+        int idleRotation = rotation;
         if (rotation > 4)
         {
-            mirroredRotation = 8 - rotation;
-            body.sr.flipX = false;
-            head.sr.flipX = false;
-            legs.sr.flipX = false;
-            arms.sr.flipX = false;
-            broom.sr.flipX = false;
+            idleRotation = 8 - rotation;
+            body.flipX = false;
+            head.flipX = false;
+            legs.flipX = false;
+            arms.flipX = false;
         }
         else
         {
-            body.sr.flipX = true;
-            head.sr.flipX = true;
-            legs.sr.flipX = true;
-            arms.sr.flipX = true;
-            broom.sr.flipX = true;
+            body.flipX = true;
+            head.flipX = true;
+            legs.flipX = true;
+            arms.flipX = true;
         }
+        return idleRotation;
     }
 
     public void SetSpeed(float speed)
@@ -170,8 +176,6 @@ public class PlayerAnimator : MonoBehaviour
     public void SetRotation(float setRotation)
     {
         rotation = ((int)Math.Round((setRotation + 180) / 45f) + 6) % 8;
-        mirroredRotation = rotation;
-        if (mirroredRotation > 4) mirroredRotation -= 8;
     }
 
     public void ChangeState(PlayerAnimationState newState, bool isTrue)
