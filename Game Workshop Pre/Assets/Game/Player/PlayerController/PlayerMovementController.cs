@@ -51,6 +51,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
 
+    [Header("Checkpoint")]
+    [SerializeField] private CheckpointManager Checkpoint_Manager;
 
     // Fields
     //weight
@@ -278,7 +280,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     // IHeatable
     public void OnIgnite(HeatMechanic heat)
     {
-        transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
+        // transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
+
+        Death();
+
         heat.Reset();
         LayerMask layerMask = new LayerMask();
         _ctx.Collider.excludeLayers = layerMask;
@@ -310,5 +315,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         // Also temporary need a death function
         transform.position = new Vector3(-6.5f, 2f, transform.position.z);
+    }
+
+    private void Death()
+    {
+        transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
+        Debug.Log("Return to Checkpoint");
     }
 }
