@@ -51,6 +51,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
 
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
+    
 
     [Header("Effects")]
     public ParticleManager _particles;

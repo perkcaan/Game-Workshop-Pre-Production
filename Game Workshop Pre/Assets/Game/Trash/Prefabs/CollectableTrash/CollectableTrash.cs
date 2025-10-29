@@ -5,6 +5,7 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable
     [SerializeField] float _sweepDurationToBecomeBall;
     [SerializeField] bool _swipesIntoTrashBall;
     private float _sweepTimer;
+    
     public void OnSweep(Vector2 direction, float force)
     {
         if (!isActiveAndEnabled) return;
@@ -14,6 +15,8 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable
         {
             CreateTrashBall();
         }
+
+        
     }
     public void OnSwipe(Vector2 direction, float force)
     {

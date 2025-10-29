@@ -28,7 +28,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private TrashMaterial _primaryTrashMaterial;
     private TrashMaterial _secondaryTrashMaterial;
     private PhysicsMaterial2D _physicsMaterial2D;
-    
+    private FMOD.Studio.EventInstance _sweepSoundInstance;
+
     // Trash IDs to solve trash merge ties
     private static int _nextId = 0;
     public int TrashId { get; private set; }
@@ -61,6 +62,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial = _baseMaterial;
         _primaryTrashMaterial = _baseMaterial;
         _physicsMaterial2D = Instantiate(_rigidBody.sharedMaterial);
+        _sweepSoundInstance = FMODUnity.RuntimeManager.CreateInstance("event:/TrashBall/TrashType");
     }
 
     public void Update()

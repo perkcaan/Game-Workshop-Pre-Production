@@ -64,6 +64,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private void Update()
     {
         CheckGateStatus();
+        
     }
 
 
