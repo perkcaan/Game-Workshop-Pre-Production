@@ -87,9 +87,6 @@
 		<relationship name="automationTracks">
 			<destination>{6efae3c3-7108-455a-a207-6064e4ac07a3}</destination>
 		</relationship>
-		<relationship name="modules">
-			<destination>{d7f5245c-1915-40d0-9091-f1e657ebdc2a}</destination>
-		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{8ec6388d-557f-460b-99bc-c56d465243b0}</destination>
 		</relationship>
@@ -114,7 +111,6 @@
 		<relationship name="modules">
 			<destination>{01771a40-3589-4a0d-a2ac-76426550e290}</destination>
 			<destination>{0bf47948-380b-4931-9013-fc0cb7048a3d}</destination>
-			<destination>{d7f5245c-1915-40d0-9091-f1e657ebdc2a}</destination>
 			<destination>{80864a58-5024-40fb-a219-24e9009ef957}</destination>
 		</relationship>
 		<relationship name="preset">
@@ -217,26 +213,6 @@
 			<destination>{aafe171f-e764-40c3-857e-896bdcf85d89}</destination>
 		</relationship>
 	</object>
-	<object class="SingleSound" id="{d7f5245c-1915-40d0-9091-f1e657ebdc2a}">
-		<property name="isCutoff">
-			<value>true</value>
-		</property>
-		<property name="start">
-			<value>3</value>
-		</property>
-		<property name="length">
-			<value>7</value>
-		</property>
-		<property name="looping">
-			<value>true</value>
-		</property>
-		<relationship name="modulators">
-			<destination>{8c262956-17b7-4448-b5f9-3041ca727756}</destination>
-		</relationship>
-		<relationship name="audioFile">
-			<destination>{f854bfaa-ec42-4c32-95b6-ef85403a7975}</destination>
-		</relationship>
-	</object>
 	<object class="EventMixerGroup" id="{8ec6388d-557f-460b-99bc-c56d465243b0}">
 		<property name="name">
 			<value>Kettle</value>
@@ -272,15 +248,13 @@
 		<property name="looping">
 			<value>true</value>
 		</property>
-		<property name="playlistMode">
-			<value>1</value>
-		</property>
 		<relationship name="modulators">
 			<destination>{9824b8a7-64ce-4493-9f89-9cdb8f304dac}</destination>
 			<destination>{0d986f2e-7894-4f32-a685-a708e65f8bea}</destination>
 		</relationship>
 		<relationship name="sounds">
 			<destination>{260971fd-c80d-432e-8f86-5a809e93bdc4}</destination>
+			<destination>{da9fa17a-9905-4783-8cf6-11c503c393f9}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{b1c7f69f-14d2-465d-a86d-cf653dee28a9}">
@@ -356,14 +330,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{e35dd821-87ab-4dec-83e4-32ce189007ba}" />
-	<object class="AutopitchModulator" id="{8c262956-17b7-4448-b5f9-3041ca727756}">
-		<property name="nameOfPropertyBeingModulated">
-			<value>pitch</value>
-		</property>
-		<property name="root">
-			<value>8</value>
-		</property>
-	</object>
 	<object class="Automator" id="{aafe171f-e764-40c3-857e-896bdcf85d89}">
 		<property name="nameOfPropertyBeingAutomated">
 			<value>volume</value>
@@ -406,6 +372,11 @@
 		</relationship>
 		<relationship name="audioFile">
 			<destination>{b0e25f54-3797-4236-bc85-b36b8d27c392}</destination>
+		</relationship>
+	</object>
+	<object class="SingleSound" id="{da9fa17a-9905-4783-8cf6-11c503c393f9}">
+		<relationship name="audioFile">
+			<destination>{07e50838-2d42-47df-bf85-92a0ad89aa6c}</destination>
 		</relationship>
 	</object>
 	<object class="Automator" id="{32f8c493-946a-48f1-83a7-f034fb7acb2c}">
