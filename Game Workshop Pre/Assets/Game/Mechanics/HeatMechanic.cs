@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class HeatMechanic : MonoBehaviour
 {
+
     //Constants 
     public const int LOWEST_HEAT_VALUE = 0;
     public const int HIGHEST_HEAT_VALUE = 100;
@@ -151,7 +152,6 @@ public class HeatMechanic : MonoBehaviour
             foreach (IHeatable heatable in heatables)
             {
                 heatable.OnIgnite(this);
-                Debug.Log("Respawn");
             }
         }
     }
@@ -183,4 +183,6 @@ public class HeatMechanic : MonoBehaviour
         if (mainTexture != null)  _block.SetTexture("_MainTex", mainTexture); 
         _spriteRenderer.SetPropertyBlock(_block);
     }
+
+
 }

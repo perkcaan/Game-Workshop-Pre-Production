@@ -6,8 +6,6 @@ using UnityEngine;
 public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 {
 
-    Score scoreRef; // ***
-
     [SerializeField] float _scaleMultiplier;
     [SerializeField] float _baseMaxHealth;
     [SerializeField] float _idleDecayMultiplier;
@@ -56,7 +54,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     public void Awake()
     {
-        scoreRef = FindAnyObjectByType<Score>(); //***
+     
         _rigidBody = GetComponent<Rigidbody2D>();
         _meshRenderer = GetComponentInChildren<MeshRenderer>();
         _maxHealth = _baseMaxHealth;
@@ -286,15 +284,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
-
-            if (absorbable is Enemy)
-            {
-                scoreRef.UpdateScore(10);
-            }
-            else
-            {
-                scoreRef.UpdateScore(2);
-            }
 
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
             trashMono.gameObject.SetActive(true);

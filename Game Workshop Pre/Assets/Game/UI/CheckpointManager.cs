@@ -12,24 +12,25 @@ public class CheckpointManager : MonoBehaviour // One for each level
 
     private void Start()
     {
-        activeCheckpoint = checkpoints[0];
+        checkpoints.Clear(); // Makes sure list starts empty
     }
 
     private void Update()
     {
-        if (!respawnChoice) { SetActiveCheckpoint(); }
+        if (!respawnChoice) { AutoSetActiveCheckpoint(); }
         
     }
 
-    private void SetActiveCheckpoint() // Automatically sets the active checkpoint
+    private void AutoSetActiveCheckpoint() // Automatically sets the active checkpoint
     {
-        activeCheckpoint = checkpoints[checkpoints.Count - 1];
-
-
-        Debug.Log("New Checkpoint Gained");
+        if (!respawnChoice && (activeCheckpoint != checkpoints[checkpoints.Count - 1]))
+        {
+            activeCheckpoint = checkpoints[checkpoints.Count - 1];
+            Debug.Log("New Active Checkpoint");
+        }
     }
 
-    public void ManualCheckpointSelect(Checkpoint c) // The player can select a checkpoint at any time
+    public void SetActiveCheckpoint(Checkpoint c) // The player can select a checkpoint at any time
     {
         activeCheckpoint = c;
     }
