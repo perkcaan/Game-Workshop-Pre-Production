@@ -87,6 +87,9 @@
 		<relationship name="automationTracks">
 			<destination>{6efae3c3-7108-455a-a207-6064e4ac07a3}</destination>
 		</relationship>
+		<relationship name="modules">
+			<destination>{b80a6ec7-e2d6-47f3-98aa-75101fee9fb4}</destination>
+		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{8ec6388d-557f-460b-99bc-c56d465243b0}</destination>
 		</relationship>
@@ -112,6 +115,7 @@
 			<destination>{01771a40-3589-4a0d-a2ac-76426550e290}</destination>
 			<destination>{0bf47948-380b-4931-9013-fc0cb7048a3d}</destination>
 			<destination>{80864a58-5024-40fb-a219-24e9009ef957}</destination>
+			<destination>{b80a6ec7-e2d6-47f3-98aa-75101fee9fb4}</destination>
 		</relationship>
 		<relationship name="preset">
 			<destination>{d1064411-c207-43b2-9f1a-f8981ba10b12}</destination>
@@ -143,6 +147,9 @@
 		</relationship>
 	</object>
 	<object class="EventSound" id="{0bf47948-380b-4931-9013-fc0cb7048a3d}">
+		<property name="isCutoff">
+			<value>true</value>
+		</property>
 		<property name="start">
 			<value>3</value>
 		</property>
@@ -211,6 +218,26 @@
 	<object class="AutomationTrack" id="{6efae3c3-7108-455a-a207-6064e4ac07a3}">
 		<relationship name="automator">
 			<destination>{aafe171f-e764-40c3-857e-896bdcf85d89}</destination>
+		</relationship>
+	</object>
+	<object class="SingleSound" id="{b80a6ec7-e2d6-47f3-98aa-75101fee9fb4}">
+		<property name="isCutoff">
+			<value>true</value>
+		</property>
+		<property name="start">
+			<value>3</value>
+		</property>
+		<property name="length">
+			<value>7</value>
+		</property>
+		<property name="looping">
+			<value>true</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{761ec4cd-f197-4ca1-87f8-270b9ed0d34c}</destination>
+		</relationship>
+		<relationship name="audioFile">
+			<destination>{f854bfaa-ec42-4c32-95b6-ef85403a7975}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{8ec6388d-557f-460b-99bc-c56d465243b0}">
@@ -330,6 +357,17 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{e35dd821-87ab-4dec-83e4-32ce189007ba}" />
+	<object class="AutopitchModulator" id="{761ec4cd-f197-4ca1-87f8-270b9ed0d34c}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="root">
+			<value>5</value>
+		</property>
+		<property name="pitchAtMinimum">
+			<value>0.200000003</value>
+		</property>
+	</object>
 	<object class="Automator" id="{aafe171f-e764-40c3-857e-896bdcf85d89}">
 		<property name="nameOfPropertyBeingAutomated">
 			<value>volume</value>
