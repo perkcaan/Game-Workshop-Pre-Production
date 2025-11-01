@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{d78e6bc8-120c-43cd-a130-09b59461650c}">
 		<property name="name">
-			<value>TrashType 2</value>
+			<value>TrashType</value>
 		</property>
 		<property name="outputFormat">
 			<value>5</value>
@@ -43,6 +43,9 @@
 			<destination>{a67d25eb-3b0e-4153-b8df-a6cb8c5b4a33}</destination>
 			<destination>{42155adf-f687-4015-9154-4119354dd283}</destination>
 			<destination>{786f9673-3e56-4907-99f1-64f11050dc85}</destination>
+		</relationship>
+		<relationship name="banks">
+			<destination>{f1417bbe-be3e-416a-9e1c-307045676c2c}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{f767dd5c-03b9-425e-aae2-a8064ef78dfc}">

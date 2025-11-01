@@ -48,7 +48,7 @@ public class HeatMechanic : MonoBehaviour
     private Renderer _spriteRenderer;
     private MaterialPropertyBlock _block;
     [SerializeField] Texture mainTexture;
-    private FMOD.Studio.EventInstance _heatSound;
+    //private FMOD.Studio.EventInstance _heatSound;
 
     // Unity methods
     private void Awake()
@@ -56,13 +56,13 @@ public class HeatMechanic : MonoBehaviour
         _spriteRenderer = GetComponentInChildren<Renderer>();
         if (_spriteRenderer == null) Debug.Log("damn");
         _block = new MaterialPropertyBlock();
-        _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
+        
     }
 
     private void Start()
     {
         _heat = DistrictManager.Instance.Temperature;
-        _heatSound.start();
+        
     }
 
     private void Update()
@@ -70,7 +70,6 @@ public class HeatMechanic : MonoBehaviour
         RelaxHeat();
         UpdateHeatShader();
         CheckForIgnition();
-        _heatSound.setParameterByName("Heat", (_heat/10));
         Debug.Log(_heat);
     }
 

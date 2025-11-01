@@ -51,14 +51,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
 
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
-    
+    private FMOD.Studio.EventInstance _trashSound;
+    private FMOD.Studio.EventInstance _heatSound;
 
     [Header("Effects")]
     public ParticleManager _particles;
     ParticleSystem _dashRestoreInstance;
     [SerializeField] private TrailRenderer _dashTrail;
 
-
+    public HeatMechanic _playerHeat;
 
 
     // Fields
@@ -82,6 +83,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     // Methods
     private void Awake()
     {
+        _playerHeat = GetComponent<HeatMechanic>();
         _ctx = new PlayerContext(this, _movementProps);
         _ctx.Rigidbody = GetComponent<Rigidbody2D>();
         _ctx.Animator = GetComponent<Animator>();
@@ -90,11 +92,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
+       // _trashSound = FMODUnity.RuntimeManager.CreateInstance("event:/TrashBall/TrashBall");
+        _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
     }
 
     private void Start()
     {
         SetWeight(_weight);
+        _trashSound.start();
+        _heatSound.start();
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.lockState = CursorLockMode.Confined;
         FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
     }
@@ -105,10 +112,14 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         UpdateCooldowns();
         if (_dashRestoreInstance != null)
             _dashRestoreInstance.gameObject.transform.SetParent(this.transform);
+        //_trashSound.setParameterByName("Glass", .5f);
+        
+
     }
     private void FixedUpdate()
     {
         UpdateMovement();
+        _heatSound.setParameterByName("Heat", (_playerHeat.Heat / 10));
     }
 
     private void UpdateCooldowns()
@@ -160,6 +171,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         // Corrected the method call to match the expected parameter types
         if (ParticleManager.Instance != null)
             ParticleManager.Instance.Play("dashBack", transform.position, Quaternion.Euler(0, 0, _ctx.Rotation), transform);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
     }
 
     //inputs
@@ -237,6 +249,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
 
         _ctx.Animator.SetFloat("Speed", _ctx.FrameVelocity.magnitude);
         _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
+        
 
 
         _footstepCooldown -= Time.deltaTime;

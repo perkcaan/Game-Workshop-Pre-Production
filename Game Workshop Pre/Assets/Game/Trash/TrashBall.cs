@@ -29,6 +29,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private TrashMaterial _secondaryTrashMaterial;
     private PhysicsMaterial2D _physicsMaterial2D;
     private FMOD.Studio.EventInstance _sweepSoundInstance;
+    private FMODUnity.StudioEventEmitter _emitter;
 
     // Trash IDs to solve trash merge ties
     private static int _nextId = 0;
@@ -63,11 +64,24 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial = _baseMaterial;
         _physicsMaterial2D = Instantiate(_rigidBody.sharedMaterial);
         _sweepSoundInstance = FMODUnity.RuntimeManager.CreateInstance("event:/TrashBall/TrashType");
+        _emitter = GetComponent<FMODUnity.StudioEventEmitter>();
     }
+
+    public void Start()
+    {
+        _sweepSoundInstance.start();
+        _sweepSoundInstance.setParameterByName("RPM", 50);
+    }
+
 
     public void Update()
     {
         _primaryTrashMaterial.whenBallRolls();
+        Debug.Log(_primaryTrashMaterial.name);
+       // _emitter.Play();
+
+        
+        
 
         // Trash ball rotation
         Vector3 rotationAxis = new Vector3(-_rigidBody.velocity.y, _rigidBody.velocity.x, 0);
@@ -217,7 +231,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     private void ApplyTrashMaterial(TrashMaterial material, float precentOf)
     {
-        //Debug.Log("I am " + precentOf * 100 + "% made of "+material.name);
+        Debug.Log("I am " + precentOf / 8 + "% made of "+material.name);
         _physicsMaterial2D.bounciness += material.bounciness * precentOf;
         _rigidBody.drag += material.drag * precentOf;
         _rigidBody.mass += material.mass * precentOf;
@@ -225,6 +239,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _decayMultiplier += material.decayMultiplier * precentOf;
         _damageMultiplier += material.damageMultiplier * precentOf;
         _absorbMultiplier += material.absorbMultiplier * precentOf;
+        _sweepSoundInstance.setParameterByName($"{material.name}", .5f);
     }
 
 
