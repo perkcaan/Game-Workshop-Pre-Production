@@ -12,9 +12,13 @@ public class TrashMaterial : ScriptableObject
     public float drag;
     public float decayMultiplier;
     public float damageMultiplier;
-    public float absorbMultiplier;
+    public float swipeForceMultiplier;
+    public float knockbackMultiplier;
+    public float sizeToAbsorbChange;
 
-    public virtual void whenBallRolls(){}
+    public virtual void whenBallRolls() { }
+    public virtual void whenBallSwiped() { }
+    public virtual void whenBallHitsWall() { }
 }
 
 [CreateAssetMenu(fileName = "TrashMaterial", menuName = "ScriptableObjects/TrashMaterial", order = 1)]

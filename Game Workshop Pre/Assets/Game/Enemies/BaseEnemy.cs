@@ -35,7 +35,9 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
 
     public float size; // The enemy's size
 
-    public float resistance; // How much resistance the enemy puts up against an unattended trash ball
+    public float trashBallSpeedToAbsorb; // Minimum trash ball speed for enemy to be absorbed
+
+    public float minTrashBallAbsorbSize; // Minimum trash ball size for enemy to be absorbed
 
     public float trashBallEscapingPower;
 
@@ -255,11 +257,9 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
 
     }
 
-    // eba changes
-
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || absorbingPower > resistance)
+        if (forcedAbsorb || (ballVelocity > trashBallSpeedToAbsorb && ballSize > minTrashBallAbsorbSize))
         {
             trashBall.absorbedObjects.Add(this);
             isAbsorbed = true;

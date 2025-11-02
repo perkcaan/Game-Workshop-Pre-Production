@@ -26,7 +26,7 @@ public class TrashPile : Trash, ISwipeable
         TakeDamage(1, direction, force);
     }
 
-    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
         if (Size <= trashBall.Size)
         {

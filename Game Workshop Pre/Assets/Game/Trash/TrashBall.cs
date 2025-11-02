@@ -42,7 +42,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private bool _activelyDecaying = false;
     private float _damageMultiplier;
     private float _decayMultiplier;
-    private float _absorbMultiplier;
+    private float _sizeToAbsorbChange;
+    private float _swipeForceMultiplier;
+    private float _knockbackMultiplier;
+
     public List<IAbsorbable> absorbedObjects = new List<IAbsorbable>();
     private List<Trash> absorbedTrash = new List<Trash>();
     private List<TrashMaterial> _trashMaterialCounts = new List<TrashMaterial>();
@@ -80,7 +83,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     public void Update()
     {
         _primaryTrashMaterial.whenBallRolls();
-
+        _secondaryTrashMaterial.whenBallRolls();
         // Trash ball rotation
         Vector3 rotationAxis = new Vector3(-_rigidBody.velocity.y, _rigidBody.velocity.x, 0);
         float distance = _rigidBody.velocity.magnitude * Time.deltaTime;
@@ -110,8 +113,12 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         Vector2 directionToCenterPoint = (centerPoint - transform.position).normalized;
         _rigidBody.AddForce(directionToCenterPoint * newForce, ForceMode2D.Force);
     }
-    public void OnSwipe(Vector2 direction, float force) 
+
+    public void OnSwipe(Vector2 direction, float force)
     {
+        _primaryTrashMaterial.whenBallSwiped();
+        _secondaryTrashMaterial.whenBallSwiped();
+
         SetDecaying(false);
         _health = _maxHealth;
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
@@ -196,7 +203,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _rigidBody.mass = _baseMaterial.mass;
         _decayMultiplier = _baseMaterial.decayMultiplier;
         _damageMultiplier = _baseMaterial.damageMultiplier;
-        _absorbMultiplier = _baseMaterial.absorbMultiplier;
+        _sizeToAbsorbChange = _baseMaterial.sizeToAbsorbChange;
+        _swipeForceMultiplier = _baseMaterial.swipeForceMultiplier;
+        _knockbackMultiplier = _baseMaterial.knockbackMultiplier;
 
         float highestPrecent = _primaryThreshold;
         float secondHighestPrecent = _secondaryThreshold;
@@ -242,7 +251,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         //_spriteRenderer.color += material.color * precentOf;
         _decayMultiplier += material.decayMultiplier * precentOf;
         _damageMultiplier += material.damageMultiplier * precentOf;
-        _absorbMultiplier += material.absorbMultiplier * precentOf;
+        _sizeToAbsorbChange = _baseMaterial.sizeToAbsorbChange;
+        _swipeForceMultiplier = _baseMaterial.swipeForceMultiplier;
+        _knockbackMultiplier = _baseMaterial.knockbackMultiplier;
     }
     
 
@@ -250,11 +261,17 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         if (_isBeingDestroyed) return;
 
+        if (other.gameObject.TryGetComponent(out Wall wall))
+        {
+            _primaryTrashMaterial.whenBallHitsWall();
+            _secondaryTrashMaterial.whenBallHitsWall(); 
+        }
+
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
             if (_activelyDecaying) return;
-            float absorbingPower = (_rigidBody.velocity.magnitude - _minimumSpeedToAbsorbPlayer) * Size * _absorbMultiplier;
-            absorbableObject.OnAbsorbedByTrashBall(this, absorbingPower, false);
+            float ballVelocity = (_rigidBody.velocity.magnitude - _minimumSpeedToAbsorbPlayer) * Size;
+            absorbableObject.OnAbsorbedByTrashBall(this, ballVelocity, (int)(Size + _sizeToAbsorbChange), false);
             _health = _maxHealth;
             return;
         }
@@ -296,7 +313,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (!otherTrashBall.isActiveAndEnabled) return;
         foreach (IAbsorbable absorbable in otherTrashBall.absorbedObjects)
         {
-            absorbable.OnAbsorbedByTrashBall(this, 0, true);
+            absorbable.OnAbsorbedByTrashBall(this, 0, 0, true);
         }
 
         otherTrashBall.enabled = false;
