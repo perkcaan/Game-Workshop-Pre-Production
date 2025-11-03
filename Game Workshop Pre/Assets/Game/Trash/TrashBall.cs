@@ -264,8 +264,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _absorbMultiplier += material.absorbMultiplier * precentOf;
         if (_sweepSoundInstance.isValid())
         {
-            if (FMODUnity.RuntimeManager.StudioSystem.getParameterDescriptionByName(material.name, out var desc) == FMOD.RESULT.OK)
-                RuntimeManager.StudioSystem.setParameterByName("RPM", _rigidBody.velocity.magnitude * 10);
+            if (RuntimeManager.StudioSystem.getParameterDescriptionByName(material.name, out var desc) == FMOD.RESULT.OK)
+                RuntimeManager.StudioSystem.setParameterByName(material.name, 0.5f);
         }
 
     }
@@ -350,7 +350,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         if (_sweepSoundInstance.isValid())
         {
-            _sweepSoundInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            _sweepSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             _sweepSoundInstance.release();
         }
     }

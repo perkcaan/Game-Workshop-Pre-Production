@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.Collections;
 
-public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
+public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,IHeatable
 {
 
     #region header
@@ -92,7 +92,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
-       // _trashSound = FMODUnity.RuntimeManager.CreateInstance("event:/TrashBall/TrashBall");
         _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
     }
 
@@ -351,5 +350,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable
     public void OnTrashBallIgnite()
     {
         throw new System.NotImplementedException();
+    }
+
+    public void OnIgnite(HeatMechanic heat)
+    {
+        Debug.Log("He Dead");
     }
 }
