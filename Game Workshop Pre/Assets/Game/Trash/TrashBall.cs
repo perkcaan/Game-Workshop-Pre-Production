@@ -171,6 +171,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     public void AbsorbTrash(Trash trash)
     {
+        _primaryTrashMaterial.whenAbsorbTrash();
+        _secondaryTrashMaterial.whenAbsorbTrash();
+
         absorbedObjects.Add(trash);
         absorbedTrash.Add(trash);
         trash.gameObject.SetActive(false);
@@ -338,7 +341,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         if (_isBeingDestroyed) return;
         _isBeingDestroyed = true;
-    
+
+        _primaryTrashMaterial.whenBallIgnite();
+        _secondaryTrashMaterial.whenBallIgnite();
+
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
             absorbable.OnTrashBallIgnite();

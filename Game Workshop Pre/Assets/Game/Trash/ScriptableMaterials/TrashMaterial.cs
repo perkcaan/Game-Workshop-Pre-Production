@@ -19,23 +19,26 @@ public class TrashMaterial : ScriptableObject
     public virtual void whenBallRolls() { }
     public virtual void whenBallSwiped() { }
     public virtual void whenBallHitsWall() { }
+    public virtual void whenBallIgnite() { }
+    public virtual void whenAbsorbTrash() { }
 }
 
-[CreateAssetMenu(fileName = "TrashMaterial", menuName = "ScriptableObjects/TrashMaterial", order = 1)]
-public class TrailTrashMaterial : TrashMaterial
-{
-    public override void whenBallRolls()
-    {
-        
-    }
-}
 
-[CreateAssetMenu(fileName = "TrashMaterial", menuName = "ScriptableObjects/TrashMaterial", order = 1)]
+[CreateAssetMenu(fileName = "BombTrashMaterial", menuName = "ScriptableObjects/BombTrashMaterial", order = 1)]
 public class BombTrashMaterial : TrashMaterial
 {
-    public override void whenBallRolls()
+    private int health = 3;
+    public override void whenBallSwiped() {
+        health--;
+        if(health < 0)
+        {
+            // explode
+        }
+     }
+
+    public override void whenAbsorbTrash()
     {
-        
+        // maybe heal on absorbing trash? im not sure
     }
 }
 
