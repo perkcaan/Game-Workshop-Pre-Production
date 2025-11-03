@@ -13,10 +13,13 @@ public class SwipeHandler : MonoBehaviour
     ParticleSystem _swipeEffectInstance;
     private PlayerMovementController _parent;
     private Collider2D _hitbox;
+   
 
     // Fields
     private float _rotation = 0f;
     private float _swipeForce = 1f;
+
+    private SwipeMeter _swipeMeter;
 
     // Unity methods
     private void Awake()
@@ -28,9 +31,20 @@ public class SwipeHandler : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
-        
+
         _hitbox = GetComponent<Collider2D>();
         _hitbox.enabled = false;
+
+        if(_swipeMeter == null)
+            _swipeMeter = GameObject.Find("SwipeMeter")?.GetComponent<SwipeMeter>();
+    }
+
+    public void Initialize(SwipeMeter swipeMeter)
+    {
+        _swipeMeter = swipeMeter;
+
+        if (_swipeMeter != null)
+            _swipeMeter.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -91,6 +105,15 @@ public class SwipeHandler : MonoBehaviour
         }
     }
 
- 
+    public void UpdateSwipeMeter(float chargeTime, float maxCharge)
+    {
+        if (_swipeMeter != null)
+            _swipeMeter.SetFill(chargeTime / maxCharge);
+    }
 
+    public void ShowSwipeMeter(bool visible)
+    {
+        if (_swipeMeter != null)
+            _swipeMeter.gameObject.SetActive(visible);
+    }
 }

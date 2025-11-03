@@ -70,6 +70,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     #endregion
 
+    [SerializeField] private SwipeMeter swipeMeter;
+
     // Methods
     private void Awake()
     {
@@ -81,6 +83,14 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
+
+
+        //Swipe meter
+        if (_ctx.SwipeHandler != null && swipeMeter != null)
+        {
+            _ctx.SwipeHandler.Initialize(swipeMeter);
+            _ctx.SwipeHandler.ShowSwipeMeter(false);
+        }
     }
 
     private void Start()

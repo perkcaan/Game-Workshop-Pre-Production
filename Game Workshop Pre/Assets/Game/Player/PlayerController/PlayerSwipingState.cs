@@ -15,6 +15,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     private bool _hasSwipeBeenActivated = false;
     private Coroutine _swipeCoroutine;
 
+
     // Constructor
     public PlayerSwipingState(PlayerContext context, PlayerStateMachine state)
     {
@@ -23,6 +24,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     }
 
     // Methods
+
     //state
     public override void EnterState()
     {
@@ -31,7 +33,11 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
         _ctx.CanDash = false;
         _hasSwipeBeenActivated = false;
         _chargeTimer = -_ctx.Player.SwipeTimeUntilHold;
+
+        // show the swipe meter
+        _ctx.SwipeHandler.ShowSwipeMeter(true);
     }
+
 
     public override void Update()
     {
@@ -54,6 +60,10 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
             _ctx.SwipeHandler.UpdateLine(_ctx.Rotation, _ctx.Player.SwipeVisualLineDistance, _ctx.Player.SwipeVisualLineSegments);   
         }
         _chargeTimer = Mathf.Min(_chargeTimer + Time.deltaTime, _ctx.Player.SwipeHoldChargeTime);
+
+        //updates swipe meter
+        _ctx.SwipeHandler.UpdateSwipeMeter(_chargeTimer, _ctx.Player.SwipeHoldChargeTime);
+
     }
 
     public override void ExitState()
@@ -62,8 +72,9 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
         _ctx.SwipeHandler.EndSwipe();
         _ctx.SwipeCooldownTimer = _ctx.Player.SwipeCooldown;
         _ctx.Animator.SetBool("Swiping", false);
-    }
 
+        _ctx.SwipeHandler.ShowSwipeMeter(false); // hide swipe meter
+    }
 
     private IEnumerator SwipeDuration()
     {
@@ -127,5 +138,4 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
         }
 
     }
-
 }
