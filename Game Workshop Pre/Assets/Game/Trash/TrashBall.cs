@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 {
+
     [SerializeField] float _scaleMultiplier;
     [SerializeField] float _baseMaxHealth;
     [SerializeField] float _idleDecayMultiplier;
@@ -53,6 +54,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     public void Awake()
     {
+     
         _rigidBody = GetComponent<Rigidbody2D>();
         _meshRenderer = GetComponentInChildren<MeshRenderer>();
         TrashId = _nextId++;
@@ -296,6 +298,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
+
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
             trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallExplode(this);
