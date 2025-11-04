@@ -1,10 +1,13 @@
 using UnityEngine;
+using System;
 
 public class CollectableTrash : Trash, ISweepable, ISwipeable
 {
     [SerializeField] float _sweepDurationToBecomeBall;
     [SerializeField] bool _swipesIntoTrashBall;
     private float _sweepTimer;
+
+    public static Action<int> SendScore;
     public void OnSweep(Vector2 position, Vector2 direction, float force)
     {
         if (!isActiveAndEnabled) return;
@@ -13,6 +16,7 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable
         if (_sweepTimer > _sweepDurationToBecomeBall)
         {
             CreateTrashBall();
+            SendScore?.Invoke(1);
         }
     }
     public void OnSwipe(Vector2 direction, float force)

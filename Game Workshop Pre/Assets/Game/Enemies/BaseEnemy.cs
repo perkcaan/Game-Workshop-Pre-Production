@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BaseEnemy : MonoBehaviour, IAbsorbable
 {
-
 
     [Header("Enemy Movement")]
 
@@ -67,6 +67,11 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     public AnimationClip moveAnimation;
     private bool isAbsorbed;
 
+    //Things for the point system
+    [SerializeField] int pointValue;
+
+    public static Action<int> SendScore;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -110,7 +115,6 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
             AnimateEnemy();
         }
     }
-
 
     #region MOVEMENT
     private void FixedMovement()
@@ -235,7 +239,7 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
             if (!trashDetected)
             {
                 //Debug.Log("Spawn");
-                int randomType = Random.Range(0, trash.Length);
+                int randomType = UnityEngine.Random.Range(0, trash.Length);
                 Instantiate(trash[randomType], transform.position, Quaternion.identity);
             }
         }
@@ -271,7 +275,7 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     {
         transform.position = trashBall.transform.position;
         float explosionForce = 1 + (1 * trashBall.absorbedObjects.Count);
-        Vector2 randomForce = new Vector2(Random.Range(-explosionForce, explosionForce), Random.Range(-explosionForce, explosionForce));
+        Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
 
         rb.AddForce(randomForce);
     }
