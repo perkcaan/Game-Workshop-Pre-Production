@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using FMOD.Studio;
+using FMODUnity;
 
 public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 {
@@ -29,7 +31,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private TrashMaterial _primaryTrashMaterial;
     private TrashMaterial _secondaryTrashMaterial;
     private PhysicsMaterial2D _physicsMaterial2D;
+    private EventInstance _sweepSoundInstance;
     
+    private FMODUnity.StudioEventEmitter _emitter;
+    
+
     // Trash IDs to solve trash merge ties
     private static int _nextId = 0;
     public int TrashId { get; private set; }
@@ -63,11 +69,31 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial = _baseMaterial;
         _primaryTrashMaterial = _baseMaterial;
         _physicsMaterial2D = Instantiate(_rigidBody.sharedMaterial);
+        _sweepSoundInstance = RuntimeManager.CreateInstance("event:/TrashBall/TrashBall");
+        _emitter = GetComponent<StudioEventEmitter>();
     }
+
+    public void Start()
+    {
+        RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, this.gameObject, _rigidBody);
+        _sweepSoundInstance.start();
+        
+        
+
+
+    }
+
 
     public void Update()
     {
         _primaryTrashMaterial.whenBallRolls();
+        Debug.Log(_primaryTrashMaterial.name);
+        RuntimeManager.StudioSystem.setParameterByName("RPM", _rigidBody.velocity.magnitude * 10);
+        Debug.Log(_rigidBody.velocity.magnitude * 10);
+        // _emitter.Play();
+
+
+
 
         // Trash ball rotation
         Vector3 rotationAxis = new Vector3(-_rigidBody.velocity.y, _rigidBody.velocity.x, 0);
@@ -75,6 +101,19 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         float circumference = 2 * Mathf.PI * transform.localScale.x;
         float rotationAngle = (distance / circumference) * 360f;
         _meshRenderer.transform.Rotate(rotationAxis, rotationAngle, Space.World);
+
+        FMOD.ATTRIBUTES_3D attributes = RuntimeUtils.To3DAttributes(gameObject, _rigidBody);
+        _sweepSoundInstance.set3DAttributes(attributes);
+
+        
+
+        
+
+
+       
+
+
+
 
         if (_rigidBody.velocity.magnitude < 1)
         {
@@ -223,7 +262,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     private void ApplyTrashMaterial(TrashMaterial material, float precentOf)
     {
-        //Debug.Log("I am " + precentOf * 100 + "% made of "+material.name);
+        Debug.Log("I am " + precentOf / 8 + "% made of "+material.name);
         _physicsMaterial2D.bounciness += material.bounciness * precentOf;
         _rigidBody.drag += material.drag * precentOf;
         _rigidBody.mass += material.mass * precentOf;
@@ -231,6 +270,12 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _decayMultiplier += material.decayMultiplier * precentOf;
         _damageMultiplier += material.damageMultiplier * precentOf;
         _absorbMultiplier += material.absorbMultiplier * precentOf;
+        if (_sweepSoundInstance.isValid())
+        {
+            if (FMODUnity.RuntimeManager.StudioSystem.getParameterDescriptionByName(material.name, out var desc) == FMOD.RESULT.OK)
+                RuntimeManager.StudioSystem.setParameterByName("RPM", _rigidBody.velocity.magnitude * 10);
+        }
+
     }
     
 
@@ -319,4 +364,15 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         absorbedTrash.Clear();
         Destroy(gameObject);
     }
+
+
+    void OnDestroy()
+    {
+        if (_sweepSoundInstance.isValid())
+        {
+            _sweepSoundInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            _sweepSoundInstance.release();
+        }
+    }
+
 }
