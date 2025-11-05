@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 {
+
     [SerializeField] float _scaleMultiplier;
     [SerializeField] float _baseMaxHealth;
     [SerializeField] float _idleDecayMultiplier;
@@ -14,7 +15,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     [SerializeField] float _dominantThreshold;
     [SerializeField] float _primaryThreshold;
     [SerializeField] float _secondaryThreshold;
-
+    private bool _isBeingDestroyed = false;
     private float _maxHealth;
     private float _health;
     private bool _activelyDecaying = false;
@@ -53,10 +54,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     public void Awake()
     {
+     
         _rigidBody = GetComponent<Rigidbody2D>();
         _meshRenderer = GetComponentInChildren<MeshRenderer>();
-        _maxHealth = _baseMaxHealth;
         TrashId = _nextId++;
+        _maxHealth = _baseMaxHealth;
         _health = _maxHealth;
         _primaryTrashMaterial = _baseMaterial;
         _primaryTrashMaterial = _baseMaterial;
@@ -85,11 +87,16 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
     }
 
-    public void OnSweep(Vector2 direction, float force)
+    public void OnSweep(Vector2 center, Vector2 direction, float force)
     {
         SetDecaying(false);
         _health = _maxHealth;
-        _rigidBody.AddForce(direction * force, ForceMode2D.Force);
+
+        Vector3 centerPoint = center + (direction * Mathf.Pow(Size, 1f / 3f) / Mathf.PI);
+        float distance = Vector2.Distance(transform.position, centerPoint);
+        float newForce = force * distance * (1 + (10 / Size));
+        Vector2 directionToCenterPoint = (centerPoint - transform.position).normalized;
+        _rigidBody.AddForce(directionToCenterPoint * newForce, ForceMode2D.Force);
     }
     public void OnSwipe(Vector2 direction, float force)
     {
@@ -106,7 +113,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (_health < 0) ExplodeTrashBall();
         else DegradeTrashBall();
     }
-
     public void DegradeTrashBall()
     {
         SetDecaying(true);
@@ -166,6 +172,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         CheckMaterial();
     }
 
+    
     void CheckMaterial()
     {
         _primaryTrashMaterial = _genericMaterial;
@@ -212,6 +219,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         _rigidBody.sharedMaterial = _physicsMaterial2D;
     }
+  
 
     private void ApplyTrashMaterial(TrashMaterial material, float precentOf)
     {
@@ -224,14 +232,16 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _damageMultiplier += material.damageMultiplier * precentOf;
         _absorbMultiplier += material.absorbMultiplier * precentOf;
     }
-
+    
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (_isBeingDestroyed) return;
+
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
             if (_activelyDecaying) return;
-            float absorbingPower = (_rigidBody.velocity.magnitude - 2) * Size * _absorbMultiplier;
+            float absorbingPower = (_rigidBody.velocity.magnitude - 8) * Size * _absorbMultiplier;
             absorbableObject.OnAbsorbedByTrashBall(this, absorbingPower, false);
             _health = _maxHealth;
             return;
@@ -239,6 +249,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         if (other.gameObject.TryGetComponent(out TrashBall otherTrashBall))
         {
+            if (otherTrashBall._isBeingDestroyed) return;
+
             if (otherTrashBall == null || gameObject == null) return;
             if (!otherTrashBall.isActiveAndEnabled || !isActiveAndEnabled) return;
             _health = _maxHealth;
@@ -268,6 +280,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     void OnTrashBallMerge(TrashBall otherTrashBall)
     {
+        if (_isBeingDestroyed || otherTrashBall._isBeingDestroyed) return;
         if (!otherTrashBall.isActiveAndEnabled) return;
         foreach (IAbsorbable absorbable in otherTrashBall.absorbedObjects)
         {
@@ -275,6 +288,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
 
         otherTrashBall.enabled = false;
+        otherTrashBall._isBeingDestroyed = true;
+        otherTrashBall.absorbedObjects.Clear();
+        otherTrashBall.absorbedTrash.Clear();
         Destroy(otherTrashBall.gameObject);
     }
 
@@ -282,15 +298,19 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
+
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
             trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallExplode(this);
         }
         Destroy(gameObject);
     }
-
+    
     public void OnIgnite(HeatMechanic heat)
     {
+        if (_isBeingDestroyed) return;
+        _isBeingDestroyed = true;
+    
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
             absorbable.OnTrashBallIgnite();

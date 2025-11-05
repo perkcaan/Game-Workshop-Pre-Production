@@ -46,7 +46,10 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     public void PlayerEnterRoom(Room room)
     {
-        _focusedRooms.Add(room);
+        if (!_focusedRooms.Contains(room))
+        {
+            _focusedRooms.Add(room);
+        }
     }
     public void PlayerExitRoom(Room room)
     {
