@@ -5,7 +5,8 @@ using System;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+using DG.Tweening.Core;
+using DG.Tweening;
 
 public class ScoreBehavior : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class ScoreBehavior : MonoBehaviour
     [SerializeField] TextMeshProUGUI bonusScoreText;
     [SerializeField] TextMeshProUGUI currentScoreText;
     [SerializeField] float bonusBarTimer;
+    [SerializeField] float delayBeforeTickingDown;
+    [SerializeField] float smoothBarSlide;
     [SerializeField] int currentScore = 0;
     [SerializeField] int currentBonus = 0;
     [SerializeField] Color hotComboColor;
@@ -78,8 +81,8 @@ public class ScoreBehavior : MonoBehaviour
     void Update()
     {
         timeLeft -= Time.deltaTime;
-        float fillAmount = Math.Clamp(timeLeft / (bonusBarTimer - 1), 0, 1);
-        bonusBarImage.fillAmount = fillAmount;
+        float fillAmount = Math.Clamp(timeLeft / (bonusBarTimer - delayBeforeTickingDown), 0, 1);
+        bonusBarImage.DOFillAmount(fillAmount, smoothBarSlide);
         bonusBarImage.color = Color.Lerp(coldComboColor, hotComboColor, fillAmount);
 
         if (timeLeft <= 0)
