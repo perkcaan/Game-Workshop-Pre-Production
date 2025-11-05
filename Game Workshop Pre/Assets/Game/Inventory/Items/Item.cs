@@ -12,10 +12,11 @@ public class Item : ScriptableObject
     public string discriptionText;
     public List<ItemEffect> effects = new List<ItemEffect>();
 
-    public void EquipItem()
+    public void EquipItem(PlayerMovementController player)
     {
         foreach (var effect in effects)
         {
+            effect.player = player;
             effect.ApplyEffect();
         }
     }

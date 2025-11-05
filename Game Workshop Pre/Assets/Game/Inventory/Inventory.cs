@@ -8,6 +8,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
+    [SerializeField] PlayerMovementController player;
     [SerializeField] int maxItemSlots;
     [SerializeField] TextMeshProUGUI displayedItemText;
     [SerializeField] TextMeshProUGUI displayedItemTitle;
@@ -40,13 +41,12 @@ public class Inventory : MonoBehaviour
 
     public void StoreItem(Item newItem)
     {
-        ItemSlot emptySlot = null;
         foreach (ItemSlot slot in itemSlots)
         {
             if (slot.storedItem == null)
             {
-                emptySlot = slot;
                 slot.StoreItem(newItem);
+                EquipItem(newItem);
                 return;
             }
         }
@@ -65,23 +65,28 @@ public class Inventory : MonoBehaviour
 
     public bool EquipItem(Item item)
     {
+        /*
         if (equippedItems.Count >= maxItemSlots)
         {
             displayedItemTitle.SetText("Max Item slots!");
             displayedItemText.SetText("unequip something first");
             return false;
         }
+        */
         equippedItems.Add(item);
-        item.EquipItem();
+        item.EquipItem(player);
         return true;
     }
 
     // return false for things that cant be unequipped like brooms
     public bool UnequipItem(Item item)
     {
+        return false;
+        /*
         equippedItems.Remove(item);
         item.UnequipItem();
         return true;
+        */
     }
 
 }

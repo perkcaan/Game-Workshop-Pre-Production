@@ -19,8 +19,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float SweepForce { get { return _sweepForce; } }
     [SerializeField][Range(0f, 2f)] private float _sweepForceMovementScaler = 0.1f;
     public float SweepForceMovementScaler { get { return _sweepForceMovementScaler; } }
-
-
+    
     [Header("Swipe Properties")]
     [SerializeField] private float _baseSwipeForce = 5f;
     public float BaseSwipeForce { get { return _baseSwipeForce; } }
@@ -54,9 +53,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     [Header("Checkpoint")]
     [SerializeField] private CheckpointManager Checkpoint_Manager;
-
     public HeatMechanic _playerHeat;
 
+    [Header("Item Effected Properties")]
+    public bool canSweep;
+    public bool canSwipe;
     // Fields
     //weight
     private float _weight = 0f;
@@ -163,6 +164,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void OnSweepInput(InputValue value)
     {
+        if (!canSweep) return;
         _ctx.IsSweepPressed = value.isPressed;
         if (!_ctx.IsSweepPressed)
         {
@@ -199,6 +201,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void OnSwipeInput(InputValue value)
     {
+        if (!canSwipe) return;
         _ctx.IsSwipePressed = value.isPressed;
         if (_ctx.CanSwipe && _ctx.SwipeCooldownTimer <= 0f && value.isPressed)
         {

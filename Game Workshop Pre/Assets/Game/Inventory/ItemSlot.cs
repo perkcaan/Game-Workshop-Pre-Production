@@ -10,15 +10,11 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] Image itemIcon;
     [SerializeField] Image sparkle;
     private Image itemSlotImage;
-    private Color hoveringColor;
-    private Color baseColor;
     private int itemStackCount;
 
     void Awake()
     {
         itemSlotImage = GetComponent<Image>();
-        baseColor = itemSlotImage.color;
-        hoveringColor = Color.white;
     }
     public void StoreItem(Item item)
     {
@@ -38,18 +34,17 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (storedItem == null) return;
-        itemSlotImage.color = hoveringColor;
+        sparkle.enabled = true;
         Inventory.Instance.DisplayItem(storedItem);
-        itemIcon.rectTransform.localScale = Vector2.one * 1.2f;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        itemSlotImage.color = baseColor;
-        itemIcon.rectTransform.localScale = Vector2.one;
+        sparkle.enabled = false;
     }
     public void OnPointerDown(PointerEventData eventData)
     {
+        /*
         if (storedItem == null) return;
         if (isEquipped && Inventory.Instance.UnequipItem(storedItem))
         {
@@ -64,5 +59,6 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             sparkle.enabled = true;
             
         }
+        */
     }
 }
