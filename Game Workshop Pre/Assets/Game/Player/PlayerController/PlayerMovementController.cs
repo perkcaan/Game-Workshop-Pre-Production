@@ -50,9 +50,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
+    private FMOD.Studio.EventInstance _heatSound;
 
     [Header("Checkpoint")]
     [SerializeField] private CheckpointManager Checkpoint_Manager;
+
+    public HeatMechanic _playerHeat;
 
     // Fields
     //weight
@@ -83,6 +86,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
+        _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
     }
 
     private void Start()
@@ -90,6 +94,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
         FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
+        _heatSound.start();
+        _playerHeat = GetComponent<HeatMechanic>();
     }
 
     private void Update()
@@ -100,6 +106,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void FixedUpdate()
     {
         UpdateMovement();
+        _heatSound.setParameterByName("Heat", (_playerHeat.Heat / 10));
     }
 
     private void UpdateCooldowns()
@@ -119,6 +126,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
                 ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,transform);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
             }
         }
 

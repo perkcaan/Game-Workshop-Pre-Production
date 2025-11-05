@@ -14,6 +14,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     [SerializeField] protected int _size;
     public int Size { get { return _size; } }
     public TrashMaterial trashMaterial;
+    private FMOD.Studio.EventInstance _sweepSoundInstance;
 
 
     protected Room _parentRoom;
@@ -23,6 +24,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
+        
     }
     protected void CreateTrashBall()
     {
