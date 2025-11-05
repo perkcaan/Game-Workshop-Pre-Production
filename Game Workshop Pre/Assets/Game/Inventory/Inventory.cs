@@ -2,79 +2,86 @@ using FMOD;
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-
-    private static Inventory Inventory_Instance; // One instance of Inventory
-
-    public Item[] ItemSlots = new Item[4]; // Slots for possessed items. The first is reserved for Mops
-
-    public int selectedSlot; // Points to the Item Slot the player wants to modify
-
-    // * Put ref to UI Inventory Icons
+    public static Inventory Instance;
+    [SerializeField] int maxItemSlots;
+    [SerializeField] TextMeshProUGUI displayedItemText;
+    [SerializeField] TextMeshProUGUI displayedItemTitle;
+    [SerializeField] GameObject itemSlotsObject;
+    [SerializeField] List<Item> equippedItems = new List<Item>();
+    List<ItemSlot> itemSlots = new List<ItemSlot>();
 
     private void Awake()
     {
-
-        if (Inventory_Instance != null && Inventory_Instance != this)            
+        if (Instance != null)
         {
-                
-            Destroy(gameObject); // Prevent duplicates
-                
+            Destroy(gameObject);
             return;
-            
         }
-
-        Inventory_Instance = this;    
+        foreach (ItemSlot slot in itemSlotsObject.GetComponentsInChildren<ItemSlot>())
+        {
+            itemSlots.Add(slot);
+        }
+        Instance = this;
+        displayedItemText.text = "";
+        displayedItemTitle.text = "";
         DontDestroyOnLoad(gameObject);
     }
-
-    private void Update()
+    
+    public void DisplayItem(Item item)
     {
-        if (ItemSlots[0].tag != "Mop")
-        {
-            ItemSlots[0] = null;
-        }
-
-        // ** Maintain item icons
+        displayedItemTitle.SetText(item.displayName);
+        displayedItemText.SetText(item.discriptionText);
     }
 
-    public void AddItem(Item item)
+    public void StoreItem(Item newItem)
     {
-        // If the item is not a Mop, assign it to selected slot so long as it's not 0
-
-        if (item.tag != "Mop" && selectedSlot != 0)
+        ItemSlot emptySlot = null;
+        foreach (ItemSlot slot in itemSlots)
         {
-            RemoveItem(selectedSlot);
-            ItemSlots[selectedSlot] = item;
-        }
-
-        // If the item is not a Mop and the selected slot is 0, issue a warning
-        else if (item.tag != "Mop" && selectedSlot == 0)
-        {
-            // ** Issue a warning noise. Non-mop cannot be equipped in Mop slot
-        }
-
-        // if the item is a Mop, no matter the selected slot, assign it to 0
-        else if (item.tag == "Mop")
-        {
-            RemoveItem(0);
-            ItemSlots[0] = item;
-        }
-
-    }
-
-    public void RemoveItem(int slotNum)
-    {
-        // ** Instantiate the removed Item on the ground
-
-        // Remove what was within the Item slot
-
-        if (ItemSlots[slotNum] != null)
-        {
-            ItemSlots[slotNum] = null;
+            if (slot.storedItem == null)
+            {
+                emptySlot = slot;
+                slot.StoreItem(newItem);
+                return;
+            }
         }
     }
+    public void RemoveItem(Item item)
+    {
+        foreach (ItemSlot slot in itemSlots)
+        {
+            if (slot.storedItem.Equals(item))
+            {
+                slot.ClearItem();
+                return;
+            }
+        }
+    }
+
+    public bool EquipItem(Item item)
+    {
+        if (equippedItems.Count >= maxItemSlots)
+        {
+            displayedItemTitle.SetText("Max Item slots!");
+            displayedItemText.SetText("unequip something first");
+            return false;
+        }
+        equippedItems.Add(item);
+        item.EquipItem();
+        return true;
+    }
+
+    // return false for things that cant be unequipped like brooms
+    public bool UnequipItem(Item item)
+    {
+        equippedItems.Remove(item);
+        item.UnequipItem();
+        return true;
+    }
+
 }

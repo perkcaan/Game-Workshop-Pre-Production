@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8908270439590073456}
   - component: {fileID: 2931963408233814020}
   - component: {fileID: 9052523528139689855}
+  - component: {fileID: 334541058668734445}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -29,10 +30,12 @@ Transform:
   m_GameObject: {fileID: 1159916424768734981}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0.006342888, y: -3.0489101, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4585015476370776239}
+  - {fileID: 3948747372182964405}
   m_Father: {fileID: 8430057579774008744}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &2893918178548869679
@@ -70,7 +73,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 5.78
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -152,6 +155,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nonRigidbodyVelocity: 0
   attenuationObject: {fileID: 0}
+--- !u!114 &334541058668734445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159916424768734981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowDebugText: 0
+  m_ShowCameraFrustum: 1
+  m_IgnoreTimeScale: 0
+  m_WorldUpOverride: {fileID: 0}
+  m_UpdateMethod: 2
+  m_BlendUpdateMethod: 1
+  m_DefaultBlend:
+    m_Style: 1
+    m_Time: 2
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  m_CustomBlends: {fileID: 0}
+  m_CameraCutEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_CameraActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1500565852702611031
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dottedLine: {fileID: 3943152292553313007}
+  connecting: 0
 --- !u!1 &2154542791780319770
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,11 +389,11 @@ Transform:
   m_GameObject: {fileID: 3018895157337213710}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 9}
-  m_LocalScale: {x: 17.777779, y: 10, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 19}
+  m_LocalScale: {x: 20.5, y: 11.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8430057579774008744}
+  m_Father: {fileID: 8031252635605138211}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &391823251163201968
 MeshFilter:
@@ -5301,7 +5339,7 @@ ParticleSystem:
   m_GameObject: {fileID: 6601438926642273884}
   serializedVersion: 8
   lengthInSec: 2
-  simulationSpeed: 3
+  simulationSpeed: 5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -10135,8 +10173,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8031252635605138211}
-  - {fileID: 4585015476370776239}
-  - {fileID: 3948747372182964405}
   - {fileID: 2381967194526682082}
   - {fileID: 732079687961142825}
   - {fileID: 7472790222227013257}
@@ -10354,6 +10390,8 @@ MonoBehaviour:
   _swipeVisualLineDistance: 3
   _swipeVisualLineSegments: 5
   _footstepCooldown: 0
+  Checkpoint_Manager: {fileID: 0}
+  _playerHeat: {fileID: 0}
 --- !u!114 &8808070966336400160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15302,12 +15340,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8597621658215171441}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8430057579774008744}
+  m_Father: {fileID: 8031252635605138211}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &4180299889215997925
 Camera:
@@ -15344,7 +15382,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 5.78
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

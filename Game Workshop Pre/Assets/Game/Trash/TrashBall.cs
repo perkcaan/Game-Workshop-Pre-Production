@@ -347,7 +347,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
-
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
             trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallExplode(this);

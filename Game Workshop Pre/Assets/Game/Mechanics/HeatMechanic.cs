@@ -71,7 +71,7 @@ public class HeatMechanic : MonoBehaviour
         RelaxHeat();
         UpdateHeatShader();
         CheckForIgnition();
-        Debug.Log(_heat);
+        //Debug.Log(_heat);
     }
 
 
