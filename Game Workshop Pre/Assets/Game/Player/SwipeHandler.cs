@@ -91,14 +91,12 @@ public class SwipeHandler : MonoBehaviour
         Vector2 direction = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
         Vector3 contactPoint = other.ClosestPoint(transform.position);
         
-
-
         ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
         if (swipeableObject != null)
         {
             connecting = true;
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", contactPoint);
-            Debug.Log("Swiped object: " + other.gameObject.name);
+            //Debug.Log("Swiped object: " + other.gameObject.name);
             if(connecting)
             {
                 _swipeSoundInstance.setParameterByName("Texture", 0);

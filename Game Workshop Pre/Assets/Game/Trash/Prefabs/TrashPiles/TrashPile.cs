@@ -36,7 +36,7 @@ public class TrashPile : Trash, ISwipeable
         TakeDamage(1, direction, force);
     }
 
-    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
         if (Size <= trashBall.Size)
         {
@@ -78,14 +78,12 @@ public class TrashPile : Trash, ISwipeable
             {
                 float randomAngle = UnityEngine.Random.Range(-_trashSpreadRange, _trashSpreadRange);
                 Vector2 randomDirection = Quaternion.Euler(0, 0, randomAngle) * direction;
+
                 float randomForce = UnityEngine.Random.Range(force * _onExplodeForce, force * _onExplodeForce * 3);
-                releasedTrash.GetComponent<Rigidbody2D>().AddForce(randomDirection.normalized * randomForce, ForceMode2D.Force);
+                releasedTrash.GetComponent<Rigidbody2D>().AddForce(randomDirection.normalized * randomForce, ForceMode2D.Impulse);
             }
         }
         _parentRoom.ObjectCleaned(this);
         Destroy(gameObject);
     }
-
-
-
 }
