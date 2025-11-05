@@ -53,7 +53,7 @@
 			<destination>{3ff363a0-527d-4b14-b6a5-4564e4787340}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{c893bc8b-0639-4601-baef-ee39dc787ade}</destination>
+			<destination>{226d84b9-2c40-492d-a3a7-2b063141b0cc}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{b8ab747b-26c4-4514-9acb-f188b7f1b2ea}" />
@@ -99,6 +99,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{dab4f1e3-e0c5-4f26-868a-928b3b556864}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{d5a80709-5b36-4ab1-acd1-29fd0e80098a}</destination>
 		</relationship>
@@ -128,7 +131,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{893326c8-6e21-4461-8300-9d4df02d7519}">
 		<property name="volume">
-			<value>-4</value>
+			<value>3</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -161,9 +164,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{06a36126-e7a7-4b5b-a8ab-5d1d41200886}">
-		<property name="volume">
-			<value>-4</value>
-		</property>
 		<property name="name">
 			<value>Audio 2</value>
 		</property>
@@ -214,9 +214,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{4ea71c53-eda9-48cd-9cab-02e8099baa03}">
-		<property name="volume">
-			<value>-10.5</value>
-		</property>
 		<property name="name">
 			<value>Audio 3</value>
 		</property>
@@ -238,7 +235,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>33</value>
+			<value>24.5</value>
 		</property>
 		<property name="start">
 			<value>0.020205254515599343</value>
@@ -261,7 +258,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{338712bb-79ac-4bf3-9b8d-6ffb40d13c14}">
 		<property name="volume">
-			<value>-20</value>
+			<value>-24</value>
 		</property>
 		<property name="name">
 			<value>Audio 4</value>
@@ -290,7 +287,7 @@
 			<value>volume</value>
 		</property>
 		<property name="amount">
-			<value>9.19999981</value>
+			<value>3.19999981</value>
 		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{d7d2db03-2356-42a7-b4f6-6ee0c0a5f6bb}">
@@ -304,7 +301,7 @@
 			<value>volume</value>
 		</property>
 		<property name="amount">
-			<value>8.39999962</value>
+			<value>4</value>
 		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{4b9b27de-7eaa-4a81-b8d6-934b20df7cad}">

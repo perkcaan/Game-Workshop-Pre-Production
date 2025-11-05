@@ -1,12 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class StainTrash : Trash, ISweepable
 {
     [SerializeField] float _sweepDurationToClean;
     private float _sweepTimer;
     private SpriteRenderer _sprite;
+
+    [SerializeField] int _pointValue;
+    public static Action<int> SendScore;
+
+    void Start()
+    {
+        if (_pointValue <= 0) _pointValue = 1;
+    }
 
     public void Awake()
     {
@@ -25,6 +34,7 @@ public class StainTrash : Trash, ISweepable
     }
     public override void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
     {
+        SendScore?.Invoke(_pointValue);
         Destroy(gameObject);
     }
 
