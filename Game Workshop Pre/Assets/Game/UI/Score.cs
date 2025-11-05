@@ -6,7 +6,6 @@ using UnityEngine;
 public class Score : MonoBehaviour // Make singleton****
 {
 
-
     [Header("Score and Grade")]
 
     public TextMeshProUGUI scoreText; // Ref to Score UI
@@ -39,7 +38,6 @@ public class Score : MonoBehaviour // Make singleton****
                 UpdateScore(10);
             }
         }
-
     }
 
     public void UpdateScore(int amount)

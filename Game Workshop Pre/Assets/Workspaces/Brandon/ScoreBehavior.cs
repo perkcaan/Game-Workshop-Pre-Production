@@ -19,7 +19,7 @@ public class ScoreBehavior : MonoBehaviour
 
     //Defaults
                             //Bonus Start Text
-    private readonly string BST = "+ ";
+    private readonly string BST = "+";
                             //Current Score Start Text
     private readonly string CST = "Current Score: ";
     private readonly float DEFAULT_BONUS_BAR_TIMER = 15f;
@@ -40,7 +40,7 @@ public class ScoreBehavior : MonoBehaviour
         }
         currentScoreText.text = CST + currentScore;
         bonusScoreText.text = BST + currentBonus;
-        timeLeft = bonusBarTimer;
+        timeLeft = 0;
 
         resetBonus += ResetBonus;
         LooseTrash.SendScore += IncreaseScore;
