@@ -53,6 +53,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     [Header("Checkpoint")]
     [SerializeField] private CheckpointManager Checkpoint_Manager;
+    public static System.Action<bool> playerDeath;
     public HeatMechanic _playerHeat;
 
     [Header("Item Effected Properties")]
@@ -331,6 +332,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void Death()
     {
         transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
+        playerDeath?.Invoke(true);
         Debug.Log("Return to Checkpoint");
     }
 }

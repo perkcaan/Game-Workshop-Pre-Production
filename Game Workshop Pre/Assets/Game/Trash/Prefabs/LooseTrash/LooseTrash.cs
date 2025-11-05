@@ -19,7 +19,6 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
         _rigidBody.AddForce(direction * force, ForceMode2D.Force);
         if (_sweepTimer > _sweepDurationToBecomeBall)
         {
-            SendScore?.Invoke(_pointValue);
             CreateTrashBall();
         }
     }

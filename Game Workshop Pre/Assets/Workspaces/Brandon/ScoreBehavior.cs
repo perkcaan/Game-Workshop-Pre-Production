@@ -12,15 +12,20 @@ public class ScoreBehavior : MonoBehaviour
 {
 
     [SerializeField] Image bonusBarImage;
+    [SerializeField] TextMeshProUGUI comboText;
     [SerializeField] TextMeshProUGUI bonusScoreText;
     [SerializeField] TextMeshProUGUI currentScoreText;
     [SerializeField] float bonusBarTimer;
-    [SerializeField] float delayBeforeTickingDown;
-    [SerializeField] float smoothBarSlide;
+
     [SerializeField] int currentScore = 0;
     [SerializeField] int currentBonus = 0;
+    [Header("Customize Combo Bar")]
+    [SerializeField] Color deadComboColor;
     [SerializeField] Color hotComboColor;
     [SerializeField] Color coldComboColor;
+    [SerializeField] float smoothBarSlide;
+    [SerializeField] float textSizeChange;
+    [SerializeField] float delayBeforeTickingDown;
 
     private readonly string BST = "+";
     private readonly string CST = "Current Score: ";
@@ -45,12 +50,10 @@ public class ScoreBehavior : MonoBehaviour
         timeLeft = 0;
 
         resetBonus += ResetBonus;
-        LooseTrash.SendScore += IncreaseScore;
-        CollectableTrash.SendScore += IncreaseScore;
-        StainTrash.SendScore += IncreaseScore;
+        Trash.SendScore += IncreaseScore;
         BaseEnemy.SendScore += IncreaseScore;
-        TrashPile.SendScore += IncreaseScore;
         TrashBall.SendScore += IncreaseScore;
+        PlayerMovementController.playerDeath = LoseBonusScore;
 
         bonusTable.Columns.Add("Threshold", typeof(int));
         bonusTable.Columns.Add("Bonus Amount", typeof(int));
@@ -83,11 +86,18 @@ public class ScoreBehavior : MonoBehaviour
         timeLeft -= Time.deltaTime;
         float fillAmount = Math.Clamp(timeLeft / (bonusBarTimer - delayBeforeTickingDown), 0, 1);
         bonusBarImage.DOFillAmount(fillAmount, smoothBarSlide);
-        bonusBarImage.color = Color.Lerp(coldComboColor, hotComboColor, fillAmount);
-
+        comboText.characterSpacing = bonusBarImage.fillAmount * 16;
+        bonusBarImage.color = Color.Lerp(coldComboColor, hotComboColor, bonusBarImage.fillAmount);
+        comboText.color = Color.Lerp(deadComboColor, Color.white, fillAmount * 8);
+        
         if (timeLeft <= 0)
         {
-            currentScore += currentBonus;
+            if (currentBonus > 0)
+            {
+                currentScore += currentBonus;
+                currentScoreText.characterSpacing += textSizeChange;
+                DOTween.To(() => currentScoreText.characterSpacing, x => currentScoreText.characterSpacing = x, 0, 0.6f);
+            }
             currentBonus = 0;
             thisBonusScore = 0;
             UpdateUI();
@@ -100,6 +110,12 @@ public class ScoreBehavior : MonoBehaviour
         timeLeft = bonusBarTimer;
     }
     
+    private void LoseBonusScore(bool x)
+    {
+        timeLeft = 0;
+        currentBonus = 0;
+    }
+
     private void IncreaseScore(int score)
     {
         currentScore += score;
@@ -112,7 +128,12 @@ public class ScoreBehavior : MonoBehaviour
     private void UpdateUI()
     {
         currentScoreText.text = CST + currentScore;
-        bonusScoreText.text = BST + currentBonus;
+        if (bonusScoreText.text != BST + currentBonus)
+        {
+            bonusScoreText.text = BST + currentBonus;
+            bonusScoreText.characterSpacing += textSizeChange * 3;
+            DOTween.To(()=> bonusScoreText.characterSpacing, x=> bonusScoreText.characterSpacing = x, 0, 0.6f);
+        }
     }
 
     private void CheckBonus(int score)
@@ -120,7 +141,8 @@ public class ScoreBehavior : MonoBehaviour
         if (bonusTable != null)
             foreach (DataRow row in bonusTable.Rows)
             {
-                if (score < (int)row["Threshold"]){
+                if (score < (int)row["Threshold"])
+                {
                     break;
                 }
                 else
@@ -129,4 +151,6 @@ public class ScoreBehavior : MonoBehaviour
                 }
             }
     }
+    
+    
 }

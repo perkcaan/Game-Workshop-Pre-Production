@@ -16,6 +16,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     private FMOD.Studio.EventInstance _sweepSoundInstance;
 
     [SerializeField] protected int _pointValue;
+    private bool _pointsConsumed = false;
     public static Action<int> SendScore;
 
     protected Room _parentRoom;
@@ -39,6 +40,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
             return;
         }
 
+        GivePoints();
         trashBall.AbsorbTrash(this);
         trashBall.GetComponent<Rigidbody2D>().velocity = _rigidBody.velocity;
     }
@@ -47,6 +49,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     {
         if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled))
         {
+            GivePoints();
             trashBall.AbsorbTrash(this);
         }
     }
@@ -77,4 +80,12 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         _parentRoom = room;
     }
     
+    private void GivePoints()
+    {
+        if (!_pointsConsumed)
+        {
+            SendScore?.Invoke(_pointValue);
+            _pointsConsumed = true;
+        }
+    }
 }
