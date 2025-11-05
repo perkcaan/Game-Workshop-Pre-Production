@@ -12,14 +12,6 @@ public class TrashPile : Trash, ISwipeable
     [SerializeField] List<Trash> _startingStoredTrash;
     private SpriteRenderer _sprite;
 
-    public static Action<int> SendScore;
-    [SerializeField] int _pointValue;
-
-    void Start()
-    {
-        if (_pointValue <= 0) _pointValue = 1;
-    }
-
     void Awake()
     {
         _size = 0;
@@ -69,6 +61,8 @@ public class TrashPile : Trash, ISwipeable
     private void ReleaseTrash(Vector2 direction, float force)
     {
         DOTween.KillAll();
+        SendScore?.Invoke(_pointValue);
+        
         foreach (Trash trash in _startingStoredTrash)
         {
             Trash releasedTrash = Instantiate(trash);

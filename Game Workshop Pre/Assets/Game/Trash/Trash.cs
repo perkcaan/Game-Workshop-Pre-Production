@@ -7,7 +7,6 @@ using UnityEngine;
 public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 {
     [SerializeField] protected GameObject _trashBallPrefab;
-
     [SerializeField] protected float _explosionMultiplier;
 
     [Header("Trash")]
@@ -16,15 +15,16 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     public TrashMaterial trashMaterial;
     private FMOD.Studio.EventInstance _sweepSoundInstance;
 
+    [SerializeField] protected int _pointValue;
+    public static Action<int> SendScore;
 
     protected Room _parentRoom;
-    //Components
     protected Rigidbody2D _rigidBody;
-    // Unity methods
+    
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        
+        if (_pointValue <= 0) _pointValue = 1;
     }
     protected void CreateTrashBall()
     {

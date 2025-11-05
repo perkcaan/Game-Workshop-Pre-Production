@@ -16,11 +16,10 @@ public class ScoreBehavior : MonoBehaviour
     [SerializeField] float bonusBarTimer;
     [SerializeField] int currentScore = 0;
     [SerializeField] int currentBonus = 0;
+    [SerializeField] Color hotComboColor;
+    [SerializeField] Color coldComboColor;
 
-    //Defaults
-                            //Bonus Start Text
     private readonly string BST = "+";
-                            //Current Score Start Text
     private readonly string CST = "Current Score: ";
     private readonly float DEFAULT_BONUS_BAR_TIMER = 15f;
 
@@ -79,8 +78,10 @@ public class ScoreBehavior : MonoBehaviour
     void Update()
     {
         timeLeft -= Time.deltaTime;
-        bonusBarImage.fillAmount = timeLeft / bonusBarTimer;
-        
+        float fillAmount = Math.Clamp(timeLeft / (bonusBarTimer - 1), 0, 1);
+        bonusBarImage.fillAmount = fillAmount;
+        bonusBarImage.color = Color.Lerp(coldComboColor, hotComboColor, fillAmount);
+
         if (timeLeft <= 0)
         {
             currentScore += currentBonus;
@@ -100,7 +101,6 @@ public class ScoreBehavior : MonoBehaviour
     {
         currentScore += score;
         thisBonusScore += score;
-        Debug.Log(currentScore);
         resetBonus?.Invoke();
         CheckBonus(thisBonusScore);
         UpdateUI();

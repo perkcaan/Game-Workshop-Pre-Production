@@ -197,6 +197,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial.whenAbsorbTrash();
         _secondaryTrashMaterial.whenAbsorbTrash();
 
+        SendScore?.Invoke(0);
         absorbedObjects.Add(trash);
         absorbedTrash.Add(trash);
         trash.gameObject.SetActive(false);

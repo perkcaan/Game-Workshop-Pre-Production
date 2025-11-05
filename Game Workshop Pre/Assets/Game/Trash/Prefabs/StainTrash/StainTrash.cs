@@ -9,14 +9,6 @@ public class StainTrash : Trash, ISweepable
     private float _sweepTimer;
     private SpriteRenderer _sprite;
 
-    [SerializeField] int _pointValue;
-    public static Action<int> SendScore;
-
-    void Start()
-    {
-        if (_pointValue <= 0) _pointValue = 1;
-    }
-
     public void Awake()
     {
         _sprite = GetComponentInChildren<SpriteRenderer>();
