@@ -28,7 +28,7 @@ public class ScoreBehavior : MonoBehaviour
     [SerializeField] float delayBeforeTickingDown;
 
     private readonly string BST = "+";
-    private readonly string CST = "Current Score: ";
+    private readonly string CST = "Score: ";
     private readonly float DEFAULT_BONUS_BAR_TIMER = 15f;
 
     private float timeLeft;
@@ -46,7 +46,6 @@ public class ScoreBehavior : MonoBehaviour
             bonusBarTimer = DEFAULT_BONUS_BAR_TIMER;
         }
         currentScoreText.text = CST + currentScore;
-        bonusScoreText.text = BST + currentBonus;
         timeLeft = 0;
 
         resetBonus += ResetBonus;
@@ -76,8 +75,7 @@ public class ScoreBehavior : MonoBehaviour
         {
             bonusTable.Rows.Add(data[i, 0], data[i, 1]);
         }
-        
-
+        UpdateUI();
     }
 
     // Update is called once per frame
@@ -102,7 +100,6 @@ public class ScoreBehavior : MonoBehaviour
             thisBonusScore = 0;
             UpdateUI();
         }
-
     }
 
     private void ResetBonus()
@@ -128,17 +125,19 @@ public class ScoreBehavior : MonoBehaviour
     private void UpdateUI()
     {
         currentScoreText.text = CST + currentScore;
-        if (bonusScoreText.text != BST + currentBonus)
+        if (currentBonus == 0) bonusScoreText.text = "";
+        else if (bonusScoreText.text != BST + currentBonus)
         {
             bonusScoreText.text = BST + currentBonus;
             bonusScoreText.characterSpacing += textSizeChange * 3;
-            DOTween.To(()=> bonusScoreText.characterSpacing, x=> bonusScoreText.characterSpacing = x, 0, 0.6f);
+            DOTween.To(() => bonusScoreText.characterSpacing, x => bonusScoreText.characterSpacing = x, 0, 0.6f);
         }
     }
 
     private void CheckBonus(int score)
     {
         if (bonusTable != null)
+        {
             foreach (DataRow row in bonusTable.Rows)
             {
                 if (score < (int)row["Threshold"])
@@ -150,6 +149,8 @@ public class ScoreBehavior : MonoBehaviour
                     currentBonus = (int)row["Bonus Amount"];
                 }
             }
+        }
+
     }
     
     
