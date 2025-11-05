@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System;
 
 
 public class ScoreBehavior : MonoBehaviour
@@ -27,6 +28,8 @@ public class ScoreBehavior : MonoBehaviour
 
     private delegate void ResetBonusEvent();
     private event ResetBonusEvent resetBonus;
+    DataTable bonusTable = new DataTable();
+    int thisBonusScore;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +49,30 @@ public class ScoreBehavior : MonoBehaviour
         BaseEnemy.SendScore += IncreaseScore;
         TrashPile.SendScore += IncreaseScore;
         TrashBall.SendScore += IncreaseScore;
+
+        bonusTable.Columns.Add("Threshold", typeof(int));
+        bonusTable.Columns.Add("Bonus Amount", typeof(int));
+        thisBonusScore = 0;
+
+        object[,] data =
+        {
+            {0, 0 },
+            {10, 5 },
+            {20, 10 },
+            {30, 15 },
+            {50, 25 },
+            {75, 35 },
+            {100, 50 },
+            {125, 60 },
+            {150, 75 }
+        };
+        
+        for (int i = 0; i < data.GetLength(0); i++)
+        {
+            bonusTable.Rows.Add(data[i, 0], data[i, 1]);
+        }
+        
+
     }
 
     // Update is called once per frame
@@ -53,6 +80,15 @@ public class ScoreBehavior : MonoBehaviour
     {
         timeLeft -= Time.deltaTime;
         bonusBarImage.fillAmount = timeLeft / bonusBarTimer;
+        
+        if (timeLeft <= 0)
+        {
+            currentScore += currentBonus;
+            currentBonus = 0;
+            thisBonusScore = 0;
+            UpdateUI();
+        }
+
     }
 
     private void ResetBonus()
@@ -63,8 +99,10 @@ public class ScoreBehavior : MonoBehaviour
     private void IncreaseScore(int score)
     {
         currentScore += score;
+        thisBonusScore += score;
         Debug.Log(currentScore);
         resetBonus?.Invoke();
+        CheckBonus(thisBonusScore);
         UpdateUI();
     }
 
@@ -74,4 +112,18 @@ public class ScoreBehavior : MonoBehaviour
         bonusScoreText.text = BST + currentBonus;
     }
 
+    private void CheckBonus(int score)
+    {
+        if (bonusTable != null)
+            foreach (DataRow row in bonusTable.Rows)
+            {
+                if (score < (int)row["Threshold"]){
+                    break;
+                }
+                else
+                {
+                    currentBonus = (int)row["Bonus Amount"];
+                }
+            }
+    }
 }
