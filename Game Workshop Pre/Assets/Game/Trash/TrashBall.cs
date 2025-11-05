@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using System;
 
 public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 {
@@ -34,6 +35,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private static int _nextId = 0;
     public int TrashId { get; private set; }
     [SerializeField] private float _size = 1f;
+
+
+    public static Action<int> SendScore;
 
     Rigidbody2D _rigidBody;
     MeshRenderer _meshRenderer;
@@ -122,7 +126,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             ExplodeTrashBall();
             return;
         }
-        int randomTrashRemove = Random.Range(0, absorbedTrash.Count);
+        int randomTrashRemove = UnityEngine.Random.Range(0, absorbedTrash.Count);
 
         for (int i = 0; i < _trashMaterialCounts.Count; i++)
         {
@@ -317,6 +321,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
         absorbedObjects.Clear();
         absorbedTrash.Clear();
+        SendScore?.Invoke((int)Size);
         Destroy(gameObject);
     }
 }

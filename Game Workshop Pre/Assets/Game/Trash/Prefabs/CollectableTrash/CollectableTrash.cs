@@ -7,7 +7,14 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable
     [SerializeField] bool _swipesIntoTrashBall;
     private float _sweepTimer;
 
+    [SerializeField] int _pointValue;
     public static Action<int> SendScore;
+
+    void Start()
+    {
+        if (_pointValue <= 0) _pointValue = 1;
+    }
+
     public void OnSweep(Vector2 position, Vector2 direction, float force)
     {
         if (!isActiveAndEnabled) return;
@@ -15,8 +22,8 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable
         _rigidBody.AddForce(direction * force, ForceMode2D.Force);
         if (_sweepTimer > _sweepDurationToBecomeBall)
         {
+            SendScore?.Invoke(_pointValue);
             CreateTrashBall();
-            SendScore?.Invoke(1);
         }
     }
     public void OnSwipe(Vector2 direction, float force)

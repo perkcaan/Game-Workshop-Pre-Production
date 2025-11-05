@@ -68,9 +68,9 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     private bool isAbsorbed;
 
     //Things for the point system
-    [SerializeField] int pointValue;
-
+    [SerializeField] int _pointValue;
     public static Action<int> SendScore;
+    private readonly int ABSORB_VALUE = 2;
 
     private void Start()
     {
@@ -93,6 +93,8 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
         {
             StartCoroutine(FireProjs());
         }
+
+        if (_pointValue <= 0) _pointValue = 5;
     }
 
     private void FixedUpdate()
@@ -266,6 +268,7 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
         if (forcedAbsorb || absorbingPower > resistance)
         {
             trashBall.absorbedObjects.Add(this);
+            SendScore?.Invoke(ABSORB_VALUE);
             isAbsorbed = true;
             gameObject.SetActive(false);
         }
@@ -282,6 +285,7 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
 
     public void OnTrashBallIgnite()
     {
+        SendScore?.Invoke(_pointValue * 2);
         Destroy(gameObject);
     }
 

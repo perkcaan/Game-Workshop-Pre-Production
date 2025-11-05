@@ -42,7 +42,10 @@ public class ScoreBehavior : MonoBehaviour
         resetBonus += ResetBonus;
         LooseTrash.SendScore += IncreaseScore;
         CollectableTrash.SendScore += IncreaseScore;
+        StainTrash.SendScore += IncreaseScore;
         BaseEnemy.SendScore += IncreaseScore;
+        TrashPile.SendScore += IncreaseScore;
+        TrashBall.SendScore += IncreaseScore;
     }
 
     // Update is called once per frame
@@ -60,6 +63,7 @@ public class ScoreBehavior : MonoBehaviour
     private void IncreaseScore(int score)
     {
         currentScore += score;
+        Debug.Log(currentScore);
         resetBonus?.Invoke();
         UpdateUI();
     }
