@@ -14,7 +14,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     // If a property is on every or almost every enemy, it can go here.)
     [SerializeField] protected float _moveSpeed;
     [SerializeField] protected float _size;
-
+    [SerializeField] protected float _minSizeToAbsorb;
+    [SerializeField] protected float _minVelocityToAbsorb;
 
     // Components
     protected EnemyBlackboard _blackboard;
@@ -128,12 +129,10 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (_size <= trashBall.Size && isActiveAndEnabled))
+        if (forcedAbsorb || (ballSize > _minSizeToAbsorb && ballVelocity > _minVelocityToAbsorb && isActiveAndEnabled))
         {
             gameObject.SetActive(false);
+            trashBall.absorbedObjects.Add(this);
         }
     }
-
-
-    
 }
