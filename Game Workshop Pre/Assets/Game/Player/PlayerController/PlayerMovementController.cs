@@ -19,8 +19,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float SweepForce { get { return _sweepForce; } }
     [SerializeField][Range(0f, 2f)] private float _sweepForceMovementScaler = 0.1f;
     public float SweepForceMovementScaler { get { return _sweepForceMovementScaler; } }
-
-
+    
     [Header("Swipe Properties")]
     [SerializeField] private float _baseSwipeForce = 5f;
     public float BaseSwipeForce { get { return _baseSwipeForce; } }
@@ -50,8 +49,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
+    private FMOD.Studio.EventInstance _heatSound;
 
+    [Header("Checkpoint")]
+    [SerializeField] private CheckpointManager Checkpoint_Manager;
+    public static System.Action<bool> playerDeath;
+    public HeatMechanic _playerHeat;
 
+    [Header("Item Effected Properties")]
+    public bool canSweep;
+    public bool canSwipe;
     // Fields
     //weight
     private float _weight = 0f;
@@ -81,6 +88,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
+        _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
     }
 
     private void Start()
@@ -88,6 +96,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
         FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
+        _heatSound.start();
+        _playerHeat = GetComponent<HeatMechanic>();
     }
 
     private void Update()
@@ -98,6 +108,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void FixedUpdate()
     {
         UpdateMovement();
+        _heatSound.setParameterByName("Heat", (_playerHeat.Heat / 10));
     }
 
     private void UpdateCooldowns()
@@ -117,6 +128,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
                 ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,transform);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
             }
         }
 
@@ -153,6 +165,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void OnSweepInput(InputValue value)
     {
+        if (!canSweep) return;
         _ctx.IsSweepPressed = value.isPressed;
         if (!_ctx.IsSweepPressed)
         {
@@ -189,6 +202,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void OnSwipeInput(InputValue value)
     {
+        if (!canSwipe) return;
         _ctx.IsSwipePressed = value.isPressed;
         if (_ctx.CanSwipe && _ctx.SwipeCooldownTimer <= 0f && value.isPressed)
         {
@@ -259,9 +273,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     // IAbsorbable
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (absorbingPower > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
+        if (forcedAbsorb || (ballVelocity > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
         {
             trashBall.absorbedObjects.Add(this);
             _ctx.AbsorbedTrashBall = trashBall;
@@ -278,7 +292,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     // IHeatable
     public void OnIgnite(HeatMechanic heat)
     {
-        transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
+        // transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
+
+        Death();
+
         heat.Reset();
         LayerMask layerMask = new LayerMask();
         _ctx.Collider.excludeLayers = layerMask;
@@ -317,5 +334,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         // Also temporary need a death function
         transform.position = new Vector3(-6.5f, 2f, transform.position.z);
+    }
+
+    private void Death()
+    {
+        transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
+        playerDeath?.Invoke(true);
+        Debug.Log("Return to Checkpoint");
     }
 }

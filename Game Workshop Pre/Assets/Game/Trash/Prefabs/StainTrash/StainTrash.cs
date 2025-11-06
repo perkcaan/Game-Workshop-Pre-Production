@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class StainTrash : Trash, ISweepable
 {
@@ -13,7 +14,7 @@ public class StainTrash : Trash, ISweepable
         _sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
-    public void OnSweep(Vector2 direction, float force)
+    public void OnSweep(Vector2 position, Vector2 direction, float force)
     {
         if (!isActiveAndEnabled) return;
         _sweepTimer += Time.deltaTime;
@@ -23,8 +24,9 @@ public class StainTrash : Trash, ISweepable
             Destroy(gameObject);
         }
     }
-    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
+        SendScore?.Invoke(_pointValue);
         Destroy(gameObject);
     }
 

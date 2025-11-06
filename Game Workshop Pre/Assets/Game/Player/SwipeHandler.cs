@@ -11,8 +11,10 @@ public class SwipeHandler : MonoBehaviour
     // Components
     [SerializeField] private DottedParticleLine _dottedLine;
     ParticleSystem _swipeEffectInstance;
+    FMOD.Studio.EventInstance _swipeSoundInstance;
     private PlayerMovementController _parent;
     private Collider2D _hitbox;
+    public bool connecting;
 
     // Fields
     private float _rotation = 0f;
@@ -22,6 +24,7 @@ public class SwipeHandler : MonoBehaviour
     private void Awake()
     {
         _parent = transform.parent.GetComponent<PlayerMovementController>();
+        _swipeSoundInstance = FMODUnity.RuntimeManager.CreateInstance("event:/Player/Swipe/Swipe");
         if (_parent == null)
         {
             Debug.LogWarning("Player Swipe Handler cannot find Player.");
@@ -40,7 +43,14 @@ public class SwipeHandler : MonoBehaviour
     // Swipe
     public void DoSwipe(float rotation, float swipeForce)
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", _parent.transform.position);
+        if (!connecting)
+        {
+            _swipeSoundInstance.setParameterByName("Texture", 1);
+            _swipeSoundInstance.start();
+            _swipeSoundInstance.release();
+
+        }
+        
         _hitbox.enabled = true;
         _swipeForce = swipeForce;
         
@@ -72,6 +82,7 @@ public class SwipeHandler : MonoBehaviour
     public void EndSwipe()
     {
         _hitbox.enabled = false;
+        connecting = false;
     }
 
     // Collision trigger
@@ -80,15 +91,25 @@ public class SwipeHandler : MonoBehaviour
         Vector2 direction = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
         Vector3 contactPoint = other.ClosestPoint(transform.position);
         
-
-
         ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
         if (swipeableObject != null)
         {
-            if(ParticleManager.Instance != null)
-                ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
+            connecting = true;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", contactPoint);
+            //Debug.Log("Swiped object: " + other.gameObject.name);
+            if(connecting)
+            {
+                _swipeSoundInstance.setParameterByName("Texture", 0);
+                //_swipeSoundInstance.start();
+                //_swipeSoundInstance.
+            }
+            ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
             swipeableObject.OnSwipe(direction.normalized, _swipeForce);
         }
+        
+
+
+
     }
 
  

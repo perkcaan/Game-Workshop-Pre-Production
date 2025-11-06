@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using System;
 
 public class TrashPile : Trash, ISwipeable
 {
@@ -19,6 +20,7 @@ public class TrashPile : Trash, ISwipeable
             _size += trash.Size;
         }
         _sprite = GetComponentInChildren<SpriteRenderer>();
+
     }
 
     public void OnSwipe(Vector2 direction, float force)
@@ -26,7 +28,7 @@ public class TrashPile : Trash, ISwipeable
         TakeDamage(1, direction, force);
     }
 
-    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
         if (Size <= trashBall.Size)
         {
@@ -59,6 +61,8 @@ public class TrashPile : Trash, ISwipeable
     private void ReleaseTrash(Vector2 direction, float force)
     {
         DOTween.KillAll();
+        SendScore?.Invoke(_pointValue);
+        
         foreach (Trash trash in _startingStoredTrash)
         {
             Trash releasedTrash = Instantiate(trash);
@@ -66,16 +70,14 @@ public class TrashPile : Trash, ISwipeable
             releasedTrash.transform.position = transform.position;
             if (direction != null)
             {
-                float randomAngle = Random.Range(-_trashSpreadRange, _trashSpreadRange);
+                float randomAngle = UnityEngine.Random.Range(-_trashSpreadRange, _trashSpreadRange);
                 Vector2 randomDirection = Quaternion.Euler(0, 0, randomAngle) * direction;
-                float randomForce = Random.Range(force * _onExplodeForce, force * _onExplodeForce * 3);
-                releasedTrash.GetComponent<Rigidbody2D>().AddForce(randomDirection.normalized * randomForce, ForceMode2D.Force);
+
+                float randomForce = UnityEngine.Random.Range(force * _onExplodeForce, force * _onExplodeForce * 3);
+                releasedTrash.GetComponent<Rigidbody2D>().AddForce(randomDirection.normalized * randomForce, ForceMode2D.Impulse);
             }
         }
         _parentRoom.ObjectCleaned(this);
         Destroy(gameObject);
     }
-
-
-
 }
