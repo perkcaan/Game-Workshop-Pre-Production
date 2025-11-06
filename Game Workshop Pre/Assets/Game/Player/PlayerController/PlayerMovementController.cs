@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable
+public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
 
     #region header
@@ -253,7 +253,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     // Being swiped puts you into tumble state
     public void OnSwipe(Vector2 direction, float force)
     {
-        _state.ChangeState(PlayerStateEnum.Tumble);
+        if (force >= _movementProps.EnterTumbleThreshold) _state.ChangeState(PlayerStateEnum.Tumble);
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
@@ -282,6 +282,13 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         heat.Reset();
         LayerMask layerMask = new LayerMask();
         _ctx.Collider.excludeLayers = layerMask;
+    }
+
+    // ITargetable
+
+    public TargetType GetTargetType()
+    {
+        return TargetType.Player;
     }
 
     // Gizmo to display the dash cooldowns

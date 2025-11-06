@@ -19,7 +19,7 @@ public class PathfindingManager : StaticInstance<PathfindingManager>
 
     private void OnValidate()
     {
-        Instance = this;
+        //Instance = this;
     }
 
     protected override void Awake()

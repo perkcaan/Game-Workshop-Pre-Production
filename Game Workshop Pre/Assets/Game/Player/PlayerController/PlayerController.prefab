@@ -74,7 +74,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 7927
+    m_Bits: 16119
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -10334,6 +10334,7 @@ MonoBehaviour:
     _dashDuration: 0.34
     _dashRowCooldown: 0.2
     _dashCooldown: 3
+    _enterTumbleThreshold: 20
     _tumbleMaterial: {fileID: 6200000, guid: 3b7af493c3f54b34e99304d3d160a029, type: 2}
     _maxWalkSpeedReduction: 0.1
     _accelerationReduction: 0.5
