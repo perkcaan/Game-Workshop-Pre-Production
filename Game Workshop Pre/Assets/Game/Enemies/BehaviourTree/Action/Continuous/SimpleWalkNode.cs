@@ -7,7 +7,7 @@ public class SimpleWalkNode : BehaviourTreeNode
     // Fields
     [Tooltip("0 for right. 90 for up. 180 for left. 270 for down.")]
     [SerializeField] private float _angleToWalk;
-    [SerializeField] private LayerMask _layersToFlipWhenWalkedInto = (1 << 12) | (1 << 13); // 12 and 13 are intended to be Lava and Wall;
+    [SerializeField] private LayerMask _layersToFlipWhenWalkedInto = (1 << 12) | (1 << 14); // 12 and 14 are intended to be Lava and Wall;
     [SerializeField] private float _distToCheckForObstacle = 0.2f;
 
     private bool _turnedAround = false;

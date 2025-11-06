@@ -112,13 +112,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         Destroy(gameObject);
     }
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
-    {
-        if (forcedAbsorb || (_size <= trashBall.Size && isActiveAndEnabled))
-        {
-            gameObject.SetActive(false);
-        }
-    }
+
+    // IAbsorbable
 
     public void OnTrashBallExplode(TrashBall trashBall)
     {
@@ -131,6 +126,14 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         Destroy(gameObject);
     }
 
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    {
+        if (forcedAbsorb || (_size <= trashBall.Size && isActiveAndEnabled))
+        {
+            gameObject.SetActive(false);
+        }
+    }
 
-    // IAbsorbable
+
+    
 }

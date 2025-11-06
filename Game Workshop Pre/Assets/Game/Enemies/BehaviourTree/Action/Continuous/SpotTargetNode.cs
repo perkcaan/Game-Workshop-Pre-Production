@@ -9,7 +9,7 @@ public class SpotTargetNode : BehaviourTreeNode
     [SerializeField] private float _fieldOfViewAngle = 90f;
     [SerializeField] private TargetType _typeToTarget = TargetType.Player;
     [SerializeField] private LayerMask _targetMask =  (1 << 9) | (1 << 10); // 9 and 10 are intended to be Player and Enemy
-    [SerializeField] private LayerMask _obstacleMask = 1 << 13; //13 is intended to be Wall
+    [SerializeField] private LayerMask _obstacleMask = 1 << 13; //14 is intended to be Wall
     [SerializeField] private ITargetable _currentTarget;
 
     // stored here for debug purposes

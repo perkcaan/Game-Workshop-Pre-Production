@@ -207,7 +207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _behaviour:
     rid: 6436023309055033376
-  _enableBehaviourDebug: 1
+  _enableBehaviourDebug: 0
   _actionMethods:
   - m_PersistentCalls:
       m_Calls:
@@ -248,7 +248,7 @@ MonoBehaviour:
           m_Bits: 1536
         _obstacleMask:
           serializedVersion: 2
-          m_Bits: 8192
+          m_Bits: 16384
     - rid: 6436023319936368640
       type: {class: SelectorNode, ns: , asm: Assembly-CSharp}
       data:
