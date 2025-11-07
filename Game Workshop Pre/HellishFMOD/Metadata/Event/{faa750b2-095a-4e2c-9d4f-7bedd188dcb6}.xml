@@ -92,8 +92,17 @@
 	</object>
 	<object class="MixerBusPanner" id="{742dc6c5-96b4-402c-a97e-ebb77eb27f9e}" />
 	<object class="SingleSound" id="{59acaba0-ae5d-44d4-aef2-7bfa0e4c3d41}">
+		<property name="triggerProbabilityEnabled">
+			<value>true</value>
+		</property>
+		<property name="isCutoff">
+			<value>true</value>
+		</property>
 		<property name="length">
 			<value>37.795291666666664</value>
+		</property>
+		<property name="quantizationInterval">
+			<value>12</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{1773ad98-1bf8-4e73-95aa-a57a7613343c}</destination>
