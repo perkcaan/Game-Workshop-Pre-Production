@@ -50,6 +50,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
     private FMOD.Studio.EventInstance _heatSound;
+    private FMOD.Studio.EventInstance _footstepsSound;
+    private FMOD.Studio.EventInstance _dashSound;
+    private FMOD.Studio.EventInstance _music;
 
     [Header("Checkpoint")]
     [SerializeField] private CheckpointManager Checkpoint_Manager;
@@ -88,14 +91,38 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
+
+        // edit volume
+        _music = FMODUnity.RuntimeManager.CreateInstance("event:/Music/Hellish Sample");
+        _music.setVolume(1f);
         _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
+        _heatSound.setVolume(0.5f);
+        _footstepsSound = FMODUnity.RuntimeManager.CreateInstance("event:/Player/Clean Step");
+        _footstepsSound.setVolume(0.25f);
+        _dashSound = FMODUnity.RuntimeManager.CreateInstance("event:/Player/Dash");
+        _dashSound.setVolume(0.5f);
+    }
+
+    public enum VolumeType
+    {
+        MovementSound,
+        Music,
+    }
+    public void EditMovementVolume(float volume)
+    {
+        _footstepsSound.setVolume(volume / 2);
+        _dashSound.setVolume(volume);
+    }
+    public void EditHeatVolume(float volume)
+    {
+        _heatSound.setVolume(volume);
     }
 
     private void Start()
     {
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
+        _music.start();
         _heatSound.start();
         _playerHeat = GetComponent<HeatMechanic>();
     }
@@ -179,7 +206,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         if (!value.isPressed) return;
         if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash", transform.position);
+            _dashSound.start();
             _state.ChangeState(PlayerStateEnum.Dash);
         }
     }
@@ -237,7 +264,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
         if (_ctx.MoveSpeed > 0.1f && _footstepCooldown <= 0f)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step", transform.position);
+            _footstepsSound.start();
             _footstepCooldown = 0.3f;
 
             if (_ctx.MoveSpeed > _ctx.MaxWalkSpeed)
