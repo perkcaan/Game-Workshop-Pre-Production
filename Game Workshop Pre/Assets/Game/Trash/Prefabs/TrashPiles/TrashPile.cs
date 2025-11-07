@@ -13,7 +13,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     [SerializeField] List<Trash> _startingStoredTrash;
     private SpriteRenderer _sprite;
     private float _sweepTimer;
-    private float _shakeSpeed = 0.075f;
+    private float _shakeSpeed = 0.125f;
 
     void Awake()
     {
@@ -66,8 +66,9 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         else
         {
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(_sprite.transform.DOLocalMove(direction.normalized * _onDamagedShakeForce * damage, _shakeSpeed * damage));
-            sequence.Append(_sprite.transform.DOLocalMove(Vector3.zero, _shakeSpeed * damage));
+            sequence.Append(_sprite.transform.DOLocalMove(direction.normalized * _onDamagedShakeForce * damage, _shakeSpeed));
+            sequence.Append(_sprite.transform.DOLocalMove(-direction.normalized * _onDamagedShakeForce * damage / 4, _shakeSpeed));
+            sequence.Append(_sprite.transform.DOLocalMove(Vector3.zero, _shakeSpeed));
         }
     }
 
