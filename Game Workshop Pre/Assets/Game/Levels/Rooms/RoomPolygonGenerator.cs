@@ -9,6 +9,7 @@ public class RoomPolygonGenerator
 
     public static void GeneratePolygonColliders(Transform parent, Tilemap roomTilemap)
     {
+        #if UNITY_EDITOR
         // Get prefab
         GameObject roomPrefab = Resources.Load<GameObject>("Prefabs/Levels/Room");
         if (roomPrefab == null)
@@ -45,6 +46,7 @@ public class RoomPolygonGenerator
                 polyCollider.SetPath(p, loops[p].ToArray());
             }
         }
+        #endif
     }
 
     // Step 1 - Get positions of tiles and which tile.

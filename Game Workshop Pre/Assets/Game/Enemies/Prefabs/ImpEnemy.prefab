@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6450080703466267018}
   - component: {fileID: 1337238477863425281}
   - component: {fileID: 5051302769613690211}
+  - component: {fileID: 4870006487215119448}
   m_Layer: 10
   m_Name: ImpEnemy
   m_TagString: Untagged
@@ -145,7 +146,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.7
+  m_Radius: 0.4
 --- !u!50 &6450080703466267018
 Rigidbody2D:
   serializedVersion: 4
@@ -311,6 +312,19 @@ MonoBehaviour:
     - rid: 6436023319936368665
       type: {class: IsPerformingActionNode, ns: , asm: Assembly-CSharp}
       data: 
+--- !u!114 &4870006487215119448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2597434928007830883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9b4d8e043035643929986b6c3ad617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isGrounded: 0
 --- !u!1 &5167298928723680149
 GameObject:
   m_ObjectHideFlags: 0
