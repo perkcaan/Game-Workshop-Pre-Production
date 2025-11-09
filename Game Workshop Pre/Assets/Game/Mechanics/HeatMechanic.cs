@@ -55,7 +55,6 @@ public class HeatMechanic : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = GetComponentInChildren<Renderer>();
-        if (_spriteRenderer == null) Debug.Log("damn");
         _block = new MaterialPropertyBlock();
         
     }
