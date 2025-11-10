@@ -153,8 +153,21 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         //Vector3 contactPoint = GetComponent<Collider2D>().ClosestPoint(transform.position - (Vector3)direction.normalized * _size);
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion particleRotation = Quaternion.Euler(0, 0, angle + 180);
+
+        Color32 metalColor = new Color32(255, 172, 28, 255);
+
+
+        //if (_primaryTrashMaterial.name == "Metal")
+        //{
+        //    ParticleManager.Instance.Modify("swipe", 0, 75, 0, "Subtract");
+        //    ParticleManager.Instance.modified = true;
+        //    ParticleManager.Instance.Play("swipe", transform.position, particleRotation, metalColor, transform);
+        //}
+       
+            ParticleManager.Instance.modified = false;
+            ParticleManager.Instance.Modify("swipe", 0, 75, 0, "Add");
+            ParticleManager.Instance.Play("swipe", transform.position, particleRotation, _primaryTrashMaterial.color, transform);
         
-        ParticleManager.Instance.Play("swipe",transform.position,particleRotation, _primaryTrashMaterial.color,transform);
     }
 
     public void TakeDamage(int damage)
