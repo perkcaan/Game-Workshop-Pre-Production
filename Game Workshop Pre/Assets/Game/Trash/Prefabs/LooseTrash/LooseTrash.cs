@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class LooseTrash : Trash, ISweepable, ISwipeable
 {
@@ -10,6 +11,7 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
     [SerializeField] float _randomDirectionRange;
     [SerializeField] bool _isSwipable;
     private float _sweepTimer;
+
     public void OnSweep(Vector2 position, Vector2 direction, float force)
     {
         if (!isActiveAndEnabled) return;
@@ -25,6 +27,8 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
     {
         if (!_isSwipable) return;
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
+        ParticleManager.Instance.Play("swipe", transform.position, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z), trashMaterial.color, transform);
+
     }
 
     void Update()
@@ -37,7 +41,7 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
         if (other.gameObject.TryGetComponent(out PlayerMovementController player))
         {
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
-            Quaternion randomRotation = Quaternion.Euler(0, 0, Random.Range(-_randomDirectionRange, _randomDirectionRange));
+            Quaternion randomRotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-_randomDirectionRange, _randomDirectionRange));
             Vector3 direction = randomRotation * (transform.position - player.transform.position).normalized;
 
             _rigidBody.AddForce(direction * _playerEnterKnockback * (1 + playerRb.velocity.magnitude/3), ForceMode2D.Impulse);
@@ -49,7 +53,7 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
         if (other.gameObject.TryGetComponent(out PlayerMovementController player))
         {
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
-            Quaternion randomRotation = Quaternion.Euler(0, 0, Random.Range(-_randomDirectionRange, _randomDirectionRange));
+            Quaternion randomRotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-_randomDirectionRange, _randomDirectionRange));
             Vector3 direction = randomRotation * (transform.position - player.transform.position).normalized;
 
             _rigidBody.AddForce(direction * _playerExitKnockback * (1 + playerRb.velocity.magnitude/3), ForceMode2D.Impulse);

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2830549675389849670}
   - component: {fileID: 7617931074688080042}
   - component: {fileID: 2415871829025244457}
+  - component: {fileID: -2150688670721289081}
   m_Layer: 8
   m_Name: TrashBall
   m_TagString: Untagged
@@ -149,14 +150,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scaleMultiplier: 0.6
   _baseMaxHealth: 30
+  _minimumSpeedToAbsorbPlayer: 5
+  _size: 0
   _idleDecayMultiplier: 10
   _decayTrashDropRate: 1.2
+  _vacuumForce: 2.5
+  _minimumVacuumForce: 0.3
+  _sizeMultiplier: 2
   _baseMaterial: {fileID: 11400000, guid: 6fb7000f493002749ba7cdd0bb70878d, type: 2}
   _genericMaterial: {fileID: 11400000, guid: dd963f5861bb9344da6b0d92692fad6c, type: 2}
   _dominantThreshold: 0.85
   _primaryThreshold: 0.5
   _secondaryThreshold: 0.15
-  _size: 0
+  _movementController: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
 --- !u!114 &2415871829025244457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +183,37 @@ MonoBehaviour:
   _ignitionTime: 0.5
   _maxFlashFrequency: 50
   mainTexture: {fileID: 2800000, guid: 5c9175d51ecf2cc488d21ca71ff76edc, type: 3}
+--- !u!114 &-2150688670721289081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5196095918412875384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1223607366
+      Data2: 1183037148
+      Data3: 498317973
+      Data4: -1996817163
+    Path: event:/TrashBall/TrashBall
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5212257174872913296
 GameObject:
   m_ObjectHideFlags: 0

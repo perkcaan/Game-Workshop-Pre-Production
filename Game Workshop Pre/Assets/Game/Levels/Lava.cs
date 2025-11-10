@@ -8,8 +8,15 @@ public class Lava : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collider)
     {
-        if (collider.gameObject.TryGetComponent(out HeatMechanic heat))
+        if (collider.TryGetComponent(out HeatMechanic heat))
         {
+            //Check for grounded safety.
+            if (collider.TryGetComponent(out GroundedMechanic gm))
+            {
+                if (gm.IsGrounded) return;
+            }
+
+            // otherwise... burn them to a crisp
             heat.ModifyHeat(_heatPerSecond * Time.fixedDeltaTime);
         }
     }

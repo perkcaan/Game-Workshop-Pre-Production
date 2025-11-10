@@ -5,18 +5,11 @@ using UnityEngine;
 
 public class Score : MonoBehaviour // Make singleton****
 {
-
-
     [Header("Score and Grade")]
-
     public TextMeshProUGUI scoreText; // Ref to Score UI
-    
     public static int score = 0;
-
     public int activePointLimit; // Maximum possible points for the active level
-
     private char grade; // Grade for the active level
-
 
     private List<Room> rooms;
 
@@ -39,7 +32,6 @@ public class Score : MonoBehaviour // Make singleton****
                 UpdateScore(10);
             }
         }
-
     }
 
     public void UpdateScore(int amount)
@@ -49,22 +41,22 @@ public class Score : MonoBehaviour // Make singleton****
 
     private void AssignGrade()
     {
-        if (score >= .100 * activePointLimit) {
+        if (score >= 1 * activePointLimit) {
             grade = 'S';    
         }
-        if (score >= .80 * activePointLimit)
+        else if (score >= .80 * activePointLimit)
         {
             grade = 'A';
         }
-        if (score >= .60 * activePointLimit)
+        else if (score >= .60 * activePointLimit)
         {
             grade = 'B';
         }
-        if (score >= .40 * activePointLimit)
+        else if (score >= .40 * activePointLimit)
         {
             grade = 'C';
         }
-        if (score >= .20 * activePointLimit)
+        else if (score >= .20 * activePointLimit)
         {
             grade = 'D';
         } 
