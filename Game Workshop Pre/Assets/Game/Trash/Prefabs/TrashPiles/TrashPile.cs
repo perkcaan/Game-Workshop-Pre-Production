@@ -40,6 +40,8 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     public void OnSwipe(Vector2 direction, float force)
     {
         TakeDamage(3, direction, force);
+        if(this != null && trashMaterial != null)
+            ParticleManager.Instance.Play("swipe", transform.position, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), this.trashMaterial.color, transform);
     }
 
     public override void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)

@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using FMOD.Studio;
 using FMODUnity;
+using Cinemachine.Utility;
 
 public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 {
@@ -57,6 +58,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private TrashMaterial _secondaryTrashMaterial;
     private PhysicsMaterial2D _physicsMaterial2D;
     private EventInstance _sweepSoundInstance;
+    public PlayerMovementController _movementController;
     
     private FMODUnity.StudioEventEmitter _emitter;
 
@@ -87,6 +89,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _physicsMaterial2D = Instantiate(_rigidBody.sharedMaterial);
         _sweepSoundInstance = RuntimeManager.CreateInstance("event:/TrashBall/TrashBall");
         _emitter = GetComponent<StudioEventEmitter>();
+         
     }
 
     public void Start()
@@ -145,6 +148,13 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         SetDecaying(false);
         _health = _maxHealth;
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
+
+        
+        //Vector3 contactPoint = GetComponent<Collider2D>().ClosestPoint(transform.position - (Vector3)direction.normalized * _size);
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion particleRotation = Quaternion.Euler(0, 0, angle + 180);
+        
+        ParticleManager.Instance.Play("swipe",transform.position,particleRotation, _primaryTrashMaterial.color,transform);
     }
 
     public void TakeDamage(int damage)

@@ -27,6 +27,8 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
     {
         if (!_isSwipable) return;
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
+        ParticleManager.Instance.Play("swipe", transform.position, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z), trashMaterial.color, transform);
+
     }
 
     void Update()
