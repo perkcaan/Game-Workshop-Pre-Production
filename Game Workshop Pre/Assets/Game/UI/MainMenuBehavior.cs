@@ -17,13 +17,17 @@ public class MainMenuBehavior : MonoBehaviour
 
     private bool settingsMenuIsOpen;
 
+    public void Awake()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Title Music", Vector3.zero);
+    }
     public void OnPlayButtonClicked()
     {
         if (settingsMenuIsOpen)
             return;
 
         Debug.Log("Play Clicked");
-        SceneManager.LoadScene("November Level");
+        SceneManager.LoadScene("October Level");
     }
 
     public void OnSettingsButtonClicked()
