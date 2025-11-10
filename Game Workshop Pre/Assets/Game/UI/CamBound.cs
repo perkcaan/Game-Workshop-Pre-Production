@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class CamBound : MonoBehaviour
 {
-    private CinemachineConfiner2D camConfiner;
-    private PolygonCollider2D poly;
+    private CameraConfiner camConfiner;
+    public PolygonCollider2D poly;
 
     private void Awake()
     {
@@ -17,7 +17,7 @@ public class CamBound : MonoBehaviour
 
     private void Start()
     {
-        camConfiner = FindAnyObjectByType<CinemachineConfiner2D>();
+        camConfiner = FindAnyObjectByType<CameraConfiner>();
 
         if (camConfiner == null)
         {
@@ -27,12 +27,18 @@ public class CamBound : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.GetComponent<PlayerMovementController>())
         {
             Debug.Log("Player Entered Camera Bound: " + gameObject.name);
-
-            camConfiner.m_BoundingShape2D = poly;
-            camConfiner.InvalidateCache();
+            camConfiner.AddBound(this);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.GetComponent<PlayerMovementController>())
+        {
+            Debug.Log("Player Entered Camera Bound: " + gameObject.name);
+            camConfiner.RemoveBound(this);
         }
     }
 }

@@ -9,14 +9,6 @@ public class StainTrash : Trash, ISweepable
     private float _sweepTimer;
     private SpriteRenderer _sprite;
 
-    [SerializeField] int _pointValue;
-    public static Action<int> SendScore;
-
-    void Start()
-    {
-        if (_pointValue <= 0) _pointValue = 1;
-    }
-
     public void Awake()
     {
         _sprite = GetComponentInChildren<SpriteRenderer>();
@@ -32,7 +24,7 @@ public class StainTrash : Trash, ISweepable
             Destroy(gameObject);
         }
     }
-    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
         SendScore?.Invoke(_pointValue);
         Destroy(gameObject);

@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable
+public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
 
     #region header
@@ -19,8 +19,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float SweepForce { get { return _sweepForce; } }
     [SerializeField][Range(0f, 2f)] private float _sweepForceMovementScaler = 0.1f;
     public float SweepForceMovementScaler { get { return _sweepForceMovementScaler; } }
-
-
+    
     [Header("Swipe Properties")]
     [SerializeField] private float _baseSwipeForce = 5f;
     public float BaseSwipeForce { get { return _baseSwipeForce; } }
@@ -54,9 +53,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     [Header("Checkpoint")]
     [SerializeField] private CheckpointManager Checkpoint_Manager;
-
+    public static System.Action<bool> playerDeath;
     public HeatMechanic _playerHeat;
 
+    [Header("Item Effected Properties")]
+    public bool canSweep;
+    public bool canSwipe;
     // Fields
     //weight
     private float _weight = 0f;
@@ -125,7 +127,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,transform);
+                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,Color.white, transform);
                 FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
             }
         }
@@ -163,6 +165,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void OnSweepInput(InputValue value)
     {
+        if (!canSweep) return;
         _ctx.IsSweepPressed = value.isPressed;
         if (!_ctx.IsSweepPressed)
         {
@@ -199,6 +202,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void OnSwipeInput(InputValue value)
     {
+        if (!canSwipe) return;
         _ctx.IsSwipePressed = value.isPressed;
         if (_ctx.CanSwipe && _ctx.SwipeCooldownTimer <= 0f && value.isPressed)
         {
@@ -263,15 +267,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     // Being swiped puts you into tumble state
     public void OnSwipe(Vector2 direction, float force)
     {
-        _state.ChangeState(PlayerStateEnum.Tumble);
+        if (force >= _movementProps.EnterTumbleThreshold) _state.ChangeState(PlayerStateEnum.Tumble);
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
     // IAbsorbable
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (absorbingPower > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
+        if (forcedAbsorb || (ballVelocity > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
         {
             trashBall.absorbedObjects.Add(this);
             _ctx.AbsorbedTrashBall = trashBall;
@@ -295,6 +299,13 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         heat.Reset();
         LayerMask layerMask = new LayerMask();
         _ctx.Collider.excludeLayers = layerMask;
+    }
+
+    // ITargetable
+
+    public TargetType GetTargetType()
+    {
+        return TargetType.Player;
     }
 
     // Gizmo to display the dash cooldowns
@@ -328,6 +339,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void Death()
     {
         transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
+        playerDeath?.Invoke(true);
         Debug.Log("Return to Checkpoint");
     }
 }

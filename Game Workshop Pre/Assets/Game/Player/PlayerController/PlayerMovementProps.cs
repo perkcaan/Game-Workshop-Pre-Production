@@ -40,6 +40,8 @@ public class PlayerMovementProps
 
 
     [Header("Tumble")]
+    [SerializeField] private float _enterTumbleThreshold;
+    public float EnterTumbleThreshold { get { return _enterTumbleThreshold; } }
     [SerializeField] private PhysicsMaterial2D _tumbleMaterial;
     public PhysicsMaterial2D TumbleMaterial { get { return _tumbleMaterial; } }
     
