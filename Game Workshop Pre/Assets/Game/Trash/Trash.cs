@@ -21,7 +21,10 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 
     protected Room _parentRoom;
     protected Rigidbody2D _rigidBody;
-    
+
+    private bool _isDestroyed = false;
+    private bool _isIgnited = false;
+
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
@@ -47,6 +50,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 
     public virtual void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
+        if (_isIgnited) return;
         if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled))
         {
             GivePoints();
@@ -65,17 +69,23 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 
     public void PrepareIgnite(HeatMechanic heat)
     {
-
+        _isIgnited = true;
     }
     
     public void OnIgnite(HeatMechanic heat)
     {
+        if (_isDestroyed) return;
+        _isDestroyed = true;
+
         _parentRoom.ObjectCleaned(this);
         Destroy(gameObject);
     }
 
     public void OnTrashBallIgnite()
     {
+        if (_isDestroyed) return;
+        _isDestroyed = true;
+        
         _parentRoom.ObjectCleaned(this);
         Destroy(gameObject);
     }

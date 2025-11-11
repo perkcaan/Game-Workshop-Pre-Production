@@ -366,7 +366,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             absorbable.OnTrashBallExplode(this);
         }
         Destroy(gameObject);
-    }
+    }   
 
     public void PrepareIgnite(HeatMechanic heat)
     {
