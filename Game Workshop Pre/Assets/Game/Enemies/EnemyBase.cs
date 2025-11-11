@@ -116,7 +116,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     // IHeatable
     public void PrepareIgnite(HeatMechanic heat)
     {
-
+        _isDying = true;
     }
     
     
@@ -141,6 +141,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
+        if (_isDying) return;
         if (forcedAbsorb || (ballSize > _minSizeToAbsorb && ballVelocity > _minVelocityToAbsorb && isActiveAndEnabled))
         {
             gameObject.SetActive(false);
