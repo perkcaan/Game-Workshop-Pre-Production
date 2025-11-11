@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using UnityEngine.Android;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
@@ -59,6 +60,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     [Header("Item Effected Properties")]
     public bool canSweep;
     public bool canSwipe;
+
     // Fields
     //weight
     private float _weight = 0f;
@@ -290,15 +292,17 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     }
 
     // IHeatable
+    public void PrepareIgnite(HeatMechanic heat)
+    {
+        //TODO: Make a death state where the player can't do anything and is locked to it until respawn
+    }
+    
     public void OnIgnite(HeatMechanic heat)
     {
         // transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
 
         Death();
-
         heat.Reset();
-        LayerMask layerMask = new LayerMask();
-        _ctx.Collider.excludeLayers = layerMask;
     }
 
     // ITargetable
@@ -332,8 +336,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     public void OnTrashBallIgnite()
     {
-        // Also temporary need a death function
-        transform.position = new Vector3(-6.5f, 2f, transform.position.z);
+        Death();
     }
 
     private void Death()

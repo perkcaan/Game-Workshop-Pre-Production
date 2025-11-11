@@ -145,6 +145,7 @@ public class HeatMechanic : MonoBehaviour
             IHeatable[] heatables = GetComponents<MonoBehaviour>().OfType<IHeatable>().ToArray();
             foreach (IHeatable heatable in heatables)
             {
+                heatable.PrepareIgnite(this);
                 _shaderManager.StartDissolve(() => {
                     heatable.OnIgnite(this);
                 });

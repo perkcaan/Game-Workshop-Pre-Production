@@ -25,6 +25,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     private Collider2D _collider;
     public Collider2D Collider { get { return _collider; } }
 
+    // Fields
+    private bool _isDying = false;
 
     // external methods (use in specific enemies!)
     protected abstract void OnStart();
@@ -50,6 +52,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     private void Update()
     {
+        if (_isDying) return;
+        
         if (_behaviour != null)
         {
             _behaviour.Evaluate();
@@ -59,6 +63,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     private void FixedUpdate()
     {
+        if (_isDying) return;
+
         UpdateMovement();
     }
 
@@ -108,6 +114,12 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
 
     // IHeatable
+    public void PrepareIgnite(HeatMechanic heat)
+    {
+
+    }
+    
+    
     public void OnIgnite(HeatMechanic heat)
     {
         Destroy(gameObject);

@@ -367,12 +367,16 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
         Destroy(gameObject);
     }
-    
-    public void OnIgnite(HeatMechanic heat)
+
+    public void PrepareIgnite(HeatMechanic heat)
     {
         if (_isBeingDestroyed) return;
         _isBeingDestroyed = true;
-
+    }
+    
+    
+    public void OnIgnite(HeatMechanic heat)
+    {
         _primaryTrashMaterial.whenBallIgnite();
         _secondaryTrashMaterial.whenBallIgnite();
 

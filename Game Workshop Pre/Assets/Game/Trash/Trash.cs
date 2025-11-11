@@ -63,6 +63,11 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         _rigidBody.velocity = randomForce;
     }
 
+    public void PrepareIgnite(HeatMechanic heat)
+    {
+
+    }
+    
     public void OnIgnite(HeatMechanic heat)
     {
         _parentRoom.ObjectCleaned(this);
