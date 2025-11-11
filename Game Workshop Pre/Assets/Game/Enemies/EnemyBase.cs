@@ -41,7 +41,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
-        _animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
         _blackboard = new EnemyBlackboard(this);
         PrepareBlackboard();
         _behaviour.Initialize(_blackboard, this);

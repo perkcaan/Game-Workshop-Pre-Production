@@ -71,6 +71,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     void SetSize()
     {
+        if (_isBeingDestroyed) return;
         float newSize = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
         transform.localScale = new Vector3(newSize, newSize, newSize);
     }

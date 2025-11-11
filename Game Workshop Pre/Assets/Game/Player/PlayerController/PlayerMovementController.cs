@@ -340,6 +340,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
         playerDeath?.Invoke(true);
-        Debug.Log("Return to Checkpoint");
+        //Debug.Log("Return to Checkpoint");
     }
 }
