@@ -18,11 +18,13 @@ public class PlayerAnimator : MonoBehaviour
 {
     [SerializeField] BodyPart body;
     [SerializeField] BodyPart head;
+    [SerializeField] BodyPart hat;
+    [SerializeField] BodyPart face;
     [SerializeField] BodyPart legs;
     [SerializeField] BodyPart arms;
     [SerializeField] BodyPart broom;
     [SerializeField] float animationSpeed;
-    [SerializeField] float runAnimationThreshold;
+    [SerializeField] float runAnimationSpeedThreshold;
     private PlayerAnimationState playerState;
     private float currentMovementSpeed;
     private int rotation;
@@ -80,10 +82,12 @@ public class PlayerAnimator : MonoBehaviour
     {
         body.SetSprite("Idle", mirroredRotation);
         head.SetSprite("Idle", mirroredRotation);
+        hat.SetSprite("Idle", mirroredRotation);
+        face.SetSprite("Idle", mirroredRotation);
         arms.SetSprite("Idle", mirroredRotation);
         legs.SetSprite("Idle", mirroredRotation);
 
-        if (currentMovementSpeed > runAnimationThreshold && animationStep % 2 == 0)
+        if (currentMovementSpeed > runAnimationSpeedThreshold && animationStep % 2 == 0)
         {
             arms.SetSpriteOnStep(animationStep / 2, "Run", mirroredRotation);
             legs.SetSpriteOnStep(animationStep / 2, "Run", mirroredRotation);
@@ -93,7 +97,7 @@ public class PlayerAnimator : MonoBehaviour
     void IdleAnimation()
     {
         BaseMoveAnimation();
-        if (currentMovementSpeed < runAnimationThreshold)
+        if (currentMovementSpeed < runAnimationSpeedThreshold)
         {
             head.OffsetSpriteOnStep(animationStep,
             Vector2.zero, Vector2.down, Vector2.down, Vector2.zero);
@@ -101,11 +105,11 @@ public class PlayerAnimator : MonoBehaviour
             Vector2.zero, Vector2.zero, Vector2.down, Vector2.down);
         }
     }
-    
+
     void HoldingSwipeAnimation()
     {
         BaseMoveAnimation();
-        
+
         int offsetRotation = mirroredRotation + 1;
         if (mirroredRotation == 4)
 
@@ -113,10 +117,12 @@ public class PlayerAnimator : MonoBehaviour
         arms.SetSprite("Sweep", mirroredRotation);
         broom.SetSprite("Sweep", mirroredRotation);
     }
+    
     void SwipeAnimation()
     {
 
     }
+
     void SweepAnimation()
     {
         BaseMoveAnimation();
