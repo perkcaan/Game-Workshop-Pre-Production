@@ -320,8 +320,8 @@ MonoBehaviour:
   _size: 3
   _minSizeToAbsorb: 2
   _minVelocityToAbsorb: 1
-  _attackDuration: 1
-  _attackCooldown: 4
+  _attackDuration: 0.5
+  _attackCooldown: 0.5
   _attackHitbox: {fileID: 5010933270760404284}
   references:
     version: 2
@@ -343,7 +343,7 @@ MonoBehaviour:
     - rid: 6826167590818938882
       type: {class: SpotTargetNode, ns: , asm: Assembly-CSharp}
       data:
-        _searchDistance: 3
+        _searchDistance: 5
         _fieldOfViewAngle: 90
         _typeToTarget: 0
         _targetMask:
