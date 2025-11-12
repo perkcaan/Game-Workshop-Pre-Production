@@ -25,7 +25,7 @@ public class MinimapBehavior : MonoBehaviour
     GameObject pc;
 
     Tilemap[] tilemaps;
-    Tilemap minimap;
+    static Tilemap minimap;
 
     Color tileDefault;
     Camera minimapCamera;
@@ -35,6 +35,7 @@ public class MinimapBehavior : MonoBehaviour
     bool updating = false;
 
     static Dictionary<GameObject, Vector3Int> trackables = new Dictionary<GameObject, Vector3Int>();
+    static Dictionary<GameObject, TileHistory> tileHistoryDict = new Dictionary<GameObject, TileHistory>();
     public static MinimapBehavior instance;
 
     void Start()
@@ -151,6 +152,11 @@ public class MinimapBehavior : MonoBehaviour
     public static void AddToMinimapTrackables(GameObject go)
     {
         trackables[go] = GetPositionStatic(go);
+        //if (!tileHistoryDict.ContainsKey(go))
+        //{
+            //TileHistory th = new TileHistory(go);
+            //tileHistoryDict.Add(go, th);
+        //}
     }
 
 
@@ -167,6 +173,9 @@ public class MinimapBehavior : MonoBehaviour
     {
         if (trackables.ContainsKey(go))
             trackables.Remove(go);
+
+        if (tileHistoryDict.ContainsKey(go))
+            tileHistoryDict.Remove(go);
     }
 
     int GetInstanceID(GameObject go)
@@ -198,6 +207,7 @@ public class MinimapBehavior : MonoBehaviour
             if (trackables.TryGetValue(trackable, out var lastKnown))
             {
                 var now = GetPosition(trackable);
+                //TileHistory
                 if (now != lastKnown)
                 {
                     minimap.SetTile(lastKnown, floorTile);
@@ -208,5 +218,39 @@ public class MinimapBehavior : MonoBehaviour
         }
         updating = false;
         yield return new WaitForSeconds(mapUpdateRate);
+    }
+
+    static string AssessTileType(string tileType)
+    {
+        if (tileType.Contains("Floor"))
+            return "Floor";
+        else if (tileType.Contains("Wall"))
+            return "Wall";
+
+        return "None";
+    }
+     class TileHistory
+    {
+        GameObject owner;
+        bool wasFloor;
+        bool nextFloor;
+
+        public TileHistory(GameObject gameObject)
+        {
+            this.owner = gameObject;
+            string tileType = minimap.GetTile(GetPositionStatic(gameObject)).name;
+            tileType = AssessTileType(tileType);
+            if (tileType == "Floor")
+                wasFloor = true;
+            else
+                wasFloor = false;
+
+            nextFloor = false;
+        }
+
+        static void UpdateHistory(GameObject go, string tileType)
+        {
+
+        }
     }
 }
