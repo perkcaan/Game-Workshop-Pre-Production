@@ -6,7 +6,7 @@ using UnityEngine;
 public class SwarmEnemy : EnemyBase
 {
     [SerializeField] private float _attackDuration = 1f;
-    [SerializeField] private float _attackCooldown = 2f;
+    [SerializeField] private float _attackCooldown = 4f;
     [SerializeField] private EnemyHeatHitbox _attackHitbox;
 
     public void PerformAttack()

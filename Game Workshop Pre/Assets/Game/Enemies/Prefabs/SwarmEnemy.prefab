@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &490256826988272714
+--- !u!1 &5948058606820479664
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2462482986963038859}
-  - component: {fileID: 4329814950940636869}
-  - component: {fileID: 3200249468130354499}
-  m_Layer: 0
+  - component: {fileID: 5452847970846954206}
+  - component: {fileID: 6278135650133340725}
+  - component: {fileID: 5010933270760404284}
+  m_Layer: 10
   m_Name: AttackHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2462482986963038859
+--- !u!4 &5452847970846954206
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 490256826988272714}
+  m_GameObject: {fileID: 5948058606820479664}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 854036192623322738}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &4329814950940636869
+--- !u!61 &6278135650133340725
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 490256826988272714}
-  m_Enabled: 0
+  m_GameObject: {fileID: 5948058606820479664}
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -76,22 +76,22 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.8}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &3200249468130354499
+--- !u!114 &5010933270760404284
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 490256826988272714}
+  m_GameObject: {fileID: 5948058606820479664}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6be3710b2e3775f4595826c5ae417e66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _heatApplied: 30
-  _knockbackApplied: 10
+  _heatApplied: 5
+  _knockbackApplied: 5
 --- !u!1 &6775757000458561536
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,8 +106,8 @@ GameObject:
   - component: {fileID: 7497363116801886274}
   - component: {fileID: 7911460477898574264}
   - component: {fileID: 8715476801560462653}
-  - component: {fileID: 1446916522432387067}
   - component: {fileID: 2669350270777414445}
+  - component: {fileID: 1446916522432387067}
   m_Layer: 10
   m_Name: SwarmEnemy
   m_TagString: Untagged
@@ -128,7 +128,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2462482986963038859}
+  - {fileID: 5452847970846954206}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8263982560915395815
@@ -286,19 +286,6 @@ MonoBehaviour:
   _ignitionTime: 0.2
   _maxFlashFrequency: 7
   mainTexture: {fileID: 0}
---- !u!114 &1446916522432387067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6775757000458561536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f9b4d8e043035643929986b6c3ad617, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isGrounded: 0
 --- !u!114 &2669350270777414445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,14 +301,28 @@ MonoBehaviour:
   _behaviour:
     rid: 6826167590818938880
   _enableBehaviourDebug: 0
-  _actionMethods: []
+  _actionMethods:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2669350270777414445}
+        m_TargetAssemblyTypeName: SwarmEnemy, Assembly-CSharp
+        m_MethodName: PerformAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _moveSpeed: 27
-  _size: 0
+  _size: 3
   _minSizeToAbsorb: 2
-  _minVelocityToAbsorb: 0
+  _minVelocityToAbsorb: 1
   _attackDuration: 1
-  _attackCooldown: 2
-  _attackHitbox: {fileID: 0}
+  _attackCooldown: 4
+  _attackHitbox: {fileID: 5010933270760404284}
   references:
     version: 2
     RefIds:
@@ -342,7 +343,7 @@ MonoBehaviour:
     - rid: 6826167590818938882
       type: {class: SpotTargetNode, ns: , asm: Assembly-CSharp}
       data:
-        _searchDistance: 2
+        _searchDistance: 3
         _fieldOfViewAngle: 90
         _typeToTarget: 0
         _targetMask:
@@ -400,3 +401,16 @@ MonoBehaviour:
         _wanderRadius: 5
         _newDirectionInterval: 4
         _arrivalProximity: 0.2
+--- !u!114 &1446916522432387067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6775757000458561536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9b4d8e043035643929986b6c3ad617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isGrounded: 0
