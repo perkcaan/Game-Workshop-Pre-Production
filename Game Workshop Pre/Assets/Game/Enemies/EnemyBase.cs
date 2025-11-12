@@ -111,6 +111,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void OnIgnite(HeatMechanic heat)
     {
         Destroy(gameObject);
+        Debug.Log("ignite");
     }
 
 
@@ -125,6 +126,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void OnTrashBallIgnite()
     {
         Destroy(gameObject);
+        Debug.Log("trash ignite");
     }
 
     public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)

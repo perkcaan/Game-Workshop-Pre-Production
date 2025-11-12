@@ -1,24 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class SwarmEnemy : EnemyBase
 {
-    private float moveDirection;
-    //Random rnd = new Random();
+    [SerializeField] private float _attackDuration = 1f;
+    [SerializeField] private float _attackCooldown = 2f;
+    [SerializeField] private EnemyHeatHitbox _attackHitbox;
 
-
-    // Start is called before the first frame update
-    void Start()
+    public void PerformAttack()
     {
-        
+        _blackboard.TryGet<float>("rotation", out float rotation);
+        _attackHitbox.UpdateRotation(transform, rotation);
+        _attackHitbox.Enable();
+        _animator.SetBool("Attacking", true);
+
+
+        StartCoroutine(AttackDuration());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator AttackDuration()
     {
-        
+        yield return new WaitForSeconds(_attackDuration);
+        _attackHitbox.Disable();
+        _animator.SetBool("Attacking", false);
+        yield return new WaitForSeconds(_attackCooldown);
+        _blackboard.Set<bool>("isInAction", false);
+
     }
+
 
     protected override void OnStart()
     {

@@ -281,8 +281,8 @@ MonoBehaviour:
   _heat: 0
   _heatRelaxationRate: 1
   _timeBeforeRelax: 3
-  _warningThreshold: 10
-  _ignitionThreshold: 15
+  _warningThreshold: 40
+  _ignitionThreshold: 60
   _ignitionTime: 0.2
   _maxFlashFrequency: 7
   mainTexture: {fileID: 0}
@@ -312,17 +312,91 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviour:
-    rid: 7005191131552808960
+    rid: 6826167590818938880
   _enableBehaviourDebug: 0
   _actionMethods: []
   _moveSpeed: 27
   _size: 0
   _minSizeToAbsorb: 2
   _minVelocityToAbsorb: 0
+  _attackDuration: 1
+  _attackCooldown: 2
+  _attackHitbox: {fileID: 0}
   references:
     version: 2
     RefIds:
-    - rid: 7005191131552808960
+    - rid: 6826167590818938880
       type: {class: ParallelSequenceNode, ns: , asm: Assembly-CSharp}
       data:
-        children: []
+        children:
+        - rid: 6826167590818938881
+        - rid: 6826167590818938882
+    - rid: 6826167590818938881
+      type: {class: SelectorNode, ns: , asm: Assembly-CSharp}
+      data:
+        children:
+        - rid: 6826167590818938883
+        - rid: 6826167590818938885
+        - rid: 6826167590818938889
+        - rid: 6826167590818938894
+    - rid: 6826167590818938882
+      type: {class: SpotTargetNode, ns: , asm: Assembly-CSharp}
+      data:
+        _searchDistance: 2
+        _fieldOfViewAngle: 90
+        _typeToTarget: 0
+        _targetMask:
+          serializedVersion: 2
+          m_Bits: 1536
+        _obstacleMask:
+          serializedVersion: 2
+          m_Bits: 0
+    - rid: 6826167590818938883
+      type: {class: IsPerformingActionNode, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6826167590818938885
+      type: {class: SequenceNode, ns: , asm: Assembly-CSharp}
+      data:
+        children:
+        - rid: 6826167590818938886
+        - rid: 6826167590818938887
+        - rid: 6826167590818938888
+    - rid: 6826167590818938886
+      type: {class: IsTargetFoundNode, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6826167590818938887
+      type: {class: ChaseTargetNode, ns: , asm: Assembly-CSharp}
+      data:
+        _arrivedAtTargetDistance: 1
+    - rid: 6826167590818938888
+      type: {class: DoActionNode, ns: , asm: Assembly-CSharp}
+      data:
+        _indexOfAction: 0
+    - rid: 6826167590818938889
+      type: {class: SequenceNode, ns: , asm: Assembly-CSharp}
+      data:
+        children:
+        - rid: 6826167590818938890
+        - rid: 6826167590818938891
+        - rid: 6826167590818938892
+        - rid: 6826167590818938893
+    - rid: 6826167590818938890
+      type: {class: HasLastKnownPositionNode, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6826167590818938891
+      type: {class: ChaseTargetNode, ns: , asm: Assembly-CSharp}
+      data:
+        _arrivedAtTargetDistance: 0.2
+    - rid: 6826167590818938892
+      type: {class: WaitNode, ns: , asm: Assembly-CSharp}
+      data:
+        _waitTime: 2
+    - rid: 6826167590818938893
+      type: {class: ResetTargetNode, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6826167590818938894
+      type: {class: RandomPatrolNode, ns: , asm: Assembly-CSharp}
+      data:
+        _wanderRadius: 5
+        _newDirectionInterval: 4
+        _arrivalProximity: 0.2
