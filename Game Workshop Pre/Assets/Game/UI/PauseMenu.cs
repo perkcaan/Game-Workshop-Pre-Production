@@ -52,7 +52,7 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         ChangeMenu(null);
-        _music.setPaused(false);
+        _music.setParameterByName("Pause", 0f);
     }
     public void OpenInventory()
     {
@@ -80,7 +80,7 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         ChangeMenu(pauseMenuUI);
-       _music.setPaused(true);
+        _music.setParameterByName("Pause", 1f);
     }
 
     void ChangeMenu(GameObject newMenu)
