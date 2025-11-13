@@ -224,11 +224,8 @@
 		<property name="isCutoff">
 			<value>true</value>
 		</property>
-		<property name="start">
-			<value>3</value>
-		</property>
 		<property name="length">
-			<value>7</value>
+			<value>9.9999999999999893</value>
 		</property>
 		<property name="looping">
 			<value>true</value>
@@ -263,6 +260,9 @@
 		</relationship>
 	</object>
 	<object class="MultiSound" id="{80864a58-5024-40fb-a219-24e9009ef957}">
+		<property name="triggerProbabilityEnabled">
+			<value>true</value>
+		</property>
 		<property name="start">
 			<value>7</value>
 		</property>
@@ -272,12 +272,14 @@
 		<property name="delayType">
 			<value>0</value>
 		</property>
+		<property name="maxVoices">
+			<value>1</value>
+		</property>
 		<property name="looping">
 			<value>true</value>
 		</property>
 		<relationship name="modulators">
-			<destination>{9824b8a7-64ce-4493-9f89-9cdb8f304dac}</destination>
-			<destination>{0d986f2e-7894-4f32-a685-a708e65f8bea}</destination>
+			<destination>{0285ae6e-cf0e-4f6d-bd22-5b2c79aeef37}</destination>
 		</relationship>
 		<relationship name="sounds">
 			<destination>{260971fd-c80d-432e-8f86-5a809e93bdc4}</destination>
@@ -365,7 +367,7 @@
 			<value>5</value>
 		</property>
 		<property name="pitchAtMinimum">
-			<value>0.200000003</value>
+			<value>0.504999995</value>
 		</property>
 	</object>
 	<object class="Automator" id="{aafe171f-e764-40c3-857e-896bdcf85d89}">
@@ -382,20 +384,15 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{bb4d5354-ed05-4514-94cf-33b93ca873b0}" />
-	<object class="RandomizerModulator" id="{9824b8a7-64ce-4493-9f89-9cdb8f304dac}">
-		<property name="nameOfPropertyBeingModulated">
-			<value>pitch</value>
-		</property>
-	</object>
-	<object class="AutopitchModulator" id="{0d986f2e-7894-4f32-a685-a708e65f8bea}">
+	<object class="AutopitchModulator" id="{0285ae6e-cf0e-4f6d-bd22-5b2c79aeef37}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>pitch</value>
 		</property>
 		<property name="root">
-			<value>8.5</value>
+			<value>8</value>
 		</property>
 		<property name="pitchAtMinimum">
-			<value>0.5</value>
+			<value>0.800000012</value>
 		</property>
 	</object>
 	<object class="SingleSound" id="{260971fd-c80d-432e-8f86-5a809e93bdc4}">
@@ -413,6 +410,12 @@
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{da9fa17a-9905-4783-8cf6-11c503c393f9}">
+		<property name="startOffset">
+			<value>1</value>
+		</property>
+		<property name="pitch">
+			<value>1</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{07e50838-2d42-47df-bf85-92a0ad89aa6c}</destination>
 		</relationship>
@@ -451,6 +454,7 @@
 		<relationship name="automationPoints">
 			<destination>{4c1b9ad7-7c20-48ef-a2d3-cf701b04114f}</destination>
 			<destination>{8da856ce-342f-4cde-8c7a-3f53426d3987}</destination>
+			<destination>{90f35300-36f7-4296-b519-dbc3898c53e7}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{29f7cee3-1504-4c74-b02e-96afc7458a90}" />
@@ -502,21 +506,32 @@
 	</object>
 	<object class="AutomationPoint" id="{4c1b9ad7-7c20-48ef-a2d3-cf701b04114f}">
 		<property name="position">
-			<value>3</value>
+			<value>0</value>
 		</property>
 		<property name="value">
 			<value>-80</value>
 		</property>
 		<property name="curveShape">
-			<value>-0.419848531</value>
+			<value>0.0811708421</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{8da856ce-342f-4cde-8c7a-3f53426d3987}">
 		<property name="position">
-			<value>10</value>
+			<value>9</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>-5</value>
+		</property>
+		<property name="curveShape">
+			<value>-1</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{90f35300-36f7-4296-b519-dbc3898c53e7}">
+		<property name="position">
+			<value>9.9677072120559753</value>
+		</property>
+		<property name="value">
+			<value>-25</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{22685de9-8246-4d73-b18d-1e835fea2c06}">
@@ -524,7 +539,7 @@
 			<value>9</value>
 		</property>
 		<property name="value">
-			<value>-5</value>
+			<value>-7</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{723c2527-10bb-4565-a993-05f1507983e1}">
@@ -535,7 +550,7 @@
 			<value>-80</value>
 		</property>
 		<property name="curveShape">
-			<value>1</value>
+			<value>0.325537235</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{9c79320e-0934-4858-9024-cb536fb032be}">
@@ -543,7 +558,7 @@
 			<value>10</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>-6</value>
 		</property>
 	</object>
 </objects>
