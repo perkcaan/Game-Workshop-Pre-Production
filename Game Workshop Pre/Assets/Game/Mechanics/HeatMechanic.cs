@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -34,6 +35,9 @@ public class HeatMechanic : MonoBehaviour
     [Tooltip("The time spent past the ignition threshold until this object ignites.")]
     [SerializeField] private float _ignitionTime = 1f;
 
+    private float _debugTimer = 0f;
+    private bool _debugIgnited = false;
+
 
 
     private float _relaxationTimer = 0f;
@@ -62,6 +66,16 @@ public class HeatMechanic : MonoBehaviour
         RelaxHeat();
         if (_shaderManager) _shaderManager.UpdateHeatShader(_heat, _warningThreshold, _ignitionThreshold);
         CheckForIgnition();
+
+        if (_hasIgnited)
+        {
+            _debugTimer += Time.deltaTime;
+        }
+        if (_debugTimer >= 10f)
+        {
+            Debug.Log("Something is wrong with this object. DI: " + _debugIgnited);
+            _debugTimer = 0f;
+        }
     }
 
 
@@ -148,6 +162,7 @@ public class HeatMechanic : MonoBehaviour
                 heatable.PrepareIgnite(this);
                 _shaderManager.StartDissolve(() => {
                     heatable.OnIgnite(this);
+                    _debugIgnited = true;
                 });
             }
         }

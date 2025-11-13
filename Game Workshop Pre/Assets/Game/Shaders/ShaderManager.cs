@@ -22,10 +22,12 @@ public class ShaderManager : MonoBehaviour
 
     private float _flashPhase = 0f; // This is the time spent in the heat warning threshold.
     private MaterialPropertyBlock _block;
+    private Coroutine _dissolveCoroutine;
 
     private void Awake()
     {
         if (_renderers.Count <= 0) _renderers.Add(GetComponent<Renderer>());
+        DOTween.Init(true, true, LogBehaviour.ErrorsOnly); 
     }
     private void Start()
     {
@@ -74,23 +76,42 @@ public class ShaderManager : MonoBehaviour
         SetFloatProperties("_Heat", heat01);
         SetFloatProperties("_FlashPhase", _flashPhase);
     }
-    
-    // Have this be called on 
+
+    // Have this be called on Heat Mechanic
     public void StartDissolve(Action onDone = null)
     {
+        if (_dissolveCoroutine != null)
+        {
+            StopCoroutine(_dissolveCoroutine);
+        }
+
+        _dissolveCoroutine = StartCoroutine(DissolveCoroutine(onDone));
+    }
+
+
+
+    private IEnumerator DissolveCoroutine(Action onDone)
+    {
         float maxDissolve = 1.05f + _dissolveBurnWidth;
+        float time = 0f;
 
         SetFloatProperties("_BurnWidth", _dissolveBurnWidth);
-        SetFloatProperties("_IsDissolving", true ? 1f : 0f);
-        Tween tween = DOVirtual.Float(0, maxDissolve, _dissolveTime, val =>
-        {
-            SetFloatProperties("_Dissolve", val);
-        }).OnComplete(() =>
-        {
-            SetFloatProperties("_IsDissolving", false ? 1f : 0f);
-            onDone?.Invoke(); // Call back when tween is finished
-        });
+        SetFloatProperties("_IsDissolving", 1f);
 
-        
+        while (time < _dissolveTime)
+        {
+            float progress = time / _dissolveTime;
+            float dissolveVal = Mathf.Lerp(0f, maxDissolve, progress);
+            SetFloatProperties("_Dissolve", dissolveVal);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        SetFloatProperties("_Dissolve", maxDissolve);
+        SetFloatProperties("_IsDissolving", 0f);
+
+        _dissolveCoroutine = null;
+        onDone?.Invoke();
     }
+
 }

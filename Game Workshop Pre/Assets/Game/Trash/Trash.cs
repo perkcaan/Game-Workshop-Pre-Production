@@ -70,6 +70,11 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     public void PrepareIgnite(HeatMechanic heat)
     {
         _isIgnited = true;
+        foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
+
+    _rigidBody.velocity = Vector2.zero;
+    _rigidBody.simulated = false;
+
     }
     
     public void OnIgnite(HeatMechanic heat)
@@ -82,7 +87,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     }
 
     public void OnTrashBallIgnite()
-    {
+    {;
         if (_isDestroyed) return;
         _isDestroyed = true;
         

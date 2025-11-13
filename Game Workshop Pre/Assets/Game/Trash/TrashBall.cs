@@ -359,6 +359,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     private void ExplodeTrashBall()
     {
+        if (_isBeingDestroyed) return;
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
@@ -370,8 +371,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     public void PrepareIgnite(HeatMechanic heat)
     {
-        if (_isBeingDestroyed) return;
         _isBeingDestroyed = true;
+        //foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
     }
     
     
