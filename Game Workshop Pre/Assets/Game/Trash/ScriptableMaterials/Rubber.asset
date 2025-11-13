@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa0815f178e81a4696f1f08b8aeb690, type: 3}
   m_Name: Rubber
   m_EditorClassIdentifier: 
-  color: {r: 0.17346315, g: 0.16887681, b: 0.21698111, a: 1}
+  color: {r: 0.22761784, g: 0.17568529, b: 0.26415092, a: 1}
   bounciness: 0.2
-  mass: 0
-  drag: -0.75
+  mass: -0.25
+  drag: -0.25
   decayMultiplier: 0
-  damageMultiplier: 0.5
-  absorbMultiplier: -0.5
+  damageMultiplier: 0
+  swipeForceMultiplier: 0
+  knockbackMultiplier: 0
+  sizeToAbsorbChange: 0

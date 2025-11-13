@@ -67,7 +67,7 @@ public class BroomSweepHandler : MonoBehaviour
         ISweepable sweepableObject = other.gameObject.GetComponent<ISweepable>();
         if (sweepableObject != null)
         {
-            sweepableObject.OnSweep(direction.normalized, _sweepForce);
+            sweepableObject.OnSweep(transform.position, direction.normalized, _sweepForce);
         }
         
     }

@@ -150,14 +150,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scaleMultiplier: 0.6
   _baseMaxHealth: 30
+  _minimumSpeedToAbsorbPlayer: 5
+  _size: 0
   _idleDecayMultiplier: 10
   _decayTrashDropRate: 1.2
+  _vacuumForce: 2.5
+  _minimumVacuumForce: 0.3
+  _sizeMultiplier: 2
   _baseMaterial: {fileID: 11400000, guid: 6fb7000f493002749ba7cdd0bb70878d, type: 2}
   _genericMaterial: {fileID: 11400000, guid: dd963f5861bb9344da6b0d92692fad6c, type: 2}
   _dominantThreshold: 0.85
   _primaryThreshold: 0.5
   _secondaryThreshold: 0.15
-  _size: 0
+  _movementController: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
 --- !u!114 &2415871829025244457
 MonoBehaviour:
   m_ObjectHideFlags: 0

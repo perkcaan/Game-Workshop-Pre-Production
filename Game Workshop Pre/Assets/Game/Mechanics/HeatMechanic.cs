@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class HeatMechanic : MonoBehaviour
 {
+
     //Constants 
     public const int LOWEST_HEAT_VALUE = 0;
     public const int HIGHEST_HEAT_VALUE = 100;
@@ -70,14 +71,17 @@ public class HeatMechanic : MonoBehaviour
         RelaxHeat();
         UpdateHeatShader();
         CheckForIgnition();
-       
+        //Debug.Log(_heat);
     }
 
 
     // Room subscribing
     public void EnterRoom(Room room)
     {
-        _currentRooms.Add(room);
+        if (!_currentRooms.Contains(room))
+        {
+            _currentRooms.Add(room);
+        }
     }
 
     // Room unsubscribing
@@ -183,4 +187,6 @@ public class HeatMechanic : MonoBehaviour
         if (mainTexture != null)  _block.SetTexture("_MainTex", mainTexture); 
         _spriteRenderer.SetPropertyBlock(_block);
     }
+
+
 }

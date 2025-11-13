@@ -1,15 +1,19 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using System;
 
-public class TrashPile : Trash, ISwipeable
+public class TrashPile : Trash, ISweepable, ISwipeable
 {
     [SerializeField] int _health;
     [SerializeField] int _trashSpreadRange;
     [SerializeField] float _onDamagedShakeForce;
     [SerializeField] float _onExplodeForce;
+    [SerializeField] float _sweepDurationToTakeDamage;
     [SerializeField] List<Trash> _startingStoredTrash;
     private SpriteRenderer _sprite;
+    private float _sweepTimer;
+    private float _shakeSpeed = 0.125f;
 
     void Awake()
     {
@@ -21,12 +25,26 @@ public class TrashPile : Trash, ISwipeable
         _sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
-    public void OnSwipe(Vector2 direction, float force)
+    public void OnSweep(Vector2 position, Vector2 direction, float force)
     {
-        TakeDamage(1, direction, force);
+        if (!isActiveAndEnabled) return;
+        _sweepTimer += Time.deltaTime * 2;
+        if (_sweepTimer > _sweepDurationToTakeDamage)
+        {
+            TakeDamage(1, direction, force);
+            _sweepTimer = 0;
+        }
     }
 
-    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+
+    public void OnSwipe(Vector2 direction, float force)
+    {
+        TakeDamage(3, direction, force);
+        if(this != null && trashMaterial != null)
+            ParticleManager.Instance.Play("swipe", transform.position, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), this.trashMaterial.color, transform);
+    }
+
+    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
         if (Size <= trashBall.Size)
         {
@@ -50,15 +68,17 @@ public class TrashPile : Trash, ISwipeable
         else
         {
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(_sprite.transform.DOLocalMoveX(_onDamagedShakeForce, 0.05f));
-            sequence.Append(_sprite.transform.DOLocalMoveX(-_onDamagedShakeForce, 0.1f));
-            sequence.Append(_sprite.transform.DOLocalMoveX(0, 0.05f));
+            sequence.Append(_sprite.transform.DOLocalMove(direction.normalized * _onDamagedShakeForce * damage, _shakeSpeed));
+            sequence.Append(_sprite.transform.DOLocalMove(-direction.normalized * _onDamagedShakeForce * damage / 4, _shakeSpeed));
+            sequence.Append(_sprite.transform.DOLocalMove(Vector3.zero, _shakeSpeed));
         }
     }
 
     private void ReleaseTrash(Vector2 direction, float force)
     {
         DOTween.KillAll();
+        SendScore?.Invoke(_pointValue);
+
         foreach (Trash trash in _startingStoredTrash)
         {
             Trash releasedTrash = Instantiate(trash);
@@ -66,16 +86,14 @@ public class TrashPile : Trash, ISwipeable
             releasedTrash.transform.position = transform.position;
             if (direction != null)
             {
-                float randomAngle = Random.Range(-_trashSpreadRange, _trashSpreadRange);
+                float randomAngle = UnityEngine.Random.Range(-_trashSpreadRange, _trashSpreadRange);
                 Vector2 randomDirection = Quaternion.Euler(0, 0, randomAngle) * direction;
-                float randomForce = Random.Range(force * _onExplodeForce, force * _onExplodeForce * 3);
-                releasedTrash.GetComponent<Rigidbody2D>().AddForce(randomDirection.normalized * randomForce, ForceMode2D.Force);
+
+                float randomForce = UnityEngine.Random.Range(force * _onExplodeForce, force * _onExplodeForce * 3);
+                releasedTrash.GetComponent<Rigidbody2D>().AddForce(randomDirection.normalized * randomForce, ForceMode2D.Impulse);
             }
         }
         _parentRoom.ObjectCleaned(this);
         Destroy(gameObject);
     }
-
-
-
 }

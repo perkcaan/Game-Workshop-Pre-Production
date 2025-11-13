@@ -5,32 +5,60 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static bool GameIsPaused = false;
+    public GameObject currentOpenMenu;
     public GameObject pauseMenuUI;
+    public GameObject inventoryMenuUI;
+    public GameObject optionsMenuUI;
 
-    // Update is called once per frame
+    void Awake()
+    {
+        OpenInventory();
+    }
+    void Start()
+    {
+        Resume();
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-           if (GameIsPaused)
+            if (currentOpenMenu == null)
             {
-                Resume();
+                // if game is running pause it, else close the current menu
+                Pause();
             }
             else
             {
-                Pause();
+                Resume();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+           if (!inventoryMenuUI.activeSelf)
+            {
+                OpenInventory();
+            }
+            else
+            {
+                Resume();
             }
         }
     }
 
     public void Resume()
     {
-        pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        GameIsPaused = false;
+        ChangeMenu(null);
     }
-
+    public void OpenInventory()
+    {
+        ChangeMenu(inventoryMenuUI);
+    }
+    public void OpenOptions()
+    {
+        ChangeMenu(optionsMenuUI);
+    }
+    
     public void Restart()
     {
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -44,10 +72,27 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(sceneIndex);
     }
 
-    void Pause()
+    public void Pause()
     {
-        pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
-        GameIsPaused = true;
+        ChangeMenu(pauseMenuUI);
+    }
+
+    void ChangeMenu(GameObject newMenu)
+    {
+        if (newMenu == currentOpenMenu) return;
+        pauseMenuUI.SetActive(false);
+        inventoryMenuUI.SetActive(false);
+        optionsMenuUI.SetActive(false);
+        if (newMenu != null)
+        {
+            Time.timeScale = 0f;
+            currentOpenMenu = newMenu;
+            newMenu.SetActive(true);
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            currentOpenMenu = null;
+        }
     }
 }

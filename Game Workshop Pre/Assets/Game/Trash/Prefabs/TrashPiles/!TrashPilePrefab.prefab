@@ -114,10 +114,12 @@ MonoBehaviour:
   _explosionMultiplier: 1
   _size: 1
   trashMaterial: {fileID: 0}
+  _pointValue: 0
   _health: 1
   _trashSpreadRange: 15
-  _onDamagedShakeForce: 0
+  _onDamagedShakeForce: 0.05
   _onExplodeForce: 15
+  _sweepDurationToTakeDamage: 1
   _startingStoredTrash: []
 --- !u!114 &-4139108686608868786
 MonoBehaviour:
