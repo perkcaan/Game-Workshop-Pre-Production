@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 1159916424768734981}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0063438416, y: -3.0489101, z: -10}
+  m_LocalPosition: {x: -6.493656, y: -1.0489101, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10255,10 +10255,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85e5d827c809634ab6ae682e712a21c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderers:
+  - {fileID: 9097258847089950167}
   _maxFlashFrequency: 10
   _heatFlashRamp: 2
   _dissolveTime: 1
   _dissolveBurnWidth: 0.4
+  _meshTexture: {fileID: 0}
 --- !u!1 &7819092179503157042
 GameObject:
   m_ObjectHideFlags: 0
@@ -10463,7 +10466,6 @@ MonoBehaviour:
   _warningThreshold: 40
   _ignitionThreshold: 90
   _ignitionTime: 0.2
-  mainTexture: {fileID: 0}
 --- !u!114 &8154465775048327065
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -139,7 +139,6 @@ MonoBehaviour:
   _warningThreshold: 60
   _ignitionThreshold: 80
   _ignitionTime: 0.5
-  mainTexture: {fileID: 0}
 --- !u!1 &4045244157879140489
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +236,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85e5d827c809634ab6ae682e712a21c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderers:
+  - {fileID: 8889948046069165903}
   _maxFlashFrequency: 10
   _heatFlashRamp: 2
   _dissolveTime: 1
   _dissolveBurnWidth: 0.4
+  _meshTexture: {fileID: 0}

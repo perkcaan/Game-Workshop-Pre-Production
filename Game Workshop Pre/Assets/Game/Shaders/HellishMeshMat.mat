@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HellishMeshMat
-  m_Shader: {fileID: -6465566751694194690, guid: 49ef6cde977950f4f8632984aab3d954, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 0f1278a353621f547b5f7ddfaa66ed67, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -38,10 +38,6 @@ Material:
     m_TexEnvs:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 5c9175d51ecf2cc488d21ca71ff76edc, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_8037e22e3c3c466a9869b1d70aa397ca_Texture_1_Texture2D:
-        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -70,8 +66,6 @@ Material:
     - _MaxFlashFrequency: 2
     - _MedHeatThreshold: 0.9
     - _MinTint: 0.65
-    - _PixelDensity: 16
-    - _PixelSize: 0.0625
     m_Colors:
     - _DissolveColor: {r: 8, g: 2.596286, b: 0, a: 1}
     - _FlashColor: {r: 1, g: 1, b: 1, a: 1}

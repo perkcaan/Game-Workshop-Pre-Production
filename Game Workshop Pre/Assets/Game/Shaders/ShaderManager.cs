@@ -7,6 +7,8 @@ using UnityEngine;
 public class ShaderManager : MonoBehaviour
 {
     // Properties
+    [SerializeField] private List<Renderer> _renderers = new List<Renderer>();
+        
     [Tooltip("The maximum rate per second at which this object flashes.")]
     [SerializeField] private float _maxFlashFrequency = 10f;
     [Tooltip("How fast flashing ramps up after reaching warning threshold. (Exponential)")]
@@ -17,34 +19,35 @@ public class ShaderManager : MonoBehaviour
     [SerializeField] private float _dissolveBurnWidth = 0.4f;
     [Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
     [SerializeField] private Texture _meshTexture;
-    
+
     private float _flashPhase = 0f; // This is the time spent in the heat warning threshold.
-    // Components
-    private Renderer _renderer;
     private MaterialPropertyBlock _block;
 
     private void Awake()
     {
-        _renderer = GetComponent<Renderer>();
+        if (_renderers.Count <= 0) _renderers.Add(GetComponent<Renderer>());
+    }
+    private void Start()
+    {
         _block = new MaterialPropertyBlock();
     }
 
-    private void Start()
+    private void SetFloatProperties(string propRef, float propVal)
     {
-        _renderer.GetPropertyBlock(_block);
-
-        if (_meshTexture != null) _block.SetTexture("_MainTex", _meshTexture);
-        _renderer.SetPropertyBlock(_block);
+        foreach (Renderer renderer in _renderers)
+        {
+            renderer.GetPropertyBlock(_block);
+            _block.SetFloat(propRef, propVal);
+            renderer.SetPropertyBlock(_block);
+        }
     }
     
     public void Reset()
     {
         _flashPhase = 0f;
 
-        _renderer.GetPropertyBlock(_block);
-        _block.SetFloat("_FlashPhase", _flashPhase);
-        _block.SetFloat("_Dissolve", 0f);
-        _renderer.SetPropertyBlock(_block);
+        SetFloatProperties("_FlashPhase", _flashPhase);
+        SetFloatProperties("_Dissolve", 0f);
     }
 
 
@@ -68,10 +71,8 @@ public class ShaderManager : MonoBehaviour
         }
 
 
-        _renderer.GetPropertyBlock(_block);
-        _block.SetFloat("_Heat", heat01);
-        _block.SetFloat("_FlashPhase", _flashPhase);
-        _renderer.SetPropertyBlock(_block);
+        SetFloatProperties("_Heat", heat01);
+        SetFloatProperties("_FlashPhase", _flashPhase);
     }
     
     // Have this be called on 
@@ -79,18 +80,14 @@ public class ShaderManager : MonoBehaviour
     {
         float maxDissolve = 1.05f + _dissolveBurnWidth;
 
-        _renderer.GetPropertyBlock(_block);
-        _block.SetFloat("_BurnWidth", _dissolveBurnWidth);
-        _block.SetFloat("_IsDissolving", true ? 1f : 0f);
-        _renderer.SetPropertyBlock(_block);
+        SetFloatProperties("_BurnWidth", _dissolveBurnWidth);
+        SetFloatProperties("_IsDissolving", true ? 1f : 0f);
         Tween tween = DOVirtual.Float(0, maxDissolve, _dissolveTime, val =>
         {
-            _block.SetFloat("_Dissolve", val);
-            _renderer.SetPropertyBlock(_block);
+            SetFloatProperties("_Dissolve", val);
         }).OnComplete(() =>
         {
-            _block.SetFloat("_IsDissolving", false ? 1f : 0f);
-            _renderer.SetPropertyBlock(_block);
+            SetFloatProperties("_IsDissolving", false ? 1f : 0f);
             onDone?.Invoke(); // Call back when tween is finished
         });
 
