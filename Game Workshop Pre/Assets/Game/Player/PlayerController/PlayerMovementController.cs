@@ -90,23 +90,20 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
-<<<<<<< Updated upstream
         _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
         _music = FMODUnity.RuntimeManager.CreateInstance("event:/Music/Hellish Sample");
-=======
->>>>>>> Stashed changes
+
     }
 
     private void Start()
     {
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
-<<<<<<< Updated upstream
-        //_music.start();
-        _heatSound.start();
-=======
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
->>>>>>> Stashed changes
+
+        _music.start();
+        //_heatSound.start();
+        //FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
+
         _playerHeat = GetComponent<HeatMechanic>();
     }
 

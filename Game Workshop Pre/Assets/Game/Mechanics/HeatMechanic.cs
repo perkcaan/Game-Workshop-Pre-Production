@@ -77,7 +77,7 @@ public class HeatMechanic : MonoBehaviour
         UpdateHeatShader();
         CheckForIgnition();
         _heatSound.setParameterByName("Heat", (_player._playerHeat.Heat / 10));
-        //Debug.Log(_heat);
+        Debug.Log(_player._playerHeat.Heat);
     }
 
 
