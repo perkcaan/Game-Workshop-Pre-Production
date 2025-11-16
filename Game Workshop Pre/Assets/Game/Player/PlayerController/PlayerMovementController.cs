@@ -90,16 +90,23 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
+<<<<<<< Updated upstream
         _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
         _music = FMODUnity.RuntimeManager.CreateInstance("event:/Music/Hellish Sample");
+=======
+>>>>>>> Stashed changes
     }
 
     private void Start()
     {
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
+<<<<<<< Updated upstream
         //_music.start();
         _heatSound.start();
+=======
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
+>>>>>>> Stashed changes
         _playerHeat = GetComponent<HeatMechanic>();
     }
 
@@ -111,7 +118,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void FixedUpdate()
     {
         UpdateMovement();
-        _heatSound.setParameterByName("Heat", (_playerHeat.Heat / 10));
+        
     }
 
     private void UpdateCooldowns()
@@ -343,6 +350,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
         playerDeath?.Invoke(true);
+
         Debug.Log("Return to Checkpoint");
         //_music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
