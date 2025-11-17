@@ -304,7 +304,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
         Death();
 
-        //heat.Reset();
+        heat.Reset();
         
         LayerMask layerMask = new LayerMask();
         _ctx.Collider.excludeLayers = layerMask;
