@@ -36,7 +36,11 @@ public class ParticleManager : Singleton<ParticleManager>
     public void Modify(string pCode,float duration,int maxParticles, int speed, string operation)
     {
         psInstance = _particles[pCode];
+         
         var MainModule = psInstance.main;
+        float initialDuration = MainModule.duration;
+        int initialParticles = MainModule.maxParticles;
+        
 
         if (!modified)
         {
@@ -66,6 +70,13 @@ public class ParticleManager : Singleton<ParticleManager>
                     MainModule.duration /= duration;
                     MainModule.maxParticles /= maxParticles;
                     MainModule.startSpeed = speed;
+                    break;
+
+                case "Restore":
+                    MainModule.duration = initialDuration;
+                    MainModule.maxParticles = initialParticles;
+                    MainModule.startSpeed = speed;
+                    Debug.Log("Restored");
                     break;
             }
         }

@@ -103,7 +103,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         _primaryTrashMaterial.whenBallRolls();
         _secondaryTrashMaterial.whenBallRolls();
-        //Debug.Log(_primaryTrashMaterial.name);
+        Debug.Log(_primaryTrashMaterial.name);
         RuntimeManager.StudioSystem.setParameterByName("RPM", _rigidBody.velocity.magnitude * 10);
         //Debug.Log(_rigidBody.velocity.magnitude * 10);
         // _emitter.Play();
@@ -158,16 +158,17 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         Color32 metalColor = new Color32(255, 172, 28, 255);
 
 
-        //if (_primaryTrashMaterial.name == "Metal")
-        //{
-        //    ParticleManager.Instance.Modify("swipe", 0, 75, 0, "Subtract");
-        //    ParticleManager.Instance.modified = true;
-        //    ParticleManager.Instance.Play("swipe", transform.position, particleRotation, metalColor, transform);
-        //}
-       
+        if (_primaryTrashMaterial.name == "Metal")
+        {
+            ParticleManager.Instance.Modify("swipe", 0, 75, 0, "Subtract");
+            ParticleManager.Instance.modified = true;
+            ParticleManager.Instance.Play("swipe", transform.position, particleRotation, metalColor, transform);
+        }
+
             ParticleManager.Instance.modified = false;
-            ParticleManager.Instance.Modify("swipe", 0, 75, 0, "Add");
+            //ParticleManager.Instance.Modify("swipe", 0, 0, 0, "Restore");
             ParticleManager.Instance.Play("swipe", transform.position, particleRotation, _primaryTrashMaterial.color, transform);
+
         
     }
 
