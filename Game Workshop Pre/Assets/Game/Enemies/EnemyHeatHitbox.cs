@@ -36,6 +36,10 @@ public class EnemyHeatHitbox : MonoBehaviour
     public void Disable()
     {
         _collider.enabled = false;
+        if(sr != null)
+        {
+            sr.enabled = false;
+        }
     }
     
     private void OnTriggerEnter2D(Collider2D collider)
