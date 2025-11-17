@@ -6,6 +6,7 @@ public class EnemyHeatHitbox : MonoBehaviour
 {
     [SerializeField] private float _heatApplied = 10f;
     [SerializeField] private float _knockbackApplied = 10f;
+    SpriteRenderer sr = null;
 
     private Collider2D _collider;
     private float _rotation = 0f;
@@ -13,6 +14,7 @@ public class EnemyHeatHitbox : MonoBehaviour
     private void Awake()
     {
         _collider = GetComponent<Collider2D>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     public void Enable()
@@ -49,6 +51,11 @@ public class EnemyHeatHitbox : MonoBehaviour
             Vector2 direction = new Vector2(Mathf.Cos(rotationRad), Mathf.Sin(rotationRad)).normalized;
 
             swipeable.OnSwipe(direction, _knockbackApplied);
+        }
+
+        if(sr != null)
+        {
+            sr.enabled = true;
         }
     }
 }
