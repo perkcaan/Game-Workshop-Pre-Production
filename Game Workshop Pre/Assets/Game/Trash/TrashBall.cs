@@ -73,6 +73,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     void SetSize()
     {
+        if (_isBeingDestroyed) return;
         float newSize = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
         transform.localScale = new Vector3(newSize, newSize, newSize);
     }
@@ -102,13 +103,13 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         _primaryTrashMaterial.whenBallRolls();
         _secondaryTrashMaterial.whenBallRolls();
-        //Debug.Log(_primaryTrashMaterial.name);
+        Debug.Log(_primaryTrashMaterial.name);
         RuntimeManager.StudioSystem.setParameterByName("RPM", _rigidBody.velocity.magnitude * 10);
         //Debug.Log(_rigidBody.velocity.magnitude * 10);
         // _emitter.Play();
 
         // Trash ball rotation
-        Vector3 rotationAxis = new Vector3(-_rigidBody.velocity.y, _rigidBody.velocity.x, 0);
+        Vector3 rotationAxis = new Vector3(_rigidBody.velocity.y, -_rigidBody.velocity.x, 0);
         float distance = _rigidBody.velocity.magnitude * Time.deltaTime;
         float circumference = 2 * Mathf.PI * transform.localScale.x;
         float rotationAngle = (distance / circumference) * 360f;
@@ -157,16 +158,17 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         Color32 metalColor = new Color32(255, 172, 28, 255);
 
 
-        //if (_primaryTrashMaterial.name == "Metal")
-        //{
-        //    ParticleManager.Instance.Modify("swipe", 0, 75, 0, "Subtract");
-        //    ParticleManager.Instance.modified = true;
-        //    ParticleManager.Instance.Play("swipe", transform.position, particleRotation, metalColor, transform);
-        //}
-       
+        if (_primaryTrashMaterial.name == "Metal")
+        {
+            ParticleManager.Instance.Modify("swipe", 0, 75, 0, "Subtract");
+            ParticleManager.Instance.modified = true;
+            ParticleManager.Instance.Play("swipe", transform.position, particleRotation, metalColor, transform);
+        }
+
             ParticleManager.Instance.modified = false;
-            ParticleManager.Instance.Modify("swipe", 0, 75, 0, "Add");
+            //ParticleManager.Instance.Modify("swipe", 0, 0, 0, "Restore");
             ParticleManager.Instance.Play("swipe", transform.position, particleRotation, _primaryTrashMaterial.color, transform);
+
         
     }
 
@@ -381,6 +383,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     private void ExplodeTrashBall()
     {
+        if (_isBeingDestroyed) return;
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
@@ -388,13 +391,17 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             absorbable.OnTrashBallExplode(this);
         }
         Destroy(gameObject);
+    }   
+
+    public void PrepareIgnite(HeatMechanic heat)
+    {
+        _isBeingDestroyed = true;
+        //foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
     }
+    
     
     public void OnIgnite(HeatMechanic heat)
     {
-        if (_isBeingDestroyed) return;
-        _isBeingDestroyed = true;
-
         _primaryTrashMaterial.whenBallIgnite();
         _secondaryTrashMaterial.whenBallIgnite();
 

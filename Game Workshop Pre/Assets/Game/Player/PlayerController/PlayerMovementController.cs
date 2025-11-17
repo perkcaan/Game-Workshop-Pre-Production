@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using System.Collections;
+using UnityEngine.Android;
 
-public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,IHeatable
+public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
 
     #region header
@@ -20,8 +20,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
     public float SweepForce { get { return _sweepForce; } }
     [SerializeField][Range(0f, 2f)] private float _sweepForceMovementScaler = 0.1f;
     public float SweepForceMovementScaler { get { return _sweepForceMovementScaler; } }
-
-
+    
     [Header("Swipe Properties")]
     [SerializeField] private float _baseSwipeForce = 5f;
     public float BaseSwipeForce { get { return _baseSwipeForce; } }
@@ -41,7 +40,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
     [Header("Absorbed Properties")]
     [SerializeField] private float _absorbResistance;
     [SerializeField] private float _minTrashSizeToAbsorb;
-
+    [SerializeField] private int _playerEscapeDamage;
 
     [Header("Swipe Visual Line")]
     [SerializeField] private float _swipeVisualLineDistance = 10f;
@@ -51,16 +50,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
 
     [Header("Audio")]
     [SerializeField] private float _footstepCooldown = 0f;
-    private FMOD.Studio.EventInstance _trashSound;
     private FMOD.Studio.EventInstance _heatSound;
 
-    [Header("Effects")]
-    public ParticleManager _particles;
-    ParticleSystem _dashRestoreInstance;
-    [SerializeField] private TrailRenderer _dashTrail;
-
+    [Header("Checkpoint")]
+    [SerializeField] private CheckpointManager Checkpoint_Manager;
+    public static System.Action<bool> playerDeath;
     public HeatMechanic _playerHeat;
 
+    [Header("Item Effected Properties")]
+    public bool canSweep;
+    public bool canSwipe;
 
     // Fields
     //weight
@@ -83,10 +82,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
     // Methods
     private void Awake()
     {
-        _playerHeat = GetComponent<HeatMechanic>();
         _ctx = new PlayerContext(this, _movementProps);
         _ctx.Rigidbody = GetComponent<Rigidbody2D>();
-        _ctx.Animator = GetComponent<Animator>();
+        _ctx.Animator = GetComponentInChildren<Animator>();
         _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
         _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
         _ctx.Collider = GetComponent<Collider2D>();
@@ -98,22 +96,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
     private void Start()
     {
         SetWeight(_weight);
-        _trashSound.start();
-        _heatSound.start();
-        Cursor.lockState = CursorLockMode.Confined;
         Cursor.lockState = CursorLockMode.Confined;
         FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
+        _heatSound.start();
+        _playerHeat = GetComponent<HeatMechanic>();
     }
 
     private void Update()
     {
         _state.Update();
         UpdateCooldowns();
-        if (_dashRestoreInstance != null)
-            _dashRestoreInstance.gameObject.transform.SetParent(this.transform);
-        //_trashSound.setParameterByName("Glass", .5f);
-        
-
     }
     private void FixedUpdate()
     {
@@ -137,7 +129,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                SpawnDashFX();
+                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,Color.white, transform);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
             }
         }
 
@@ -165,13 +158,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
         }
     }
 
-    private void SpawnDashFX()
-    {
-        // Corrected the method call to match the expected parameter types
-        if (ParticleManager.Instance != null)
-            ParticleManager.Instance.Play("dashBack", transform.position, Quaternion.Euler(0, 0, _ctx.Rotation), transform);
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
-    }
 
     //inputs
     private void OnMoveInput(InputValue value)
@@ -181,6 +167,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
 
     private void OnSweepInput(InputValue value)
     {
+        if (!canSweep) return;
         _ctx.IsSweepPressed = value.isPressed;
         if (!_ctx.IsSweepPressed)
         {
@@ -194,11 +181,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
         if (!value.isPressed) return;
         if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
         {
-            
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash", transform.position);
-            // SpawnDashTrail();
             _state.ChangeState(PlayerStateEnum.Dash);
-            StartCoroutine(Dashing());
         }
     }
 
@@ -220,6 +204,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
 
     private void OnSwipeInput(InputValue value)
     {
+        if (!canSwipe) return;
         _ctx.IsSwipePressed = value.isPressed;
         if (_ctx.CanSwipe && _ctx.SwipeCooldownTimer <= 0f && value.isPressed)
         {
@@ -233,7 +218,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
         if (_ctx.AbsorbedTrashBall != null)
         {
             _ctx.Animator.speed += 0.3f;
-            _ctx.AbsorbedTrashBall.TakeDamage(1);
+            _ctx.AbsorbedTrashBall.TakeDamage(_playerEscapeDamage);
         }
     }
 
@@ -248,7 +233,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
 
         _ctx.Animator.SetFloat("Speed", _ctx.FrameVelocity.magnitude);
         _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
-        
 
 
         _footstepCooldown -= Time.deltaTime;
@@ -285,15 +269,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
     // Being swiped puts you into tumble state
     public void OnSwipe(Vector2 direction, float force)
     {
-        _state.ChangeState(PlayerStateEnum.Tumble);
+        if (force >= _movementProps.EnterTumbleThreshold) _state.ChangeState(PlayerStateEnum.Tumble);
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
     // IAbsorbable
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float absorbingPower, bool forcedAbsorb)
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (absorbingPower > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
+        if (forcedAbsorb || (ballVelocity > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
         {
             trashBall.absorbedObjects.Add(this);
             _ctx.AbsorbedTrashBall = trashBall;
@@ -307,13 +291,26 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
         _state.ChangeState(PlayerStateEnum.Idle);
     }
 
-    //public void SpawnDashTrail()
-    //{
-    //    Vector3 offset = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        
-    //    if (ParticleManager.Instance != null)
-    //        ParticleManager.Instance.Play("dash", offset, Quaternion.Euler(0, 0, _ctx.Rotation + 90), null);
-    //}
+    // IHeatable
+    public void PrepareIgnite(HeatMechanic heat)
+    {
+        //TODO: Make a death state where the player can't do anything and is locked to it until respawn
+    }
+    
+    public void OnIgnite(HeatMechanic heat)
+    {
+        // transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
+
+        Death();
+        heat.Reset();
+    }
+
+    // ITargetable
+
+    public TargetType GetTargetType()
+    {
+        return TargetType.Player;
+    }
 
     // Gizmo to display the dash cooldowns
     private void DrawDashCooldownGizmo()
@@ -337,23 +334,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable,I
         }
     }
 
-    private IEnumerator Dashing()
-    {
-        _ctx.IsDashing = true;
-        _dashTrail.emitting = true;
-        yield return new WaitForSeconds(0.25f);
-        _dashTrail.emitting = false;
-        _ctx.IsDashing = false;
-
-    }
-
     public void OnTrashBallIgnite()
     {
-        throw new System.NotImplementedException();
+        Death();
     }
 
-    public void OnIgnite(HeatMechanic heat)
+    private void Death()
     {
-        Debug.Log("He Dead");
+        transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
+        playerDeath?.Invoke(true);
+        //Debug.Log("Return to Checkpoint");
     }
 }
