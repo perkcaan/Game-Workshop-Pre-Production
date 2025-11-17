@@ -46,14 +46,14 @@ public class ParticleManager : Singleton<ParticleManager>
                     MainModule.duration -= duration;
                     MainModule.maxParticles -= maxParticles;
                     MainModule.startSpeed = speed;
-                    Debug.Log("Subtracted from Particles");
+                    //Debug.Log("Subtracted from Particles");
                     break;
 
                 case "Add":
                     MainModule.duration += duration;
                     MainModule.maxParticles += maxParticles;
                     MainModule.startSpeed = speed;
-                    Debug.Log("Added to Particles");
+                    //Debug.Log("Added to Particles");
                     break;
 
                 case "Multiply":

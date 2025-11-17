@@ -30,7 +30,7 @@ public class Inventory : MonoBehaviour
         Instance = this;
         displayedItemText.text = "";
         displayedItemTitle.text = "";
-        DontDestroyOnLoad(gameObject);
+        // this was here but doesnt work since this isn't a root gameobject - DontDestroyOnLoad(gameObject);
     }
     
     public void DisplayItem(Item item)

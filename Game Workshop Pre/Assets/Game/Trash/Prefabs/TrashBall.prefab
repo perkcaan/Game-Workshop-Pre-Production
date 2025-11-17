@@ -181,8 +181,6 @@ MonoBehaviour:
   _warningThreshold: 60
   _ignitionThreshold: 80
   _ignitionTime: 0.5
-  _maxFlashFrequency: 50
-  mainTexture: {fileID: 2800000, guid: 5c9175d51ecf2cc488d21ca71ff76edc, type: 3}
 --- !u!114 &-2150688670721289081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +264,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 6cf14628cc1339a449fb7cfeef552e81, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -310,6 +308,7 @@ GameObject:
   - component: {fileID: 3325556117375529226}
   - component: {fileID: 3488484795273988948}
   - component: {fileID: 6442539237054535307}
+  - component: {fileID: 3130954535914247153}
   m_Layer: 8
   m_Name: TrashBall
   m_TagString: Untagged
@@ -360,8 +359,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b18a644f5c3822c47b3c735f02b3deb2, type: 2}
-  - {fileID: 2100000, guid: 25e1d5e9a5e21ca4781576e75e644703, type: 2}
+  - {fileID: -876546973899608171, guid: cdb4a1dd0c0f3844585726b0c22d37c0, type: 3}
+  - {fileID: 2100000, guid: b7bcc35ebbf98e14c9c8d71e24862ed8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -404,3 +403,23 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3130954535914247153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5613526296850362621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c85e5d827c809634ab6ae682e712a21c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderers:
+  - {fileID: 3488484795273988948}
+  - {fileID: 5244916283118741307}
+  _maxFlashFrequency: 10
+  _heatFlashRamp: 2
+  _dissolveTime: 2
+  _dissolveBurnWidth: 0.4
+  _meshTexture: {fileID: 2800000, guid: 5c9175d51ecf2cc488d21ca71ff76edc, type: 3}

@@ -73,6 +73,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     void SetSize()
     {
+        if (_isBeingDestroyed) return;
         float newSize = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
         transform.localScale = new Vector3(newSize, newSize, newSize);
     }
@@ -108,7 +109,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         // _emitter.Play();
 
         // Trash ball rotation
-        Vector3 rotationAxis = new Vector3(-_rigidBody.velocity.y, _rigidBody.velocity.x, 0);
+        Vector3 rotationAxis = new Vector3(_rigidBody.velocity.y, -_rigidBody.velocity.x, 0);
         float distance = _rigidBody.velocity.magnitude * Time.deltaTime;
         float circumference = 2 * Mathf.PI * transform.localScale.x;
         float rotationAngle = (distance / circumference) * 360f;
@@ -381,6 +382,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     private void ExplodeTrashBall()
     {
+        if (_isBeingDestroyed) return;
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
@@ -388,13 +390,17 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             absorbable.OnTrashBallExplode(this);
         }
         Destroy(gameObject);
+    }   
+
+    public void PrepareIgnite(HeatMechanic heat)
+    {
+        _isBeingDestroyed = true;
+        //foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
     }
+    
     
     public void OnIgnite(HeatMechanic heat)
     {
-        if (_isBeingDestroyed) return;
-        _isBeingDestroyed = true;
-
         _primaryTrashMaterial.whenBallIgnite();
         _secondaryTrashMaterial.whenBallIgnite();
 
