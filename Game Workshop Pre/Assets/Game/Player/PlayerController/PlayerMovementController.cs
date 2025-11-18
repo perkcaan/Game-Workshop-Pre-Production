@@ -138,7 +138,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,transform);
+                //ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,transform);
                 //FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
                 AudioManager.Instance.Play("dashBack", transform.position);
             }
@@ -358,5 +358,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         Debug.Log(_playerHeat._heatSound.getPlaybackState(out FMOD.Studio.PLAYBACK_STATE state));
         Debug.Log("Return to Checkpoint");
         
+    }
+
+    public void PrepareIgnite(HeatMechanic heat)
+    {
+        throw new System.NotImplementedException();
     }
 }
