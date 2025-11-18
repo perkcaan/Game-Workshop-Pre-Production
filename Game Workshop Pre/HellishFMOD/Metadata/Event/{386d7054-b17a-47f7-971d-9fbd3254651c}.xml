@@ -171,9 +171,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{5ee6ee91-1221-451a-a830-91216a639ec2}">
-		<property name="volume">
-			<value>-14</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{b28820f4-c3e5-4b8e-a675-dbea42b5443c}</destination>
 		</relationship>
@@ -199,6 +196,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{16c097fd-f71e-4b12-b17d-acfb98fb5bd7}">
+		<property name="volume">
+			<value>-7.5</value>
+		</property>
 		<property name="name">
 			<value>LowFreq</value>
 		</property>
@@ -418,6 +418,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{64663254-e7dd-4be6-94ea-1a6cd0e3e196}">
+		<property name="volume">
+			<value>-10</value>
+		</property>
 		<property name="name">
 			<value>FireCrackle1</value>
 		</property>
@@ -650,6 +653,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{5b1bdf60-096a-4eeb-964c-36a24266f264}">
+		<property name="volume">
+			<value>-10.5</value>
+		</property>
 		<property name="name">
 			<value>FireCrackle2</value>
 		</property>
@@ -692,6 +698,9 @@
 		<property name="length">
 			<value>143.08568750000001</value>
 		</property>
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<property name="pitch">
 			<value>-3.5</value>
 		</property>
@@ -718,7 +727,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{b6aaea47-4751-4e4d-a8e5-fd331256cfd8}">
 		<property name="volume">
-			<value>10</value>
+			<value>6</value>
 		</property>
 		<property name="name">
 			<value>Lava Bubbles</value>
@@ -758,6 +767,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{d3516c8a-ca2c-4f74-8100-ea0a6f9aac41}">
+		<property name="volume">
+			<value>2.5</value>
+		</property>
 		<property name="name">
 			<value>Yells</value>
 		</property>

@@ -99,7 +99,11 @@
 			<destination>{4bef1a73-4871-4c52-8498-06397eb0c665}</destination>
 		</relationship>
 		<relationship name="modules">
+<<<<<<< Updated upstream
 			<destination>{0cc392e1-deb8-4a3f-8e0a-a80c0db4c54a}</destination>
+=======
+			<destination>{ee7bb7d7-45b9-43b9-8f94-6ef49265baed}</destination>
+>>>>>>> Stashed changes
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{b1c7f69f-14d2-465d-a86d-cf653dee28a9}</destination>
@@ -115,7 +119,11 @@
 			<destination>{01771a40-3589-4a0d-a2ac-76426550e290}</destination>
 			<destination>{0bf47948-380b-4931-9013-fc0cb7048a3d}</destination>
 			<destination>{b80a6ec7-e2d6-47f3-98aa-75101fee9fb4}</destination>
+<<<<<<< Updated upstream
 			<destination>{0cc392e1-deb8-4a3f-8e0a-a80c0db4c54a}</destination>
+=======
+			<destination>{ee7bb7d7-45b9-43b9-8f94-6ef49265baed}</destination>
+>>>>>>> Stashed changes
 		</relationship>
 		<relationship name="preset">
 			<destination>{d1064411-c207-43b2-9f1a-f8981ba10b12}</destination>
@@ -221,6 +229,9 @@
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{b80a6ec7-e2d6-47f3-98aa-75101fee9fb4}">
+		<property name="triggerProbabilityEnabled">
+			<value>true</value>
+		</property>
 		<property name="isCutoff">
 			<value>true</value>
 		</property>
@@ -228,7 +239,11 @@
 			<value>5</value>
 		</property>
 		<property name="length">
+<<<<<<< Updated upstream
 			<value>4.9999999999999893</value>
+=======
+			<value>4.9999999999999947</value>
+>>>>>>> Stashed changes
 		</property>
 		<property name="looping">
 			<value>true</value>
@@ -262,6 +277,7 @@
 			<destination>{32f8c493-946a-48f1-83a7-f034fb7acb2c}</destination>
 		</relationship>
 	</object>
+<<<<<<< Updated upstream
 	<object class="EventSound" id="{0cc392e1-deb8-4a3f-8e0a-a80c0db4c54a}">
 		<property name="start">
 			<value>8</value>
@@ -271,6 +287,11 @@
 		</property>
 		<property name="voiceStealing">
 			<value>3</value>
+=======
+	<object class="EventSound" id="{ee7bb7d7-45b9-43b9-8f94-6ef49265baed}">
+		<property name="length">
+			<value>9.9999999999999947</value>
+>>>>>>> Stashed changes
 		</property>
 		<relationship name="event">
 			<destination>{dd035578-5e73-4cf0-bae6-fcd2a1596590}</destination>
@@ -409,6 +430,19 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{29f7cee3-1504-4c74-b02e-96afc7458a90}" />
+<<<<<<< Updated upstream
+=======
+	<object class="AutomationCurve" id="{5867fd48-922c-47d9-b2c5-9d2af949dbb2}">
+		<relationship name="parameter">
+			<destination>{d1064411-c207-43b2-9f1a-f8981ba10b12}</destination>
+		</relationship>
+		<relationship name="automationPoints">
+			<destination>{22685de9-8246-4d73-b18d-1e835fea2c06}</destination>
+			<destination>{723c2527-10bb-4565-a993-05f1507983e1}</destination>
+			<destination>{9c79320e-0934-4858-9024-cb536fb032be}</destination>
+		</relationship>
+	</object>
+>>>>>>> Stashed changes
 	<object class="MixerBusFader" id="{b24c8efa-580c-40df-9875-32ea35e75191}" />
 	<object class="AutomationPoint" id="{dad61a33-c2b3-4104-8a9d-ec32816916d9}">
 		<property name="position">
@@ -453,7 +487,11 @@
 			<value>9</value>
 		</property>
 		<property name="value">
+<<<<<<< Updated upstream
 			<value>-16</value>
+=======
+			<value>-14</value>
+>>>>>>> Stashed changes
 		</property>
 		<property name="curveShape">
 			<value>-1</value>

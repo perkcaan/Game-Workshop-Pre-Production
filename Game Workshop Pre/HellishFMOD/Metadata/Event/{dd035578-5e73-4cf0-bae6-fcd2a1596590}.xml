@@ -68,7 +68,11 @@
 			<destination>{e6e173e3-7407-4a51-99de-98793cf667aa}</destination>
 		</relationship>
 		<relationship name="markers">
+<<<<<<< Updated upstream
 			<destination>{55d3e86e-520b-4023-90a5-adc86064159d}</destination>
+=======
+			<destination>{a0844778-08e4-483e-8e19-65a9187e5b98}</destination>
+>>>>>>> Stashed changes
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{1d595ea5-fd6e-4adc-b2cf-eded1a118570}">
@@ -92,20 +96,34 @@
 		<property name="triggerProbabilityEnabled">
 			<value>true</value>
 		</property>
+<<<<<<< Updated upstream
 		<property name="isAsync">
 			<value>true</value>
 		</property>
+=======
+>>>>>>> Stashed changes
 		<property name="length">
 			<value>1.6000000000000001</value>
 		</property>
 		<property name="delayType">
 			<value>0</value>
 		</property>
+<<<<<<< Updated upstream
 		<relationship name="triggerConditions">
 			<destination>{99d3dd44-0ee2-4a15-8502-a2b1e8e91675}</destination>
 		</relationship>
 		<relationship name="fadeOutCurve">
 			<destination>{19d77f20-c7cf-485a-8e09-4b4551bc3cb8}</destination>
+=======
+		<property name="pitch">
+			<value>1</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{ac2d9e02-fbb8-43d5-827c-2383d2531ece}</destination>
+>>>>>>> Stashed changes
+		</relationship>
+		<relationship name="triggerConditions">
+			<destination>{b7aa226c-3abe-4dfa-97bd-2d433e7b2f03}</destination>
 		</relationship>
 		<relationship name="sounds">
 			<destination>{6b981d4c-8fd8-4df8-ac91-aabed0ffe34f}</destination>
@@ -116,7 +134,11 @@
 			<value>-12.5</value>
 		</property>
 		<property name="name">
+<<<<<<< Updated upstream
 			<value>TrainWhistle</value>
+=======
+			<value>Steam Whistle</value>
+>>>>>>> Stashed changes
 		</property>
 		<relationship name="effectChain">
 			<destination>{927d1121-a54d-4982-94a0-bbb79241f59e}</destination>
@@ -128,15 +150,23 @@
 			<destination>{1d595ea5-fd6e-4adc-b2cf-eded1a118570}</destination>
 		</relationship>
 	</object>
+<<<<<<< Updated upstream
 	<object class="LoopRegion" id="{55d3e86e-520b-4023-90a5-adc86064159d}">
+=======
+	<object class="LoopRegion" id="{a0844778-08e4-483e-8e19-65a9187e5b98}">
+>>>>>>> Stashed changes
 		<property name="position">
 			<value>0</value>
 		</property>
 		<property name="length">
+<<<<<<< Updated upstream
 			<value>1.6000000000000001</value>
 		</property>
 		<property name="triggerProbabilityEnabled">
 			<value>true</value>
+=======
+			<value>2.3103333333333333</value>
+>>>>>>> Stashed changes
 		</property>
 		<relationship name="timeline">
 			<destination>{1803ffdc-fc12-4a7b-b949-f5bc26601ef5}</destination>
@@ -144,9 +174,12 @@
 		<relationship name="markerTrack">
 			<destination>{14dd1605-e24c-4d8d-a630-9b45a6fdd25f}</destination>
 		</relationship>
+<<<<<<< Updated upstream
 		<relationship name="triggerConditions">
 			<destination>{76204a2e-9682-4222-9e5a-c7309a383607}</destination>
 		</relationship>
+=======
+>>>>>>> Stashed changes
 	</object>
 	<object class="MixerBusEffectChain" id="{0a2751a1-d468-4e2b-a76f-323c532d88a1}">
 		<relationship name="effects">
@@ -159,12 +192,24 @@
 		<property name="minimum">
 			<value>8</value>
 		</property>
+<<<<<<< Updated upstream
+=======
+		<property name="amount">
+			<value>2.5</value>
+		</property>
+	</object>
+	<object class="ParameterCondition" id="{b7aa226c-3abe-4dfa-97bd-2d433e7b2f03}">
+		<property name="minimum">
+			<value>9</value>
+		</property>
+>>>>>>> Stashed changes
 		<property name="maximum">
 			<value>10</value>
 		</property>
 		<relationship name="parameter">
 			<destination>{d1064411-c207-43b2-9f1a-f8981ba10b12}</destination>
 		</relationship>
+<<<<<<< Updated upstream
 	</object>
 	<object class="FadeCurve" id="{19d77f20-c7cf-485a-8e09-4b4551bc3cb8}">
 		<relationship name="startPoint">
@@ -173,6 +218,8 @@
 		<relationship name="endPoint">
 			<destination>{5d285891-dc3c-442a-ad24-add756346cb4}</destination>
 		</relationship>
+=======
+>>>>>>> Stashed changes
 	</object>
 	<object class="SingleSound" id="{6b981d4c-8fd8-4df8-ac91-aabed0ffe34f}">
 		<property name="volume">
