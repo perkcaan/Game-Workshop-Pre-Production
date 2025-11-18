@@ -26,7 +26,7 @@ public class CheckpointManager : MonoBehaviour // One for each level
         if (!respawnChoice && (activeCheckpoint != checkpoints[checkpoints.Count - 1]))
         {
             activeCheckpoint = checkpoints[checkpoints.Count - 1];
-            Debug.Log("New Active Checkpoint");
+            //Debug.Log("New Active Checkpoint");
         }
     }
 

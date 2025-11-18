@@ -150,6 +150,9 @@ MonoBehaviour:
   _explosionMultiplier: 0.4
   _size: 1
   trashMaterial: {fileID: 11400000, guid: f795f3ffb0d2c7a47bd1a03a41edc0fc, type: 2}
+  trashMaterialWeight: 1
+  _pointValue: 0
+  _rigidBody: {fileID: 0}
   _sweepDurationToBecomeBall: 0
   _playerEnterKnockback: 0
   _playerEnterTripForce: 0
@@ -175,8 +178,6 @@ MonoBehaviour:
   _warningThreshold: 60
   _ignitionThreshold: 80
   _ignitionTime: 0.5
-  _maxFlashFrequency: 50
-  mainTexture: {fileID: 0}
 --- !u!1 &4045244157879140489
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,6 +188,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4769181540906768887}
   - component: {fileID: 8889948046069165903}
+  - component: {fileID: 5939752619974778675}
   m_Layer: 7
   m_Name: Sprite
   m_TagString: Untagged
@@ -229,7 +231,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 25e1d5e9a5e21ca4781576e75e644703, type: 2}
+  - {fileID: 2100000, guid: 6cf14628cc1339a449fb7cfeef552e81, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -261,3 +263,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5939752619974778675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4045244157879140489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c85e5d827c809634ab6ae682e712a21c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderers:
+  - {fileID: 8889948046069165903}
+  _maxFlashFrequency: 10
+  _heatFlashRamp: 2
+  _dissolveTime: 1
+  _dissolveBurnWidth: 0.4
+  _meshTexture: {fileID: 0}

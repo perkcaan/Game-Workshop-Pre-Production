@@ -20,6 +20,8 @@ public class SwipeHandler : MonoBehaviour
     private float _rotation = 0f;
     private float _swipeForce = 1f;
 
+    // Trash Checks
+    private TrashMaterial _swipedTrash;
     // Unity methods
     private void Awake()
     {
@@ -91,6 +93,7 @@ public class SwipeHandler : MonoBehaviour
         Vector2 direction = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
         Vector3 contactPoint = other.ClosestPoint(transform.position);
         
+
         ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
         if (swipeableObject != null)
         {
@@ -104,7 +107,8 @@ public class SwipeHandler : MonoBehaviour
                 //_swipeSoundInstance.start();
                 //_swipeSoundInstance.
             }
-            ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
+            
+
             swipeableObject.OnSwipe(direction.normalized, _swipeForce);
         }
         

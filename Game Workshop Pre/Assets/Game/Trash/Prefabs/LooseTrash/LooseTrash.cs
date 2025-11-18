@@ -1,5 +1,5 @@
 using UnityEngine;
-using System;
+using System.Drawing;
 
 public class LooseTrash : Trash, ISweepable, ISwipeable
 {
@@ -27,6 +27,25 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
     {
         if (!_isSwipable) return;
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion particleRotation = Quaternion.Euler(0, 0, angle + 180);
+        Color32 metalColor = new Color32(255,172,28,255);
+
+
+        if (trashMaterial.name == "Metal")
+        {
+            ParticleManager.Instance.Modify("swipe", 0, 75, 0,"Subtract");
+            ParticleManager.Instance.modified = true;
+            ParticleManager.Instance.Play("swipe", transform.position, particleRotation, metalColor, transform);
+        }
+        else
+        {
+            ParticleManager.Instance.modified = false;
+            ParticleManager.Instance.Modify("swipe", 0, 75, 0,"Add");
+            ParticleManager.Instance.Play("swipe", transform.position, particleRotation, trashMaterial.color, transform);
+        }
+        
+
     }
 
     void Update()
