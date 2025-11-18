@@ -138,7 +138,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                //ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,transform);
+                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,Color.white,transform);
                 //FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
                 AudioManager.Instance.Play("dashBack", transform.position);
             }
