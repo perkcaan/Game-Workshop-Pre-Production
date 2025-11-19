@@ -152,6 +152,7 @@ MonoBehaviour:
   _baseMaxHealth: 30
   _minimumSpeedToAbsorbPlayer: 5
   _size: 0
+  _maxSpeed: 10
   _idleDecayMultiplier: 10
   _decayTrashDropRate: 1.2
   _vacuumForce: 2.5
@@ -163,6 +164,7 @@ MonoBehaviour:
   _primaryThreshold: 0.5
   _secondaryThreshold: 0.15
   _movementController: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+  _rigidBody: {fileID: 0}
 --- !u!114 &2415871829025244457
 MonoBehaviour:
   m_ObjectHideFlags: 0

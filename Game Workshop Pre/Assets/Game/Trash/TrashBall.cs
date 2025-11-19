@@ -14,6 +14,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     [SerializeField] float _baseMaxHealth;
     [SerializeField] float _minimumSpeedToAbsorbPlayer;
     [SerializeField] private float _size = 1f;
+    [SerializeField] public float _maxSpeed;
     public float Size
     {
         get { return _size; }
@@ -68,7 +69,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     public static Action<int> SendScore;
 
-    Rigidbody2D _rigidBody;
+    public Rigidbody2D _rigidBody;
     MeshRenderer _meshRenderer;
 
     void SetSize()
