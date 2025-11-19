@@ -91,14 +91,15 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial = _baseMaterial;
         _secondaryTrashMaterial = _baseMaterial;
         _physicsMaterial2D = Instantiate(rigidBody.sharedMaterial);
-        _sweepSoundInstance = RuntimeManager.CreateInstance("event:/TrashBall/TrashBall");
+        //_sweepSoundInstance = RuntimeManager.CreateInstance("event:/TrashBall/TrashBall");
         _emitter = GetComponent<StudioEventEmitter>();
     }
 
     public void Start()
     {
-        RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, this.gameObject, rigidBody);
-        _sweepSoundInstance.start();
+        //RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, this.gameObject, rigidBody);
+        AudioManager.Instance.Play("TrashBall",transform.position);
+        //_sweepSoundInstance.start();
     }
 
     public void Update()
@@ -112,7 +113,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _secondaryTrashMaterial.whenBallRolls(this, TrashMaterialAmount.Secondary);
 
         //Debug.Log(_primaryTrashMaterial.name);
-        RuntimeManager.StudioSystem.setParameterByName("RPM", rigidBody.velocity.magnitude * 10);
+        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", rigidBody.velocity.magnitude * 10);
+        //RuntimeManager.StudioSystem.setParameterByName("RPM", rigidBody.velocity.magnitude * 10);
         //Debug.Log(_rigidBody.velocity.magnitude * 10);
         // _emitter.Play();
 
