@@ -444,6 +444,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private void ExplodeTrashBall()
     {
         if (_isBeingDestroyed) return;
+        DOTween.KillAll(this);
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
@@ -479,9 +480,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     }
 
 
-    void OnDestroy()
+    private void OnDestroy()
     {
-        DOTween.Kill(this);
+        DOTween.KillAll(this);
         if (_sweepSoundInstance.isValid())
         {
             _sweepSoundInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
@@ -491,6 +492,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     private void AbsorbAnimation(GameObject absorbedObject)
     {
+        if (absorbedObject == null) return;
         if (DOTween.IsTweening(absorbedObject.transform)) return;
         Sequence absorbSequence = DOTween.Sequence();
         absorbSequence.SetId(this);
