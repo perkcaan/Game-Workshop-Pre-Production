@@ -493,7 +493,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private void AbsorbAnimation(GameObject absorbedObject)
     {
         if (absorbedObject == null) return;
-        if (DOTween.IsTweening(absorbedObject.transform)) return;
+        if (DOTween.IsTweening(absorbedObject.transform)) {
+            absorbedObject?.SetActive(false);
+            return;
+        }
         Sequence absorbSequence = DOTween.Sequence();
         absorbSequence.SetId(this);
         absorbSequence.Join(absorbedObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));

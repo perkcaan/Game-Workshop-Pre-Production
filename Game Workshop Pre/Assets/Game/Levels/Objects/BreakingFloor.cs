@@ -71,11 +71,11 @@ public class BreakingFloor : MonoBehaviour
         groundedObjects.Clear();
         yield return new WaitForSeconds(stayBrokenDuration);
 
-        isBroken = false;
         isRepairing = true;
         spriteRenderer.DOFade(1f, repairDuration);
         yield return new WaitForSeconds(repairDuration);
         
+        isBroken = false;
         isRepairing = false;
     }
 }
