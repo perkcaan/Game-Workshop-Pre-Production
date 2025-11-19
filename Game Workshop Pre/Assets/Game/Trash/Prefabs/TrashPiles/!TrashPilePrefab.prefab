@@ -96,7 +96,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 7
 --- !u!114 &2716786571889162198
 MonoBehaviour:
@@ -114,7 +114,9 @@ MonoBehaviour:
   _explosionMultiplier: 1
   _size: 1
   trashMaterial: {fileID: 0}
+  trashMaterialWeight: 1
   _pointValue: 0
+  _rigidBody: {fileID: 0}
   _health: 1
   _trashSpreadRange: 15
   _onDamagedShakeForce: 0.05
