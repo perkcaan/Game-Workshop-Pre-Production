@@ -48,7 +48,7 @@ public class SwipeHandler : MonoBehaviour
         if (!connecting)
         {
             AudioManager.Instance.Play("Swipe", transform.position);
-            AudioManager.Instance.ModifyParameter("Swipe", "Texture", 1);
+            AudioManager.Instance.ModifyParameter("Swipe", "Texture", 1,"Local");
 
 
         }
@@ -103,7 +103,7 @@ public class SwipeHandler : MonoBehaviour
             //Debug.Log("Swiped object: " + other.gameObject.name);
             if (connecting)
             {
-                AudioManager.Instance.ModifyParameter("Swipe", "Texture", 0);
+                AudioManager.Instance.ModifyParameter("Swipe", "Texture", 0,"Local");
                 //_swipeSoundInstance.start();
                 //_swipeSoundInstance.
             }

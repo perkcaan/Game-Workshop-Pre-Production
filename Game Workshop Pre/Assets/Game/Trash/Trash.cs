@@ -1,5 +1,7 @@
 using System;
 using DG.Tweening;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 
 
@@ -12,10 +14,10 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 
     [Header("Trash")]
     [SerializeField] protected int _size;
+    
     public int Size { get { return _size; } }
     public TrashMaterial trashMaterial;
     public int trashMaterialWeight = 1;
-    private FMOD.Studio.EventInstance _sweepSoundInstance;
 
     [SerializeField] protected int _pointValue;
     private bool _pointsConsumed = false;
@@ -46,6 +48,10 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
             Destroy(trashBallObject);
             return;
         }
+
+        
+        
+
 
         GivePoints();
         _rigidBody.simulated = false;

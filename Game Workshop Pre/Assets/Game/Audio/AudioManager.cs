@@ -22,6 +22,19 @@ public class AudioManager : Singleton<AudioManager>
             
             
             sInstance.Play();
+            
+        }
+        else
+        {
+            Debug.LogWarning($"AudioManager: FMOD key '{sCode}' not found.");
+        }
+    }
+
+    public void Stop(string sCode)
+    {
+        if (_sounds.TryGetValue(sCode, out sInstance))
+        {
+            sInstance.Stop();
         }
         else
         {
@@ -30,15 +43,27 @@ public class AudioManager : Singleton<AudioManager>
     }
 
 
-    public void ModifyParameter(string sCode,string param,float value)
+    public void ModifyParameter(string sCode,string param,float value,string Itype)
     {
         sInstance = _sounds[sCode];
         if (sInstance != null)
         {
             if (_sounds.TryGetValue(sCode ,out sInstance))
             {
-                
-                sInstance.EventInstance.setParameterByName(param, value);
+
+                switch(Itype)
+                {
+                    case "Global":
+                        RuntimeManager.StudioSystem.setParameterByName(param, value);
+                        break;
+                    case "Local":
+                        sInstance.EventInstance.setParameterByName(param, value);
+                        break;
+                    }
+                    
+
+                    
+
 
             }
             else

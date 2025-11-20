@@ -113,7 +113,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _state.Update();
         UpdateCooldowns();
         
-        AudioManager.Instance.ModifyParameter("Heat", "Heat", (_playerHeat.Heat/10));
+        AudioManager.Instance.ModifyParameter("Heat", "Heat", (_playerHeat.Heat/10),"Local");
         
     }
     private void FixedUpdate()

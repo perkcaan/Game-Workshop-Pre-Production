@@ -91,15 +91,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial = _baseMaterial;
         _secondaryTrashMaterial = _baseMaterial;
         _physicsMaterial2D = Instantiate(rigidBody.sharedMaterial);
-        //_sweepSoundInstance = RuntimeManager.CreateInstance("event:/TrashBall/TrashBall");
-        _emitter = GetComponent<StudioEventEmitter>();
+        
     }
 
     public void Start()
     {
         //RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, this.gameObject, rigidBody);
         AudioManager.Instance.Play("TrashBall",transform.position);
-        //_sweepSoundInstance.start();
+        
     }
 
     public void Update()
@@ -113,8 +112,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _secondaryTrashMaterial.whenBallRolls(this, TrashMaterialAmount.Secondary);
 
         //Debug.Log(_primaryTrashMaterial.name);
-        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", rigidBody.velocity.magnitude * 10);
-        //RuntimeManager.StudioSystem.setParameterByName("RPM", rigidBody.velocity.magnitude * 10);
+        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", rigidBody.velocity.magnitude * 10,"Global");
+        //RuntimeManager.StudioSystem.setParameterByName("RPM", this.rigidBody.velocity.magnitude * 10);
         //Debug.Log(_rigidBody.velocity.magnitude * 10);
         // _emitter.Play();
 
@@ -344,11 +343,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _swipeForceMultiplier = _baseMaterial.swipeForceMultiplier;
         _knockbackMultiplier = _baseMaterial.knockbackMultiplier;
 
-        if (_sweepSoundInstance.isValid())
-        {
-            if (FMODUnity.RuntimeManager.StudioSystem.getParameterDescriptionByName(material.name, out var desc) == FMOD.RESULT.OK)
-                RuntimeManager.StudioSystem.setParameterByName("RPM", rigidBody.velocity.magnitude * 10);
-        }
+        
     }
 
     public void MagnetCollide(Collider2D other)
@@ -453,6 +448,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             absorbable.OnTrashBallExplode(this);
         }
         Destroy(gameObject);
+
     }
 
     public void PrepareIgnite(HeatMechanic heat)
@@ -484,11 +480,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     void OnDestroy()
     {
         DOTween.Kill(this);
-        if (_sweepSoundInstance.isValid())
-        {
-            _sweepSoundInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            _sweepSoundInstance.release();
-        }
+        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", 0, "Global");
+        AudioManager.Instance.Stop("TrashBall");
     }
 
     private void AbsorbAnimation(GameObject absorbedObject)
