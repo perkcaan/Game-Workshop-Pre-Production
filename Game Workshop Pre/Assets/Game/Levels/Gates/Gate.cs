@@ -7,7 +7,7 @@ public class Gate : MonoBehaviour
     private void Start()
     {
         DistrictManager.Instance.OnGateFlip += SetGates;
-        transform.position += new Vector3(0, 0, -3);
+        transform.position += new Vector3(0, 0, -1);
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         SetGates(DistrictManager.Instance.AreGatesUp);
