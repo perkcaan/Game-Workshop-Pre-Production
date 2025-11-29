@@ -67,9 +67,6 @@
 		<relationship name="modules">
 			<destination>{e6e173e3-7407-4a51-99de-98793cf667aa}</destination>
 		</relationship>
-		<relationship name="markers">
-			<destination>{55d3e86e-520b-4023-90a5-adc86064159d}</destination>
-		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{1d595ea5-fd6e-4adc-b2cf-eded1a118570}">
 		<relationship name="effectChain">
@@ -101,6 +98,15 @@
 		<property name="delayType">
 			<value>0</value>
 		</property>
+		<property name="voiceStealing">
+			<value>3</value>
+		</property>
+		<property name="maxVoices">
+			<value>1</value>
+		</property>
+		<property name="looping">
+			<value>true</value>
+		</property>
 		<relationship name="triggerConditions">
 			<destination>{99d3dd44-0ee2-4a15-8502-a2b1e8e91675}</destination>
 		</relationship>
@@ -126,26 +132,6 @@
 		</relationship>
 		<relationship name="output">
 			<destination>{1d595ea5-fd6e-4adc-b2cf-eded1a118570}</destination>
-		</relationship>
-	</object>
-	<object class="LoopRegion" id="{55d3e86e-520b-4023-90a5-adc86064159d}">
-		<property name="position">
-			<value>0</value>
-		</property>
-		<property name="length">
-			<value>1.6000000000000001</value>
-		</property>
-		<property name="triggerProbabilityEnabled">
-			<value>true</value>
-		</property>
-		<relationship name="timeline">
-			<destination>{1803ffdc-fc12-4a7b-b949-f5bc26601ef5}</destination>
-		</relationship>
-		<relationship name="markerTrack">
-			<destination>{14dd1605-e24c-4d8d-a630-9b45a6fdd25f}</destination>
-		</relationship>
-		<relationship name="triggerConditions">
-			<destination>{76204a2e-9682-4222-9e5a-c7309a383607}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{0a2751a1-d468-4e2b-a76f-323c532d88a1}">
@@ -194,17 +180,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{80c6fe5b-becd-4b93-af75-dd3afd814789}" />
-	<object class="ParameterCondition" id="{76204a2e-9682-4222-9e5a-c7309a383607}">
-		<property name="minimum">
-			<value>8</value>
-		</property>
-		<property name="maximum">
-			<value>10</value>
-		</property>
-		<relationship name="parameter">
-			<destination>{d1064411-c207-43b2-9f1a-f8981ba10b12}</destination>
-		</relationship>
-	</object>
 	<object class="MixerBusFader" id="{8187b9b4-67b6-46fa-ba04-f572dad60d0a}" />
 	<object class="AutomationPoint" id="{0b567909-1d71-4424-95c0-9ae415335e2b}">
 		<property name="position">
