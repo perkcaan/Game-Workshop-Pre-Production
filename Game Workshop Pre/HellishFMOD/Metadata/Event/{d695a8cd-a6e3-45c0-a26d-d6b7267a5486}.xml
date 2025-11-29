@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{d695a8cd-a6e3-45c0-a26d-d6b7267a5486}">
 		<property name="name">
-			<value>PickupSound</value>
+			<value>Pickup</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -30,6 +30,9 @@
 		</relationship>
 		<relationship name="timeline">
 			<destination>{50aabf11-5f2e-4f08-87e3-8438bbe42c04}</destination>
+		</relationship>
+		<relationship name="banks">
+			<destination>{f1417bbe-be3e-416a-9e1c-307045676c2c}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{c058d904-6b02-4616-bfc3-fb433c5b42ca}">
