@@ -490,6 +490,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         Sequence absorbSequence = DOTween.Sequence();
         absorbSequence.SetId(this);
         absorbSequence.Join(absorbedObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
+        AudioManager.Instance.Play("Pickup", transform.position);
         //absorbSequence.Join(absorbedObject.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
         absorbSequence.OnKill(() => absorbedObject?.SetActive(false));
     }
