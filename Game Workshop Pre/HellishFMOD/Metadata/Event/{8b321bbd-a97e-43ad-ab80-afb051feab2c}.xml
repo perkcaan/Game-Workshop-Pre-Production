@@ -8,7 +8,7 @@
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{5eaf48a5-e749-484f-ae4d-760896bb32db}</destination>
+			<destination>{3b6b6dca-1149-4601-ab91-a361273c6242}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{7a939d2f-30d0-4f19-ab8f-1f69ac142961}</destination>
@@ -33,6 +33,9 @@
 		</relationship>
 		<relationship name="parameters">
 			<destination>{4c96f815-bfa2-48c6-91d1-a550c5a8f6e5}</destination>
+		</relationship>
+		<relationship name="banks">
+			<destination>{f1417bbe-be3e-416a-9e1c-307045676c2c}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{7a939d2f-30d0-4f19-ab8f-1f69ac142961}">
@@ -104,7 +107,7 @@
 			<value>9</value>
 		</property>
 		<property name="volume">
-			<value>-16</value>
+			<value>-11</value>
 		</property>
 		<property name="playlistMode">
 			<value>1</value>
@@ -184,6 +187,9 @@
 	<object class="MixerBusFader" id="{9a8fd719-083b-4639-8605-6df71450409b}" />
 	<object class="MixerBusFader" id="{4b069314-a141-463a-8e4a-96dafc822300}" />
 	<object class="MultibandEqEffect" id="{5e7f9fc8-81d9-4c1b-a3f2-b221154ac3cc}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
 		<property name="wetDryEnabled">
 			<value>true</value>
 		</property>
