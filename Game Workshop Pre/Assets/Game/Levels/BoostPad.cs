@@ -8,13 +8,22 @@ public class BoostPad : MonoBehaviour
     float cappedSpeed; //80% of max speed
     [SerializeField] float boostAmount;
     float currentSpeed;
+    public Vector3 entryDirection = Vector3.forward; // allowed direction of entry
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("TrashBall"))
             {
                 TrashBall trashBall = collision.GetComponent<TrashBall>();
                 rb = trashBall._rigidBody;
-                boostTrash(trashBall);
+
+                //relative velocity in boost pad's local space
+                Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
+                //is ball coming from correct direction
+                if (Vector3.Dot(localVelocity.normalized, entryDirection.normalized) > 0.5f)
+                {
+                    boostTrash(trashBall);
+                }
             }
         
 
