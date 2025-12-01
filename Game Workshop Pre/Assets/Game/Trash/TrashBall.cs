@@ -98,7 +98,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         //RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, this.gameObject, rigidBody);
         AudioManager.Instance.Play("TrashBall",transform.position);
-        
+        AudioManager.Instance.Play("Ignite", transform.position);
+
     }
 
     public void Update()
@@ -474,7 +475,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         absorbedTrash.Clear();
         SendScore?.Invoke((int)Size);
         Destroy(gameObject);
-        AudioManager.Instance.Play("Ignite", transform.position);
+        
         AudioManager.Instance.ModifyParameter("Ignite", "Size", (Size / 10), "Global");
     }
 
