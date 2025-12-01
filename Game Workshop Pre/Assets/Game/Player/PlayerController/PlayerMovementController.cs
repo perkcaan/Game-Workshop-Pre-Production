@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using UnityEngine.Android;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
@@ -55,12 +54,13 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     [Header("Checkpoint")]
     [SerializeField] private CheckpointManager Checkpoint_Manager;
     public static System.Action<bool> playerDeath;
+
+    private FMOD.Studio.EventInstance _music;
     public HeatMechanic _playerHeat;
 
     [Header("Item Effected Properties")]
     public bool canSweep;
     public bool canSwipe;
-
     // Fields
     //weight
     private float _weight = 0f;
@@ -84,21 +84,27 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         _ctx = new PlayerContext(this, _movementProps);
         _ctx.Rigidbody = GetComponent<Rigidbody2D>();
-        _ctx.Animator = GetComponentInChildren<Animator>();
+        _ctx.Animator = GetComponent<Animator>();
         _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
         _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
         _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
+        _music = FMODUnity.RuntimeManager.CreateInstance("event:/Music/Hellish Sample");
+        
+
     }
 
     private void Start()
     {
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
-        _heatSound.start();
+
+        AudioManager.Instance.Play("Heat", transform.position);
+
+        
+
         _playerHeat = GetComponent<HeatMechanic>();
     }
 
@@ -106,11 +112,14 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         _state.Update();
         UpdateCooldowns();
+        
+        AudioManager.Instance.ModifyParameter("Heat", "Heat", (_playerHeat.Heat/10),"Local");
+        
     }
     private void FixedUpdate()
     {
         UpdateMovement();
-        _heatSound.setParameterByName("Heat", (_playerHeat.Heat / 10));
+        
     }
 
     private void UpdateCooldowns()
@@ -129,8 +138,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,Color.white, transform);
-                FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
+                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,Color.white,transform);
+                //FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
+                AudioManager.Instance.Play("dashBack", transform.position);
             }
         }
 
@@ -181,7 +191,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         if (!value.isPressed) return;
         if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash", transform.position);
+            AudioManager.Instance.Play("Dash", transform.position);
             _state.ChangeState(PlayerStateEnum.Dash);
         }
     }
@@ -239,7 +249,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
         if (_ctx.MoveSpeed > 0.1f && _footstepCooldown <= 0f)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step", transform.position);
+            //FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step", transform.position);
+            AudioManager.Instance.Play("Steps", transform.position);
             _footstepCooldown = 0.3f;
 
             if (_ctx.MoveSpeed > _ctx.MaxWalkSpeed)
@@ -292,17 +303,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     }
 
     // IHeatable
-    public void PrepareIgnite(HeatMechanic heat)
-    {
-        //TODO: Make a death state where the player can't do anything and is locked to it until respawn
-    }
-    
     public void OnIgnite(HeatMechanic heat)
     {
         // transform.position = new Vector3(-6.5f, 2f, transform.position.z); //Temporary. Need a death condition
 
         Death();
+
         heat.Reset();
+        
+        LayerMask layerMask = new LayerMask();
+        _ctx.Collider.excludeLayers = layerMask;
     }
 
     // ITargetable
@@ -336,13 +346,22 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     public void OnTrashBallIgnite()
     {
-        Death();
+        // Also temporary need a death function
+        transform.position = new Vector3(-6.5f, 2f, transform.position.z);
     }
 
     private void Death()
     {
         transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
         playerDeath?.Invoke(true);
-        //Debug.Log("Return to Checkpoint");
+        
+        Debug.Log(_playerHeat._heatSound.getPlaybackState(out FMOD.Studio.PLAYBACK_STATE state));
+        Debug.Log("Return to Checkpoint");
+        
+    }
+
+    public void PrepareIgnite(HeatMechanic heat)
+    {
+        throw new System.NotImplementedException();
     }
 }
