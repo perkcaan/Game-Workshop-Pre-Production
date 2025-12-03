@@ -70,7 +70,6 @@ public class DistrictManager : StaticInstance<DistrictManager>
         
     }
 
-
     private void CheckGateStatus()
     {
         bool gateStatus = true;
@@ -86,7 +85,13 @@ public class DistrictManager : StaticInstance<DistrictManager>
         }
     }
 
-
-    
+    public void EnableTrashPointerHand()
+    {
+        
+    }
+    public void DisableTrashPointerHand()
+    {
+        
+    }
 
 }

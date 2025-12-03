@@ -90,6 +90,15 @@ public class Room : MonoBehaviour
             amountToClean += cleanable.Size;
         }
         _roomTrashAmount = amountToClean;
+
+        if (Cleanliness > 0.7f)
+        {
+            if (DistrictManager.Instance != null) DistrictManager.Instance.EnableTrashPointerHand();
+        }
+        else
+        {
+            if (DistrictManager.Instance != null) DistrictManager.Instance.DisableTrashPointerHand();
+        }
     }
 
 }
