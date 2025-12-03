@@ -47,12 +47,12 @@ public class SwipeHandler : MonoBehaviour
     {
         if (!connecting)
         {
-            AudioManager.Instance.Play("Swipe", transform.position);
-            AudioManager.Instance.ModifyParameter("Swipe", "Texture", 1,"Local");
-
+            _swipeSoundInstance.setParameterByName("Texture", 1);
+            _swipeSoundInstance.start();
+            _swipeSoundInstance.release();
 
         }
-
+        
         _hitbox.enabled = true;
         _swipeForce = swipeForce;
         
@@ -98,12 +98,11 @@ public class SwipeHandler : MonoBehaviour
         if (swipeableObject != null)
         {
             connecting = true;
-            //FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", contactPoint);
-            //AudioManager.Instance.Play("swipe", contactPoint);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", contactPoint);
             //Debug.Log("Swiped object: " + other.gameObject.name);
-            if (connecting)
+            if(connecting)
             {
-                AudioManager.Instance.ModifyParameter("Swipe", "Texture", 0,"Local");
+                _swipeSoundInstance.setParameterByName("Texture", 0);
                 //_swipeSoundInstance.start();
                 //_swipeSoundInstance.
             }
