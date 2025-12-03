@@ -9,7 +9,6 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject inventoryMenuUI;
     public GameObject optionsMenuUI;
-    private FMOD.Studio.EventInstance _music;
 
     void Awake()
     {
@@ -18,8 +17,6 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         Resume();
-        _music = FMODUnity.RuntimeManager.CreateInstance("event:/Music/Hellish Sample");
-        _music.start();
     }
     void Update()
     {
@@ -52,7 +49,6 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         ChangeMenu(null);
-        _music.setParameterByName("Pause", 0f);
     }
     public void OpenInventory()
     {
@@ -72,7 +68,6 @@ public class PauseMenu : MonoBehaviour
             Debug.LogError("Current scene is not in Build Settings! Add it to be able to reload.");
             return;
         }
-        _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
 
         SceneManager.LoadScene(sceneIndex);
     }
@@ -80,7 +75,6 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         ChangeMenu(pauseMenuUI);
-        _music.setParameterByName("Pause", 1f);
     }
 
     void ChangeMenu(GameObject newMenu)
