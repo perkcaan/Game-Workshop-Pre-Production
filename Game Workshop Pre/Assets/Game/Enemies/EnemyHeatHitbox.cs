@@ -62,4 +62,16 @@ public class EnemyHeatHitbox : MonoBehaviour
             sr.enabled = true;
         }
     }
+
+    public void ShowSprite() //used for lava explosion debugging
+    {
+        if (sr != null)
+            sr.enabled = true;
+    }
+
+    public void HideSprite()
+    {
+        if (sr != null)
+            sr.enabled = false;
+    }
 }
