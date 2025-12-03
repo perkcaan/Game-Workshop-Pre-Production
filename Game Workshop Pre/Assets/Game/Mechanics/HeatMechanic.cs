@@ -1,8 +1,6 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -36,11 +34,11 @@ public class HeatMechanic : MonoBehaviour
     [Tooltip("The time spent past the ignition threshold until this object ignites.")]
     [SerializeField] private float _ignitionTime = 1f;
 
-    private float _debugTimer = 0f;
-    private bool _debugIgnited = false;
+    [Tooltip("The maximum rate per second at which this object flashes.")]
+    [SerializeField] private float _maxFlashFrequency = 10f;
 
 
-
+    private float _flashPhase = 0f; // This is the time spent in the warning threshold. Used for shader.
     private float _relaxationTimer = 0f;
     private float _ignitionTimer = 0f; // Current time until ignition. Ignites when reaches _ignitionTime
     private bool _hasIgnited = false; // Whether or not this object has ignited and should currently be burning up.
@@ -48,35 +46,38 @@ public class HeatMechanic : MonoBehaviour
     // Components
     private List<Room> _currentRooms = new List<Room>();
     public Room CurrentRoom { get { return _currentRooms.Count > 0 ? _currentRooms[0] : null; } }
-    private ShaderManager _shaderManager;
+    private Renderer _spriteRenderer;
+    private MaterialPropertyBlock _block;
+    [SerializeField] Texture mainTexture;
+    private PlayerMovementController _player;
+    public FMOD.Studio.EventInstance _heatSound;
+    //private FMOD.Studio.EventInstance _heatSound;
 
     // Unity methods
     private void Awake()
     {
-        _shaderManager = GetComponentInChildren<ShaderManager>();
+        _spriteRenderer = GetComponentInChildren<Renderer>();
+        if (_spriteRenderer == null) Debug.Log("damn");
+        _block = new MaterialPropertyBlock();
+        
+        
+
     }
 
     private void Start()
     {
         _heat = DistrictManager.Instance.Temperature;
+        _player = FindObjectOfType<PlayerMovementController>();
         
+
     }
 
     private void Update()
     {
         RelaxHeat();
-        if (_shaderManager) _shaderManager.UpdateHeatShader(_heat, _warningThreshold, _ignitionThreshold);
+        UpdateHeatShader();
         CheckForIgnition();
-
-        if (_hasIgnited)
-        {
-            _debugTimer += Time.deltaTime;
-        }
-        if (_debugTimer >= 10f)
-        {
-            Debug.Log("Something is wrong with this object. DI: " + _debugIgnited);
-            _debugTimer = 0f;
-        }
+        
     }
 
 
@@ -100,9 +101,9 @@ public class HeatMechanic : MonoBehaviour
 
     public void Reset()
     {
+        _flashPhase = 0f;
         _ignitionTimer = 0f;
         _hasIgnited = false;
-        _shaderManager.Reset();
         _heat = DistrictManager.Instance.Temperature;
     }
 
@@ -160,14 +161,42 @@ public class HeatMechanic : MonoBehaviour
             IHeatable[] heatables = GetComponents<MonoBehaviour>().OfType<IHeatable>().ToArray();
             foreach (IHeatable heatable in heatables)
             {
-                heatable.PrepareIgnite(this);
-                _shaderManager.StartDissolve(() => {
-                    heatable.OnIgnite(this);
-                    _debugIgnited = true;
-                });
+                heatable.OnIgnite(this);
+                _heatSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                _heatSound.release();
+                Debug.Log("Ignited!");
+
             }
         }
     }
 
-}
 
+
+    // update shader... Maybe move all the shader stuff into a shader controller if it becomes more than just heat related
+    private void UpdateHeatShader()
+    {
+        // Get heat from _warningThreshold to _ignitionThreshold as 0-1 float 
+        float heat01 = Mathf.Clamp01((_heat - _warningThreshold) / (_ignitionThreshold - _warningThreshold));
+
+        // If above warning threshold, flash according to frequency and heat
+        if (_heat >= _warningThreshold)
+        {
+            float heatFlashRamp = 2f; // This can be serialized if we make a shader controller script
+            float xExp = Mathf.Pow(heat01, heatFlashRamp);
+            float flashSpeed = Mathf.Lerp(0, _maxFlashFrequency, xExp);
+            _flashPhase += Time.deltaTime * flashSpeed;
+        }
+        else
+        {
+            _flashPhase = 0f;
+        }
+
+        _spriteRenderer.GetPropertyBlock(_block);
+        _block.SetFloat("_Heat", heat01);
+        _block.SetFloat("_FlashPhase", _flashPhase);
+        if (mainTexture != null)  _block.SetTexture("_MainTex", mainTexture); 
+        _spriteRenderer.SetPropertyBlock(_block);
+    }
+
+
+}
