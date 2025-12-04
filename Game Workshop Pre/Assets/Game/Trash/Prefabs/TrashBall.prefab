@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: 7617931074688080042}
   - component: {fileID: 2415871829025244457}
   - component: {fileID: -2150688670721289081}
-  - component: {fileID: -2850386650212370546}
-  - component: {fileID: 5206307667288868970}
   m_Layer: 8
   m_Name: TrashBall
   m_TagString: Untagged
@@ -152,8 +150,6 @@ MonoBehaviour:
   _warningThreshold: 60
   _ignitionThreshold: 80
   _ignitionTime: 0.5
-  _maxFlashFrequency: 10
-  mainTexture: {fileID: 0}
 --- !u!114 &-2150688670721289081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +169,7 @@ MonoBehaviour:
       Data2: 1183037148
       Data3: 498317973
       Data4: -1996817163
-    Path: event:/Trash/TrashBall/TrashBall
+    Path: event:/TrashBall/TrashBall
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2

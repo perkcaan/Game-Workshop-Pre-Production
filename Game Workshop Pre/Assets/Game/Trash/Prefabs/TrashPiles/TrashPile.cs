@@ -20,6 +20,11 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         _size = 0;
         foreach (Trash trash in _startingStoredTrash)
         {
+            if(trash == null)
+            {
+                Debug.Log(gameObject.name + " is missing trash");
+                break;
+            }
             _size += trash.Size;
         }
         _sprite = GetComponentInChildren<SpriteRenderer>();
