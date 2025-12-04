@@ -29,7 +29,7 @@ public class CamBound : MonoBehaviour
     {
         if (collision.GetComponent<PlayerMovementController>())
         {
-            //Debug.Log("Player Entered Camera Bound: " + gameObject.name);
+            Debug.Log("Player Entered Camera Bound: " + gameObject.name);
             camConfiner.AddBound(this);
         }
     }
@@ -37,7 +37,7 @@ public class CamBound : MonoBehaviour
     {
         if (collision.GetComponent<PlayerMovementController>())
         {
-            //Debug.Log("Player Entered Camera Bound: " + gameObject.name);
+            Debug.Log("Player Exited Camera Bound: " + gameObject.name);
             camConfiner.RemoveBound(this);
         }
     }
