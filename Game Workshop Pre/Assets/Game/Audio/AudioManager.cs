@@ -19,10 +19,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         if (_sounds.TryGetValue(sCode, out sInstance))
         {
-
-
             sInstance.Play();
-
         }
         else
         {
