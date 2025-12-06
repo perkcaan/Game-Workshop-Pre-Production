@@ -197,7 +197,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7aaa065a7a6042f4b9ba81624345c480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _size: 1
-  _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
-  _velocityToTurnIntoTrash: 5
+  _trashBallPrefab: {fileID: 919132149155446097, guid: 2eae4bcbbf6a20f45bf3772ac9cdbe17, type: 3}
   _explosionMultiplier: 1
+  _size: 1
+  trashMaterial: {fileID: 0}
+  trashMaterialWeight: 1
+  _pointValue: 0
+  _rigidBody: {fileID: 0}
+  _sweepDurationToBecomeBall: 0
+  _swipesIntoTrashBall: 0
