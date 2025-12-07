@@ -91,7 +91,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial = _baseMaterial;
         _secondaryTrashMaterial = _baseMaterial;
         _physicsMaterial2D = Instantiate(rigidBody.sharedMaterial);
-        _sweepSoundInstance = RuntimeManager.CreateInstance("event:/TrashBall/TrashBall");
+        
         _emitter = GetComponent<StudioEventEmitter>();
     }
 
@@ -99,7 +99,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         //RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, this.gameObject, rigidBody);
         AudioManager.Instance.Play("TrashBall",transform.position);
-        AudioManager.Instance.Play("Ignite", transform.position);
+        
 
     }
 
@@ -480,7 +480,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         absorbedTrash.Clear();
         SendScore?.Invoke((int)Size);
         Destroy(gameObject);
-        
+        AudioManager.Instance.Play("Ignite", transform.position);
         AudioManager.Instance.ModifyParameter("Ignite", "Size", (Size / 10), "Global");
     }
 
