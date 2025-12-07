@@ -91,7 +91,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial = _baseMaterial;
         _secondaryTrashMaterial = _baseMaterial;
         _physicsMaterial2D = Instantiate(rigidBody.sharedMaterial);
-        _sweepSoundInstance = RuntimeManager.CreateInstance("event:/TrashBall/TrashBall");
+        //_sweepSoundInstance = RuntimeManager.CreateInstance("event:/TrashBall/TrashBall");
         _emitter = GetComponent<StudioEventEmitter>();
     }
 
