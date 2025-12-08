@@ -115,8 +115,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         //Debug.Log(_primaryTrashMaterial.name);
         RuntimeManager.StudioSystem.setParameterByName("RPM", rigidBody.velocity.magnitude * 10);
-        if(rigidBody.velocity.magnitude * 10 > 40)
-        Debug.Log(rigidBody.velocity.magnitude * 10);
         // _emitter.Play();
 
         // Trash ball rotation
