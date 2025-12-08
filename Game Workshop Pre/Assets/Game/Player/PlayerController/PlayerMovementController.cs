@@ -275,9 +275,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     // IAbsorbable
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (ballVelocity > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
+        if (forcedAbsorb || (ballVelocity.magnitude * trashBall.Size > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
         {
             trashBall.absorbedObjects.Add(this);
             _ctx.AbsorbedTrashBall = trashBall;
