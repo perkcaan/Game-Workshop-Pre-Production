@@ -87,7 +87,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         foreach (Trash trash in _startingStoredTrash)
         {
             Trash releasedTrash = Instantiate(trash);
-            //_parentRoom.AddCleanableToRoom(releasedTrash);
+            _parentRoom.AddCleanableToRoom(releasedTrash);
             releasedTrash.transform.position = transform.position;
             if (direction != null)
             {
