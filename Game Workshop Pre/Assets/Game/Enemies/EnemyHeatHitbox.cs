@@ -29,6 +29,7 @@ public class EnemyHeatHitbox : MonoBehaviour
         transform.position = parent.position + ((Vector3)offset * 0.75f);
         transform.rotation = Quaternion.Euler(0, 0, rotation + 90f);
         _rotation = rotation;
+        
     }
 
     public void Disable()

@@ -6,23 +6,19 @@ using UnityEngine;
 public class GrimeReaper : EnemyBase
 {
     [SerializeField] float _attackDelay;
-    [SerializeField] float _maxSpeed;
     [SerializeField] float _attackSpeed;
     [SerializeField] List<EnemyHeatHitbox> _attackList;
-    PlayerMovementController _playerRef;
-    float _playerSpeed;
+    
 
     protected override void OnStart()
     {
-        Debug.Log("Grime Reaper Started");
-        _playerRef = FindObjectOfType<PlayerMovementController>();
-        //_playerSpeed = _playerRef.GetComponent<PlayerMovementProps>().BaseMaxWalkSpeed;
-        //_maxSpeed = _playerSpeed * 0.6f;
+        
+      
     }
 
     protected override void OnUpdate()
     {
-        _moveSpeed = Mathf.Min(_moveSpeed + Time.deltaTime, _maxSpeed);
+        
     }
 
     public new void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
@@ -39,8 +35,17 @@ public class GrimeReaper : EnemyBase
     public IEnumerator AttackCoroutine()
     {
         yield return new WaitForSeconds(Random.Range((_attackDelay/2),(_attackDelay * 1.5f)));
-        //_attackList[Random.Range(0, _attackList.Count)].gameObject.SetActive(true);
         
+        int index = Random.Range(0, _attackList.Count);
+
+            _blackboard.TryGet<float>("rotation", out float rotation);
+            _attackList[index].UpdateRotation(transform, rotation);
+            _attackList[index].gameObject.SetActive(true);
+            yield return new WaitForSeconds(.25f);
+            _attackList[index].gameObject.SetActive(false);
+            _blackboard.Set<bool>("isInAction", false);
+
+            
 
     }
 
