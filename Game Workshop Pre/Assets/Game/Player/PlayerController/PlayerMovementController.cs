@@ -58,8 +58,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public HeatMechanic _playerHeat;
 
     [Header("Item Effected Properties")]
-    public bool canSweep;
-    public bool canSwipe;
+    public bool canSweep = false;
+    public bool canSwipe = false;
+    public bool canDash = false;
 
     // Fields
     //weight
@@ -178,6 +179,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void OnDashInput(InputValue value)
     {
+        if (!canDash) return;
         if (!value.isPressed) return;
         if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
         {
