@@ -13,7 +13,7 @@ public class Lava : MonoBehaviour
             //Check for grounded safety.
             if (collider.TryGetComponent(out GroundedMechanic gm))
             {
-                if (gm.IsGrounded) return;
+                if (gm.IsGrounded > 0) return;
             }
 
             // otherwise... burn them to a crisp
