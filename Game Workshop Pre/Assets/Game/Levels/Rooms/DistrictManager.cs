@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class DistrictManager : StaticInstance<DistrictManager>
@@ -68,12 +67,6 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private void Update()
     {
         CheckGateStatus();
-
-        //TODO: REMOVE THIS IS TEMPORARY
-        if (SceneManager.GetActiveScene().name == "District0" && GetCleanCompletion() == 1f)
-        {
-            SceneManager.LoadScene("Dungeon Level");
-        }
         
     }
 

@@ -263,9 +263,9 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
 
     }
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (ballVelocity.magnitude > trashBallSpeedToAbsorb && ballSize > minTrashBallAbsorbSize))
+        if (forcedAbsorb || (ballVelocity > trashBallSpeedToAbsorb && ballSize > minTrashBallAbsorbSize))
         {
             trashBall.absorbedObjects.Add(this);
             SendScore?.Invoke(ABSORB_VALUE);

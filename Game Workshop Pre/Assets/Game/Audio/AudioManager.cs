@@ -34,7 +34,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         if (_sounds.TryGetValue(sCode, out sInstance))
         {
-            sInstance.EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            sInstance.Stop();
         }
         else
         {

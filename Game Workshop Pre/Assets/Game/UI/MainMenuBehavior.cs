@@ -23,7 +23,7 @@ public class MainMenuBehavior : MonoBehaviour
             return;
 
         Debug.Log("Play Clicked");
-        SceneManager.LoadScene("District0");
+        SceneManager.LoadScene("November Level");
     }
 
     public void OnSettingsButtonClicked()
