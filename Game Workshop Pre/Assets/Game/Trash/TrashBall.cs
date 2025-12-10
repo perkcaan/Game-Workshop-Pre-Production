@@ -77,7 +77,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         if (_isBeingDestroyed) return;
         float newSize = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
-        transform.DOScale(new Vector3(newSize, newSize, newSize), 0.25f);
+        transform.DOScale(new Vector3(newSize, newSize, newSize), 0.25f).SetLink(gameObject);
         _circleBorder.localScale = new Vector3(1 + (0.15f / newSize), 1 + (0.15f / newSize), 1 + (0.15f / newSize));
     }
 
@@ -91,15 +91,15 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial = _baseMaterial;
         _secondaryTrashMaterial = _baseMaterial;
         _physicsMaterial2D = Instantiate(rigidBody.sharedMaterial);
-        
+        //_sweepSoundInstance = RuntimeManager.CreateInstance("event:/TrashBall/TrashBall");
         _emitter = GetComponent<StudioEventEmitter>();
     }
 
     public void Start()
     {
         //RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, this.gameObject, rigidBody);
-        AudioManager.Instance.Play("TrashBall",transform.position);
-        
+        AudioManager.Instance?.Play("TrashBall",transform.position);
+        //AudioManager.Instance.Play("Ignite", transform.position);
 
     }
 
@@ -115,8 +115,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         //Debug.Log(_primaryTrashMaterial.name);
         RuntimeManager.StudioSystem.setParameterByName("RPM", rigidBody.velocity.magnitude * 10);
-        if(rigidBody.velocity.magnitude * 10 > 40)
-        Debug.Log(rigidBody.velocity.magnitude * 10);
         // _emitter.Play();
 
         // Trash ball rotation
@@ -371,8 +369,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
             if (_activelyDecaying) return;
-            float ballVelocity = (rigidBody.velocity.magnitude - _minimumSpeedToAbsorbPlayer) * Size;
-            absorbableObject.OnAbsorbedByTrashBall(this, ballVelocity, (int)(Size + _sizeToAbsorbChange), false);
+            absorbableObject.OnAbsorbedByTrashBall(this, rigidBody.velocity, (int)(Size + _sizeToAbsorbChange), false);
             _health = _maxHealth;
             return;
         }
@@ -429,7 +426,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (!otherTrashBall.isActiveAndEnabled) return;
         foreach (IAbsorbable absorbable in otherTrashBall.absorbedObjects)
         {
-            absorbable.OnAbsorbedByTrashBall(this, 0, 0, true);
+            absorbable.OnAbsorbedByTrashBall(this, Vector2.zero, 0, true);
         }
         otherTrashBall._isBeingDestroyed = true;
         otherTrashBall.absorbedObjects.Clear();
@@ -438,16 +435,15 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         otherTrashBall.rigidBody.simulated = false;
 
         Sequence seq = DOTween.Sequence();
-        seq.SetId(this);
+        seq.SetLink(otherTrashBall.gameObject); 
         seq.Join(otherTrashBall.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
         seq.Join(otherTrashBall.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
-        seq.OnKill(() => Destroy(otherTrashBall?.gameObject));
+        seq.OnComplete(() => Destroy(otherTrashBall?.gameObject));
     }
 
     private void ExplodeTrashBall()
     {
         if (_isBeingDestroyed) return;
-        DOTween.KillAll(this);
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
@@ -480,29 +476,24 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         absorbedTrash.Clear();
         SendScore?.Invoke((int)Size);
         Destroy(gameObject);
-        AudioManager.Instance.Play("Ignite", transform.position);
-        AudioManager.Instance.ModifyParameter("Ignite", "Size", (Size / 10), "Global");
+        
+        //AudioManager.Instance.ModifyParameter("Ignite", "Size", (Size / 10), "Global");
     }
 
 
     private void OnDestroy()
     {
-        DOTween.KillAll(this);
-        if (_sweepSoundInstance.isValid())
-        {
-            _sweepSoundInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            _sweepSoundInstance.release();
-        }
+        AudioManager.Instance.Stop("TrashBall");
     }
 
     private void AbsorbAnimation(GameObject absorbedObject)
     {
         if (absorbedObject == null) return;
-        if (DOTween.IsTweening(absorbedObject.transform)) return;
+        DOTween.Kill(absorbedObject.transform);
         Sequence absorbSequence = DOTween.Sequence();
-        absorbSequence.SetId(this);
+        absorbSequence.SetLink(absorbedObject);
         absorbSequence.Join(absorbedObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
-        //absorbSequence.Join(absorbedObject.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
+        absorbSequence.Join(absorbedObject.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
         absorbSequence.OnKill(() => absorbedObject?.SetActive(false));
     }
 }

@@ -25,7 +25,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     public Rigidbody2D _rigidBody;
     protected SpriteRenderer _spriteRenderer;
 
-    private bool _isDestroyed = false;
+    protected bool _isDestroyed = false;
 
     private void Awake()
     {
@@ -54,7 +54,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         trashBall.GetComponent<Rigidbody2D>().velocity = _rigidBody.velocity;
     }
 
-    public virtual void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    public virtual void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {   
         if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled && _rigidBody.simulated))
         {
@@ -67,9 +67,12 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     public void OnTrashBallExplode(TrashBall trashBall)
     {
         gameObject.SetActive(true);
+        transform.localScale = Vector3.zero;
         transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
+
         _rigidBody.simulated = true;
         transform.position = trashBall.transform.position;
+
         float explosionForce = (float)(Math.Sqrt(trashBall.Size) * _explosionMultiplier);
         Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
         _rigidBody.velocity = randomForce;
