@@ -483,11 +483,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     private void OnDestroy()
     {
-        if (_sweepSoundInstance.isValid())
-        {
-            _sweepSoundInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            _sweepSoundInstance.release();
-        }
+        AudioManager.Instance.Stop("TrashBall");
     }
 
     private void AbsorbAnimation(GameObject absorbedObject)
