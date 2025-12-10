@@ -318,6 +318,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1727487049}
     - target: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+      propertyPath: _sweepForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
       propertyPath: _baseSwipeForce
       value: 1
       objectReference: {fileID: 0}
@@ -325,6 +329,22 @@ PrefabInstance:
       propertyPath: Checkpoint_Manager
       value: 
       objectReference: {fileID: 916300179}
+    - target: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+      propertyPath: _sweepForceMovementScaler
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+      propertyPath: _movementProps._rotationSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+      propertyPath: _movementProps._sweepMaxSpeedModifier
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7798754160137196653, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+      propertyPath: _movementProps._sweepAccelerationModifier
+      value: 1.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7819092179503157042, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
       propertyPath: m_Name
       value: PlayerController
@@ -378,8 +398,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8808070966336400160, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+      propertyPath: _warningThreshold
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8808070966336400160, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
       propertyPath: _maxFlashFrequency
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8808070966336400160, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
+      propertyPath: _heatRelaxationRate
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -47206,6 +47234,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1505515713}
     m_Modifications:
+    - target: {fileID: -6979097873488287620, guid: d7f72a2dc196594408f17f186420f95c, type: 3}
+      propertyPath: _baseTemperature
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 2341470601195091327, guid: d7f72a2dc196594408f17f186420f95c, type: 3}
       propertyPath: m_Points.m_Paths.Array.size
       value: 1
@@ -50638,7 +50670,7 @@ Tilemap:
       - {fileID: 1206679386, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: 1532805998, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: -61434336, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
-      m_AnimationSpeed: 7
+      m_AnimationSpeed: 7.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -27, y: -14, z: 0}
@@ -50859,7 +50891,7 @@ Tilemap:
       - {fileID: 1206679386, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: 1532805998, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: -61434336, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
-      m_AnimationSpeed: 7.0000005
+      m_AnimationSpeed: 7
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -22, y: -13, z: 0}
@@ -50893,7 +50925,7 @@ Tilemap:
       - {fileID: 1206679386, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: 1532805998, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: -61434336, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
-      m_AnimationSpeed: 7
+      m_AnimationSpeed: 7.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -1, y: -13, z: 0}
@@ -51488,7 +51520,7 @@ Tilemap:
       - {fileID: 1206679386, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: 1532805998, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: -61434336, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
-      m_AnimationSpeed: 7
+      m_AnimationSpeed: 7.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -2, y: -7, z: 0}
@@ -51505,7 +51537,7 @@ Tilemap:
       - {fileID: 1206679386, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: 1532805998, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: -61434336, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
-      m_AnimationSpeed: 7.0000005
+      m_AnimationSpeed: 7
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -1, y: -7, z: 0}
@@ -51556,7 +51588,7 @@ Tilemap:
       - {fileID: 1206679386, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: 1532805998, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: -61434336, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
-      m_AnimationSpeed: 7
+      m_AnimationSpeed: 7.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -30, y: -6, z: 0}
@@ -51709,7 +51741,7 @@ Tilemap:
       - {fileID: 1206679386, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: 1532805998, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
       - {fileID: -61434336, guid: 413042caeb5955548b09fd3e5acd66c6, type: 3}
-      m_AnimationSpeed: 7.0000005
+      m_AnimationSpeed: 7
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -31, y: -5, z: 0}
@@ -52191,6 +52223,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1505515713}
     m_Modifications:
+    - target: {fileID: -6979097873488287620, guid: d7f72a2dc196594408f17f186420f95c, type: 3}
+      propertyPath: _baseTemperature
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 2341470601195091327, guid: d7f72a2dc196594408f17f186420f95c, type: 3}
       propertyPath: m_Points.m_Paths.Array.size
       value: 1
@@ -55371,6 +55407,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1505515713}
     m_Modifications:
+    - target: {fileID: -6979097873488287620, guid: d7f72a2dc196594408f17f186420f95c, type: 3}
+      propertyPath: _baseTemperature
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2341470601195091327, guid: d7f72a2dc196594408f17f186420f95c, type: 3}
       propertyPath: m_Points.m_Paths.Array.size
       value: 1
@@ -57435,6 +57475,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1505515713}
     m_Modifications:
+    - target: {fileID: -6979097873488287620, guid: d7f72a2dc196594408f17f186420f95c, type: 3}
+      propertyPath: _baseTemperature
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2341470601195091327, guid: d7f72a2dc196594408f17f186420f95c, type: 3}
       propertyPath: m_Points.m_Paths.Array.size
       value: 1
