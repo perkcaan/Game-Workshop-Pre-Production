@@ -244,10 +244,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step", transform.position);
             _footstepCooldown = 0.3f;
 
-            if (_ctx.MoveSpeed > _ctx.MaxWalkSpeed)
-            {
-                _footstepCooldown = 0.15f;
-            }
+            
         }
     }
 
