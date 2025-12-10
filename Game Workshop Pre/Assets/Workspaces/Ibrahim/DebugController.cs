@@ -14,6 +14,9 @@ public class DebugController : MonoBehaviour
     private bool cheatsEnabled = false;
     void Start()
     {
+        vcam = FindObjectOfType<CinemachineVirtualCamera>();
+        pauseMenu = FindObjectOfType<PauseMenu>();
+        if (vcam == null) return;
         confiner = vcam.GetComponent<CinemachineConfiner2D>();
         transposer = vcam.GetCinemachineComponent<CinemachineFramingTransposer>();
     }
@@ -22,6 +25,7 @@ public class DebugController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F1))
         {
             cheatsEnabled = true;
+            if (debugMenuUI != null)
             debugMenuUI.SetActive(!debugMenuUI.activeSelf);
         }
         if (!cheatsEnabled) return;
@@ -45,11 +49,9 @@ public class DebugController : MonoBehaviour
         if (Input.GetKey(KeyCode.J)) offsetChange.x -= 3f;
         if (Input.GetKey(KeyCode.L)) offsetChange.x += 3f;
 
-        float verticalInput = 0f;
-        if (Input.GetKey(KeyCode.I)) verticalInput = 3f;
-        if (Input.GetKey(KeyCode.K)) verticalInput = -3f;
+        if (Input.GetKey(KeyCode.I)) offsetChange.y  = 3f;
+        if (Input.GetKey(KeyCode.K)) offsetChange.y  = -3f;
 
-        offsetChange.y = verticalInput;
         transposer.m_TrackedObjectOffset += offsetChange * Time.deltaTime;
 
         float zoomChange = 0f;

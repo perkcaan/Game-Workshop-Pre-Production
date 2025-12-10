@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 1159916424768734981}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.6042786, y: 0.01113987, z: -10}
+  m_LocalPosition: {x: 0.0063438416, y: -3.0489101, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -189,6 +189,54 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1352176251725716282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8919383733726387704}
+  - component: {fileID: 3841461783317700091}
+  m_Layer: 0
+  m_Name: DebugController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8919383733726387704
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352176251725716282}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 29.300318, y: -5.639305, z: 0.75771683}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8430057579774008744}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3841461783317700091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352176251725716282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eefe1ec80f62a7e4d9798cce749257fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 0}
+  playerController: {fileID: 7798754160137196653}
+  vcam: {fileID: 0}
+  debugMenuUI: {fileID: 0}
 --- !u!1 &1500565852702611031
 GameObject:
   m_ObjectHideFlags: 0
@@ -5340,7 +5388,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 2
   simulationSpeed: 5
-  stopAction: 0
+  stopAction: 2
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -10308,6 +10356,7 @@ Transform:
   - {fileID: 7472790222227013257}
   - {fileID: 329154590206588663}
   - {fileID: 2365454430677425867}
+  - {fileID: 8919383733726387704}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &6417547411781040880
@@ -10400,7 +10449,7 @@ MonoBehaviour:
   _startAngle: -90
   _sweepForce: 5
   _sweepForceMovementScaler: 0.1
-  _baseSwipeForce: 5
+  _baseSwipeForce: 1
   _fullChargeSwipeForce: 10
   _swipeForceMovementScaler: 0.1
   _swipeTimeUntilHold: 0.25
