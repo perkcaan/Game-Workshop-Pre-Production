@@ -14,6 +14,15 @@ public class Lava : MonoBehaviour
             if (collider.TryGetComponent(out GroundedMechanic gm))
             {
                 if (gm.IsGrounded) return;
+
+                
+            }
+
+            if (collider.TryGetComponent(out PlayerMovementController player))
+            {
+                player.GetComponent<GroundedMechanic>().IsGrounded = false;
+                player.GetComponent<HeatMechanic>().ModifyHeat(_heatPerSecond * Time.fixedDeltaTime);
+
             }
 
             // otherwise... burn them to a crisp

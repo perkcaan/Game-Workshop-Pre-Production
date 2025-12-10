@@ -362,6 +362,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     public void PrepareIgnite(HeatMechanic heat)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Player Prepare Ignite");
     }
 }

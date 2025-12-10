@@ -8,7 +8,9 @@ public class GrimeReaper : EnemyBase
     [SerializeField] float _attackDelay;
     [SerializeField] float _attackSpeed;
     [SerializeField] List<EnemyHeatHitbox> _attackList;
-    
+    [SerializeField] FishLaunch FishLaunch;
+    private Vector2 _currentTargetPosition;
+
 
     protected override void OnStart()
     {
@@ -37,7 +39,7 @@ public class GrimeReaper : EnemyBase
         yield return new WaitForSeconds(Random.Range((_attackDelay/2),(_attackDelay * 1.5f)));
         
         int index = Random.Range(0, _attackList.Count);
-
+            
             _blackboard.TryGet<float>("rotation", out float rotation);
             _attackList[index].UpdateRotation(transform, rotation);
             _attackList[index].gameObject.SetActive(true);
@@ -45,8 +47,19 @@ public class GrimeReaper : EnemyBase
             _attackList[index].gameObject.SetActive(false);
             _blackboard.Set<bool>("isInAction", false);
 
+        if (_attackList[index].GetComponent<FishLaunch>())
+        {
+            
+        }
+
             
 
+    }
+   
+
+    public void SetTargetPosition(Vector2 position)
+    {
+        _currentTargetPosition = position;
     }
 
 }

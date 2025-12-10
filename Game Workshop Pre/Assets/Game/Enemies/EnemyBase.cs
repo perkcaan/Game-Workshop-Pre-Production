@@ -73,7 +73,6 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         _blackboard.Set<string>("name", gameObject.name);
         _blackboard.Set<Vector2>("frameVelocity", Vector2.zero);
         _blackboard.Set<float>("rotation", 90f);
-
         _blackboard.Set<float>("moveSpeed", _moveSpeed);
     }
 
