@@ -238,10 +238,13 @@
 	</object>
 	<object class="SingleSound" id="{6c86b2ea-bf29-4fe7-b8de-84483a60107b}">
 		<property name="start">
-			<value>0.0826766304347826</value>
+			<value>0.095000000000000001</value>
 		</property>
 		<property name="length">
-			<value>0.14999999999999999</value>
+			<value>0.10000000000000001</value>
+		</property>
+		<property name="timelockedOffset">
+			<value>0.012323369565217401</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{266dfec5-5192-435e-a762-5fba4f77eebb}</destination>
@@ -259,7 +262,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{32b6648c-ca9a-47c5-afbb-5d9f6161812d}">
 		<property name="volume">
-			<value>-6.5</value>
+			<value>-9</value>
 		</property>
 		<property name="name">
 			<value>Hit?</value>
@@ -585,7 +588,7 @@
 	<object class="MixerBusFader" id="{fb0b76e8-d1e2-447a-a70d-3ea7dffa21fd}" />
 	<object class="AutomationPoint" id="{2d7f011f-7efc-4b09-a8b1-d5975af3fe82}">
 		<property name="position">
-			<value>0.0826766304347826</value>
+			<value>0.095000000000000001</value>
 		</property>
 		<property name="value">
 			<value>0</value>
@@ -596,7 +599,7 @@
 	</object>
 	<object class="AutomationPoint" id="{4d5caf86-1497-4806-b365-1c68945b3ed5}">
 		<property name="position">
-			<value>0.08767663043478259</value>
+			<value>0.11</value>
 		</property>
 		<property name="value">
 			<value>1</value>
@@ -604,18 +607,18 @@
 	</object>
 	<object class="AutomationPoint" id="{8d019a31-72b0-457e-adb9-6174c2f3cdd3}">
 		<property name="position">
-			<value>0.20267663043478262</value>
+			<value>0.15500000000000003</value>
 		</property>
 		<property name="value">
 			<value>1</value>
 		</property>
 		<property name="curveShape">
-			<value>0.25471893</value>
+			<value>0.065879941</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{56eacfc5-e187-4089-8b85-d048ecf86de7}">
 		<property name="position">
-			<value>0.23267663043478259</value>
+			<value>0.19500000000000001</value>
 		</property>
 		<property name="value">
 			<value>0</value>
