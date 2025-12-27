@@ -98,7 +98,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
+        
         _heatSound.start();
         _playerHeat = GetComponent<HeatMechanic>();
     }
@@ -131,7 +131,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
                 ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,Color.white, transform);
-                FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
+                AudioManager.Instance.Play("dashBack", transform.position);
             }
         }
 
@@ -183,7 +183,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         if (!value.isPressed) return;
         if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash", transform.position);
+            AudioManager.Instance.Play("Dash", transform.position);
             _state.ChangeState(PlayerStateEnum.Dash);
         }
     }
@@ -241,7 +241,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
         if (_ctx.MoveSpeed > 0.1f && _footstepCooldown <= 0f)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step", transform.position);
+            
+            AudioManager.Instance.Play("Steps", transform.position);
             _footstepCooldown = 0.3f;
 
             

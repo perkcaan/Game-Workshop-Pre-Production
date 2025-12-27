@@ -98,7 +98,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     public void Start()
     {
         //RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, this.gameObject, rigidBody);
-        AudioManager.Instance?.Play("TrashBall",transform.position);
+        AudioManager.Instance.Play("trashBall",transform.position);
         //AudioManager.Instance.Play("Ignite", transform.position);
 
     }
@@ -113,8 +113,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial.whenBallRolls(this, TrashMaterialAmount.Primary);
         _secondaryTrashMaterial.whenBallRolls(this, TrashMaterialAmount.Secondary);
 
-        //Debug.Log(_primaryTrashMaterial.name);
-        RuntimeManager.StudioSystem.setParameterByName("RPM", rigidBody.velocity.magnitude * 10);
+       
+        
+        AudioManager.Instance.ModifyParameter("trashBall", "RPM", rigidBody.velocity.magnitude * 10, "Global");
         // _emitter.Play();
 
         // Trash ball rotation
@@ -328,6 +329,35 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             ApplyTrashMaterial(_secondaryTrashMaterial, 0.33f);
         }
 
+        switch (_primaryTrashMaterial.name)
+        {
+            case "Metal":
+                AudioManager.Instance.ModifyParameter("trashBall", "Metal", highestPrecent, "Global");
+                Debug.Log("Metal sound applied");
+                break;
+            case "Glass":
+                AudioManager.Instance.ModifyParameter("trashBall", "Glass", highestPrecent, "Global");
+                Debug.Log("Glass sound applied");
+                break;
+            case "Paper":
+                AudioManager.Instance.ModifyParameter("trashBall", "Paper", highestPrecent, "Global");
+                Debug.Log("Paper sound applied");
+                break;
+            case "Organic":
+                AudioManager.Instance.ModifyParameter("trashBall", "Organic", highestPrecent, "Global");
+                Debug.Log("Organic sound applied");
+                break;
+
+            case "Rubber":
+                AudioManager.Instance.ModifyParameter("trashBall", "Rubber", highestPrecent, "Global");
+                Debug.Log("Rubber sound applied");
+                break;
+            default:
+                AudioManager.Instance.ModifyParameter("trashBall", "Generic", highestPrecent, "Global");
+                Debug.Log("Generic sound applied");
+                break;
+        }
+
         rigidBody.sharedMaterial = _physicsMaterial2D;
     }
 
@@ -343,11 +373,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _swipeForceMultiplier = _baseMaterial.swipeForceMultiplier;
         _knockbackMultiplier = _baseMaterial.knockbackMultiplier;
 
-        if (_sweepSoundInstance.isValid())
-        {
-            if (FMODUnity.RuntimeManager.StudioSystem.getParameterDescriptionByName(material.name, out var desc) == FMOD.RESULT.OK)
-                RuntimeManager.StudioSystem.setParameterByName("RPM", rigidBody.velocity.magnitude * 10);
-        }
+        
     }
 
     public void MagnetCollide(Collider2D other)
@@ -438,6 +464,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         seq.SetLink(otherTrashBall.gameObject); 
         seq.Join(otherTrashBall.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
         seq.Join(otherTrashBall.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
+        AudioManager.Instance.Play("Trash Pickup", transform.position);
         seq.OnComplete(() => Destroy(otherTrashBall?.gameObject));
     }
 
@@ -450,6 +477,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallExplode(this);
         }
+        
         Destroy(gameObject);
     }
 
@@ -475,6 +503,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         absorbedObjects.Clear();
         absorbedTrash.Clear();
         SendScore?.Invoke((int)Size);
+        AudioManager.Instance.Play("Ignite", transform.position);
+        AudioManager.Instance.ModifyParameter("Ignite", "Size", (Size / 10), "Global");
+        AudioManager.Instance.ModifyParameter("trashBall", "RPM", 0f, "Global");
+        AudioManager.Instance.Stop("TrashBall");
         Destroy(gameObject);
         
         //AudioManager.Instance.ModifyParameter("Ignite", "Size", (Size / 10), "Global");
@@ -483,7 +515,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     private void OnDestroy()
     {
-        AudioManager.Instance.Stop("TrashBall");
+        
     }
 
     private void AbsorbAnimation(GameObject absorbedObject)
@@ -495,5 +527,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         absorbSequence.Join(absorbedObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
         absorbSequence.Join(absorbedObject.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
         absorbSequence.OnKill(() => absorbedObject?.SetActive(false));
+        AudioManager.Instance.Play("Trash Pickup", transform.position);
     }
 }
