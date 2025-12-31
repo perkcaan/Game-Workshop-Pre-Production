@@ -98,8 +98,14 @@
 		<property name="pitch">
 			<value>-0.900000036</value>
 		</property>
+		<property name="polyphony">
+			<value>32</value>
+		</property>
+		<property name="minimumTimeBetweenSounds">
+			<value>350</value>
+		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>600</value>
+			<value>400</value>
 		</property>
 		<property name="minimumScatterDistance">
 			<value>0</value>
@@ -117,7 +123,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{5c676910-bc4c-44cf-83ee-e5afd6ba694b}">
 		<property name="volume">
-			<value>-7.5</value>
+			<value>-18</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
