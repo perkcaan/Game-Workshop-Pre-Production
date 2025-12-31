@@ -123,6 +123,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void OnIgnite(HeatMechanic heat)
     {
         Destroy(gameObject);
+        AudioManager.Instance.Play("enemyDeath", transform.position);
     }
 
 

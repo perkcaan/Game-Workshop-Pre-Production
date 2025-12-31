@@ -342,7 +342,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void Death()
     {
         transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
+        AudioManager.Instance.Play("playerDeath", transform.position);
+        AudioManager.Instance.Stop("Sweep");
         playerDeath?.Invoke(true);
+        
         //Debug.Log("Return to Checkpoint");
     }
 }
