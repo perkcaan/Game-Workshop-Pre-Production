@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using DG.Tweening;
+using DG.Tweening;  
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -117,66 +117,17 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         if (!_pointsConsumed)
         {
             SendScore?.Invoke(_pointValue);
-            
-
             StartCoroutine(Sound());
-
-
-
             _pointsConsumed = true;
         }
-
-        
     }
 
     public IEnumerator Sound()
     {
-        bool playing = false;
-
-        if (!playing) 
-        { 
-            AudioManager.Instance.Play("Points", transform.position);
-            yield return new WaitForSeconds(soundCooldown);
-
-
-        }
-            
-
-        switch (_pointValue)
-        {
-            case int n when (n <= 10):
-                AudioManager.Instance.ModifyParameter("Points", "Point", 10, "Local");
-                Debug.Log("Played Points Sound: 10");
-                playing = false;
-                break;
-            case int n when (n <= 20):
-                AudioManager.Instance.ModifyParameter("Points", "Point", 20, "Local");
-                Debug.Log("Played Points Sound: 20");
-                break;
-
-            case int n when (n <= 30):
-                AudioManager.Instance.ModifyParameter("Points", "Point", 30, "Local");
-                Debug.Log("Played Points Sound: 30");
-                break;
-
-            case int n when (n <= 40):
-                AudioManager.Instance.ModifyParameter("Points", "Point", 40, "Local");
-                Debug.Log("Played Points Sound: 40");
-                break;
-
-            case int n when (n <= 50):
-                AudioManager.Instance.ModifyParameter("Points", "Point", 30, "Local");
-                Debug.Log("Played Points Sound: 40");
-                break;
-
-            default:
-                if (_pointValue > 50)
-                {
-                    AudioManager.Instance.ModifyParameter("Points", "Point", 50, "Local");
-                    Debug.Log("Played Points Sound: 50");
-                }
-                break;
-        }
+        //AudioManager.Instance.ModifyParameter("Points", "Point", Math.Clamp(_pointValue, 0, 50), "Local");
+        //Debug.Log("Played Points Sound: "+_pointValue);
+        //AudioManager.Instance.Play("Points", transform.position);
+        yield return new WaitForSeconds(soundCooldown);
         soundCooldown = 1f;
     }
 }
