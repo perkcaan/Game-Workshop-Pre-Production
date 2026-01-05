@@ -72,7 +72,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     public CircleCollider2D magnetTrashCollider;
     public Rigidbody2D rigidBody;
     MeshRenderer _meshRenderer;
-
+    float _particleTimer = 0f;
     void SetSize()
     {
         if (_isBeingDestroyed) return;
@@ -112,7 +112,12 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial.whenBallRolls(this, TrashMaterialAmount.Primary);
         _secondaryTrashMaterial.whenBallRolls(this, TrashMaterialAmount.Secondary);
 
-       
+        _particleTimer -= Time.deltaTime * rigidBody.velocity.magnitude / 2f;
+        if (_particleTimer <= 0 && rigidBody.velocity.magnitude > 0.5f)    
+        {
+            _particleTimer = 0.1f;
+            ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, null, null, Mathf.Pow(Size, 1f / 3f));
+        }
         
         AudioManager.Instance.ModifyParameter("TrashBall", "RPM", rigidBody.velocity.magnitude * 10, "Global");
         // _emitter.Play();
