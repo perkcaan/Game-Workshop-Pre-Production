@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(HeatMechanic))]
 public class HeatParticles : MonoBehaviour
 {       
     private enum TemperatureStage
@@ -12,6 +13,7 @@ public class HeatParticles : MonoBehaviour
         Smoking,
         Burning
     }
+
     [SerializeField] float sweatingThreshold = 30f;
     [SerializeField] float steamingThreshold = 60f;
     [SerializeField] float smokingThreshold = 30f;
@@ -20,7 +22,6 @@ public class HeatParticles : MonoBehaviour
     [SerializeField] Color steamColor;
     HeatMechanic heat;
     float particleTimer = 0f;
-
     int temperatureStage = 0;
 
     void Start()

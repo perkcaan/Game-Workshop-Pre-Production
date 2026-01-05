@@ -9,7 +9,6 @@ public class ParticleManager : Singleton<ParticleManager>
     [SerializedDictionary("ID", "Particle System Prefab")]
     [SerializeField] private SerializedDictionary<string, ParticleSystem> _particlePrefabs;
     private Dictionary<string, IObjectPool<ParticleSystem>> _pools = new Dictionary<string, IObjectPool<ParticleSystem>>();
-    private Dictionary<string, ParticleSystem> _activeLoopingParticles = new Dictionary<string, ParticleSystem>();
 
     protected override void Awake()
     {
@@ -20,7 +19,12 @@ public class ParticleManager : Singleton<ParticleManager>
             ParticleSystem prefab = entry.Value;
 
             _pools[key] = new ObjectPool<ParticleSystem>(
-                createFunc: () => Instantiate(prefab, transform), 
+                createFunc: () => {
+                    var ps = Instantiate(prefab, transform);
+                    var helper = ps.gameObject.AddComponent<PooledParticle>();
+                    helper.Initialize(_pools[key]);
+                    return ps;
+                }, 
                 actionOnGet: (ps) => ps.gameObject.SetActive(true), 
                 actionOnRelease: (ps) => ps.gameObject.SetActive(false),
                 actionOnDestroy: (ps) => Destroy(ps.gameObject),
@@ -36,14 +40,16 @@ public class ParticleManager : Singleton<ParticleManager>
         if (_pools.TryGetValue(pCode, out var pool))
         {
             var ps = pool.Get();
-            if (parent != null) ps.transform.SetParent(parent);
+            
+            if (parent == null) parent = transform;
+            ps.transform.SetParent(parent);
             ps.transform.position = position;
             ps.transform.rotation = rotation ?? Quaternion.identity;
 
             var main = ps.main;
             var emission = ps.emission;
-            if (color.HasValue)
-                main.startColor = color.Value;
+
+            if (color.HasValue) main.startColor = color.Value;
 
             if (_particlePrefabs.TryGetValue(pCode, out var prefab))
             {
@@ -60,27 +66,6 @@ public class ParticleManager : Singleton<ParticleManager>
             }
 
             ps.Play();
-            StartCoroutine(ReturnToPoolAfterFinished(pCode, ps));
-        }
-    }
-
-    private IEnumerator CleanupStoppedParticle(string uniqueKey, ParticleSystem ps)
-    {
-        yield return new WaitForSeconds(ps.main.startLifetime.constantMax);
-        
-        ps.gameObject.SetActive(false);
-        ps.transform.SetParent(null);
-
-        _activeLoopingParticles.Remove(uniqueKey);
-    }
-
-    private IEnumerator ReturnToPoolAfterFinished(string pCode, ParticleSystem ps)
-    {
-        yield return new WaitForSeconds(ps.main.duration + ps.main.startLifetime.constantMax);
-        
-        if (_pools.ContainsKey(pCode))
-        {
-            _pools[pCode].Release(ps);
         }
     }
 }

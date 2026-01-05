@@ -128,7 +128,7 @@ public class HeatMechanic : MonoBehaviour
         if (DistrictManager.Instance != null) roomTemperature = DistrictManager.Instance.Temperature;
         if (CurrentRoom != null) roomTemperature = CurrentRoom.Temperature;
 
-        if (_heat != roomTemperature)
+        if (_heat != roomTemperature && _heat > roomTemperature)
         {
             _heat = Mathf.MoveTowards(_heat, roomTemperature, _heatRelaxationRate * Time.deltaTime);
             coolingOff = true;
