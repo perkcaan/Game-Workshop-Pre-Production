@@ -1,89 +1,75 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 using AYellowpaper.SerializedCollections;
 
 public class ParticleManager : Singleton<ParticleManager>
 {
-    [SerializedDictionary("ID", "Particle System")]
-    [SerializeField] private SerializedDictionary<string, ParticleSystem> _particles;
-    private ParticleSystem psInstance;
-    public bool modified;
+    [SerializedDictionary("ID", "Particle System Prefab")]
+    [SerializeField] private SerializedDictionary<string, ParticleSystem> _particlePrefabs;
+    private Dictionary<string, IObjectPool<ParticleSystem>> _pools = new Dictionary<string, IObjectPool<ParticleSystem>>();
 
-    private void Start()
+    protected override void Awake()
     {
-        modified = false;
-    }
-    public void Play(string pCode,Vector3 position)
-    {
-        if (_particles.ContainsKey(pCode))
+        base.Awake();
+        foreach (var entry in _particlePrefabs)
         {
-            psInstance = Instantiate(_particles[pCode], position, Quaternion.identity, null);
-            psInstance.Play();
+            string key = entry.Key;
+            ParticleSystem prefab = entry.Value;
+
+            _pools[key] = new ObjectPool<ParticleSystem>(
+                createFunc: () => Instantiate(prefab, transform), 
+                actionOnGet: (ps) => ps.gameObject.SetActive(true), 
+                actionOnRelease: (ps) => ps.gameObject.SetActive(false),
+                actionOnDestroy: (ps) => Destroy(ps.gameObject),
+                collectionCheck: false,
+                defaultCapacity: 10,
+                maxSize: 20
+            );
         }
     }
 
-    public void Play(string pCode, Vector3 position, Quaternion rotation,Color color, Transform parent = null)
+    public void Play(string pCode, Vector3 position, Quaternion? rotation = null, Color? color = null, Transform parent = null, float force = 1f)
     {
-        if (_particles.ContainsKey(pCode))
+        if (_pools.TryGetValue(pCode, out var pool))
         {
-            psInstance = Instantiate(_particles[pCode], position, rotation, parent);
-            psInstance.startColor = color;
-            psInstance.Play();
-        }
-    }
+            var ps = pool.Get();
+            if (parent != null)ps.transform.SetParent(parent);
+            ps.transform.position = position;
+            ps.transform.rotation = rotation ?? Quaternion.identity;
 
-    public void Modify(string pCode,float duration,int maxParticles, int speed, string operation)
-    {
-        psInstance = _particles[pCode];
-         
-        var MainModule = psInstance.main;
-        float initialDuration = MainModule.duration;
-        int initialParticles = MainModule.maxParticles;
-        
+            var main = ps.main;
+            var emission = ps.emission;
+            if (color.HasValue)
+                main.startColor = color.Value;
 
-        if (!modified)
-        {
-            switch (operation)
+            if (_particlePrefabs.TryGetValue(pCode, out var prefab))
             {
-                case "Subtract":
-                    MainModule.duration -= duration;
-                    MainModule.maxParticles -= maxParticles;
-                    MainModule.startSpeed = speed;
-                    //Debug.Log("Subtracted from Particles");
-                    break;
-
-                case "Add":
-                    MainModule.duration += duration;
-                    MainModule.maxParticles += maxParticles;
-                    MainModule.startSpeed = speed;
-                    //Debug.Log("Added to Particles");
-                    break;
-
-                case "Multiply":
-                    MainModule.duration *= duration;
-                    MainModule.maxParticles *= maxParticles;
-                    MainModule.startSpeed = speed;
-                    break;
-
-                case "Divide":
-                    MainModule.duration /= duration;
-                    MainModule.maxParticles /= maxParticles;
-                    MainModule.startSpeed = speed;
-                    break;
-
-                case "Restore":
-                    MainModule.duration = initialDuration;
-                    MainModule.maxParticles = initialParticles;
-                    MainModule.startSpeed = speed;
-                    Debug.Log("Restored");
-                    break;
+                main.startSpeed = prefab.main.startSpeed.constant * force;
+                main.startLifetime = prefab.main.startLifetime.constant * force;
             }
+
+            if (emission.burstCount > 0)
+            {
+                ParticleSystem.Burst burst = emission.GetBurst(0);
+                short newCount = (short)Mathf.Max(1, _particlePrefabs[pCode].emission.GetBurst(0).count.constant * force);
+                burst.count = newCount;
+                emission.SetBurst(0, burst);
+            }
+
+            ps.Play();
+            StartCoroutine(ReturnToPoolAfterFinished(pCode, ps));
         }
-
-        
-
-
     }
-    
+
+    private IEnumerator ReturnToPoolAfterFinished(string pCode, ParticleSystem ps)
+    {
+        yield return new WaitForSeconds(ps.main.duration + ps.main.startLifetime.constantMax);
+        
+        if (_pools.ContainsKey(pCode))
+        {
+            _pools[pCode].Release(ps);
+        }
+    }
 }

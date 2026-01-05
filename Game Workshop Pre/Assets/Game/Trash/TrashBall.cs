@@ -100,7 +100,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         //RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, this.gameObject, rigidBody);
         AudioManager.Instance.Play("TrashBall",transform.position);
         //AudioManager.Instance.Play("Ignite", transform.position);
-
     }
 
     public void Update()
@@ -167,23 +166,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _health = _maxHealth;
         rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
 
-
-        //Vector3 contactPoint = GetComponent<Collider2D>().ClosestPoint(transform.position - (Vector3)direction.normalized * _size);
+        // particles
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        Quaternion particleRotation = Quaternion.Euler(0, 0, angle + 180);
-
-        Color32 metalColor = new Color32(255, 172, 28, 255);
-
-        if (_primaryTrashMaterial.name == "Metal")
-        {
-            ParticleManager.Instance.Modify("swipe", 0, 75, 0, "Subtract");
-            ParticleManager.Instance.modified = true;
-            ParticleManager.Instance.Play("swipe", transform.position, particleRotation, metalColor, transform);
-        }
-
-        ParticleManager.Instance.modified = false;
-        //ParticleManager.Instance.Modify("swipe", 0, 75, 0, "Add");
-        ParticleManager.Instance.Play("swipe", transform.position, particleRotation, _primaryTrashMaterial.color, transform);
+        Quaternion particleRotation = Quaternion.Euler(0, 0, angle + 135);
+        if (Size > 10)
+            ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, null, null, 1f);
+        else
+            ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, null, null, 0.5f);
+        
     }
 
     public void TakeDamage(int damage)
@@ -237,7 +227,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     public void AbsorbTrash(Trash trash)
     {
         if (_isBeingDestroyed) return;
-        //if (absorbedTrash.Contains(trash)) return;
 
         SendScore?.Invoke(0);
 
@@ -418,6 +407,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             else
             _primaryTrashMaterial.whenBallHitsWall(this, TrashMaterialAmount.Primary);
             _secondaryTrashMaterial.whenBallHitsWall(this, TrashMaterialAmount.Secondary);
+
+            //if ()
+            //ParticleManager.Instance.Play("WallCollide", transform.position, particleRotation);
         }
 
     }
@@ -430,6 +422,17 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         {
             absorbable.OnAbsorbedByTrashBall(this, Vector2.zero, 0, true);
         }
+
+        Vector2 direction = otherTrashBall.transform.position - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);
+
+        // particles
+        if (otherTrashBall.Size > 10)
+            ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, null, null, 1f);
+        else
+            ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, null, null, 0.5f);
+
         otherTrashBall._isBeingDestroyed = true;
         otherTrashBall.absorbedObjects.Clear();
         otherTrashBall.absorbedTrash.Clear();
@@ -460,8 +463,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     public void PrepareIgnite(HeatMechanic heat)
     {
         _isBeingDestroyed = true;
-        AudioManager.Instance.Play("Ignite", transform.position);
-        AudioManager.Instance.ModifyParameter("Ignite", "Size", (Size / 10), "Global");
+        //AudioManager.Instance.Play("Ignite", transform.position);
+        //AudioManager.Instance.ModifyParameter("Ignite", "Size", (Size / 10), "Global");
         //foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
     }
 

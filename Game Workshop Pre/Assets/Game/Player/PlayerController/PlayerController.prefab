@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 1159916424768734981}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.044592857, y: 0.010220051, z: -10}
+  m_LocalPosition: {x: -2.0965462, y: -1.3263803, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -421,6 +421,7 @@ GameObject:
   - component: {fileID: 391823251163201968}
   - component: {fileID: 8268464935822823725}
   - component: {fileID: 883400935224371073}
+  - component: {fileID: 6329126514641754032}
   m_Layer: 0
   m_Name: Quad
   m_TagString: Untagged
@@ -515,6 +516,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!210 &6329126514641754032
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3018895157337213710}
+  m_Enabled: 1
+  m_SortingLayerID: -280654717
+  m_SortingLayer: -2
+  m_SortingOrder: 5
+  m_SortAtRoot: 0
 --- !u!1 &5735323732474653327
 GameObject:
   m_ObjectHideFlags: 0
@@ -10256,8 +10269,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -10392991
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -1817761932, guid: 8317aa9eebc5d0e40ab109c3853e44ad, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -10459,7 +10472,7 @@ MonoBehaviour:
   _swipeHoldChargeTime: 2
   _swipeDuration: 0.34
   _swipeCooldown: 0.2
-  _absorbResistance: 240
+  _absorbResistance: 300
   _minTrashSizeToAbsorb: 8
   _playerEscapeDamage: 16
   _swipeVisualLineDistance: 3

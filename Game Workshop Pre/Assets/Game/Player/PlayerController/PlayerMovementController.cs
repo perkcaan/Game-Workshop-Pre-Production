@@ -236,16 +236,22 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Animator.SetFloat("Speed", _ctx.FrameVelocity.magnitude);
         _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
 
+        
 
-        _footstepCooldown -= Time.deltaTime;
-
-        if (_ctx.MoveSpeed > 0.1f && _footstepCooldown <= 0f)
+        if (_ctx.MoveSpeed > 0.1f)
         {
-            
-            AudioManager.Instance.Play("Steps", transform.position);
+            _footstepCooldown -= Time.deltaTime;
+            if (_footstepCooldown <= 0f)
+            {
+                Vector3 footstepPosition = transform.position + new Vector3(0, -0.5f, 0);
+                ParticleManager.Instance.Play("PlayerStepDust", footstepPosition);
+                AudioManager.Instance.Play("Steps", transform.position);
+                _footstepCooldown = 0.3f;
+            }
+        }
+        else if (_ctx.MoveSpeed < 0.01f)
+        {
             _footstepCooldown = 0.3f;
-
-            
         }
     }
 
