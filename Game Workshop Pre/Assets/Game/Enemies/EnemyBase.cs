@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable
 {
-    [SerializeReference, SerializeReferenceDropdown] private BehaviourTreeNode _behaviour;
+    [SerializeReference] private BehaviourTreeNode _behaviour;
     [SerializeField] private bool _enableBehaviourDebug;
     [SerializeField] private List<UnityEvent> _actionMethods;
 
@@ -46,7 +46,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         _animator = GetComponentInChildren<Animator>();
         _blackboard = new EnemyBlackboard(this);
         PrepareBlackboard();
-        _behaviour.Initialize(_blackboard, this);
+        if (_behaviour != null) _behaviour.Initialize(_blackboard, this);
         OnStart();
     }
 

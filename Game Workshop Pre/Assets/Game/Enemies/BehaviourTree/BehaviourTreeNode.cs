@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public enum BTNodeState { Running, Success, Failure }
@@ -19,6 +21,21 @@ public enum BTNodeState { Running, Success, Failure }
 [Serializable]
 public abstract class BehaviourTreeNode
 {
+
+    #if UNITY_EDITOR
+    //name of the node. For use within the editor.
+    public string DisplayName = "Node";
+    #endif
+
+
+    [SerializeReference] public List<BehaviourTreeNode> Children = new List<BehaviourTreeNode>();
+    
+    //override if node has children
+    public virtual int MaxChildren => 0; //-1 for virtually infinite possible children
+    
+
+
+
     // Call Blackboard to get a reference to the enemy blackboard in child objects
     private EnemyBlackboard _blackboard;
     protected EnemyBlackboard Blackboard { get { return _blackboard; } }
@@ -31,10 +48,13 @@ public abstract class BehaviourTreeNode
     public abstract BTNodeState Evaluate();
     public virtual void DrawDebug() { }
 
+
     public void Initialize(EnemyBlackboard blackboard, EnemyBase self)
     {
         _blackboard = blackboard;
         _self = self;
+        Children.RemoveAll(child => child == null); 
         Initialize();
     }
+
 }
