@@ -112,7 +112,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _primaryTrashMaterial.whenBallRolls(this, TrashMaterialAmount.Primary);
         _secondaryTrashMaterial.whenBallRolls(this, TrashMaterialAmount.Secondary);
 
-        _particleTimer -= Time.deltaTime * rigidBody.velocity.magnitude / 2f;
+        _particleTimer -= Time.deltaTime * rigidBody.velocity.magnitude / 10f;
         if (_particleTimer <= 0 && rigidBody.velocity.magnitude > 0.5f)    
         {
             _particleTimer = 0.1f;
