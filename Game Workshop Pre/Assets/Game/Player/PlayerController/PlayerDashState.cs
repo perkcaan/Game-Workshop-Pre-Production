@@ -40,9 +40,8 @@ public class PlayerDashState : BaseState<PlayerStateEnum>
         _ctx.Rotation = Mathf.DeltaAngle(0f, radAngle);
         _ctx.Rigidbody.AddForce(velocityToUse * _ctx.Props.DashForce, ForceMode2D.Impulse);
 
-        Quaternion burstRotation = Quaternion.Euler(0, 0, _ctx.Rotation-225);
         Vector3 footstepPosition = _ctx.Player.transform.position + new Vector3(0, -0.5f, 0);
-        ParticleManager.Instance.Play("PlayerDashBurst", footstepPosition, burstRotation);
+        ParticleManager.Instance.Play("PlayerDashBurst", footstepPosition, Quaternion.Euler(0, 0, _ctx.Rotation));
     }
 
     public override void Update()
@@ -51,8 +50,7 @@ public class PlayerDashState : BaseState<PlayerStateEnum>
         if (_timer <= 0)
         {
             _timer = 0.05f;
-            Vector3 footstepPosition = _ctx.Player.transform.position + new Vector3(0, -0.5f, 0);
-            ParticleManager.Instance.Play("PlayerStepDust", footstepPosition);
+            ParticleManager.Instance.Play("PlayerStepDust", _ctx.Player.transform.position);
         }
     }
 

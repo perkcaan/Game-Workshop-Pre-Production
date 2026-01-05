@@ -9,6 +9,7 @@ public class ParticleManager : Singleton<ParticleManager>
     [SerializedDictionary("ID", "Particle System Prefab")]
     [SerializeField] private SerializedDictionary<string, ParticleSystem> _particlePrefabs;
     private Dictionary<string, IObjectPool<ParticleSystem>> _pools = new Dictionary<string, IObjectPool<ParticleSystem>>();
+    private Dictionary<string, ParticleSystem> _activeLoopingParticles = new Dictionary<string, ParticleSystem>();
 
     protected override void Awake()
     {
@@ -35,7 +36,7 @@ public class ParticleManager : Singleton<ParticleManager>
         if (_pools.TryGetValue(pCode, out var pool))
         {
             var ps = pool.Get();
-            if (parent != null)ps.transform.SetParent(parent);
+            if (parent != null) ps.transform.SetParent(parent);
             ps.transform.position = position;
             ps.transform.rotation = rotation ?? Quaternion.identity;
 
@@ -61,6 +62,16 @@ public class ParticleManager : Singleton<ParticleManager>
             ps.Play();
             StartCoroutine(ReturnToPoolAfterFinished(pCode, ps));
         }
+    }
+
+    private IEnumerator CleanupStoppedParticle(string uniqueKey, ParticleSystem ps)
+    {
+        yield return new WaitForSeconds(ps.main.startLifetime.constantMax);
+        
+        ps.gameObject.SetActive(false);
+        ps.transform.SetParent(null);
+
+        _activeLoopingParticles.Remove(uniqueKey);
     }
 
     private IEnumerator ReturnToPoolAfterFinished(string pCode, ParticleSystem ps)

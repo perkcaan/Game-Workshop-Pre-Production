@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &494990914064446509
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8446439312167743404}
+  - component: {fileID: 5834411129313006125}
+  m_Layer: 0
+  m_Name: ParticleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8446439312167743404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494990914064446509}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5834411129313006125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494990914064446509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38284725cefdf014281ee380a4dbf1ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _particlePrefabs:
+    _serializedList:
+    - Key: SmokeBlast
+      Value: {fileID: -33617757251474752, guid: a3624be5e1c7c4944a39ce38763830ff, type: 3}
+    - Key: SweatBeads
+      Value: {fileID: -33617757251474752, guid: 8aef48fd591671d4997d6730184d30fc, type: 3}
+    - Key: CinderBeads
+      Value: {fileID: -33617757251474752, guid: d9299972b7603af47b9b554eb5044803, type: 3}
+    - Key: RisingSmoke
+      Value: {fileID: -33617757251474752, guid: fad0c5537a52b8845a0b11a1d58d594f, type: 3}
+    - Key: PlayerStepDust
+      Value: {fileID: -33617757251474752, guid: 35142fcfab802b44eb0274b40f5c2993, type: 3}
+    - Key: PlayerDashBurst
+      Value: {fileID: -33617757251474752, guid: a26528a36d3cd284a8349372085e7d5c, type: 3}
+    - Key: PlayerSwipeDust
+      Value: {fileID: -33617757251474752, guid: 0933ca37b92ccba449779bc835b7bdb3, type: 3}
+    - Key: TrashDustTrail
+      Value: {fileID: -33617757251474752, guid: 22ee0afaacc7cc74184273a78b219f43, type: 3}
+    - Key: TrashAbsorbed
+      Value: {fileID: -33617757251474752, guid: 227f99273a81b0c44b841c2f2fc0d78e, type: 3}
+    - Key: TrashSwiped
+      Value: {fileID: -33617757251474752, guid: d10b70982dd731f4eb3938a3dae52bc1, type: 3}
+    - Key: DustBurst
+      Value: {fileID: -33617757251474752, guid: 4375cd85c6f6a3948bd823870209fad5, type: 3}

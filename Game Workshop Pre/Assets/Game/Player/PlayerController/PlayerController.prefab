@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 1159916424768734981}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.0965462, y: -1.3263803, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10336,6 +10336,7 @@ GameObject:
   - component: {fileID: 5170008795486251839}
   - component: {fileID: 7798754160137196653}
   - component: {fileID: 8808070966336400160}
+  - component: {fileID: 4319086998454547758}
   - component: {fileID: 8154465775048327065}
   - component: {fileID: 4755387977358187799}
   - component: {fileID: 769397364515410180}
@@ -10496,11 +10497,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _heat: 0
+  coolingOff: 0
   _heatRelaxationRate: 5
   _timeBeforeRelax: 3
   _warningThreshold: 60
   _ignitionThreshold: 80
   _ignitionTime: 0.2
+--- !u!114 &4319086998454547758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7819092179503157042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4c5be725d3e63e40bd1f1bf8af6b8e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sweatingThreshold: 20
+  steamingThreshold: 40
+  smokingThreshold: 30
+  burningThreshold: 60
+  smokeColor: {r: 0.26666668, g: 0.2509804, b: 0.2509804, a: 1}
+  steamColor: {r: 0.6529459, g: 0.68073845, b: 0.6886792, a: 0.74509805}
 --- !u!114 &8154465775048327065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10546,8 +10566,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.02}
-  m_Size: {x: 0.7, y: 0.9}
+  m_Offset: {x: 0, y: -0.05}
+  m_Size: {x: 0.7, y: 0.7}
   m_Direction: 0
 --- !u!114 &769397364515410180
 MonoBehaviour:
