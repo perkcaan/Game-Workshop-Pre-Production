@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraCanvasManager : Singleton<CameraCanvasManager>
+public class WorldCanvasManager : Singleton<WorldCanvasManager>
 {
     [SerializeField] private GameObject _bubbleDialoguePrefab;
     public GameObject BubbleDialoguePrefab

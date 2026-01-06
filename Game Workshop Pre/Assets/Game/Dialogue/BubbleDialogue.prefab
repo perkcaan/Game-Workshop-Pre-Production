@@ -326,7 +326,7 @@ RectTransform:
   m_GameObject: {fileID: 2838244901682614654}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.5, y: 4.5, z: 1}
+  m_LocalScale: {x: 0.0625, y: 0.0625, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1881120189752610309}
@@ -361,14 +361,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bubbleWidth: 1
   _bubbleHeight: 1
-  _bubbleTailPosition: 0.6
+  _bubbleTailPosition: 0.55
   _flipTailHorizontally: 0
   _flipTailVertically: 0
   _maxBubbleWidth: 100
-  _maxBubbleHeight: 100
+  _parentPosition: {x: 0, y: 0}
+  _bubbleOffset: {x: 0, y: 0}
   _instantText: 0
   _textSpeed: 0.05
-  _lineLingerTime: 5
+  _lineLingerTime: 3
   _bubbleCenter: {fileID: 6877774223645707258}
   _bubbleCornerTL: {fileID: 5999035101561432811}
   _bubbleCornerTR: {fileID: 3800115459312281797}

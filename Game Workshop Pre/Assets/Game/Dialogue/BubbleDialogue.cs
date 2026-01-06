@@ -14,7 +14,8 @@ public class BubbleDialogue : MonoBehaviour
     [SerializeField] private bool _flipTailHorizontally;
     [SerializeField] private bool _flipTailVertically;
     [SerializeField] private int _maxBubbleWidth = 100;
-    [SerializeField] private int _maxBubbleHeight = 100;
+    [SerializeField] private Vector2 _parentPosition = Vector2.zero;
+    [SerializeField] private Vector2  _bubbleOffset = Vector2.zero;
 
     [Header("Text Printing")]
     [SerializeField] private bool _instantText = false;
@@ -38,16 +39,16 @@ public class BubbleDialogue : MonoBehaviour
     //Coroutine for DisplayLine method
     private Coroutine _displayLineCoroutine;
 
-    public static BubbleDialogue TryCreate(GameObject parentObject, Vector2Int size)
+    public static BubbleDialogue TryCreate(GameObject parentObject, Vector2Int size, Vector2 offset)
     {
         BubbleDialogue newDialogue = null;
-        CameraCanvasManager ccm = CameraCanvasManager.Instance;
-        if (ccm != null)
+        WorldCanvasManager wcm = WorldCanvasManager.Instance;
+        if (wcm != null)
         {
-            GameObject prefab = ccm.BubbleDialoguePrefab;
-            GameObject dialogueObject = Instantiate(prefab, ccm.transform);
+            GameObject prefab = wcm.BubbleDialoguePrefab;
+            GameObject dialogueObject = Instantiate(prefab, wcm.transform);
             newDialogue = dialogueObject.GetComponent<BubbleDialogue>();
-            newDialogue.Setup(parentObject, size);
+            newDialogue.Setup(parentObject, size, offset);
         }
 
         return newDialogue;
@@ -58,23 +59,45 @@ public class BubbleDialogue : MonoBehaviour
         UpdateBubbleSize();
     }
 
-    public void Setup(GameObject parentObject, Vector2Int size)
+    public void Setup(GameObject parentObject, Vector2Int size, Vector2 offset)
     {
         gameObject.name = parentObject.name + ":BubbleDialogue";
         _bubbleWidth = size.x;
         _bubbleHeight = size.y;
+        _parentPosition = parentObject.transform.position;
+        _bubbleOffset = offset;
         UpdateBubbleSize();
+        UpdateBubblePosition();
     }
 
-    public void Write(string text)
-    {
-        Write(text, null);
-    }
-
-    public void Write(string text, Action onComplete)
+    public void Write(string text, Action onComplete = null)
     {
         if (_displayLineCoroutine != null) StopCoroutine(_displayLineCoroutine);
         _displayLineCoroutine = StartCoroutine(DisplayLine(text, onComplete));
+    }
+
+    // Cancels current line being written.
+    public void CancelWrite()
+    {
+        if (_displayLineCoroutine != null) StopCoroutine(_displayLineCoroutine);
+        _textField.text = "";
+    }
+
+    public void Close()
+    {
+        CancelWrite();
+        gameObject.SetActive(false);
+    }
+
+    public void Open()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void End()
+    {
+        CancelWrite();
+        Destroy(gameObject);
     }
 
 
@@ -85,9 +108,9 @@ public class BubbleDialogue : MonoBehaviour
         Vector2 size = _textField.GetPreferredValues(_maxBubbleWidth - 4, Mathf.Infinity);
         _bubbleWidth = Mathf.Min(Mathf.CeilToInt(size.x), _maxBubbleWidth) - 4;
         _bubbleHeight = Mathf.CeilToInt(size.y) - 4;
-        Debug.Log("Size: " + size);
-        Debug.Log("Bubble Size: " + new Vector2(_bubbleWidth, _bubbleHeight));
+
         UpdateBubbleSize();
+        UpdateBubblePosition();
 
         _textField.maxVisibleCharacters = 0;
         yield return new WaitForEndOfFrame();
@@ -203,6 +226,32 @@ public class BubbleDialogue : MonoBehaviour
         // would probably have to do math with the font itself
 
         _textField.rectTransform.localPosition = new Vector2(textOffsetX, textOffsetY);
-
     }
+
+    private void UpdateBubblePosition()
+    {
+        const int pixelSize = 16;
+        float invPixelSize = 1f / pixelSize;
+
+        // Position
+        Vector2 newPosition = _parentPosition;
+
+        //increase position based upon size
+        newPosition.y += (16 + _bubbleHeight) / (2f * pixelSize); 
+        //32 being pixel size * 2
+        //16 just being the "0 height bubble size" offset so that its pointing at the position rather than on it
+
+        //apply extra desired offset
+        newPosition += _bubbleOffset;
+
+        // Round it to pixel position
+        Vector2 alignedPosition = new Vector2(
+            Mathf.Round(newPosition.x / invPixelSize) * invPixelSize, 
+            Mathf.Round(newPosition.y / invPixelSize) * invPixelSize
+        ); 
+
+        // Set position
+        transform.position = alignedPosition;
+    }
+
 }
