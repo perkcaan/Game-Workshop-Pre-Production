@@ -22,7 +22,7 @@ public class HeatParticles : MonoBehaviour
     [SerializeField] Color steamColor;
     HeatMechanic heat;
     float particleTimer = 0f;
-    int temperatureStage = 0;
+    [SerializeField] TemperatureStage temperatureStage = TemperatureStage.Normal;
 
     void Start()
     {
@@ -31,76 +31,84 @@ public class HeatParticles : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (heat.coolingOff && heat.Heat >= sweatingThreshold)
+        if (heat.coolingOff)
         {
             CoolingOff();
         }
-        else if (heat.Heat >= smokingThreshold)
+        else
         {
             HeatingUp();
-        }
-        else if(heat.Heat < sweatingThreshold)
-        {
-            temperatureStage = (int)TemperatureStage.Normal;
         }
     }
 
     private void HeatingUp()
     {
-        if (heat.Heat >= burningThreshold)
+        if (heat.Heat >= smokingThreshold)
         {
-            if (temperatureStage < (int)TemperatureStage.Burning)
+            if (heat.Heat >= burningThreshold)
+            {   
+                if (temperatureStage < TemperatureStage.Burning)
+                {
+                    ParticleManager.Instance.Play("SmokeBlast", transform.position, null, smokeColor, null, 0.8f);
+                    ParticleManager.Instance.Play("SmokeBlast", transform.position, null, smokeColor, null, 1.2f);
+                    temperatureStage = TemperatureStage.Burning;
+                }
+                if (particleTimer <= 0f)
+                {
+                    ParticleManager.Instance.Play("CinderBeads", transform.position);
+                }
+            }
+            else if (temperatureStage != TemperatureStage.Smoking)
             {
                 ParticleManager.Instance.Play("SmokeBlast", transform.position, null, smokeColor, null, 0.8f);
-                ParticleManager.Instance.Play("SmokeBlast", transform.position, null, smokeColor, null, 1.2f);
-                temperatureStage = (int)TemperatureStage.Burning;
+                temperatureStage = TemperatureStage.Smoking;
             }
             if (particleTimer <= 0f)
             {
-                ParticleManager.Instance.Play("CinderBeads", transform.position);
+                ParticleManager.Instance.Play("RisingSmoke", transform.position, null, smokeColor);
+                particleTimer = 8 / heat.Heat;
             }
+            particleTimer -= Time.fixedDeltaTime;
         }
-        if (temperatureStage < (int)TemperatureStage.Smoking)
+        else
         {
-            ParticleManager.Instance.Play("SmokeBlast", transform.position, null, smokeColor, null, 0.8f);
-            temperatureStage = (int)TemperatureStage.Smoking;
+            temperatureStage = TemperatureStage.Normal;
         }
-        
-        if (particleTimer <= 0f)
-        {
-            ParticleManager.Instance.Play("RisingSmoke", transform.position, null, smokeColor);
-            particleTimer = 8 / heat.Heat;
-        }
-        particleTimer -= Time.fixedDeltaTime;
+
     }
 
     private void CoolingOff()
     {
-        if (heat.Heat >= steamingThreshold)
+        if (heat.Heat >= sweatingThreshold)
         {
-            if (temperatureStage > (int)TemperatureStage.Steaming)
+            if (heat.Heat >= steamingThreshold)
             {
-                ParticleManager.Instance.Play("SmokeBlast", transform.position, null, steamColor, null, 0.8f);
+                if (temperatureStage > TemperatureStage.Steaming)
+                {
+                    ParticleManager.Instance.Play("SmokeBlast", transform.position, null, steamColor, null, 0.4f);
+                    ParticleManager.Instance.Play("SmokeBlast", transform.position, null, steamColor, null, 0.6f);
+                    temperatureStage = TemperatureStage.Steaming;
+                }
+                if (particleTimer <= 0f)
+                {
+                    ParticleManager.Instance.Play("RisingSmoke", transform.position, null, steamColor);
+                }
+            }
+            else if (temperatureStage != TemperatureStage.Sweating)
+            {
                 ParticleManager.Instance.Play("SmokeBlast", transform.position, null, steamColor, null, 0.4f);
-                temperatureStage = (int)TemperatureStage.Steaming;
+                temperatureStage = TemperatureStage.Sweating;
             }
             if (particleTimer <= 0f)
             {
-                ParticleManager.Instance.Play("RisingSmoke", transform.position, null, steamColor);
+                ParticleManager.Instance.Play("SweatBeads", transform.position);
+                particleTimer = 8 / heat.Heat;
             }
+            particleTimer -= Time.fixedDeltaTime;
         }
-
-        if (temperatureStage > (int)TemperatureStage.Sweating)
+        else
         {
-            ParticleManager.Instance.Play("SmokeBlast", transform.position, null, steamColor, null, 0.4f);
-            temperatureStage = (int)TemperatureStage.Sweating;
+            temperatureStage = TemperatureStage.Normal;
         }
-        
-        if (particleTimer <= 0f)
-        {
-            ParticleManager.Instance.Play("SweatBeads", transform.position);
-            particleTimer = 8 / heat.Heat;
-        }
-        particleTimer -= Time.fixedDeltaTime;
     }
 }

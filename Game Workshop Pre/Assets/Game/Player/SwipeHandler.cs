@@ -10,7 +10,6 @@ public class SwipeHandler : MonoBehaviour
 
     // Components
     [SerializeField] private DottedParticleLine _dottedLine;
-    ParticleSystem _swipeEffectInstance;
     FMOD.Studio.EventInstance _swipeSoundInstance;
     private PlayerMovementController _parent;
     private Collider2D _hitbox;
@@ -50,7 +49,6 @@ public class SwipeHandler : MonoBehaviour
             _swipeSoundInstance.setParameterByName("Texture", 1);
             _swipeSoundInstance.start();
             _swipeSoundInstance.release();
-
         }
         
         _hitbox.enabled = true;
