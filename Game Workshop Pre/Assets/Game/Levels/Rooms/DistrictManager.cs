@@ -14,6 +14,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private List<Room> _rooms = new List<Room>();
 
     public bool AreGatesUp { get; private set; }
+    public bool inRoom;
     public Action<bool> OnGateFlip;
 
     // Rooms the player is in
@@ -49,6 +50,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         if (!_focusedRooms.Contains(room))
         {
             _focusedRooms.Add(room);
+            
         }
     }
     public void PlayerExitRoom(Room room)
@@ -56,6 +58,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         if (_focusedRooms.Contains(room))
         {
             _focusedRooms.Remove(room);
+            
         }
     }
 
