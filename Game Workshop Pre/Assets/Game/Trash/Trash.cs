@@ -1,5 +1,7 @@
 using System;
-using DG.Tweening;
+using System.Collections;
+using DG.Tweening;  
+using JetBrains.Annotations;
 using UnityEngine;
 
 
@@ -24,6 +26,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     protected Room _parentRoom;
     public Rigidbody2D _rigidBody;
     protected SpriteRenderer _spriteRenderer;
+    private float soundCooldown = 1f;
 
     protected bool _isDestroyed = false;
 
@@ -114,7 +117,17 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         if (!_pointsConsumed)
         {
             SendScore?.Invoke(_pointValue);
+            StartCoroutine(Sound());
             _pointsConsumed = true;
         }
+    }
+
+    public IEnumerator Sound()
+    {
+        //AudioManager.Instance.ModifyParameter("Points", "Point", Math.Clamp(_pointValue, 0, 50), "Local");
+        //Debug.Log("Played Points Sound: "+_pointValue);
+        //AudioManager.Instance.Play("Points", transform.position);
+        yield return new WaitForSeconds(soundCooldown);
+        soundCooldown = 1f;
     }
 }
