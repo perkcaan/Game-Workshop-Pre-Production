@@ -242,7 +242,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         if (_ctx.MoveSpeed > 0.1f && _footstepCooldown <= 0f)
         {
             
-            AudioManager.Instance.Play("Steps", transform.position);
+            //AudioManager.Instance.Play("Steps", transform.position);
             _footstepCooldown = 0.3f;
 
             
