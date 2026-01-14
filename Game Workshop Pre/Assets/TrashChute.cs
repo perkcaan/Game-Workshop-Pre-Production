@@ -20,6 +20,7 @@ public class TrashChute : MonoBehaviour
     private Room _parentRoom;
     private bool _canDrop;
     private Collider2D _feeler;
+    private GameObject trash;
 
 
     private void Awake()
@@ -36,7 +37,7 @@ public class TrashChute : MonoBehaviour
         if (Time.time >= _nextDropTime && _spawnedTrash == null)
         {
             int index = Random.Range(0, _possibleTrash.Count);
-            GameObject trash = _possibleTrash[index].gameObject;
+            trash = _possibleTrash[index].gameObject;
             
             _landingPoint = new Vector2(Random.Range(_dropAreaMinX, _dropAreaMaxX), Random.Range(_dropAreaMinY, _dropAreaMaxY));
             _feeler.enabled = true;
@@ -44,9 +45,7 @@ public class TrashChute : MonoBehaviour
 
             if (_parentRoom._currentTrashSizeAmount - trash.GetComponent<ICleanable>().Size <= 0)
             {
-                trash = null;
-                Debug.Log(_parentRoom._currentTrashSizeAmount);
-                this.enabled = false;
+               StopTrash();
             }
 
             if (trash != null && trash.GetComponent<ICleanable>().Size + _parentRoom._currentTrashSizeAmount < _parentRoom._roomTrashSizeAmount && _canDrop)
@@ -119,6 +118,20 @@ public class TrashChute : MonoBehaviour
             Debug.Log("Cannot drop trash here, area blocked");
         }
     }
+
+    void StartTrash() 
+    {
+        _canDrop = true;
+        this.enabled = true;
+        _feeler.enabled = true;
+    }
+    void StopTrash()
+    {
+        _canDrop = false;
+        this.enabled = false;
+        _feeler.enabled = false;
+    }
+
 }
 
 
