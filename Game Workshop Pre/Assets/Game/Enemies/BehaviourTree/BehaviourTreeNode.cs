@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+[Serializable]
 public enum BTNodeState { Running, Success, Failure }
 
 
@@ -43,11 +44,17 @@ public abstract class BehaviourTreeNode
     private EnemyBase _self;
     protected EnemyBase Self { get { return _self; } }
 
-    public abstract void CheckRequiredComponents(EnemyBase self);
-    protected abstract void Initialize();
-    public abstract BTNodeState Evaluate();
-    public virtual void DrawDebug() { }
+    protected bool _isActive = false;
 
+    protected abstract void CheckRequiredComponents();
+    protected abstract void Initialize();
+    protected virtual void DrawDebug() { }
+
+    public void Validate(EnemyBase self)
+    {
+        _self = self;
+        CheckRequiredComponents(); 
+    }
 
     public void Initialize(EnemyBlackboard blackboard, EnemyBase self)
     {
@@ -55,6 +62,19 @@ public abstract class BehaviourTreeNode
         _self = self;
         Children.RemoveAll(child => child == null); 
         Initialize();
+    }
+
+
+    public void Reset()
+    {
+        _isActive = false;
+    }
+
+    public abstract BTNodeState Evaluate();
+    
+    public void DrawDebugIfActive()
+    {
+        if (_isActive) DrawDebug();
     }
 
 }

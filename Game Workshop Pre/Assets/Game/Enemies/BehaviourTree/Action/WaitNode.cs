@@ -10,15 +10,9 @@ public class WaitNode : BehaviourTreeNode
     private float _currentTime = 0f;
 
     // Behaviour tree
-    public override void CheckRequiredComponents(EnemyBase self)
-    {
+    protected override void CheckRequiredComponents() { }
 
-    }
-
-    protected override void Initialize()
-    {
-        
-    }
+    protected override void Initialize() { }
 
     public override BTNodeState Evaluate()
     {
@@ -31,13 +25,4 @@ public class WaitNode : BehaviourTreeNode
         _currentTime += Time.deltaTime;
         return BTNodeState.Running;
     }
-
-
-
-
-    public override void DrawDebug()
-    {
-
-    }
-
 }

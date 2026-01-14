@@ -9,10 +9,7 @@ public class DoActionNode : BehaviourTreeNode
     [SerializeField] private int _indexOfAction;
 
     // Behaviour tree
-    public override void CheckRequiredComponents(EnemyBase self)
-    {
-
-    }
+    protected override void CheckRequiredComponents() { }
 
     protected override void Initialize()
     {
@@ -39,7 +36,7 @@ public class DoActionNode : BehaviourTreeNode
 
 
 
-    public override void DrawDebug()
+    protected override void DrawDebug()
     {
 
     }

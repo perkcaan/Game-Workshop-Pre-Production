@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviour:
-    rid: -2
+    rid: 5922415085429981184
   _enableBehaviourDebug: 0
   _actionMethods:
   - m_PersistentCalls:
@@ -160,6 +160,79 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 5922415085429981184
+      type: {class: ParallelSequenceNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: ParallelSequence
+        Children:
+        - rid: 5922415085429981185
+        - rid: 5922415085429981186
+        - rid: -2
+    - rid: 5922415085429981185
+      type: {class: SelectorNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Main Selector
+        Children:
+        - rid: 5922415085429981187
+        - rid: 5922415085429981188
+        - rid: 5922415085429981189
+        - rid: -2
+    - rid: 5922415085429981186
+      type: {class: SpotTargetNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Spot Target
+        Children: []
+        _searchDistance: 5
+        _fieldOfViewAngle: 90
+        _typeToTarget: 0
+        _targetMask:
+          serializedVersion: 2
+          m_Bits: 1536
+        _obstacleMask:
+          serializedVersion: 2
+          m_Bits: 16384
+    - rid: 5922415085429981187
+      type: {class: IsPerformingActionNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Is Performing Action
+        Children: []
+    - rid: 5922415085429981188
+      type: {class: SequenceNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: AttemptAttackSequence
+        Children:
+        - rid: 5922415085429981191
+        - rid: 5922415085429981192
+        - rid: 5922415085429981193
+        - rid: -2
+    - rid: 5922415085429981189
+      type: {class: SimplePatrolNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Patrol
+        Children: []
+        _patrolPoints:
+        - {x: 4, y: 0}
+        - {x: 0, y: -5}
+        - {x: 6, y: -7}
+        _reversePatrolInsteadOfWrap: 0
+        _arrivalProximity: 0.2
+    - rid: 5922415085429981191
+      type: {class: IsTargetFoundNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Is Target Found
+        Children: []
+    - rid: 5922415085429981192
+      type: {class: ChaseTargetNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Chase Target
+        Children: []
+        _arrivedAtTargetDistance: 1
+    - rid: 5922415085429981193
+      type: {class: DoActionNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Do Action
+        Children: []
+        _indexOfAction: 0
 --- !u!114 &4870006487215119448
 MonoBehaviour:
   m_ObjectHideFlags: 0

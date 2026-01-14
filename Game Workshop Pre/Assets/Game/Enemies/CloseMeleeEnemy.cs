@@ -11,6 +11,7 @@ public class CloseMeleeEnemy : EnemyBase
 
     public void PerformAttack()
     {
+        /* need to fix
         _blackboard.TryGet<float>("rotation", out float rotation);
         _attackHitbox.UpdateRotation(transform, rotation);
         _attackHitbox.Enable();
@@ -18,16 +19,18 @@ public class CloseMeleeEnemy : EnemyBase
 
 
         StartCoroutine(AttackDuration());
+        */
     }
 
     private IEnumerator AttackDuration()
     {
+        yield return new WaitForEndOfFrame(); /* need to fix
         yield return new WaitForSeconds(_attackDuration);
         _attackHitbox.Disable();
         _animator.SetBool("Attacking", false);
         yield return new WaitForSeconds(_attackCooldown);
         _blackboard.Set<bool>("isInAction", false);
-
+        */
     }
 
 
