@@ -25,6 +25,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     private Collider2D _collider;
     public Collider2D Collider { get { return _collider; } }
 
+    // Fields
+    private bool _isDying = false;
 
     // external methods (use in specific enemies!)
     protected abstract void OnStart();
@@ -41,7 +43,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
-        _animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
         _blackboard = new EnemyBlackboard(this);
         PrepareBlackboard();
         _behaviour.Initialize(_blackboard, this);
@@ -50,6 +52,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     private void Update()
     {
+        if (_isDying) return;
+
         if (_behaviour != null)
         {
             _behaviour.Evaluate();
@@ -59,6 +63,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     private void FixedUpdate()
     {
+        if (_isDying) return;
+
         UpdateMovement();
     }
 
@@ -108,10 +114,16 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
 
     // IHeatable
+    public void PrepareIgnite(HeatMechanic heat)
+    {
+        _isDying = true;
+    }
+
+
     public void OnIgnite(HeatMechanic heat)
     {
         Destroy(gameObject);
-        Debug.Log("ignite");
+        AudioManager.Instance.Play("enemyDeath", transform.position);
     }
 
 
@@ -126,12 +138,12 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void OnTrashBallIgnite()
     {
         Destroy(gameObject);
-        Debug.Log("trash ignite");
     }
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (ballSize > _minSizeToAbsorb && ballVelocity > _minVelocityToAbsorb && isActiveAndEnabled))
+        if (_isDying) return;
+        if (forcedAbsorb || (ballSize > _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled))
         {
             gameObject.SetActive(false);
             trashBall.absorbedObjects.Add(this);
