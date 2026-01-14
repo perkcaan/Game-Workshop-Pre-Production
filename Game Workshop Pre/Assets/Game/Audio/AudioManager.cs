@@ -3,44 +3,75 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using AYellowpaper.SerializedCollections;
+using static UnityEngine.ParticleSystem;
 
-public class AudioManager : MonoBehaviour
+
+public class AudioManager : Singleton<AudioManager>
 {
-    private EventInstance ambienceEventInstance;
 
-    public static AudioManager Instance { get; private set; }
-    private void Awake()
+    [SerializedDictionary("ID", "FMODEmitter")]
+    [SerializeField] private SerializedDictionary<string, StudioEventEmitter> _sounds;
+    private StudioEventEmitter sInstance;
+
+
+    public void Play(string sCode, Vector3 position)
     {
-        if (Instance != null)
+        if (_sounds.TryGetValue(sCode, out sInstance))
         {
-            Debug.LogError("Found more than one Audio Manager in the scene.");
+
+
+            sInstance.Play();
+            Debug.Log($"AudioManager: Playing FMOD sound '{sCode}' at position {position}.");
+
         }
-        Instance = this;
+        else
+        {
+            Debug.LogWarning($"AudioManager: FMOD key '{sCode}' not found.");
+        }
     }
 
-    // syntax for playing sounds in other classes
-    // AudioManager.instance.PlayOneShot(FMODEvents.instance. name of sound, this.transform.position)
-
-    public void PlayOneShot(EventReference sound, Vector3 position)
+    public void Stop(string sCode)
     {
-        RuntimeManager.PlayOneShot(sound, position);
+        if (_sounds.TryGetValue(sCode, out sInstance))
+        {
+            sInstance.EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+        else
+        {
+            Debug.LogWarning($"AudioManager: FMOD key '{sCode}' not found.");
+        }
     }
 
-    public EventInstance CreateInstance(EventReference eventReference)
-    {
-        EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
-        return eventInstance;
-    }
 
-    private void InitializeAmbience(EventReference ambienceEventReference)
+    public void ModifyParameter(string sCode, string param, float value, string Itype)
     {
-        ambienceEventInstance = CreateInstance(ambienceEventReference);
-        ambienceEventInstance.start();
-    }
-    
-     private void Start()
-    {
-        InitializeAmbience(FMODEvents.instance.lavaAmbience);
+        sInstance = _sounds[sCode];
+        if (sInstance != null)
+        {
+            if (_sounds.TryGetValue(sCode, out sInstance))
+            {
+
+                switch (Itype)
+                {
+                    case "Global":
+                        RuntimeManager.StudioSystem.setParameterByName(param, value);
+                        break;
+                    case "Local":
+                        sInstance.EventInstance.setParameterByName(param, value);
+                        break;
+                }
+
+
+
+
+
+            }
+            else
+            {
+                Debug.LogError("That shit didn't work");
+            }
+        }
     }
 
 }

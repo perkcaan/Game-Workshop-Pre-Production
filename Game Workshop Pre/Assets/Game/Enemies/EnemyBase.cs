@@ -123,6 +123,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void OnIgnite(HeatMechanic heat)
     {
         Destroy(gameObject);
+        AudioManager.Instance.Play("enemyDeath", transform.position);
     }
 
 
@@ -139,10 +140,10 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         Destroy(gameObject);
     }
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
         if (_isDying) return;
-        if (forcedAbsorb || (ballSize > _minSizeToAbsorb && ballVelocity > _minVelocityToAbsorb && isActiveAndEnabled))
+        if (forcedAbsorb || (ballSize > _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled))
         {
             gameObject.SetActive(false);
             trashBall.absorbedObjects.Add(this);
