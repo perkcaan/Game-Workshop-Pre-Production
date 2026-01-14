@@ -13,6 +13,8 @@ public class Room : MonoBehaviour
     private List<ICleanable> _containedCleanable = new List<ICleanable>();
     private int _roomTrashAmount;
     private int _roomTrashCount;
+    public int _roomTrashSizeAmount;
+    public int _currentTrashSizeAmount;
     public bool IsTrashRoom { get; set; } = false;
     public float Cleanliness
     {
@@ -23,10 +25,14 @@ public class Room : MonoBehaviour
     {
         // All trash is assigned its room at start
         ICleanable[] cleanableChildren = GetComponentsInChildren<ICleanable>();
+
         foreach (ICleanable cleanable in cleanableChildren)
         {
             cleanable.SetRoom(this);
             _containedCleanable.Add(cleanable);
+            this._roomTrashSizeAmount += cleanable.Size;
+            _currentTrashSizeAmount = this._roomTrashSizeAmount;
+            Debug.Log(this._roomTrashSizeAmount);
         }
         UpdateRoomCleanliness();
         _roomTrashCount = _roomTrashAmount;
@@ -69,6 +75,7 @@ public class Room : MonoBehaviour
             mb.transform.parent = transform;
         }
         _containedCleanable.Add(cleanable);
+        _currentTrashSizeAmount += cleanable.Size;
         UpdateRoomCleanliness();
     }
 
@@ -78,6 +85,7 @@ public class Room : MonoBehaviour
         if (_containedCleanable.Contains(cleanable))
         {
             _containedCleanable.Remove(cleanable);
+            _currentTrashSizeAmount -= cleanable.Size;
         }
         UpdateRoomCleanliness();
     }
