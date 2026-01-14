@@ -1,0 +1,80 @@
+###############################################################################
+# General Line Ending Rules
+###############################################################################
+# Normalize text files by default
+* text=auto
+
+###############################################################################
+# Unity-specific: Treat these as binary so Git doesn't modify line endings
+###############################################################################
+# Scenes, Prefabs, Materials, and Unity Assets
+*.unity         -text
+*.prefab        -text
+*.asset         -text
+*.mat           -text
+*.anim          -text
+*.controller    -text
+*.playable      -text
+*.overrideController -text
+*.physicsMaterial -text
+*.spriteatlas   -text
+
+# Meta files must remain normalized
+*.meta text eol=lf
+
+###############################################################################
+# Audio, Visual, and Binary Assets
+###############################################################################
+*.png           -text
+*.jpg           -text
+*.jpeg          -text
+*.tga           -text
+*.psd           -text
+*.exr           -text
+*.hdr           -text
+
+*.wav           -text
+*.aiff          -text
+*.mp3           -text
+*.ogg           -text
+
+*.fbx           -text
+*.blend         -text
+
+*.dll           -text
+*.so            -text
+*.dylib         -text
+
+###############################################################################
+# FMOD-specific
+###############################################################################
+# FMOD plugin bundles on macOS MUST be treated as binary
+*.bundle        -text
+
+# Reinforce that Unity Plugin folder is binary-only
+Assets/Plugins/** -text
+
+# FMOD banks treated as binary
+*.bank          -text
+*.strings.bank  -text
+
+###############################################################################
+# Prevent Git from trying to diff binary files
+###############################################################################
+*.bundle        -diff
+*.dll           -diff
+*.dylib         -diff
+*.so            -diff
+*.wav           -diff
+*.fbx           -diff
+*.psd           -diff
+Assets/Plugins/** -diff
+
+###############################################################################
+# Optional: Unity YAML files (force LF for consistency)
+###############################################################################
+*.cs            text eol=lf
+*.shader        text eol=lf
+*.cginc         text eol=lf
+*.compute       text eol=lf
+*.hlsl          text eol=lf

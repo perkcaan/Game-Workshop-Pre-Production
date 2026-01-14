@@ -41,8 +41,9 @@ public class Score : MonoBehaviour // Make singleton****
 
     private void AssignGrade()
     {
-        if (score >= 1 * activePointLimit) {
-            grade = 'S';    
+        if (score >= 1 * activePointLimit)
+        {
+            grade = 'S';
         }
         else if (score >= .80 * activePointLimit)
         {
@@ -59,10 +60,11 @@ public class Score : MonoBehaviour // Make singleton****
         else if (score >= .20 * activePointLimit)
         {
             grade = 'D';
-        } 
+        }
         else
         {
             grade = 'F';
         }
+        Debug.Log("Grade: " + grade);
     }
 }

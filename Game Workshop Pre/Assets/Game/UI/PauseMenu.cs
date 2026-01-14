@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class PauseMenu : MonoBehaviour
     public GameObject inventoryMenuUI;
     public GameObject optionsMenuUI;
 
+    private FMOD.Studio.EventInstance _music;
+
     void Awake()
     {
         OpenInventory();
@@ -17,6 +20,9 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         Resume();
+        _music = RuntimeManager.CreateInstance("event:/Music/Hellish Sample");
+        _music.start();
+
     }
     void Update()
     {
@@ -26,10 +32,13 @@ public class PauseMenu : MonoBehaviour
             {
                 // if game is running pause it, else close the current menu
                 Pause();
+                
+
             }
             else
             {
                 Resume();
+                
             }
         }
 
@@ -42,6 +51,7 @@ public class PauseMenu : MonoBehaviour
             else
             {
                 Resume();
+                
             }
         }
     }
@@ -49,6 +59,7 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         ChangeMenu(null);
+        _music.setParameterByName("Pause", 0f);
     }
     public void OpenInventory()
     {
@@ -75,6 +86,7 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         ChangeMenu(pauseMenuUI);
+        _music.setParameterByName("Pause", 1f);
     }
 
     void ChangeMenu(GameObject newMenu)
