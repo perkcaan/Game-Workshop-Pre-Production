@@ -45,9 +45,11 @@ public abstract class BehaviourTreeNode
     protected EnemyBase Self { get { return _self; } }
 
     protected bool _isActive = false;
+    private bool _canReset = false;
 
     protected abstract void CheckRequiredComponents();
     protected abstract void Initialize();
+    protected virtual void Reset() { }
     protected virtual void DrawDebug() { }
 
     public void Validate(EnemyBase self)
@@ -65,9 +67,19 @@ public abstract class BehaviourTreeNode
     }
 
 
-    public void Reset()
+    public void ResetInactive()
     {
-        _isActive = false;
+        if (_isActive) // A node needs to set itself as active each frame otherwise it will reset
+        {
+            _isActive = false;
+            _canReset = true; // Since it was active, it now may need to be reset
+        } else { // Node didn't set itself as active, so it can safely reset. 
+            if (_canReset)
+            {
+                Reset();
+                _canReset = false;
+            }
+        }
     }
 
     public abstract BTNodeState Evaluate();

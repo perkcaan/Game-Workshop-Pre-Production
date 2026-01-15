@@ -5,15 +5,12 @@
 [BehaviourNode(0, "Composite")]
 public class SelectorNode : CompositeNode
 {
-    private int _evaluatedCount = 0;
     public override BTNodeState Evaluate()
     {
         _isActive = true;
-        _evaluatedCount = 0;
 
         foreach (BehaviourTreeNode child in Children)
         {
-            _evaluatedCount++;
             switch (child.Evaluate())
             {
                 case BTNodeState.Running:

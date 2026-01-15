@@ -47,7 +47,7 @@ public class BehaviourTree
 
         foreach (BehaviourTreeNode node in _allNodes)
         {
-            node.Reset();
+            node.ResetInactive();
         }
         _root.Evaluate();
     }

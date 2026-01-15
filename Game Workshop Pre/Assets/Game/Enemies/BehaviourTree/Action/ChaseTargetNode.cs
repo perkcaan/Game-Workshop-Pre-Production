@@ -9,7 +9,7 @@ using UnityEngine;
 public class ChaseTargetNode : BehaviourTreeNode
 {
     // Fields
-    [SerializeField] private float _arrivedAtTargetDistance = 0.5f;
+    [SerializeField] private float _arrivedAtTargetDistance = 1f;
 
     private Vector2 _storedTargetPos = Vector2.zero;
     private bool _arrivedThisTick = false;
@@ -29,10 +29,11 @@ public class ChaseTargetNode : BehaviourTreeNode
         }
         _storedTargetPos = targetPosition.Value;
 
-        if (_arrivedThisTick)
-        {
+        if (_arrivedThisTick) // When arrive, check if the target is here or not
+        { // NEED TO FIX SO THAT IT DOESNT ATTACK IF IT REFINDS PLAYER WHEN IT ARRIVED THIS TICK BUT PLAYER ISNT AT ARRIVAL POINT
             _arrivedThisTick = false;
-            return BTNodeState.Success;
+            if (Blackboard.TryGetNotNull("target", out ITargetable target)) return BTNodeState.Success;
+            return BTNodeState.Failure;
         }
 
         ChaseTarget();

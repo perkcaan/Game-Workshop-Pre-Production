@@ -24,7 +24,6 @@ public class SpotTargetNode : BehaviourTreeNode
     public override BTNodeState Evaluate()
     {
         _isActive = true;
-
         Blackboard.TryGet("targetPosition", out Vector2? targetPosition); // Get last known target position
 
         if (_currentTarget == null)
@@ -95,7 +94,6 @@ public class SpotTargetNode : BehaviourTreeNode
         float rotation = Self.FacingRotation;
         float radians = rotation * Mathf.Deg2Rad;
         Vector2 facingDirection = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)).normalized;
-        _storedRotation = rotation;
 
         Vector2 potentialTargetDirection = (targetPos - (Vector2) Self.transform.position).normalized;
         if (Vector2.Angle(facingDirection, potentialTargetDirection) < _fieldOfViewAngle / 2)
@@ -117,7 +115,6 @@ public class SpotTargetNode : BehaviourTreeNode
     {
         if (Self == null) return;
         
-
         Vector3 rightBoundary = DirectionFromAngle(_fieldOfViewAngle / 2);
         Vector3 leftBoundary = DirectionFromAngle(-_fieldOfViewAngle / 2);
 
@@ -129,7 +126,7 @@ public class SpotTargetNode : BehaviourTreeNode
     
     private Vector3 DirectionFromAngle(float angleInDegrees)
     {
-        float rad = (angleInDegrees + _storedRotation) * Mathf.Deg2Rad;
+        float rad = (angleInDegrees + Self.FacingRotation) * Mathf.Deg2Rad;
         return new Vector3(Mathf.Cos(rad), Mathf.Sin(rad));
     }
 
