@@ -10,8 +10,10 @@ public class HiddenArea : MonoBehaviour
     [SerializeField] Material mat;
     private MaterialPropertyBlock block;
     private TilemapRenderer renderer;
-    [SerializeField] float opacity = 1f;
+    private Tween opacityTween;
 
+    [SerializeField] float opacity = 1f;
+    [SerializeField] float transitionTime = 2f;
 
     private void Awake()
     {
@@ -21,7 +23,6 @@ public class HiddenArea : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(opacity);
         renderer.GetPropertyBlock(block);
         block.SetFloat("_Opacity", opacity);
         renderer.SetPropertyBlock(block);
@@ -29,17 +30,40 @@ public class HiddenArea : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        return;
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Hewwo");
-            reveal();
+            //reveal area
+            SetOpacity(0f);
         }
     }
 
-    void reveal()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-       DOTween.To(() => opacity, x => opacity = x, 0, 2);
-       mat.SetFloat("Opacity", opacity);
+        if (collision.CompareTag("Player"))
+        {
+            //hide area
+            SetOpacity(1f);
+        }
     }
+
+    void SetOpacity(float target)
+    {
+        //kill any tween already running
+        opacityTween?.Kill();
+
+        //distance remaining
+        float distance = Mathf.Abs(opacity - target);
+
+        //time proportional to distance 
+        float duration = transitionTime * distance;
+
+        opacityTween = DOTween.To(
+            () => opacity,
+            x => opacity = x,
+            target,
+            duration
+        ).SetEase(Ease.Linear);
+    }
+
+
 }
