@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -20,6 +21,16 @@ public class CloseMeleeEnemy : EnemyBase
 
         StartCoroutine(AttackDuration());
         */
+    }
+
+    public IEnumerator MeleeAttack(Action<bool> onComplete)
+    {
+        Debug.Log("Startup...");
+        yield return new WaitForSeconds(1f);
+        Debug.Log("Melee attack!");
+        yield return new WaitForSeconds(1f);
+        Debug.Log("Endlag finished");
+        onComplete?.Invoke(true);
     }
 
     private IEnumerator AttackDuration()

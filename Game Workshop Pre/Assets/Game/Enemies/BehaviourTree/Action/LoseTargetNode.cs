@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
-// Resets target and targetPosition knowledge then waits for a bit. Return success when finished waiting.
+// Waits for a bit then resets target and targetPosition. Return success when finished waiting.
+// Currently, this is basically the exact same as the wait node . Might change later.
 [BehaviourNode(4, "Actions")]
 public class LoseTargetNode : BehaviourTreeNode
 {
@@ -18,14 +20,11 @@ public class LoseTargetNode : BehaviourTreeNode
     public override BTNodeState Evaluate()
     {
         _isActive = true;
-        Debug.Log("where'd he go?");
-
-        Blackboard.Set<ITargetable>("target", null);
-        Blackboard.Set<Vector2?>("targetPosition", null);
 
         if (_currentTime >= _loseTargetConfusionTime)
         {
-            Debug.Log("i lost him.");
+            Blackboard.Set<ITargetable>("target", null);
+            Blackboard.Set<Vector2?>("targetPosition", null);
             _currentTime = 0f;
             return BTNodeState.Success;
         }
@@ -36,7 +35,6 @@ public class LoseTargetNode : BehaviourTreeNode
 
     protected override void Reset()
     {
-        Debug.Log("Reset timer");
         _currentTime = 0f;
     }
 }

@@ -45,7 +45,7 @@ public abstract class BehaviourTreeNode
     protected EnemyBase Self { get { return _self; } }
 
     protected bool _isActive = false;
-    private bool _canReset = false;
+    protected bool _canReset = false;
 
     protected abstract void CheckRequiredComponents();
     protected abstract void Initialize();

@@ -7,38 +7,37 @@ public class DoActionNode : BehaviourTreeNode
 {
     // Fields
     [SerializeField] private int _indexOfAction;
+    [SerializeField] private bool _actionStarted = false;
 
     // Behaviour tree
     protected override void CheckRequiredComponents() { }
 
-    protected override void Initialize()
-    {
-        Blackboard.Set<bool>("isInAction", false);
-    }
+    protected override void Initialize() { }
 
+    //TODO: Need to make it so you can't just leave while this is running... Will probably need to restructure the behaviour tree quiiiiite a bit
+    // go back to using the Parallel node... its important for Service nodes!
+    // do something closer to whats on discord/Programming
     public override BTNodeState Evaluate()
     {
-        if (Blackboard.TryGet("isInAction", out bool isInAction)) { }
-        if (!isInAction)
+        if (!_actionStarted)
         {
-            StartAction();
-            return BTNodeState.Success;
+            _actionStarted = true;
+            Self.PerformAction(_indexOfAction, EndAction);
         }
+        
         return BTNodeState.Running;
     }
 
-    private void StartAction()
+    private void EndAction(bool result)
     {
-        Blackboard.Set<bool>("isInAction", true);
-        Self.PerformAction(_indexOfAction);
+        _actionStarted = false;
+        Debug.Log("Action ended with result: " + result);
     }
 
-
-
-
-    protected override void DrawDebug()
+    protected override void Reset()
     {
-
+        
     }
+
 
 }

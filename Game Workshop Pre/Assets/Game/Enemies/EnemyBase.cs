@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters;
@@ -8,7 +9,7 @@ using UnityEngine.Events;
 public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable
 {
     [SerializeField] private BehaviourTree _behaviour;
-    [SerializeField] private List<UnityEvent> _actionMethods;
+    [SerializeField] private List<EnemyActionReference> _actions;
 
     // Properties (EnemyBase should only have UNIVERSAL properties. 
     // If a property is on every or almost every enemy, it can go here.)
@@ -74,11 +75,15 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         if (_isDying) return;
     }
 
-    public void PerformAction(int actionIndex)
+    // Get an action from _actions to use 
+    public void PerformAction(int index, Action<bool> onComplete = null)
     {
-        for (int i = 0; i < _actionMethods.Count; i++)
+        if (index >= 0 && index < _actions.Count)
         {
-            if (actionIndex == i) _actionMethods[i]?.Invoke();
+            StartCoroutine(_actions[index].Invoke(this, onComplete));
+        } else
+        {
+            onComplete?.Invoke(false);
         }
     }
 

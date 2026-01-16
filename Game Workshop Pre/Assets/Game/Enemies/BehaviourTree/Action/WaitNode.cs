@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Waits some amount of time, then returns Success
+[BehaviourNode(5, "Actions")]
 public class WaitNode : BehaviourTreeNode
 {
     // Fields
-
     [SerializeField] float _waitTime;
     private float _currentTime = 0f;
 
@@ -16,6 +18,8 @@ public class WaitNode : BehaviourTreeNode
 
     public override BTNodeState Evaluate()
     {
+        _isActive = true;
+
         if (_currentTime >= _waitTime)
         {
             _currentTime = 0f;
@@ -25,4 +29,10 @@ public class WaitNode : BehaviourTreeNode
         _currentTime += Time.deltaTime;
         return BTNodeState.Running;
     }
+
+    protected override void Reset()
+    {
+        _currentTime = 0f;
+    }
+
 }
