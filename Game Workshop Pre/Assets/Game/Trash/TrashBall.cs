@@ -226,12 +226,15 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         if (isDecaying == _activelyDecaying) return;
         _activelyDecaying = isDecaying;
+        AudioManager.Instance.Play("Decay", transform.position);
+        AudioManager.Instance.ModifyParameter("Decay", "Size", Size, "Global");
         LayerMask mask = rigidBody.excludeLayers;
         int trashBit = 1 << LayerMask.NameToLayer("Trash");
 
         if (isDecaying) mask |= trashBit;
         else mask &= ~trashBit;
         rigidBody.excludeLayers = mask;
+        
     }
 
     public void AbsorbTrash(Trash trash)
@@ -447,13 +450,16 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private void ExplodeTrashBall()
     {
         if (_isBeingDestroyed) return;
+        
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
             trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallExplode(this);
         }
-        
+        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", 0f, "Global");
+        AudioManager.Instance.Stop("TrashBall");
+        AudioManager.Instance.Stop("Decay");
         Destroy(gameObject);
     }
 
@@ -481,7 +487,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         absorbedObjects.Clear();
         absorbedTrash.Clear();
         SendScore?.Invoke((int)Size);
-        StartCoroutine(Sound());
+        StartCoroutine(PointSound());
 
         AudioManager.Instance.ModifyParameter("TrashBall", "RPM", 0f, "Global");
         AudioManager.Instance.Stop("TrashBall");
@@ -508,7 +514,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         AudioManager.Instance.Play("Trash Pickup", transform.position);
     }
 
-    public IEnumerator Sound()
+    public IEnumerator PointSound()
     {
         bool playing = false;
 
