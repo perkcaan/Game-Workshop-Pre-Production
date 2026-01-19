@@ -288,6 +288,7 @@ GameObject:
   - component: {fileID: 5259664439949458946}
   - component: {fileID: 3897035374062321327}
   - component: {fileID: 2276037212268642676}
+  - component: {fileID: 2330702966417879554}
   m_Layer: 8
   m_Name: Circle
   m_TagString: Untagged
@@ -361,6 +362,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!210 &2330702966417879554
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5212257174872913296}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_SortAtRoot: 0
 --- !u!1 &5424306553645354863
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,6 +468,7 @@ GameObject:
   - component: {fileID: 3488484795273988948}
   - component: {fileID: 6442539237054535307}
   - component: {fileID: 3130954535914247153}
+  - component: {fileID: 7208263676142163432}
   m_Layer: 8
   m_Name: TrashBall
   m_TagString: Untagged
@@ -569,6 +583,18 @@ MonoBehaviour:
   _dissolveTime: 2
   _dissolveBurnWidth: 0.4
   _meshTexture: {fileID: 2800000, guid: 5c9175d51ecf2cc488d21ca71ff76edc, type: 3}
+--- !u!210 &7208263676142163432
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5613526296850362621}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_SortAtRoot: 0
 --- !u!1 &9073549084542538156
 GameObject:
   m_ObjectHideFlags: 0

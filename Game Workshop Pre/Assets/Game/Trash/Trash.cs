@@ -65,6 +65,16 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
             _rigidBody.simulated = false;
             trashBall.AbsorbTrash(this);
         }
+        if (!forcedAbsorb)
+        {
+            Vector2 direction = transform.position - trashBall.transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);
+            if (Size > 4)
+                ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1.5f);
+            else
+                ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1f);
+        }
     }
 
     public void OnTrashBallExplode(TrashBall trashBall)
