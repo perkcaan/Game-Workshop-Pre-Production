@@ -114,7 +114,6 @@ public class TrashChute : MonoBehaviour
         {
             _canDrop = false;
             Debug.Log(collision.gameObject.name);
-
             Debug.Log("Cannot drop trash here, area blocked");
         }
     }
