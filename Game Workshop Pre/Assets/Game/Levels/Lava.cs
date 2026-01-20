@@ -16,7 +16,7 @@ public class Lava : MonoBehaviour
             //Check for grounded safety. but still toast them a little
             if (collider.TryGetComponent(out GroundedMechanic gm))
             {
-                if (gm.IsGrounded > 0) 
+                if (gm.IsGrounded) 
                 {
                     _delayTimer += Time.fixedDeltaTime;
                     if (_delayTimer > _delayBeforeHeatingWhenGrounded)

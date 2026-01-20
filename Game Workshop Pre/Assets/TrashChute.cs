@@ -41,11 +41,19 @@ public class TrashChute : MonoBehaviour
             
             _landingPoint = new Vector2(Random.Range(_dropAreaMinX, _dropAreaMaxX), Random.Range(_dropAreaMinY, _dropAreaMaxY));
             _feeler.enabled = true;
-            _feeler.transform.position = _landingPoint;
+            if (_canDrop)
+            {
+                _feeler.transform.position = _landingPoint;
+            }
+            else
+            {
+                _landingPoint = new Vector2(Random.Range(_dropAreaMinX, _dropAreaMaxX), Random.Range(_dropAreaMinY, _dropAreaMaxY));
+                _feeler.transform.position = _landingPoint;
+            }
 
             if (_parentRoom._currentTrashSizeAmount - trash.GetComponent<ICleanable>().Size <= 0)
             {
-               StopTrash();
+                StopTrash();
             }
 
             if (trash != null && trash.GetComponent<ICleanable>().Size + _parentRoom._currentTrashSizeAmount < _parentRoom._roomTrashSizeAmount && _canDrop)
@@ -103,14 +111,14 @@ public class TrashChute : MonoBehaviour
         if (_landingTile.GetComponent<Lava>() == null && _landingTile.tag != "Wall")
         {
             _canDrop = true;
-            Debug.Log(collision.gameObject.name + " landed, can drop trash here");
-            Debug.Log(_landingTile.tag);
+
+            
         }
-        else
+        else if (_landingTile.GetComponent<Lava>() != null || _landingTile.tag == "Wall")
         {
             _canDrop = false;
-            Debug.Log(collision.gameObject.name);
-            Debug.Log("Cannot drop trash here, area blocked");
+            Debug.Log("Cannot drop trash here");
+
         }
     }
 

@@ -51,29 +51,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviour:
-    rid: 98879256033492994
-  _enableBehaviourDebug: 0
-  _actionMethods: []
-  _moveSpeed: 5
+    _root:
+      rid: -2
+    _enableBehaviourDebug: 0
+  _actions: []
+  _moveSpeed: 13
   _size: 8
-  _minSizeToAbsorb: 8
-  _minVelocityToAbsorb: 0
+  _minSizeToAbsorb: 100
+  _minVelocityToAbsorb: 100
+  _facingRotation: 270
   _attackDelay: 1
-  _maxSpeed: 6
   _attackSpeed: 6
   _attackList:
-    _serializedList: []
+  - {fileID: 0}
+  - {fileID: 0}
+  FishLaunch: {fileID: 0}
+  _parentRoom: {fileID: 0}
   references:
     version: 2
     RefIds:
-    - rid: 98879256033492994
-      type: {class: SimpleWalkNode, ns: , asm: Assembly-CSharp}
-      data:
-        _angleToWalk: 90
-        _layersToFlipWhenWalkedInto:
-          serializedVersion: 2
-          m_Bits: 20480
-        _distToCheckForObstacle: 0.2
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!212 &8624241645988142556
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -222,6 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _heat: 0
+  coolingOff: 0
   _heatRelaxationRate: 1
   _timeBeforeRelax: 3
   _warningThreshold: 40

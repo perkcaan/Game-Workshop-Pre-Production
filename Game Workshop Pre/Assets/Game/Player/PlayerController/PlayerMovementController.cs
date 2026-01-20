@@ -91,7 +91,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
-        _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
+        //_heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
     }
 
     private void Start()
@@ -352,5 +352,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         playerDeath?.Invoke(true);
         
         //Debug.Log("Return to Checkpoint");
+    }
+
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    {
+        
     }
 }

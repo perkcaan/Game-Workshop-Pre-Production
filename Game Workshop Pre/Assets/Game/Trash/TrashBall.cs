@@ -221,8 +221,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         if (isDecaying == _activelyDecaying) return;
         _activelyDecaying = isDecaying;
-        AudioManager.Instance.Play("Decay", transform.position);
-        AudioManager.Instance.ModifyParameter("Decay", "Size", Size, "Global");
+        //AudioManager.Instance.Play("Decay", transform.position);
+        //AudioManager.Instance.ModifyParameter("Decay", "Size", Size, "Global");
         LayerMask mask = rigidBody.excludeLayers;
         int trashBit = 1 << LayerMask.NameToLayer("Trash");
 
@@ -368,7 +368,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (other.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
             if (_activelyDecaying) return;
-            absorbableObject.OnAbsorbedByTrashBall(this, rigidBody.velocity, (int)(Size + _sizeToAbsorbChange), false);
+            absorbableObject.OnAbsorbedByTrashBall(this, rigidBody.velocity.magnitude, (int)(Size + _sizeToAbsorbChange), false);
             _health = _maxHealth;
             return;
         }
@@ -428,7 +428,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (!otherTrashBall.isActiveAndEnabled) return;
         foreach (IAbsorbable absorbable in otherTrashBall.absorbedObjects)
         {
-            absorbable.OnAbsorbedByTrashBall(this, Vector2.zero, 0, true);
+            absorbable.OnAbsorbedByTrashBall(this, 0f , 0, true);
         }
 
         Vector2 direction = otherTrashBall.transform.position - transform.position;
@@ -467,7 +467,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
         AudioManager.Instance.ModifyParameter("TrashBall", "RPM", 0f, "Global");
         AudioManager.Instance.Stop("TrashBall");
-        AudioManager.Instance.Stop("Decay");
+        //AudioManager.Instance.Stop("Decay");
         Destroy(gameObject);
     }
 

@@ -22,11 +22,12 @@ public class AudioManager : Singleton<AudioManager>
 
 
             sInstance.Play();
-            Debug.Log($"AudioManager: Playing FMOD sound '{sCode}' at position {position}.");
+            
 
         }
         else
         {
+            //Unity may throw an error before this ever triggers, but just in case
             Debug.LogWarning($"AudioManager: FMOD key '{sCode}' not found.");
         }
     }

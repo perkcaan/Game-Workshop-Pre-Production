@@ -32,7 +32,7 @@ public class Room : MonoBehaviour
             _containedCleanable.Add(cleanable);
             this._roomTrashSizeAmount += cleanable.Size;
             _currentTrashSizeAmount = this._roomTrashSizeAmount;
-            Debug.Log(this._roomTrashSizeAmount);
+            
         }
         UpdateRoomCleanliness();
         _roomTrashCount = _roomTrashAmount;
