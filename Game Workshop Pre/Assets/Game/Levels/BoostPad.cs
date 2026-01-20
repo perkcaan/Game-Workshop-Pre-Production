@@ -4,46 +4,41 @@ using UnityEngine;
 
 public class BoostPad : MonoBehaviour
 {
-    Rigidbody2D rb;
-    float cappedSpeed; //80% of max speed
-    [SerializeField] float boostAmount;
-    float currentSpeed;
-    public Vector3 entryDirection = Vector3.forward; // allowed direction of entry
+    [SerializeField] float _boostAmount = 3;
+    [SerializeField] float _maxBoostSpeed = 10000;
+    [SerializeField] private Vector2 entryDirection = Vector2.up; // allowed direction of entry
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("TrashBall"))
-            {
-                TrashBall trashBall = collision.GetComponent<TrashBall>();
-                rb = trashBall.rigidBody;
+        {
+            TrashBall trashBall = collision.GetComponent<TrashBall>();
+            Rigidbody2D rb = trashBall.rigidBody;
 
-                //relative velocity in boost pad's local space
-                Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
-                //is ball coming from correct direction
-                if (Vector3.Dot(localVelocity.normalized, entryDirection.normalized) > 0.5f)
-                {
-                    boostTrash(trashBall);
-                }
+            //relative velocity in boost pad's local space
+            Vector2 localVelocity = transform.InverseTransformDirection(rb.velocity);
+            //is ball coming from correct direction
+            if (Vector2.Dot(localVelocity.normalized, entryDirection.normalized) > 0.5f)
+            {
+                Boost(rb);
             }
-        
+        }
 
 
     }
 
-    public void boostTrash(TrashBall trashBall)
+    public void Boost(Rigidbody2D rigidbody)
     {
-        cappedSpeed = (trashBall._maxSpeed * .8f);
-        currentSpeed = rb.velocity.magnitude;
+        float currentSpeed = rigidbody.velocity.magnitude;
 
-        if (currentSpeed < cappedSpeed)
+        if (currentSpeed < _maxBoostSpeed)
         {
-            rb.velocity *= boostAmount;
-
-            if (currentSpeed > cappedSpeed)
-            {
-                rb.velocity = rb.velocity.normalized * cappedSpeed;
-            }
+            rigidbody.velocity *= _boostAmount;
+        } else
+        {
+            rigidbody.velocity = rigidbody.velocity.normalized * _maxBoostSpeed;
         }
+
     }
 
 }

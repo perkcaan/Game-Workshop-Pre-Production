@@ -8,7 +8,7 @@ using static Unity.Collections.AllocatorManager;
 public class HiddenArea : MonoBehaviour
 {
     private MaterialPropertyBlock block;
-    private TilemapRenderer renderer;
+    private TilemapRenderer _renderer;
     private Tween opacityTween;
 
     private float opacity = 1f;
@@ -17,14 +17,14 @@ public class HiddenArea : MonoBehaviour
     private void Awake()
     {
         block = new MaterialPropertyBlock();
-        renderer = GetComponent<TilemapRenderer>();
+        _renderer = GetComponent<TilemapRenderer>();
     }
 
     void Update()
     {
-        renderer.GetPropertyBlock(block);
+        _renderer.GetPropertyBlock(block);
         block.SetFloat("_Opacity", opacity);
-        renderer.SetPropertyBlock(block);
+        _renderer.SetPropertyBlock(block);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

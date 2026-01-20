@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
+// TODO: 
+// Could you make this not use EnemyHeatHitbox? That's not quite what this is for.
+// EnemyHeatHitbox is for a single attack hit on anenemy,
+// whereas this is is something that will make things take damage while they stand in it
+// You can use EnemyHeatHitbox (or the Lava) as a guide.
 public class ExplodingLava : MonoBehaviour
 {
     [SerializeField] float explosionTime = 10f;
@@ -45,7 +50,7 @@ public class ExplodingLava : MonoBehaviour
             timer = 0f;
             sr.color = Color.yellow; // back to yellow
             heatArea.Disable();
-            heatArea.HideSprite(); 
+            //heatArea.HideSprite(); 
         }
         
     }
@@ -55,7 +60,7 @@ public class ExplodingLava : MonoBehaviour
         Debug.Log("exploding");
         isExploding = true;
         heatArea.Enable();
-        heatArea.ShowSprite(); //heat area shows orange 
+        //heatArea.ShowSprite(); //heat area shows orange 
     }
 
     void warning()
