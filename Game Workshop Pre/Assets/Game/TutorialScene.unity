@@ -4040,7 +4040,7 @@ MonoBehaviour:
       Data2: 1207415162
       Data3: -1113645673
       Data4: 476402738
-    Path: event:/LavaAmbience
+    Path: event:/LavaEnvironment
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
@@ -4870,6 +4870,7 @@ MonoBehaviour:
     _dashDuration: 0.34
     _dashRowCooldown: 0.2
     _dashCooldown: 3
+    _enterTumbleThreshold: 0
     _tumbleMaterial: {fileID: 6200000, guid: 3b7af493c3f54b34e99304d3d160a029, type: 2}
     _maxWalkSpeedReduction: 0.1
     _accelerationReduction: 0.5
@@ -4886,10 +4887,15 @@ MonoBehaviour:
   _swipeCooldown: 0.2
   _absorbResistance: 125
   _minTrashSizeToAbsorb: 3
+  _playerEscapeDamage: 0
   _swipeVisualLineDistance: 3
   _swipeVisualLineSegments: 5
   _footstepCooldown: 0
-  _dashRestoreParticles: {fileID: 0}
+  Checkpoint_Manager: {fileID: 0}
+  _playerHeat: {fileID: 0}
+  canSweep: 0
+  canSwipe: 0
+  canDash: 0
 --- !u!1 &1235807341
 GameObject:
   m_ObjectHideFlags: 0
