@@ -1,29 +1,39 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
 
 public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable
 {
-    [SerializeReference, SerializeReferenceDropdown] private BehaviourTreeNode _behaviour;
-    [SerializeField] private bool _enableBehaviourDebug;
-    [SerializeField] private List<UnityEvent> _actionMethods;
+    [SerializeField] private BehaviourTree _behaviour;
+    [SerializeField] private List<EnemyActionReference> _actions;
 
     // Properties (EnemyBase should only have UNIVERSAL properties. 
     // If a property is on every or almost every enemy, it can go here.)
     [SerializeField] protected float _moveSpeed;
+    public float MoveSpeed { get { return _moveSpeed; } } 
     [SerializeField] protected float _size;
     [SerializeField] protected float _minSizeToAbsorb;
     [SerializeField] protected float _minVelocityToAbsorb;
+    [SerializeField, Range(0,360)] protected float _facingRotation = 270f;
+    public float FacingRotation { 
+        get { return _facingRotation; } 
+        set { _facingRotation = value; }
+    }
 
     // Components
-    protected EnemyBlackboard _blackboard;
     protected Animator _animator;
+    public Animator Animator { get { return _animator; } }
     private Rigidbody2D _rigidbody;
     public Rigidbody2D Rigidbody { get { return _rigidbody; } }
     private Collider2D _collider;
     public Collider2D Collider { get { return _collider; } }
+    
+    private EnemyPather _pather;
+    public EnemyPather Pather { get { return _pather; } }
 
     // Fields
     private bool _isDying = false;
@@ -35,7 +45,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     //internal methods
     private void OnValidate()
     {
-        if (_behaviour != null) _behaviour.CheckRequiredComponents(this);
+        if (_behaviour != null) _behaviour.Validate(this);
     }
 
     // Do NOT use Start or Update in child classes. Use OnStart and OnUpdate!!!!!! 
@@ -44,9 +54,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
         _animator = GetComponentInChildren<Animator>();
-        _blackboard = new EnemyBlackboard(this);
-        PrepareBlackboard();
-        _behaviour.Initialize(_blackboard, this);
+        _pather = GetComponent<EnemyPather>();
+        if (_behaviour != null) _behaviour.Initialize(this);
         OnStart();
     }
 
@@ -56,7 +65,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         
         if (_behaviour != null)
         {
-            _behaviour.Evaluate();
+            _behaviour.Tick();
         }
         OnUpdate();
     }
@@ -64,47 +73,24 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     private void FixedUpdate()
     {
         if (_isDying) return;
-
-        UpdateMovement();
     }
 
-    private void PrepareBlackboard()
+    // Get an action from _actions to use 
+    public void PerformAction(int index, Action<bool> onComplete = null)
     {
-        _blackboard.Set<string>("name", gameObject.name);
-        _blackboard.Set<Vector2>("frameVelocity", Vector2.zero);
-        _blackboard.Set<float>("rotation", 90f);
-
-        _blackboard.Set<float>("moveSpeed", _moveSpeed);
-    }
-
-    private void UpdateMovement()
-    {
-        //movement
-        if (!_blackboard.TryGet("frameVelocity", out Vector2 frameVelocity)) { }
-
-        Vector2 velocityDelta = frameVelocity - _rigidbody.velocity;
-        Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta, frameVelocity.magnitude);
-        _rigidbody.AddForce(clampedForce, ForceMode2D.Force);
-        _blackboard.Set<Vector2>("frameVelocity", Vector2.zero); // This is for clean up if behaviour node switches
-        _animator.SetFloat("Speed", frameVelocity.magnitude);
-
-        // rotation
-        if (!_blackboard.TryGet("rotation", out float rotation)) { }
-
-        _animator.SetFloat("Rotation", rotation);
-    }
-
-    public void PerformAction(int actionIndex)
-    {
-        for (int i = 0; i < _actionMethods.Count; i++)
+        if (index >= 0 && index < _actions.Count)
         {
-            if (actionIndex == i) _actionMethods[i]?.Invoke();
+            StartCoroutine(_actions[index].Invoke(this, onComplete));
+        } else
+        {
+            onComplete?.Invoke(false);
         }
     }
 
     private void OnDrawGizmos()
     {
-        if (_enableBehaviourDebug && _behaviour != null) _behaviour.DrawDebug();
+        //cant figure out a good way to debug draw them
+        if (_behaviour != null) _behaviour.DrawDebug();
     }
 
     public TargetType GetTargetType()
@@ -117,6 +103,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void PrepareIgnite(HeatMechanic heat)
     {
         _isDying = true;
+        _pather.Stop();
     }
     
     
@@ -128,7 +115,6 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
 
     // IAbsorbable
-
     public void OnTrashBallExplode(TrashBall trashBall)
     {
         gameObject.SetActive(true);
