@@ -6,9 +6,6 @@ using UnityEngine;
 [BehaviourNode(0, "Decorator")]
 public class NegationNode : DecoratorNode
 {
-    protected override void CheckRequiredComponents() { }
-    protected override void Initialize() { }
-
     public override BTNodeState Evaluate()
     {
         _isActive = true;

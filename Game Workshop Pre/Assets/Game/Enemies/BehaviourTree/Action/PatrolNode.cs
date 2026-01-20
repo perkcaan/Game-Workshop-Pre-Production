@@ -17,10 +17,6 @@ public class PatrolNode : BehaviourTreeNode
     private bool _arrivedThisTick = false;
 
     // Behaviour tree
-    protected override void CheckRequiredComponents() { }
-
-    protected override void Initialize() { }
-
     public override BTNodeState Evaluate()
     {
         if (_patrolPoints == null || _patrolPoints.Count <= 0) return BTNodeState.Failure;

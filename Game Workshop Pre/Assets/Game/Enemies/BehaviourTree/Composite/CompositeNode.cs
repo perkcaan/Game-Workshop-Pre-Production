@@ -8,8 +8,4 @@ public abstract class CompositeNode : BehaviourTreeNode
 {
     public override int MaxChildren => -1; //-1 means virtually infinite
 
-    protected override void CheckRequiredComponents() { }
-
-    protected override void Initialize() { }
-
 }

@@ -6,10 +6,6 @@ using UnityEngine;
 public class IsTargetFoundNode : ConditionalNode
 {
     [SerializeField] private bool _hasKnownLocationMode = false; 
-    protected override void CheckRequiredComponents() { }
-
-    protected override void Initialize() { }
-
     protected override bool EvaluateCondition()
     {
         if (Blackboard.TryGetNotNull("target", out ITargetable target)) return true;

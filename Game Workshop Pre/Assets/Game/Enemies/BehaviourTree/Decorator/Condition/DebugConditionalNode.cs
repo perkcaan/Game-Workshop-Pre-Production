@@ -7,10 +7,6 @@ using UnityEngine;
 public class DebugConditionalNode : ConditionalNode
 {
     [SerializeField] private bool _booleanValue = false;
-    protected override void CheckRequiredComponents() { }
-
-    protected override void Initialize() { }
-
     protected override bool EvaluateCondition()
     {
         return _booleanValue;

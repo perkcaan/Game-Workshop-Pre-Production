@@ -5,7 +5,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 // Chases target until close enough
-[BehaviourNode(3, "Actions")]
+[BehaviourNode(2, "Actions")]
 public class ChaseTargetNode : BehaviourTreeNode
 {
     // Fields
@@ -15,21 +15,17 @@ public class ChaseTargetNode : BehaviourTreeNode
 
 
     // Behaviour tree
-    protected override void CheckRequiredComponents() { }
-
-    protected override void Initialize() { }
-
     public override BTNodeState Evaluate()
     {
-        _isActive = true;
-        if (Blackboard.TryGet("targetPosition", out Vector2? targetPosition))
+        if (!Blackboard.TryGet("targetPosition", out Vector2? targetPosition) || !targetPosition.HasValue)
         {
-            if (!targetPosition.HasValue) return BTNodeState.Failure;
+            return BTNodeState.Failure;
         }
+        _isActive = true;
         _storedTargetPos = targetPosition.Value;
 
         if (Vector2.Distance(Self.transform.position, _storedTargetPos) <= _arrivedAtTargetDistance) // When arrive, check if the target is here or not
-        { // NEED TO FIX SO THAT IT DOESNT ATTACK IF IT REFINDS PLAYER WHEN IT ARRIVED THIS TICK BUT PLAYER ISNT AT ARRIVAL POINT
+        {
             if (Blackboard.TryGetNotNull("target", out ITargetable target)) return BTNodeState.Success;
             return BTNodeState.Failure;
         }
@@ -54,7 +50,7 @@ public class ChaseTargetNode : BehaviourTreeNode
     protected override void DrawDebug()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(_storedTargetPos, _arrivedAtTargetDistance);
+        Gizmos.DrawWireSphere(_storedTargetPos, _arrivedAtTargetDistance);
     }
 
 }

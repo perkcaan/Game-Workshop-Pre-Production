@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 // Waits some amount of time, then returns Success
-[BehaviourNode(5, "Actions")]
+[BehaviourNode(4, "Actions")]
 public class WaitNode : BehaviourTreeNode
 {
     // Fields
@@ -12,10 +12,6 @@ public class WaitNode : BehaviourTreeNode
     private float _currentTime = 0f;
 
     // Behaviour tree
-    protected override void CheckRequiredComponents() { }
-
-    protected override void Initialize() { }
-
     public override BTNodeState Evaluate()
     {
         _isActive = true;

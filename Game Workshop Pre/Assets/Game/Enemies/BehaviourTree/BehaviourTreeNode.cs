@@ -47,8 +47,8 @@ public abstract class BehaviourTreeNode
     protected bool _isActive = false;
     protected bool _canReset = false;
 
-    protected abstract void CheckRequiredComponents();
-    protected abstract void Initialize();
+    protected virtual void CheckRequiredComponents() { }
+    protected virtual void Initialize() { }
     protected virtual void Reset() { }
     protected virtual void DrawDebug() { }
 

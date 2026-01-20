@@ -1,42 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Ink.Parsed;
 using UnityEngine;
 
+[BehaviourNode(3, "Actions")]
+// Performs an action of a given index.
+// Do not let this node lose control when it is running.
 public class DoActionNode : BehaviourTreeNode
 {
     // Fields
     [SerializeField] private int _indexOfAction;
     [SerializeField] private bool _actionStarted = false;
+    [SerializeField] private BTNodeState _endState = BTNodeState.Running;
 
-    // Behaviour tree
-    protected override void CheckRequiredComponents() { }
-
-    protected override void Initialize() { }
-
-    //TODO: Need to make it so you can't just leave while this is running... Will probably need to restructure the behaviour tree quiiiiite a bit
-    // go back to using the Parallel node... its important for Service nodes!
-    // do something closer to whats on discord/Programming
     public override BTNodeState Evaluate()
     {
+        if (_endState != BTNodeState.Running)
+        {
+            BTNodeState endState = _endState;
+            _endState = BTNodeState.Running;
+            return endState;
+        }
+        _isActive = true;
+
         if (!_actionStarted)
         {
             _actionStarted = true;
             Self.PerformAction(_indexOfAction, EndAction);
         }
-        
+
         return BTNodeState.Running;
     }
 
     private void EndAction(bool result)
     {
         _actionStarted = false;
-        Debug.Log("Action ended with result: " + result);
+        if (result)
+        {
+            _endState = BTNodeState.Success;
+        } else
+        {
+            _endState = BTNodeState.Failure;
+        }
     }
 
     protected override void Reset()
     {
-        
+        _actionStarted = false;
+        _endState = BTNodeState.Running;
     }
 
 

@@ -6,17 +6,13 @@ using UnityEngine;
 
 // Waits for a bit then resets target and targetPosition. Return success when finished waiting.
 // Currently, this is basically the exact same as the wait node . Might change later.
-[BehaviourNode(4, "Actions")]
+[BehaviourNode(3, "Actions")]
 public class LoseTargetNode : BehaviourTreeNode
 {
-    [SerializeField] private float _loseTargetConfusionTime = 5f;
+    [SerializeField] private float _loseTargetConfusionTime = 2f;
     private float _currentTime = 0f;
     
     // Behaviour tree
-    protected override void CheckRequiredComponents() { }
-
-    protected override void Initialize() { }
-
     public override BTNodeState Evaluate()
     {
         _isActive = true;

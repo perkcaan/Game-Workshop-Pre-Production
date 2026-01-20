@@ -12,10 +12,6 @@ public class DebugActionNode : BehaviourTreeNode
     [SerializeField] private BTNodeState _nodeState;
 
     // Behaviour tree
-    protected override void CheckRequiredComponents() { }
-
-    protected override void Initialize() { }
-
     public override BTNodeState Evaluate()
     {
         _isActive = true;
