@@ -56,7 +56,11 @@
 			<destination>{9500b189-c212-45f6-af93-b05f3df799bc}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{9540ca78-9eff-4fe9-9827-e29f9a251e21}" />
+	<object class="EventAutomatableProperties" id="{9540ca78-9eff-4fe9-9827-e29f9a251e21}">
+		<property name="maxVoices">
+			<value>1</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{46634d5c-0a12-4035-a43f-e1e6d308358a}" />
 	<object class="GroupTrack" id="{2f90904a-666b-4e6f-8794-e60bacc45797}">
 		<relationship name="modules">
@@ -92,9 +96,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{742dc6c5-96b4-402c-a97e-ebb77eb27f9e}" />
 	<object class="SingleSound" id="{59acaba0-ae5d-44d4-aef2-7bfa0e4c3d41}">
-		<property name="triggerProbabilityEnabled">
-			<value>true</value>
-		</property>
 		<property name="isCutoff">
 			<value>true</value>
 		</property>
@@ -102,7 +103,13 @@
 			<value>37.795291666666664</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>12</value>
+			<value>2</value>
+		</property>
+		<property name="voiceStealing">
+			<value>3</value>
+		</property>
+		<property name="maxVoices">
+			<value>1</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{1773ad98-1bf8-4e73-95aa-a57a7613343c}</destination>

@@ -22,6 +22,7 @@ public class AudioManager : Singleton<AudioManager>
 
 
             sInstance.Play();
+            Debug.Log($"AudioManager: Playing FMOD sound '{sCode}' at position {position}.");
 
         }
         else
