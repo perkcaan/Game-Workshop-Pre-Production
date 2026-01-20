@@ -22,6 +22,7 @@ public class AudioManager : Singleton<AudioManager>
 
 
             sInstance.Play();
+            Debug.Log($"AudioManager: Playing FMOD sound '{sCode}' at position {position}.");
 
         }
         else
@@ -34,7 +35,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         if (_sounds.TryGetValue(sCode, out sInstance))
         {
-            sInstance.Stop();
+            sInstance.EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         else
         {

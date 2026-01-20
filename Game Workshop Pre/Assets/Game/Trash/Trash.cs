@@ -1,5 +1,7 @@
 using System;
-using DG.Tweening;
+using System.Collections;
+using DG.Tweening;  
+using JetBrains.Annotations;
 using UnityEngine;
 
 
@@ -24,8 +26,9 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     protected Room _parentRoom;
     public Rigidbody2D _rigidBody;
     protected SpriteRenderer _spriteRenderer;
+    private float soundCooldown = 1f;
 
-    private bool _isDestroyed = false;
+    protected bool _isDestroyed = false;
 
     private void Awake()
     {
@@ -54,7 +57,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         trashBall.GetComponent<Rigidbody2D>().velocity = _rigidBody.velocity;
     }
 
-    public virtual void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    public virtual void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {   
         if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled && _rigidBody.simulated))
         {
@@ -62,14 +65,27 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
             _rigidBody.simulated = false;
             trashBall.AbsorbTrash(this);
         }
+        if (!forcedAbsorb)
+        {
+            Vector2 direction = transform.position - trashBall.transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);
+            if (Size > 4)
+                ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1.5f);
+            else
+                ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1f);
+        }
     }
 
     public void OnTrashBallExplode(TrashBall trashBall)
     {
         gameObject.SetActive(true);
+        transform.localScale = Vector3.zero;
         transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
+
         _rigidBody.simulated = true;
         transform.position = trashBall.transform.position;
+
         float explosionForce = (float)(Math.Sqrt(trashBall.Size) * _explosionMultiplier);
         Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
         _rigidBody.velocity = randomForce;
@@ -111,7 +127,17 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         if (!_pointsConsumed)
         {
             SendScore?.Invoke(_pointValue);
+            StartCoroutine(Sound());
             _pointsConsumed = true;
         }
+    }
+
+    public IEnumerator Sound()
+    {
+        //AudioManager.Instance.ModifyParameter("Points", "Point", Math.Clamp(_pointValue, 0, 50), "Local");
+        //Debug.Log("Played Points Sound: "+_pointValue);
+        //AudioManager.Instance.Play("Points", transform.position);
+        yield return new WaitForSeconds(soundCooldown);
+        soundCooldown = 1f;
     }
 }

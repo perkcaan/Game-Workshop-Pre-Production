@@ -58,8 +58,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public HeatMechanic _playerHeat;
 
     [Header("Item Effected Properties")]
-    public bool canSweep;
-    public bool canSwipe;
+    public bool canSweep = false;
+    public bool canSwipe = false;
+    public bool canDash = false;
 
     // Fields
     //weight
@@ -97,7 +98,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Music/Hellish Sample", transform.position);
+        
         _heatSound.start();
         _playerHeat = GetComponent<HeatMechanic>();
     }
@@ -110,7 +111,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void FixedUpdate()
     {
         UpdateMovement();
-        _heatSound.setParameterByName("Heat", (_playerHeat.Heat / 10));
+        _heatSound.setParameterByName("Heat", _playerHeat.Heat / 10);
     }
 
     private void UpdateCooldowns()
@@ -130,7 +131,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
                 ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,Color.white, transform);
-                FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash Recharge", transform.position);
+                AudioManager.Instance.Play("dashBack", transform.position);
             }
         }
 
@@ -178,10 +179,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void OnDashInput(InputValue value)
     {
+        if (!canDash) return;
         if (!value.isPressed) return;
         if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Dash", transform.position);
+            AudioManager.Instance.Play("Dash", transform.position);
             _state.ChangeState(PlayerStateEnum.Dash);
         }
     }
@@ -234,18 +236,21 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Animator.SetFloat("Speed", _ctx.FrameVelocity.magnitude);
         _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
 
+        
 
-        _footstepCooldown -= Time.deltaTime;
-
-        if (_ctx.MoveSpeed > 0.1f && _footstepCooldown <= 0f)
+        if (_ctx.MoveSpeed > 0.1f)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Clean Step", transform.position);
-            _footstepCooldown = 0.3f;
-
-            if (_ctx.MoveSpeed > _ctx.MaxWalkSpeed)
+            _footstepCooldown -= Time.deltaTime;
+            if (_footstepCooldown <= 0f)
             {
-                _footstepCooldown = 0.15f;
+                ParticleManager.Instance.Play("PlayerStepDust", transform.position);
+                AudioManager.Instance.Play("Steps", transform.position);
+                _footstepCooldown = 0.3f;
             }
+        }
+        else if (_ctx.MoveSpeed < 0.01f)
+        {
+            _footstepCooldown = 0.3f;
         }
     }
 
@@ -275,9 +280,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     // IAbsorbable
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (ballVelocity > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
+        if (forcedAbsorb || (ballVelocity.magnitude * trashBall.Size > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
         {
             trashBall.absorbedObjects.Add(this);
             _ctx.AbsorbedTrashBall = trashBall;
@@ -342,7 +347,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void Death()
     {
         transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
+        AudioManager.Instance.Play("playerDeath", transform.position);
+        AudioManager.Instance.Stop("Sweep");
         playerDeath?.Invoke(true);
+        
         //Debug.Log("Return to Checkpoint");
     }
 }

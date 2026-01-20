@@ -37,7 +37,9 @@ public class BroomSweepHandler : MonoBehaviour
     public void BeginSweep(float rotation, float sweepForce)
     {
         _hitbox.enabled = true;
-        
+        if(_hitbox.enabled)
+            AudioManager.Instance.Play("Sweep", transform.position);
+
         UpdateHitbox(rotation, sweepForce);
     }
 
@@ -56,6 +58,7 @@ public class BroomSweepHandler : MonoBehaviour
     public void EndSweep()
     {
         _hitbox.enabled = false;
+        AudioManager.Instance.Stop("Sweep");
     }
 
 

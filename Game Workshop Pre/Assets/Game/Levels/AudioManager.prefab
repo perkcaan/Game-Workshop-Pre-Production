@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7897264153184580534
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4365287662072373498}
+  - component: {fileID: 3474399110181055910}
+  - component: {fileID: 4195828115917527869}
+  - component: {fileID: 8015017487416521964}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4365287662072373498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7897264153184580534}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3474399110181055910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7897264153184580534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9468c5f457ace64f8d4df6d642b107f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LoadEvent: 1
+  UnloadEvent: 2
+  Banks:
+  - Master
+  CollisionTag: 
+  PreloadSamples: 0
+--- !u!114 &4195828115917527869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7897264153184580534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 946696276
+      Data2: 1207415162
+      Data3: -1113645673
+      Data4: 476402738
+    Path: event:/LavaEnvironment
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &8015017487416521964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7897264153184580534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9c33a1813c24841b5f868d96fde964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sounds:
+    _serializedList:
+    - Key: Decay
+      Value: {fileID: -5607425741268325690, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
+    - Key: TrashBall
+      Value: {fileID: -2150688670721289081, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
+    - Key: enemyDeath
+      Value: {fileID: 7310356898820097241, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+    - Key: playerDeath
+      Value: {fileID: 0}
+    - Key: Sweep
+      Value: {fileID: 0}
+    - Key: Points
+      Value: {fileID: 0}
+    - Key: Trash Pickup
+      Value: {fileID: -2850386650212370546, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
+    - Key: Ignite
+      Value: {fileID: 5206307667288868970, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
+    - Key: Steps
+      Value: {fileID: 0}
+    - Key: Swipe
+      Value: {fileID: 0}
+    - Key: Dash
+      Value: {fileID: 0}
+    - Key: dashBack
+      Value: {fileID: 0}
+    - Key: trashBall
+      Value: {fileID: -2150688670721289081, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
