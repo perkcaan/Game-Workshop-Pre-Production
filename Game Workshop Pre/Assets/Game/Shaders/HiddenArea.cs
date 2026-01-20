@@ -7,12 +7,11 @@ using static Unity.Collections.AllocatorManager;
 
 public class HiddenArea : MonoBehaviour
 {
-    [SerializeField] Material mat;
     private MaterialPropertyBlock block;
     private TilemapRenderer renderer;
     private Tween opacityTween;
 
-    [SerializeField] float opacity = 1f;
+    private float opacity = 1f;
     [SerializeField] float transitionTime = 2f;
 
     private void Awake()
