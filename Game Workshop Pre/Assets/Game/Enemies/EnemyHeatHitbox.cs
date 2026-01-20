@@ -13,6 +13,7 @@ public class EnemyHeatHitbox : MonoBehaviour
     private void Awake()
     {
         _collider = GetComponent<Collider2D>();
+        _collider.enabled = false;
     }
 
     public void Enable()

@@ -111,7 +111,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void FixedUpdate()
     {
         UpdateMovement();
-        _heatSound.setParameterByName("Heat", (_playerHeat.Heat / 10));
+        _heatSound.setParameterByName("Heat", _playerHeat.Heat / 10);
     }
 
     private void UpdateCooldowns()
@@ -236,16 +236,21 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Animator.SetFloat("Speed", _ctx.FrameVelocity.magnitude);
         _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
 
+        
 
-        _footstepCooldown -= Time.deltaTime;
-
-        if (_ctx.MoveSpeed > 0.1f && _footstepCooldown <= 0f)
+        if (_ctx.MoveSpeed > 0.1f)
         {
-            
-            AudioManager.Instance.Play("Steps", transform.position);
+            _footstepCooldown -= Time.deltaTime;
+            if (_footstepCooldown <= 0f)
+            {
+                ParticleManager.Instance.Play("PlayerStepDust", transform.position);
+                AudioManager.Instance.Play("Steps", transform.position);
+                _footstepCooldown = 0.3f;
+            }
+        }
+        else if (_ctx.MoveSpeed < 0.01f)
+        {
             _footstepCooldown = 0.3f;
-
-            
         }
     }
 

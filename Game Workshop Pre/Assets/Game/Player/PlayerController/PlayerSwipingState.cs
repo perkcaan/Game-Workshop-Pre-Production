@@ -74,6 +74,11 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     //swipe
     private void DoSwipe()
     {
+        int rotation = Mathf.RoundToInt(_ctx.Rotation/45f)*45;
+        Quaternion burstRotation = Quaternion.Euler(0, 0, rotation-90);
+        Vector3 footstepPosition = _ctx.Player.transform.position + new Vector3(0, 0f, 0);
+        ParticleManager.Instance.Play("PlayerSwipeDust", footstepPosition, burstRotation, Color.white, _ctx.Player.transform);
+
         _ctx.Animator.SetBool("Swiping", true);
         _ctx.Animator.SetBool("HoldingSwipe", false);
         _hasSwipeBeenActivated = true;

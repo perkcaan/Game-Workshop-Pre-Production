@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -2150688670721289081}
   - component: {fileID: -2850386650212370546}
   - component: {fileID: 5206307667288868970}
+  - component: {fileID: -5607425741268325690}
   m_Layer: 8
   m_Name: TrashBall
   m_TagString: Untagged
@@ -245,6 +246,37 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &-5607425741268325690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5196095918412875384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -2018443288
+      Data2: 1310188587
+      Data3: 1940523429
+      Data4: -1995798451
+    Path: event:/Trash/TrashBall/Idle_Shake
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5212257174872913296
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,6 +288,7 @@ GameObject:
   - component: {fileID: 5259664439949458946}
   - component: {fileID: 3897035374062321327}
   - component: {fileID: 2276037212268642676}
+  - component: {fileID: 2330702966417879554}
   m_Layer: 8
   m_Name: Circle
   m_TagString: Untagged
@@ -329,6 +362,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!210 &2330702966417879554
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5212257174872913296}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_SortAtRoot: 0
 --- !u!1 &5424306553645354863
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,6 +468,7 @@ GameObject:
   - component: {fileID: 3488484795273988948}
   - component: {fileID: 6442539237054535307}
   - component: {fileID: 3130954535914247153}
+  - component: {fileID: 7208263676142163432}
   m_Layer: 8
   m_Name: TrashBall
   m_TagString: Untagged
@@ -537,6 +583,18 @@ MonoBehaviour:
   _dissolveTime: 2
   _dissolveBurnWidth: 0.4
   _meshTexture: {fileID: 2800000, guid: 5c9175d51ecf2cc488d21ca71ff76edc, type: 3}
+--- !u!210 &7208263676142163432
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5613526296850362621}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_SortAtRoot: 0
 --- !u!1 &9073549084542538156
 GameObject:
   m_ObjectHideFlags: 0
