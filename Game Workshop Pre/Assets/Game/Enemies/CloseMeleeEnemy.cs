@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class CloseMeleeEnemy : EnemyBase
+public class CloseMeleeEnemy : EnemyBase, ICleanable
 {
     [SerializeField] private float _attackDuration = 1f;
     [SerializeField] private float _attackCooldown = 2f;
     [SerializeField] private EnemyHeatHitbox _attackHitbox;
+    private Room _parentRoom;
+
+   
+    public int Size { get { return (int)_size; } }
 
     public void PerformAttack()
     {
@@ -15,7 +19,7 @@ public class CloseMeleeEnemy : EnemyBase
         _attackHitbox.UpdateRotation(transform, rotation);
         _attackHitbox.Enable();
         _animator.SetBool("Attacking", true);
-
+        
 
         StartCoroutine(AttackDuration());
     }
@@ -39,5 +43,10 @@ public class CloseMeleeEnemy : EnemyBase
     protected override void OnUpdate()
     {
 
+    }
+
+    public void SetRoom(Room room)
+    {
+        _parentRoom = room;
     }
 }

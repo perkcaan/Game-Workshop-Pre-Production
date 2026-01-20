@@ -56,8 +56,6 @@ public class TrashChute : MonoBehaviour
                 _trashRb = _spawnedTrash.GetComponent<Rigidbody2D>();
                 _spawnedTrash.GetComponent<Collider2D>().enabled = false;
                 _trashRb.gravityScale = 4;
-                Debug.Log($"Dropped trash at {_landingPoint}");
-                Debug.Log(trash);
                 _nextDropTime = Time.time + _dropCooldown;
                 
             }
@@ -85,12 +83,10 @@ public class TrashChute : MonoBehaviour
                 
             if (distance < 0.2f)
             {
-
                 _spawnedTrash.GetComponent<Collider2D>().enabled = true;
                 _trashRb.gravityScale = 0;
                 _trashRb.velocity = Vector2.zero;
                 _trashRb.angularVelocity = 0f;
-                
                 _spawnedTrash = null; 
             }
             else

@@ -4,21 +4,26 @@ using UnityEngine;
 
 public class SwarmSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject _swarmPrefab;
+    [SerializeField] CloseMeleeEnemy _swarmPrefab;
     [SerializeField] float _spawnInterval = 5f;
     private float _nextSpawnTime = 0f;
+    private Room _parentRoom;
+    private bool _canSpawn;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        _parentRoom = GetComponentInParent<Room>();
+        _canSpawn = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.time >= _nextSpawnTime && this.isActiveAndEnabled)
+        if (Time.time >= _nextSpawnTime && isActiveAndEnabled && _swarmPrefab.Size + _parentRoom._currentTrashSizeAmount < _parentRoom._roomTrashSizeAmount && _canSpawn)
         {
             Instantiate(_swarmPrefab, transform.position, Quaternion.identity);
+            _parentRoom.AddCleanableToRoom(_swarmPrefab.GetComponent<ICleanable>());
             _nextSpawnTime = Time.time + _spawnInterval;
         }
     }
