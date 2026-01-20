@@ -15,9 +15,13 @@ public class SwipeHandler : MonoBehaviour
     private Collider2D _hitbox;
     public bool connecting;
 
+
     // Fields
     private float _rotation = 0f;
     private float _swipeForce = 1f;
+
+    private SwipeMeter _swipeMeter;
+
 
     // Trash Checks
     private TrashMaterial _swipedTrash;
@@ -25,16 +29,29 @@ public class SwipeHandler : MonoBehaviour
     private void Awake()
     {
         _parent = transform.parent.GetComponent<PlayerMovementController>();
+
         _swipeSoundInstance = FMODUnity.RuntimeManager.CreateInstance("event:/Player/Swipe/Swipe");
+
         if (_parent == null)
         {
             Debug.LogWarning("Player Swipe Handler cannot find Player.");
             gameObject.SetActive(false);
             return;
         }
-        
+
         _hitbox = GetComponent<Collider2D>();
         _hitbox.enabled = false;
+
+        if(_swipeMeter == null)
+            _swipeMeter = GameObject.Find("SwipeMeter")?.GetComponent<SwipeMeter>();
+    }
+
+    public void Initialize(SwipeMeter swipeMeter)
+    {
+        _swipeMeter = swipeMeter;
+
+        if (_swipeMeter != null)
+            _swipeMeter.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -50,7 +67,7 @@ public class SwipeHandler : MonoBehaviour
             _swipeSoundInstance.start();
             _swipeSoundInstance.release();
         }
-        
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", _parent.transform.position);
         _hitbox.enabled = true;
         _swipeForce = swipeForce;
         
@@ -92,28 +109,34 @@ public class SwipeHandler : MonoBehaviour
         Vector3 contactPoint = other.ClosestPoint(transform.position);
         
 
+
         ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
         if (swipeableObject != null)
         {
             connecting = true;
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", contactPoint);
             //Debug.Log("Swiped object: " + other.gameObject.name);
-            if(connecting)
+            if (connecting)
             {
                 _swipeSoundInstance.setParameterByName("Texture", 0);
                 //_swipeSoundInstance.start();
                 //_swipeSoundInstance.
             }
-            
-
+            if (ParticleManager.Instance != null)
+                //ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
             swipeableObject.OnSwipe(direction.normalized, _swipeForce);
         }
-        
-
-
-
     }
 
- 
+    public void UpdateSwipeMeter(float chargeTime, float maxCharge)
+    {
+        if (_swipeMeter != null)
+            _swipeMeter.SetFill(chargeTime / maxCharge);
+    }
 
+    public void ShowSwipeMeter(bool visible)
+    {
+        if (_swipeMeter != null)
+            _swipeMeter.gameObject.SetActive(visible);
+    }
 }

@@ -62,7 +62,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     private void Update()
     {
         if (_isDying) return;
-        
+
         if (_behaviour != null)
         {
             _behaviour.Tick();
@@ -105,8 +105,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         _isDying = true;
         _pather.Stop();
     }
-    
-    
+
+
     public void OnIgnite(HeatMechanic heat)
     {
         Destroy(gameObject);
