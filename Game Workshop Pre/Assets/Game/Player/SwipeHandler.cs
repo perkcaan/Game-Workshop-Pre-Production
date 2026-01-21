@@ -104,8 +104,8 @@ public class SwipeHandler : MonoBehaviour
                 //_swipeSoundInstance.start();
                 //_swipeSoundInstance.
             }
-            
 
+            ParticleManager.Instance.Play("ImpactCircle", contactPoint, transform.rotation);
             swipeableObject.OnSwipe(direction.normalized, _swipeForce);
         }
         
