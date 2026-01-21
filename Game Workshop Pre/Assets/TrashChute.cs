@@ -29,16 +29,44 @@ public class TrashChute : MonoBehaviour
         _feeler = GetComponent<Collider2D>();
         _feeler.enabled = true;
         _canDrop = true;
+        
     }
 
     void Update()
     {
         
+        StartTrash();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject _landingTile = collision.gameObject;
+
+        if (_landingTile.GetComponent<Lava>() == null && _landingTile.tag != "Wall")
+        {
+            _canDrop = true;
+
+            
+        }
+        else if (_landingTile.GetComponent<Lava>() != null || _landingTile.tag == "Wall")
+        {
+            _canDrop = false;
+            Debug.Log("Cannot drop trash here");
+
+        }
+    }
+
+    void StartTrash() 
+    {
+        _canDrop = true;
+        this.enabled = true;
+        _feeler.enabled = true;
+
         if (Time.time >= _nextDropTime && _spawnedTrash == null)
         {
             int index = Random.Range(0, _possibleTrash.Count);
             trash = _possibleTrash[index].gameObject;
-            
+
             _landingPoint = new Vector2(Random.Range(_dropAreaMinX, _dropAreaMaxX), Random.Range(_dropAreaMinY, _dropAreaMaxY));
             _feeler.enabled = true;
             if (_canDrop)
@@ -65,7 +93,7 @@ public class TrashChute : MonoBehaviour
                 _spawnedTrash.GetComponent<Collider2D>().enabled = false;
                 _trashRb.gravityScale = 4;
                 _nextDropTime = Time.time + _dropCooldown;
-                
+
             }
             else
             {
@@ -76,57 +104,33 @@ public class TrashChute : MonoBehaviour
 
             }
 
-            
+
 
         }
-        
+
 
 
         if (_spawnedTrash != null)
         {
             float distance = Vector2.Distance(_trashRb.position, _landingPoint);
-            
 
-            
-                
+
+
+
             if (distance < 0.2f)
             {
                 _spawnedTrash.GetComponent<Collider2D>().enabled = true;
                 _trashRb.gravityScale = 0;
                 _trashRb.velocity = Vector2.zero;
                 _trashRb.angularVelocity = 0f;
-                _spawnedTrash = null; 
+                _spawnedTrash = null;
             }
             else
             {
-                    _spawnedTrash.GetComponent<Collider2D>().enabled = false;
+                _spawnedTrash.GetComponent<Collider2D>().enabled = false;
             }
         }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        GameObject _landingTile = collision.gameObject;
-
-        if (_landingTile.GetComponent<Lava>() == null && _landingTile.tag != "Wall")
-        {
-            _canDrop = true;
-
-            
-        }
-        else if (_landingTile.GetComponent<Lava>() != null || _landingTile.tag == "Wall")
-        {
-            _canDrop = false;
-            Debug.Log("Cannot drop trash here");
-
-        }
-    }
-
-    void StartTrash() 
-    {
-        _canDrop = true;
-        this.enabled = true;
-        _feeler.enabled = true;
     }
     void StopTrash()
     {

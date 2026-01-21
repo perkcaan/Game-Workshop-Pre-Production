@@ -221,8 +221,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         if (isDecaying == _activelyDecaying) return;
         _activelyDecaying = isDecaying;
-        //AudioManager.Instance.Play("Decay", transform.position);
-        //AudioManager.Instance.ModifyParameter("Decay", "Size", Size, "Global");
+        AudioManager.Instance.Play("Decay", transform.position);
+        AudioManager.Instance.ModifyParameter("Decay", "Size", Size, "Global");
         LayerMask mask = rigidBody.excludeLayers;
         int trashBit = 1 << LayerMask.NameToLayer("Trash");
 
@@ -331,7 +331,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             AudioManager.Instance.ModifyParameter("TrashBall", "Generic", highestPrecent, "Global");
         }
         AudioManager.Instance.ModifyParameter("TrashBall", _primaryTrashMaterial.name, highestPrecent, "Global");
-        Debug.Log(_primaryTrashMaterial.name+" sound applied");
+        
 
         rigidBody.sharedMaterial = _physicsMaterial2D;
     }
@@ -467,7 +467,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
         AudioManager.Instance.ModifyParameter("TrashBall", "RPM", 0f, "Global");
         AudioManager.Instance.Stop("TrashBall");
-        //AudioManager.Instance.Stop("Decay");
+        AudioManager.Instance.Stop("Decay");
         Destroy(gameObject);
     }
 
@@ -539,34 +539,28 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         {
             case int n when (n <= 10):
                 AudioManager.Instance.ModifyParameter("Points", "Point", 10, "Local");
-                Debug.Log("Played Points Sound: 10");
                 playing = false;
                 break;
             case int n when (n <= 20):
                 AudioManager.Instance.ModifyParameter("Points", "Point", 20, "Local");
-                Debug.Log("Played Points Sound: 20");
                 break;
 
             case int n when (n <= 30):
                 AudioManager.Instance.ModifyParameter("Points", "Point", 30, "Local");
-                Debug.Log("Played Points Sound: 30");
                 break;
 
             case int n when (n <= 40):
                 AudioManager.Instance.ModifyParameter("Points", "Point", 40, "Local");
-                Debug.Log("Played Points Sound: 40");
                 break;
 
             case int n when (n <= 50):
                 AudioManager.Instance.ModifyParameter("Points", "Point", 30, "Local");
-                Debug.Log("Played Points Sound: 40");
                 break;
 
             default:
                 if ((int)Size > 50)
                 {
                     AudioManager.Instance.ModifyParameter("Points", "Point", 50, "Local");
-                    Debug.Log("Played Points Sound: 50");
                 }
                 break;
         }
