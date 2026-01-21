@@ -14,7 +14,12 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 
     [Header("Trash")]
     [SerializeField] protected int _size;
-    public int Size { get { return _size; } }
+    public int Size
+    {
+        get { return _size; }
+        set { _size = value; }
+    }
+
     public TrashMaterial trashMaterial;
     public int trashMaterialWeight = 1;
     private FMOD.Studio.EventInstance _sweepSoundInstance;

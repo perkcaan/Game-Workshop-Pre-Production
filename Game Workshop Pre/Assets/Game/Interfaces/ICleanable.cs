@@ -6,5 +6,5 @@ public interface ICleanable
 {
     public void SetRoom(Room room);
 
-    public int Size { get; }
+    public int Size { get; set; }
 }

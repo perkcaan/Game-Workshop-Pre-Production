@@ -6,7 +6,6 @@ public class CompactorObject : MonoBehaviour
 {
 
     [SerializeField] private float minSize;
-
     [SerializeField] private TrashCubeObject trashCubePrefab;
 
 
@@ -20,7 +19,7 @@ public class CompactorObject : MonoBehaviour
                 // Transfer over materials and size to new trash cube
                 TrashCubeObject trashCubeInstance = Instantiate(trashCubePrefab);
                 trashCubeInstance.absorbedObjects = trashBall.absorbedObjects;
-                trashCubeInstance.cubeSize = trashBall.Size;
+                trashCubeInstance.Size = trashBall.Size;
 
                 trashCubeInstance.transform.position = transform.position;
 

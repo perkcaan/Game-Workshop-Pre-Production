@@ -13,8 +13,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     [SerializeField] float _scaleMultiplier;
     [SerializeField] float _baseMaxHealth;
     [SerializeField] float _minimumSpeedToAbsorbPlayer;
-    [SerializeField] private float _size = 1f;
-    public float Size
+    [SerializeField] private int _size = 1;
+    public int Size
     {
         get { return _size; }
         set
