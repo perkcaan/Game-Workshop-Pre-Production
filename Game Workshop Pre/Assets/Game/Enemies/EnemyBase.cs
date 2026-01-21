@@ -93,11 +93,27 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         }
     }
 
+    // Simple attack is a basic attack template that has startup, an attack, and endlag
+    protected IEnumerator SimpleAttack(SimpleAttackProperties properties, 
+        Action attackStart = null, Action attack = null, Action attackEnd = null)
+    {
+
+        attackStart?.Invoke();
+        yield return new WaitForSeconds(properties.Startup);
+
+        attack?.Invoke();
+        yield return new WaitForSeconds(properties.Duration);
+        
+        attackEnd?.Invoke();
+        yield return new WaitForSeconds(properties.Endlag);
+    }
+
     private void OnDrawGizmos()
     {
         //cant figure out a good way to debug draw them
         if (_behaviour != null) _behaviour.DrawDebug();
     }
+
 
     public TargetType GetTargetType()
     {
