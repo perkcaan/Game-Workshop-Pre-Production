@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters;
+using Ink.Parsed;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,7 +22,12 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     [SerializeField, Range(0,360)] protected float _facingRotation = 270f;
     public float FacingRotation { 
         get { return _facingRotation; } 
-        set { _facingRotation = value; }
+        set // wrap it within 0-360
+        {
+            float wrapped = value % 360f;
+            if (wrapped < 0f) wrapped += 360f;
+            _facingRotation = wrapped;
+        }
     }
 
     // Components

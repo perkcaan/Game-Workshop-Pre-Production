@@ -331,7 +331,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             AudioManager.Instance.ModifyParameter("TrashBall", "Generic", highestPrecent, "Global");
         }
         AudioManager.Instance.ModifyParameter("TrashBall", _primaryTrashMaterial.name, highestPrecent, "Global");
-        Debug.Log(_primaryTrashMaterial.name+" sound applied");
+        //Debug.Log(_primaryTrashMaterial.name+" sound applied");
 
         rigidBody.sharedMaterial = _physicsMaterial2D;
     }

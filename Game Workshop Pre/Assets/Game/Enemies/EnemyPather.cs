@@ -52,6 +52,13 @@ public class EnemyPather : MonoBehaviour
         _arrivalProximity = 0.1f;
     }
 
+    public void FacePoint(Vector2 targetPoint)
+    {
+        Vector2 targetDirection = (targetPoint - (Vector2) transform.position).normalized;
+        float facingAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
+        _enemy.FacingRotation = facingAngle;
+    }
+
     private void Arrive()
     {
         _arriveAction?.Invoke();
@@ -74,7 +81,7 @@ public class EnemyPather : MonoBehaviour
         animator.SetFloat("Speed", frameVelocity.magnitude);
         
         _enemy.FacingRotation = facingAngle;
-        animator.SetFloat("Rotation", facingAngle);
+        animator.SetFloat("Rotation", _enemy.FacingRotation);
     }
 
     private void OnDrawGizmos()
