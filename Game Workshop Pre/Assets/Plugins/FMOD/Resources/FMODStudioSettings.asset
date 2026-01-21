@@ -549,7 +549,6 @@ MonoBehaviour:
   TargetAssetPath: FMODBanks
   TargetBankFolder: 
   EventLinkage: 0
-  SerializeGUIDsOnly: 0
   LoggingLevel: 1
   SpeakerModeSettings: []
   SampleRateSettings: []
@@ -559,8 +558,7 @@ MonoBehaviour:
   VirtualChannelSettings: []
   RealChannelSettings: []
   Plugins: []
-  MasterBanks:
-  - Master
+  MasterBanks: []
   Banks: []
   BanksToLoad: []
   LiveUpdatePort: 9264
@@ -573,7 +571,7 @@ MonoBehaviour:
   EnableErrorCallback: 0
   SharedLibraryUpdateStage: 0
   SharedLibraryTimeSinceStart: 0
-  CurrentVersion: 131849
+  CurrentVersion: 131622
   HideSetupWizard: 1
   LastEventReferenceScanVersion: 131849
   Platforms:
