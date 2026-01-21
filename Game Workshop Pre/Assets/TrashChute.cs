@@ -79,12 +79,12 @@ public class TrashChute : MonoBehaviour
                 _feeler.transform.position = _landingPoint;
             }
 
-            if (_parentRoom._currentTrashSizeAmount - trash.GetComponent<ICleanable>().Size <= 0)
+            if (_parentRoom.CurrentTrash - trash.GetComponent<ICleanable>().Size <= 0)
             {
                 StopTrash();
             }
 
-            if (trash != null && trash.GetComponent<ICleanable>().Size + _parentRoom._currentTrashSizeAmount < _parentRoom._roomTrashSizeAmount && _canDrop)
+            if (trash != null && trash.GetComponent<ICleanable>().Size + _parentRoom.CurrentTrash < _parentRoom.StartTrash && _canDrop)
             {
 
                 _spawnedTrash = Instantiate(trash, new Vector2(_landingPoint.x, _landingPoint.y + 20), Quaternion.identity);

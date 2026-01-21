@@ -11,6 +11,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     [SerializeField] float _onExplodeForce;
     [SerializeField] float _sweepDurationToTakeDamage;
     [SerializeField] List<Trash> _startingStoredTrash;
+    [SerializeField] List<CloseMeleeEnemy> _spawnableEnemies;
     [SerializeField] Color color;
     private SpriteRenderer _sprite;
     private float _sweepTimer;
@@ -101,6 +102,25 @@ public class TrashPile : Trash, ISweepable, ISwipeable
 
                 float randomForce = UnityEngine.Random.Range(force * _onExplodeForce, force * _onExplodeForce * 3);
                 releasedTrash.GetComponent<Rigidbody2D>().AddForce(randomDirection.normalized * randomForce, ForceMode2D.Impulse);
+            }
+        }
+
+        if (_spawnableEnemies.Count > 0)
+        {
+            foreach (CloseMeleeEnemy enemies in _spawnableEnemies)
+            {
+                CloseMeleeEnemy _spawnedEnemies = Instantiate(enemies);
+                _spawnedEnemies.transform.position = transform.position;
+
+                if (direction != null)
+                {
+                    float randomAngle = UnityEngine.Random.Range(-_trashSpreadRange, _trashSpreadRange);
+                    Vector2 randomDirection = Quaternion.Euler(0, 0, randomAngle) * direction;
+
+                    float randomForce = UnityEngine.Random.Range(force * _onExplodeForce, force * _onExplodeForce * 6);
+                    _spawnedEnemies.GetComponent<Rigidbody2D>().AddForce(randomDirection.normalized * randomForce, ForceMode2D.Impulse);
+                }
+
             }
         }
         _parentRoom.ObjectCleaned(this);

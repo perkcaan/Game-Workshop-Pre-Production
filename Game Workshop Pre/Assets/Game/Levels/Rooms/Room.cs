@@ -13,12 +13,24 @@ public class Room : MonoBehaviour
     private List<ICleanable> _containedCleanable = new List<ICleanable>();
     private int _roomTrashAmount;
     private int _roomTrashCount;
-    public int _roomTrashSizeAmount;
-    public int _currentTrashSizeAmount;
+    //Starting room trash size total
+    private int _roomTrashSizeAmount;
+    //Running total of total trash size in the room
+    private int _currentTrashSizeAmount;
     public bool IsTrashRoom { get; set; } = false;
     public float Cleanliness
     {
         get { return _roomTrashCount == 0 ? 1f : 1f - Mathf.Clamp01(_roomTrashAmount / (float)_roomTrashCount); }
+    }
+
+    public int StartTrash
+    {
+        get { return _roomTrashSizeAmount; }
+    }
+
+    public int CurrentTrash
+    {
+        get { return _currentTrashSizeAmount; }
     }
 
     private void Awake()

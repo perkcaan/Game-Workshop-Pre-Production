@@ -20,7 +20,7 @@ public class SwarmSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time >= _nextSpawnTime && isActiveAndEnabled && _swarmPrefab.Size + _parentRoom._currentTrashSizeAmount < _parentRoom._roomTrashSizeAmount && _canSpawn)
+        if (Time.time >= _nextSpawnTime && isActiveAndEnabled && _swarmPrefab.Size + _parentRoom.CurrentTrash < _parentRoom.StartTrash && _canSpawn)
         {
             Instantiate(_swarmPrefab, transform.position, Quaternion.identity);
             _parentRoom.AddCleanableToRoom(_swarmPrefab.GetComponent<ICleanable>());
