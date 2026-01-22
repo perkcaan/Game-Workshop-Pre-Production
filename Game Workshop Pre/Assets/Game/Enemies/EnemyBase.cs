@@ -9,6 +9,7 @@ using UnityEngine.Events;
 
 public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable
 {
+    [Header("Enemy")]
     [SerializeField] private BehaviourTree _behaviour;
     [SerializeField] private List<EnemyActionReference> _actions;
 
