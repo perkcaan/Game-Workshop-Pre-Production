@@ -33,7 +33,6 @@ public class CloseMeleeEnemy : EnemyBase
             _attackHitbox.Disable();
             _animator.SetTrigger("ReturnToIdle");
         });
-
         onComplete?.Invoke(true);
     }
 

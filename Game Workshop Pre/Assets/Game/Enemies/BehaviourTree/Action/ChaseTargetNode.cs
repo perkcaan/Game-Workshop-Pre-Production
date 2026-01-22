@@ -12,7 +12,7 @@ public class ChaseTargetNode : BehaviourTreeNode
     [SerializeField] private float _arrivedAtTargetDistance = 1f;
 
     private Vector2 _storedTargetPos = Vector2.zero;
-    private bool _hasArrived;
+    private bool _hasArrived = false;
 
 
     // Behaviour tree

@@ -50,6 +50,9 @@ public class EnemyHeatHitbox : MonoBehaviour
             Vector2 direction = new Vector2(Mathf.Cos(rotationRad), Mathf.Sin(rotationRad)).normalized;
 
             swipeable.OnSwipe(direction, _knockbackApplied);
+
+            Vector3 contactPoint = collider.ClosestPoint(transform.position);
+            //ParticleManager.Instance.Play("DustBurst", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f));
         }
     }
 }
