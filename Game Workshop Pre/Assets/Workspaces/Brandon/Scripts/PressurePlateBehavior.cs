@@ -10,13 +10,19 @@ public class PressurePlateBehavior : MonoBehaviour
     [SerializeField] int maxTrashSizeBound;
     [SerializeField] UnityEvent onTriggerEvent;
     [SerializeField] bool resettable;
-    [SerializeField] float cooldownDuration; 
+    [SerializeField] float cooldownDuration;
+    [Tooltip("The Speed at which the tashball rolls into the center of the man hole")]
+    [SerializeField] float fallInConstant = 25f;
 
-    private bool activated;
+    private bool activated = false;
     private SpriteRenderer sr;
     private float cooldownTimer;
     private bool coolingDown = false;
-    
+    private bool isRollingToCenter = false;
+    private Rigidbody2D trashballRB;
+    private float maxRollDistance;
+
+
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -26,23 +32,40 @@ public class PressurePlateBehavior : MonoBehaviour
         activated = false;
     }
 
+    private void FixedUpdate()
+    {
+        if (isRollingToCenter)
+        {
+            Vector2 trashBallPos = (Vector2)trashballRB.transform.position;
+            Vector2 manholeCenterPos = (Vector2)this.transform.position;
+            Vector2 heading = (manholeCenterPos - trashBallPos);
+            float distance = Vector2.Distance(manholeCenterPos, trashBallPos);
+            trashballRB.velocity = (((heading * fallInConstant * distance) / maxRollDistance));
 
+            if (Mathf.Abs(distance) < 0.05f) {
+                trashballRB.MovePosition(manholeCenterPos);
+                trashballRB.constraints = RigidbodyConstraints2D.FreezeAll;
+                isRollingToCenter = false;
+            }
+        }
+
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
 
-        if (activated)
+        if (!other.name.Contains("TrashBall"))
             return;
 
         //Plate should exclude Player and Enemy Layers for purposes of triggering.
         int trashSize = (int)other.GetComponent<TrashBall>().Size;
         if (trashSize > minTrashSizeBound && trashSize < maxTrashSizeBound && !activated)
         {
-            other.GetComponent<Rigidbody2D>().
+            trashballRB = other.GetComponent<Rigidbody2D>();
+            maxRollDistance = Vector2.Distance((Vector2)(trashballRB.transform.position), (Vector2)this.transform.position);
+            isRollingToCenter = true;
             activated = true;
-            onTriggerEvent?.Invoke();
-            if (resettable)
-                StartCoroutine(PlateCoolDown(cooldownTimer));
+            StartCoroutine(RollToCenter());
         }
     }
 
@@ -75,6 +98,16 @@ public class PressurePlateBehavior : MonoBehaviour
         activated = false;
         sr.color = Color.green;
         yield break;    //I know this shouldn't be needed, but just in case. y'never know right.
+    }
+
+    private IEnumerator RollToCenter()
+    {
+        while (isRollingToCenter)
+            yield return new WaitForEndOfFrame();
+
+        onTriggerEvent?.Invoke();
+        if (resettable)
+            StartCoroutine(PlateCoolDown(cooldownTimer));
     }
 
 }

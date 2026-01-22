@@ -26,10 +26,10 @@ public class TrashWizard : EnemyBase
     // Start is called before the first frame update
     protected  override void OnStart()
     {
-        _blackboard.Set<float>("delay", teleportDelay);
-        _blackboard.Set<GameObject[]>("minions", minionRoster);
-        _blackboard.Set<GameObject>("normalAttack", normalAttack);
-        _blackboard.Set<GameObject>("bigAttack", bigAttack);
+        ////_blackboard.Set<float>("delay", teleportDelay);
+        //_blackboard.Set<GameObject[]>("minions", minionRoster);
+        //_blackboard.Set<GameObject>("normalAttack", normalAttack);
+        //_blackboard.Set<GameObject>("bigAttack", bigAttack);
 
         if (teleSpots.Length > 0) 
              spotsAvailable = teleSpots.Length - 1;
@@ -53,7 +53,7 @@ public class TrashWizard : EnemyBase
     private IEnumerator TeleportDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        _blackboard.Set<bool>("isInAction", false);
+        //_blackboard.Set<bool>("isInAction", false);
     }
 
 

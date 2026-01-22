@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class FleeMovementNode : BehaviourTreeNode
 {
-    public override void CheckRequiredComponents(EnemyBase self)
-    {
-
-    }
-
-    protected override void Initialize()
+     protected override void Initialize()
     {
 
     }
