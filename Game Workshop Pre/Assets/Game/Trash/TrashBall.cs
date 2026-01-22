@@ -190,6 +190,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (_health < 0) ExplodeTrashBall();
         else DegradeTrashBall();
     }
+
     public void DegradeTrashBall()
     {
         SetDecaying(true);
@@ -221,15 +222,15 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         if (isDecaying == _activelyDecaying) return;
         _activelyDecaying = isDecaying;
-        AudioManager.Instance.Play("Decay", transform.position);
-        AudioManager.Instance.ModifyParameter("Decay", "Size", Size, "Global");
         LayerMask mask = rigidBody.excludeLayers;
         int trashBit = 1 << LayerMask.NameToLayer("Trash");
 
         if (isDecaying) mask |= trashBit;
         else mask &= ~trashBit;
         rigidBody.excludeLayers = mask;
-        
+
+        //AudioManager.Instance.Play("Decay", transform.position);
+        //AudioManager.Instance.ModifyParameter("Decay", "Size", Size, "Global");
     }
 
     public void AbsorbTrash(Trash trash)
@@ -437,9 +438,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         // particles
         if (otherTrashBall.Size > 10)
-            ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, null, null, 1f);
+            ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: 1f);
         else
-            ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, null, null, 0.5f);
+            ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: 0.5f);
 
         otherTrashBall._isBeingDestroyed = true;
         otherTrashBall.absorbedObjects.Clear();

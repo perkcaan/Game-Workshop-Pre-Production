@@ -86,7 +86,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     {
         gameObject.SetActive(true);
         transform.localScale = Vector3.zero;
-        transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
+        transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutQuad);
 
         _rigidBody.simulated = true;
         transform.position = trashBall.transform.position;

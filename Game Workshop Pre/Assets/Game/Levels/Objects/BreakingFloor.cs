@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class BreakingFloor : MonoBehaviour
+public class BreakingFloor : StandingGround
 {
     [SerializeField] float breakDuration = 1f;
     [SerializeField] float stayBrokenDuration = 1f;
@@ -12,22 +12,9 @@ public class BreakingFloor : MonoBehaviour
     private bool isBroken = false;
     private bool isRepairing = false;
     private Coroutine currentSequence;
-    private List<GroundedMechanic> groundedObjects = new List<GroundedMechanic>();
-
-    void OnTriggerEnter2D(Collider2D other)
+    protected override void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent(out GroundedMechanic gm))
-        {
-            if (!isBroken)
-            {
-                if (!groundedObjects.Contains(gm))
-                {
-                    groundedObjects.Add(gm);
-                    gm.IsGrounded++;
-                } 
-            }
-        }
-
+        base.OnTriggerEnter2D(other);
         if (other.TryGetComponent(out HeatMechanic heat))
         {
             if (isRepairing)
@@ -40,18 +27,6 @@ public class BreakingFloor : MonoBehaviour
             if (!isBroken && !isRepairing)
             {
                 currentSequence = StartCoroutine(BreakAndRepairSequence());
-            }
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.TryGetComponent(out GroundedMechanic gm))
-        {
-            if (groundedObjects.Contains(gm))
-            {
-                groundedObjects.Remove(gm);
-                gm.IsGrounded--;
             }
         }
     }

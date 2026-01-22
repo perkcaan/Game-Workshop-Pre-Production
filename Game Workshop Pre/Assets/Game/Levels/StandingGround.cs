@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class StandingGround : MonoBehaviour
 {
-    private List<GroundedMechanic> groundedObjects = new List<GroundedMechanic>();
-    private void OnTriggerEnter2D(Collider2D other)
+    protected List<GroundedMechanic> groundedObjects = new List<GroundedMechanic>();
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent(out GroundedMechanic gm))
+        if (other.TryGetComponent(out GroundedMechanic groundedObject))
         {
-            if (!groundedObjects.Contains(gm))
+            if (!groundedObjects.Contains(groundedObject))
             {
-                groundedObjects.Add(gm);
-                gm.IsGrounded++;
+                groundedObjects.Add(groundedObject);
+                groundedObject.IsGrounded++;
             }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    protected virtual void OnTriggerExit2D(Collider2D other)
     {
-        if (other.TryGetComponent(out GroundedMechanic gm))
+        if (other.TryGetComponent(out GroundedMechanic groundedObject))
         {
-            if (groundedObjects.Contains(gm))
+            if (groundedObjects.Contains(groundedObject))
             {
-                groundedObjects.Remove(gm);
-                gm.IsGrounded--;
+                groundedObjects.Remove(groundedObject);
+                groundedObject.IsGrounded--;
             }
         }
     }
