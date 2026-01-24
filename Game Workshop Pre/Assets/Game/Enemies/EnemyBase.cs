@@ -7,18 +7,26 @@ using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable
+public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable, ICleanable
 {
+    [Header("Enemy")]
     [SerializeField] private BehaviourTree _behaviour;
     [SerializeField] private List<EnemyActionReference> _actions;
 
     // Properties (EnemyBase should only have UNIVERSAL properties. 
     // If a property is on every or almost every enemy, it can go here.)
     [SerializeField] protected float _moveSpeed;
-    public float MoveSpeed { get { return _moveSpeed; } } 
-    [SerializeField] protected float _size;
+    public float MoveSpeed { get { return _moveSpeed * _speedModifier; } }
+    protected float _speedModifier = 1f; // this may need to be expanded
+    public float SpeedModifier { 
+        get { return _speedModifier; }
+        set { _speedModifier = value; } 
+    } 
+    [SerializeField] private int _size;
+    public int Size { get { return _size; } }
     [SerializeField] protected float _minSizeToAbsorb;
     [SerializeField] protected float _minVelocityToAbsorb;
+    [SerializeField] private bool _shouldFlipSprite = false;
     [SerializeField, Range(0,360)] protected float _facingRotation = 270f;
     public float FacingRotation { 
         get { return _facingRotation; } 
@@ -27,12 +35,14 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             float wrapped = value % 360f;
             if (wrapped < 0f) wrapped += 360f;
             _facingRotation = wrapped;
+            FlipSpriteIfNeeded();
         }
     }
 
     // Components
     protected Animator _animator;
     public Animator Animator { get { return _animator; } }
+    private SpriteRenderer _renderer;
     private Rigidbody2D _rigidbody;
     public Rigidbody2D Rigidbody { get { return _rigidbody; } }
     private Collider2D _collider;
@@ -40,6 +50,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     
     private EnemyPather _pather;
     public EnemyPather Pather { get { return _pather; } }
+
+    private Room _parentRoom;
 
     // Fields
     private bool _isDying = false;
@@ -60,6 +72,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
         _animator = GetComponentInChildren<Animator>();
+        _renderer = GetComponentInChildren<SpriteRenderer>();
         _pather = GetComponent<EnemyPather>();
         if (_behaviour != null) _behaviour.Initialize(this);
         OnStart();
@@ -108,12 +121,22 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         yield return new WaitForSeconds(properties.Endlag);
     }
 
+    private void FlipSpriteIfNeeded()
+    {
+        if (!_shouldFlipSprite) return;
+
+        float radians = _facingRotation * Mathf.Deg2Rad;
+        bool faceRight = Mathf.Cos(radians) >= 0f;
+
+        _renderer.flipX = !faceRight;
+    }
+
+
     private void OnDrawGizmos()
     {
         //cant figure out a good way to debug draw them
         if (_behaviour != null) _behaviour.DrawDebug();
     }
-
 
     public TargetType GetTargetType()
     {
@@ -131,8 +154,10 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     public void OnIgnite(HeatMechanic heat)
     {
-        Destroy(gameObject);
+        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
         AudioManager.Instance.Play("enemyDeath", transform.position);
+        
+        Destroy(gameObject);
     }
 
 
@@ -145,6 +170,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     public void OnTrashBallIgnite()
     {
+        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
         Destroy(gameObject);
     }
 
@@ -156,5 +182,10 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             gameObject.SetActive(false);
             trashBall.absorbedObjects.Add(this);
         }
+    }
+    
+    public void SetRoom(Room room)
+    {
+        _parentRoom = room;
     }
 }

@@ -6,7 +6,7 @@ public class CloseMeleeEnemy : EnemyBase
 {
     [SerializeField] private float _attackDashForce = 20f;
     [SerializeField] private SimpleAttackProperties _attackProperties;
-    [SerializeField] private EnemyHeatHitbox _attackHitbox;
+    [SerializeField] private HeatAttackHitbox _attackHitbox;
 
     public IEnumerator MeleeAttack(Action<bool> onComplete)
     {
@@ -33,7 +33,6 @@ public class CloseMeleeEnemy : EnemyBase
             _attackHitbox.Disable();
             _animator.SetTrigger("ReturnToIdle");
         });
-
         onComplete?.Invoke(true);
     }
 
