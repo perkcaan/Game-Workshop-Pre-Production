@@ -7,7 +7,7 @@ using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable
+public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable, ICleanable
 {
     [Header("Enemy")]
     [SerializeField] private BehaviourTree _behaviour;
@@ -22,7 +22,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         get { return _speedModifier; }
         set { _speedModifier = value; } 
     } 
-    [SerializeField] protected float _size;
+    [SerializeField] private int _size;
+    public int Size { get { return _size; } }
     [SerializeField] protected float _minSizeToAbsorb;
     [SerializeField] protected float _minVelocityToAbsorb;
     [SerializeField] private bool _shouldFlipSprite = false;
@@ -49,6 +50,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     
     private EnemyPather _pather;
     public EnemyPather Pather { get { return _pather; } }
+
+    private Room _parentRoom;
 
     // Fields
     private bool _isDying = false;
@@ -151,8 +154,10 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     public void OnIgnite(HeatMechanic heat)
     {
-        Destroy(gameObject);
+        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
         AudioManager.Instance.Play("enemyDeath", transform.position);
+        
+        Destroy(gameObject);
     }
 
 
@@ -165,6 +170,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     public void OnTrashBallIgnite()
     {
+        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
         Destroy(gameObject);
     }
 
@@ -176,5 +182,10 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             gameObject.SetActive(false);
             trashBall.absorbedObjects.Add(this);
         }
+    }
+    
+    public void SetRoom(Room room)
+    {
+        _parentRoom = room;
     }
 }

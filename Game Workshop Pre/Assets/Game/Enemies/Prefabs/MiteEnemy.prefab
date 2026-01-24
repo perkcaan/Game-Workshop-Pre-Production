@@ -236,7 +236,7 @@ MonoBehaviour:
   _actions:
   - _methodName: MeleeAttack
   _moveSpeed: 3
-  _size: 3
+  _size: 1
   _minSizeToAbsorb: 2
   _minVelocityToAbsorb: 1
   _shouldFlipSprite: 1
@@ -333,6 +333,9 @@ MonoBehaviour:
         _wanderRadius: 3.5
         _arriveWaitTime: 2.5
         _arrivalProximity: 0.1
+        _invalidLayers:
+          serializedVersion: 2
+          m_Bits: 20480
 --- !u!114 &6083144468083164269
 MonoBehaviour:
   m_ObjectHideFlags: 0

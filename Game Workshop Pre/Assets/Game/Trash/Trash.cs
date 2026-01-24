@@ -109,7 +109,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     }
 
     public void OnTrashBallIgnite()
-    {;
+    {
         if (_isDestroyed) return;
         _isDestroyed = true;
 
