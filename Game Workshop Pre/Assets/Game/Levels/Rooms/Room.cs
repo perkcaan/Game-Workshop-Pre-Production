@@ -82,10 +82,10 @@ public class Room : MonoBehaviour
     public void AddCleanableToRoom(ICleanable cleanable)
     {
         cleanable.SetRoom(this);
-        if (cleanable is MonoBehaviour mb)
-        {
-            mb.transform.parent = transform;
-        }
+        //if (cleanable is MonoBehaviour mb)
+        //{
+        //    mb.transform.parent = transform;
+        //}
         _containedCleanable.Add(cleanable);
         _currentTrashSizeAmount += cleanable.Size;
         UpdateRoomCleanliness();
