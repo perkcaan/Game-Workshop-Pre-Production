@@ -5,7 +5,7 @@
 			<value>Gate_Up</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{5eaf48a5-e749-484f-ae4d-760896bb32db}</destination>
@@ -126,6 +126,7 @@
 		<relationship name="effects">
 			<destination>{04b11a31-9bb8-4137-8576-279386d0707c}</destination>
 			<destination>{613dfd21-1ffc-433f-a4e1-4cbb819c6170}</destination>
+			<destination>{1cdab865-548c-4fe4-b1ad-9ae3e097645b}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a24d385a-013a-4e8f-b3c3-4ed7a50f60c0}" />
@@ -164,5 +165,6 @@
 			<value>-8</value>
 		</property>
 	</object>
+	<object class="SpatialiserEffect" id="{1cdab865-548c-4fe4-b1ad-9ae3e097645b}" />
 	<object class="MixerBusFader" id="{3b297b21-219f-4713-b7a9-723aabf5053c}" />
 </objects>

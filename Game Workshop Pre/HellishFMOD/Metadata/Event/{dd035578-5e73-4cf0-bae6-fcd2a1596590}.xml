@@ -5,7 +5,7 @@
 			<value>Train Whistles</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{5eaf48a5-e749-484f-ae4d-760896bb32db}</destination>
@@ -137,6 +137,7 @@
 	<object class="MixerBusEffectChain" id="{0a2751a1-d468-4e2b-a76f-323c532d88a1}">
 		<relationship name="effects">
 			<destination>{8187b9b4-67b6-46fa-ba04-f572dad60d0a}</destination>
+			<destination>{a1bccbdf-d761-488c-9777-a5aa99cefe55}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2da26d2d-77cf-4f10-9f3e-421bdedb72b4}" />
@@ -181,6 +182,7 @@
 	</object>
 	<object class="MixerBusPanner" id="{80c6fe5b-becd-4b93-af75-dd3afd814789}" />
 	<object class="MixerBusFader" id="{8187b9b4-67b6-46fa-ba04-f572dad60d0a}" />
+	<object class="SpatialiserEffect" id="{a1bccbdf-d761-488c-9777-a5aa99cefe55}" />
 	<object class="AutomationPoint" id="{0b567909-1d71-4424-95c0-9ae415335e2b}">
 		<property name="position">
 			<value>0.29999999999999999</value>
