@@ -83,7 +83,7 @@ public class ScoreBehavior : MonoBehaviour
     {
         timeLeft -= Time.deltaTime;
         float fillAmount = Math.Clamp(timeLeft / (bonusBarTimer - delayBeforeTickingDown), 0, 1);
-        bonusBarImage.DOFillAmount(fillAmount, smoothBarSlide);
+        bonusBarImage.fillAmount = Mathf.Lerp(bonusBarImage.fillAmount, fillAmount, Time.deltaTime * smoothBarSlide);
         comboText.characterSpacing = bonusBarImage.fillAmount * 16;
         bonusBarImage.color = Color.Lerp(coldComboColor, hotComboColor, bonusBarImage.fillAmount);
         comboText.color = Color.Lerp(deadComboColor, Color.white, fillAmount * 8);
