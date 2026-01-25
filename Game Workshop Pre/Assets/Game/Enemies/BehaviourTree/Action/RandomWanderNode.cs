@@ -11,7 +11,7 @@ public class RandomWanderNode : BehaviourTreeNode
     [SerializeField] private float _wanderRadius = 5f; // allowed distance from its start
     [SerializeField] private float _arriveWaitTime = 4f; // time before choosing new direction
     [SerializeField] private float _arrivalProximity = 0.1f;
-        [SerializeField] private LayerMask _invalidLayers = (1 << 12) | (1 << 14); // 12 and 14 are intended to be Lava and Wall;
+    [SerializeField] private LayerMask _invalidLayers = (1 << 12) | (1 << 14); // 12 and 14 are intended to be Lava and Wall;
 
     private Vector2 _homePosition;
     private Vector2? _targetDestination;

@@ -35,7 +35,7 @@ public class CloseMeleeEnemy : EnemyBase
         });
         onComplete?.Invoke(true);
     }
-
+    
     protected override void OnStart() { }
 
     protected override void OnUpdate() { }
