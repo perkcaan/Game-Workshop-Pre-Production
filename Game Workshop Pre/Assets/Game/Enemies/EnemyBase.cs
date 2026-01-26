@@ -1,3 +1,4 @@
+using FMODUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -109,8 +110,11 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     public void OnIgnite(HeatMechanic heat)
     {
+        AudioManager.Instance.PlayOnInstance(this.gameObject, "enemyDeath");
+        Debug.Log(gameObject.transform.position);
         Destroy(gameObject);
-        AudioManager.Instance.Play("enemyDeath", transform.position);
+        
+
     }
 
 

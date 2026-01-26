@@ -38,7 +38,7 @@ public class BroomSweepHandler : MonoBehaviour
     {
         _hitbox.enabled = true;
         if(_hitbox.enabled)
-            AudioManager.Instance.Play("Sweep", transform.position);
+            AudioManager.Instance.Play("Sweep", transform);
 
         UpdateHitbox(rotation, sweepForce);
     }

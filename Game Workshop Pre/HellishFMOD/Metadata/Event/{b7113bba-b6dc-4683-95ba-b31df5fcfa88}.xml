@@ -5,7 +5,7 @@
 			<value>TrashBall</value>
 		</property>
 		<property name="outputFormat">
-			<value>5</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{86491f99-bebe-4c74-bd2c-748e586c9b08}</destination>
@@ -112,6 +112,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{d03110cb-b91f-4ea0-b62e-f04f2364bac6}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{4ec4380c-770a-4559-9e35-b6a5ce315e6f}</destination>
 		</relationship>
@@ -240,6 +243,7 @@
 		<relationship name="effects">
 			<destination>{a25b2f41-b8b3-469d-b125-afd29edaa3f9}</destination>
 			<destination>{18fd0762-766a-4166-be57-93d8950337dd}</destination>
+			<destination>{40c4328e-0f95-436e-b0a4-ac6b1693931c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{44b65d25-9c0f-4e4e-b66b-1c0310881d0f}" />
@@ -327,6 +331,14 @@
 		<relationship name="mixerReturn">
 			<destination>{2d843aba-be1c-43cd-9af4-5cd271c3507b}</destination>
 		</relationship>
+	</object>
+	<object class="SpatialiserEffect" id="{40c4328e-0f95-436e-b0a4-ac6b1693931c}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="minimumExtent">
+			<value>360</value>
+		</property>
 	</object>
 	<object class="AutomationCurve" id="{5d86734b-3ba1-45a0-b5bb-88b8bc2de157}">
 		<relationship name="parameter">

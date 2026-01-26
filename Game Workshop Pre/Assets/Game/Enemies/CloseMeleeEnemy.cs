@@ -49,6 +49,8 @@ public class CloseMeleeEnemy : EnemyBase, ICleanable
 
     }
 
+    
+
     protected override void OnUpdate()
     {
 

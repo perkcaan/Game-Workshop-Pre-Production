@@ -13,16 +13,26 @@ public class AudioManager : Singleton<AudioManager>
     [SerializedDictionary("ID", "FMODEmitter")]
     [SerializeField] private SerializedDictionary<string, StudioEventEmitter> _sounds;
     private StudioEventEmitter sInstance;
+    
 
-
-    public void Play(string sCode, Vector3 position)
+    private void Start()
+    {
+        
+    }
+    public void Play(string sCode, Transform position)
     {
         if (_sounds.TryGetValue(sCode, out sInstance))
         {
 
-
+            
+            //sInstance.EventInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(position));
+            
+            //RuntimeManager.PlayOneShotAttached(sCode, position.gameObject);
             sInstance.Play();
             
+
+
+
 
         }
         else
@@ -70,9 +80,31 @@ public class AudioManager : Singleton<AudioManager>
             }
             else
             {
+                //If you see this try checking your spelling on either the parameter name or the sound code
                 Debug.LogError("That shit didn't work");
             }
         }
+    }
+    public void PlayOnInstance(GameObject obj, string sCode)
+    {
+        sInstance = _sounds[sCode];
+        if (obj == null) return;
+        StudioEventEmitter[] emitters = obj.GetComponents<StudioEventEmitter>();
+
+        foreach (StudioEventEmitter emitter in emitters) 
+        {
+            if (emitter.EventReference.Equals(sInstance.EventReference))
+            {
+                
+                emitter.Play();
+            }
+            else
+            {
+                
+            }
+        }
+
+        
     }
 
 }

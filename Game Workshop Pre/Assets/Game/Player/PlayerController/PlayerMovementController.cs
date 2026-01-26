@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using UnityEngine.Android;
+using FMODUnity;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
@@ -92,6 +93,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _state = new PlayerStateMachine(_ctx);
         //_heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
+        
     }
 
     private void Start()
@@ -131,7 +133,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
                 ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,Color.white, transform);
-                AudioManager.Instance.Play("dashBack", transform.position);
+                AudioManager.Instance.Play("dashBack", transform);
             }
         }
 
@@ -183,7 +185,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         if (!value.isPressed) return;
         if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
         {
-            AudioManager.Instance.Play("Dash", transform.position);
+            AudioManager.Instance.Play("Dash", transform);
             _state.ChangeState(PlayerStateEnum.Dash);
         }
     }
@@ -244,7 +246,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             if (_footstepCooldown <= 0f)
             {
                 ParticleManager.Instance.Play("PlayerStepDust", transform.position);
-                AudioManager.Instance.Play("Steps", transform.position);
+                AudioManager.Instance.Play("Steps", transform);
                 _footstepCooldown = 0.3f;
             }
         }
@@ -347,7 +349,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void Death()
     {
         transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
-        AudioManager.Instance.Play("playerDeath", transform.position);
+        AudioManager.Instance.Play("playerDeath", transform);
         AudioManager.Instance.Stop("Sweep");
         playerDeath?.Invoke(true);
         

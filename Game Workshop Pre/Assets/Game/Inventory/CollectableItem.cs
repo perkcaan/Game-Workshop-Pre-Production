@@ -17,7 +17,7 @@ public class CollectableItem : MonoBehaviour
 
     void Awake()
     {
-        GetComponent<SpriteRenderer>().sprite = item.displayIcon;
+        //GetComponent<SpriteRenderer>().sprite = item.displayIcon;
     }
 
     void Update()

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4365287662072373498}
   - component: {fileID: 3474399110181055910}
   - component: {fileID: 4195828115917527869}
+  - component: {fileID: 8485525048518575620}
   - component: {fileID: 8015017487416521964}
   m_Layer: 0
   m_Name: AudioManager
@@ -83,6 +84,37 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &8485525048518575620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7897264153184580534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1515016055
+      Data2: 1297398676
+      Data3: -1407158339
+      Data4: 1186683876
+    Path: event:/Heat Meter
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!114 &8015017487416521964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,29 +129,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sounds:
     _serializedList:
+    - Key: enemyDeath
+      Value: {fileID: -8721969978632434423, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
     - Key: Decay
       Value: {fileID: -5607425741268325690, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
+    - Key: Lava
+      Value: {fileID: 4195828115917527869}
+    - Key: Pickup
+      Value: {fileID: -2850386650212370546, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
     - Key: TrashBall
       Value: {fileID: -2150688670721289081, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
-    - Key: enemyDeath
-      Value: {fileID: 7310356898820097241, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
-    - Key: playerDeath
-      Value: {fileID: 0}
-    - Key: Sweep
-      Value: {fileID: 0}
-    - Key: Points
-      Value: {fileID: 0}
-    - Key: Trash Pickup
-      Value: {fileID: -2850386650212370546, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
-    - Key: Ignite
-      Value: {fileID: 5206307667288868970, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
     - Key: Steps
       Value: {fileID: 0}
     - Key: Swipe
       Value: {fileID: 0}
-    - Key: Dash
-      Value: {fileID: 0}
+    - Key: Trash Lava
+      Value: {fileID: 5206307667288868970, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
     - Key: dashBack
       Value: {fileID: 0}
-    - Key: trashBall
-      Value: {fileID: -2150688670721289081, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
+    - Key: Dash
+      Value: {fileID: 0}
+    - Key: Heat
+      Value: {fileID: 8485525048518575620}

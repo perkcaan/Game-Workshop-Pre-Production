@@ -33,7 +33,7 @@ Transform:
   m_GameObject: {fileID: 5196095918412875384}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -4}
+  m_LocalPosition: {x: -2.0762587, y: 3.6370196, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _heat: 20
+  coolingOff: 0
   _heatRelaxationRate: 5
   _timeBeforeRelax: 1
   _warningThreshold: 60
@@ -172,7 +173,7 @@ MonoBehaviour:
       Data2: 1183037148
       Data3: 498317973
       Data4: -1996817163
-    Path: event:/Trash/TrashBall/TrashBall
+    Path: event:/TrashBall/TrashBall
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
@@ -191,7 +192,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5196095918412875384}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
   m_Name: 
@@ -234,7 +235,7 @@ MonoBehaviour:
       Data2: 1135454590
       Data3: -1330675541
       Data4: 749469265
-    Path: event:/Trash/TrashLava
+    Path: event:/TrashLava
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -265,7 +266,7 @@ MonoBehaviour:
       Data2: 1310188587
       Data3: 1940523429
       Data4: -1995798451
-    Path: event:/Trash/TrashBall/Idle_Shake
+    Path: event:/TrashBall/Idle_Shake
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
