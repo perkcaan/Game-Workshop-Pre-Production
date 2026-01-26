@@ -108,7 +108,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{ae861453-f43b-4662-a3bb-dfe8e1cc2e24}">
 		<property name="volume">
-			<value>-27.5</value>
+			<value>-8</value>
 		</property>
 		<property name="name">
 			<value>Death From Ball</value>
@@ -174,7 +174,17 @@
 	</object>
 	<object class="MixerBusPanner" id="{2fd30618-da97-4c65-b2d7-690f0f61c03d}" />
 	<object class="MixerBusFader" id="{cb177684-becc-4e0d-9ed6-765ecf2b1359}" />
-	<object class="SpatialiserEffect" id="{9270184f-048d-4495-a100-9b7f4c09a124}" />
+	<object class="SpatialiserEffect" id="{9270184f-048d-4495-a100-9b7f4c09a124}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="soundSize">
+			<value>36</value>
+		</property>
+		<property name="minimumExtent">
+			<value>360</value>
+		</property>
+	</object>
 	<object class="AutomationPoint" id="{5932f7d0-a22c-42c6-8455-d1bb63c22232}">
 		<property name="position">
 			<value>0.80000000000000004</value>
