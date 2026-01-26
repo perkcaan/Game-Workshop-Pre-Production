@@ -21,7 +21,14 @@ public class Room : MonoBehaviour
 
     public int FreeTrashAmount
     {
-        get { return Mathf.Max(0, _roomTotalTrashCount - _roomCurrentTrashAmount); }
+        get {
+            if (IsRoomClean()) return 0; 
+            return Mathf.Max(0, _roomTotalTrashCount - _roomCurrentTrashAmount); }
+    }
+
+    public bool IsRoomClean()
+    {
+        return Cleanliness >= 1.0f; 
     }
 
     private void Start()
