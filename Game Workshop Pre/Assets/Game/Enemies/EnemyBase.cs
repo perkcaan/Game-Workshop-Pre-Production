@@ -53,6 +53,9 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     private Room _parentRoom;
 
+    // Actions
+    public Action OnDestroy;
+
     // Fields
     private bool _isDying = false;
 
@@ -156,7 +159,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     {
         if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
         AudioManager.Instance.Play("enemyDeath", transform.position);
-        
+
+        OnDestroy?.Invoke();
         Destroy(gameObject);
     }
 
@@ -171,6 +175,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void OnTrashBallIgnite()
     {
         if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
+
+        OnDestroy?.Invoke();
         Destroy(gameObject);
     }
 

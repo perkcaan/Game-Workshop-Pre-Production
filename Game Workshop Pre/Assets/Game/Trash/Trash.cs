@@ -30,10 +30,10 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 
     protected bool _isDestroyed = false;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (_pointValue <= 0) _pointValue = 1;
     }
     protected void CreateTrashBall()
