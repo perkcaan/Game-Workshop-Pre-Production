@@ -451,7 +451,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         seq.SetLink(otherTrashBall.gameObject); 
         seq.Join(otherTrashBall.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
         seq.Join(otherTrashBall.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
-        AudioManager.Instance.Play("Trash Pickup", transform.position);
+        AudioManager.Instance.PlayOnInstance(gameObject,"Trash Pickup");
         seq.OnComplete(() => Destroy(otherTrashBall?.gameObject));
     }
 
@@ -519,7 +519,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         absorbSequence.Join(absorbedObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
         absorbSequence.Join(absorbedObject.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
         absorbSequence.OnKill(() => absorbedObject?.SetActive(false));
-        AudioManager.Instance.Play("Trash Pickup", transform.position);
+        AudioManager.Instance.PlayOnInstance(gameObject, "Trash Pickup");
     }
 
     public IEnumerator PointSound()

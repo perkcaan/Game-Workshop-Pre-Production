@@ -5,7 +5,7 @@
 			<value>TrashBall</value>
 		</property>
 		<property name="outputFormat">
-			<value>5</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{86491f99-bebe-4c74-bd2c-748e586c9b08}</destination>
@@ -243,6 +243,7 @@
 		<relationship name="effects">
 			<destination>{a25b2f41-b8b3-469d-b125-afd29edaa3f9}</destination>
 			<destination>{18fd0762-766a-4166-be57-93d8950337dd}</destination>
+			<destination>{ffdfba3f-3252-49ab-a942-72db10e01e58}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{44b65d25-9c0f-4e4e-b66b-1c0310881d0f}" />
@@ -330,6 +331,14 @@
 		<relationship name="mixerReturn">
 			<destination>{2d843aba-be1c-43cd-9af4-5cd271c3507b}</destination>
 		</relationship>
+	</object>
+	<object class="SpatialiserEffect" id="{ffdfba3f-3252-49ab-a942-72db10e01e58}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="minimumExtent">
+			<value>360</value>
+		</property>
 	</object>
 	<object class="AutomationCurve" id="{0edba41d-84ae-45a0-af85-105e26303961}">
 		<relationship name="parameter">
