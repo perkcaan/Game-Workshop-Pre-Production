@@ -22,6 +22,7 @@ public class HeatMechanic : MonoBehaviour
     {
         get { return _heat; }
     }
+
     public bool coolingOff = false;
 
     [Tooltip("The rate per second at which heat returns to room temperature.")]

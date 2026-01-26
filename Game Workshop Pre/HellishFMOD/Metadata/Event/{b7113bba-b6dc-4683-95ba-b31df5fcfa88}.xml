@@ -113,7 +113,11 @@
 	</object>
 	<object class="EventMixerMaster" id="{d03110cb-b91f-4ea0-b62e-f04f2364bac6}">
 		<property name="volume">
+<<<<<<< HEAD
 			<value>10</value>
+=======
+			<value>-6</value>
+>>>>>>> main
 		</property>
 		<relationship name="effectChain">
 			<destination>{4ec4380c-770a-4559-9e35-b6a5ce315e6f}</destination>
@@ -243,7 +247,11 @@
 		<relationship name="effects">
 			<destination>{a25b2f41-b8b3-469d-b125-afd29edaa3f9}</destination>
 			<destination>{18fd0762-766a-4166-be57-93d8950337dd}</destination>
+<<<<<<< HEAD
 			<destination>{40c4328e-0f95-436e-b0a4-ac6b1693931c}</destination>
+=======
+			<destination>{ffdfba3f-3252-49ab-a942-72db10e01e58}</destination>
+>>>>>>> main
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{44b65d25-9c0f-4e4e-b66b-1c0310881d0f}" />
@@ -332,7 +340,11 @@
 			<destination>{2d843aba-be1c-43cd-9af4-5cd271c3507b}</destination>
 		</relationship>
 	</object>
+<<<<<<< HEAD
 	<object class="SpatialiserEffect" id="{40c4328e-0f95-436e-b0a4-ac6b1693931c}">
+=======
+	<object class="SpatialiserEffect" id="{ffdfba3f-3252-49ab-a942-72db10e01e58}">
+>>>>>>> main
 		<property name="extentMode">
 			<value>1</value>
 		</property>
@@ -340,7 +352,11 @@
 			<value>360</value>
 		</property>
 	</object>
+<<<<<<< HEAD
 	<object class="AutomationCurve" id="{5d86734b-3ba1-45a0-b5bb-88b8bc2de157}">
+=======
+	<object class="AutomationCurve" id="{0edba41d-84ae-45a0-af85-105e26303961}">
+>>>>>>> main
 		<relationship name="parameter">
 			<destination>{de8307fb-c45b-4b9c-9c43-9a60a7222b52}</destination>
 		</relationship>

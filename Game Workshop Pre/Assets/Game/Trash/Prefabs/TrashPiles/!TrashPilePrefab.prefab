@@ -112,7 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 1
+  _size: 0
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
@@ -137,6 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _heat: 20
+  coolingOff: 0
   _heatRelaxationRate: 5
   _timeBeforeRelax: 1
   _warningThreshold: 60
