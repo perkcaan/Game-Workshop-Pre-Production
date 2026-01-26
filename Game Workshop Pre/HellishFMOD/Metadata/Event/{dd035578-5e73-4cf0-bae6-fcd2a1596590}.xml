@@ -5,7 +5,7 @@
 			<value>Train Whistles</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{be51a2dd-1c04-48c1-b4c4-154bbbb69134}</destination>
@@ -137,7 +137,6 @@
 	<object class="MixerBusEffectChain" id="{0a2751a1-d468-4e2b-a76f-323c532d88a1}">
 		<relationship name="effects">
 			<destination>{8187b9b4-67b6-46fa-ba04-f572dad60d0a}</destination>
-			<destination>{a1bccbdf-d761-488c-9777-a5aa99cefe55}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2da26d2d-77cf-4f10-9f3e-421bdedb72b4}" />
@@ -182,14 +181,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{80c6fe5b-becd-4b93-af75-dd3afd814789}" />
 	<object class="MixerBusFader" id="{8187b9b4-67b6-46fa-ba04-f572dad60d0a}" />
-	<object class="SpatialiserEffect" id="{a1bccbdf-d761-488c-9777-a5aa99cefe55}">
-		<property name="extentMode">
-			<value>1</value>
-		</property>
-		<property name="minimumExtent">
-			<value>360</value>
-		</property>
-	</object>
 	<object class="AutomationPoint" id="{0b567909-1d71-4424-95c0-9ae415335e2b}">
 		<property name="position">
 			<value>0.29999999999999999</value>

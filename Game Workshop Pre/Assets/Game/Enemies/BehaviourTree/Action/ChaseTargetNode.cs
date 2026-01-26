@@ -12,7 +12,6 @@ public class ChaseTargetNode : BehaviourTreeNode
     [SerializeField] private float _arrivedAtTargetDistance = 1f;
 
     private Vector2 _storedTargetPos = Vector2.zero;
-    private bool _hasArrived = false;
 
 
     // Behaviour tree
@@ -25,13 +24,9 @@ public class ChaseTargetNode : BehaviourTreeNode
         _isActive = true;
         _storedTargetPos = targetPosition.Value;
 
-        if (_hasArrived) // When arrived, check if the target is here or not
+        if (Vector2.Distance(Self.transform.position, _storedTargetPos) <= _arrivedAtTargetDistance) // When arrive, check if the target is here or not
         {
-            _hasArrived = false;
-            if (Blackboard.TryGetNotNull("target", out ITargetable target)) {
-                Self.Pather.FacePoint(_storedTargetPos);
-                return BTNodeState.Success;
-            }
+            if (Blackboard.TryGetNotNull("target", out ITargetable target)) return BTNodeState.Success;
             return BTNodeState.Failure;
         }
 
@@ -46,14 +41,9 @@ public class ChaseTargetNode : BehaviourTreeNode
 
     private void ArrivedAtTarget()
     {
-        _hasArrived = true;
         Self.Pather.Stop();
     }
 
-    protected override void Reset()
-    {
-        _hasArrived = false;
-    }
 
 
 

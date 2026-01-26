@@ -1,4 +1,3 @@
-using DG.Tweening;
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
@@ -80,7 +79,7 @@ public class PauseMenu : MonoBehaviour
             Debug.LogError("Current scene is not in Build Settings! Add it to be able to reload.");
             return;
         }
-        DOTween.KillAll();
+
         SceneManager.LoadScene(sceneIndex);
     }
 

@@ -10,32 +10,26 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     [SerializeField] float _onDamagedShakeForce;
     [SerializeField] float _onExplodeForce;
     [SerializeField] float _sweepDurationToTakeDamage;
-<<<<<<< HEAD
     [SerializeField] List<Trash> _startingStoredTrash;
     [SerializeField] List<CloseMeleeEnemy> _spawnableEnemies;
-=======
-    [SerializeField] List<GameObject> _startingStoredTrash;
->>>>>>> main
     [SerializeField] Color color;
+    private SpriteRenderer _sprite;
     private float _sweepTimer;
     private float _shakeSpeed = 0.125f;
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
         _size = 0;
-        foreach (GameObject trash in _startingStoredTrash)
+        foreach (Trash trash in _startingStoredTrash)
         {
             if(trash == null)
             {
                 Debug.Log(gameObject.name + " is missing trash");
                 break;
             }
-            if (trash.TryGetComponent(out ICleanable cleanable))
-            {
-                _size += cleanable.Size;
-            }
+            _size += trash.Size;
         }
+        _sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
     public void OnSweep(Vector2 position, Vector2 direction, float force)
@@ -81,17 +75,9 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         else
         {
             Sequence sequence = DOTween.Sequence();
-<<<<<<< HEAD
             sequence.Append(_sprite.transform.DOLocalMove(direction.normalized * _onDamagedShakeForce * damage, _shakeSpeed));
             sequence.Append(_sprite.transform.DOLocalMove(-direction.normalized * _onDamagedShakeForce * damage / 4, _shakeSpeed));
             sequence.Append(_sprite.transform.DOLocalMove(Vector3.zero, _shakeSpeed));
-=======
-            sequence.Append(_spriteRenderer.transform.DOLocalMove(direction.normalized * _onDamagedShakeForce * damage, _shakeSpeed));
-            sequence.Append(_spriteRenderer.transform.DOLocalMove(-direction.normalized * _onDamagedShakeForce * damage / 4, _shakeSpeed));
-            sequence.Append(_spriteRenderer.transform.DOLocalMove(Vector3.zero, _shakeSpeed));
-            sequence.SetLink(_spriteRenderer.gameObject); 
-            _shakeTween = sequence;
->>>>>>> main
         }
     }
 
@@ -104,27 +90,10 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         Quaternion rotation = Quaternion.Euler(0f, 0f, (angleRadians * Mathf.Rad2Deg)-45f);
         ParticleManager.Instance.Play("DustBurst", transform.position, rotation, color);
 
-        foreach (GameObject trash in _startingStoredTrash)
+        foreach (Trash trash in _startingStoredTrash)
         {
-<<<<<<< HEAD
             Trash releasedTrash = Instantiate(trash);
             //_parentRoom.AddCleanableToRoom(releasedTrash);
-=======
-            if(trash == null)
-            {
-                Debug.Log(gameObject.name + " is missing trash");
-                break;
-            }
-
-            GameObject releasedTrash = Instantiate(trash);
-            
-            if (releasedTrash.TryGetComponent(out ICleanable cleanable))
-            {
-                _parentRoom.AddCleanableToRoom(cleanable);
-            }
-            
-            
->>>>>>> main
             releasedTrash.transform.position = transform.position;
             if (direction != null)
             {
