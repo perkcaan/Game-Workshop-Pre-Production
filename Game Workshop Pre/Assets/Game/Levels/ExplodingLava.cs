@@ -3,69 +3,72 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-// TODO: 
-// Could you make this not use EnemyHeatHitbox? That's not quite what this is for.
-// EnemyHeatHitbox is for a single attack hit on anenemy,
-// whereas this is is something that will make things take damage while they stand in it
-// You can use EnemyHeatHitbox (or the Lava) as a guide.
 public class ExplodingLava : MonoBehaviour
 {
-    [SerializeField] float explosionTime = 10f;
-    [SerializeField] float warningTime = 3f;
-    [SerializeField] float explosionDuration = 3f;
-    [SerializeField] private EnemyHeatHitbox heatArea;
-    SpriteRenderer sr;
-    private bool isExploding = false;
-    float heatMax = 45f; //half of players heat
-    float timer;
+    [SerializeField] private float _timeUntilWarn = 5f;
+    [SerializeField] private float _warningDuration = 3f;
+    [SerializeField] private float _explosionDuration = 4f;
+    [SerializeField] private float _maxRandomTimeOffset = 1f;
+    private HeatAreaHitbox _heatArea;
+    private SpriteRenderer _spriteRenderer;
+    private bool _isExploding = false;
+    private bool _isWarning = false;
+    private float _currentTime = 0f;
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        timer = 0f;
-        sr = GetComponent<SpriteRenderer>();
-        heatArea.Disable();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _heatArea = GetComponent<HeatAreaHitbox>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        Debug.Log(timer);
-        timer += Time.deltaTime;
-        if (timer > warningTime) 
-        {
-            warning(); 
-        }
+        _spriteRenderer.color = Color.white;
+        _currentTime += Random.Range(0,_maxRandomTimeOffset);
+    }
 
-        if (timer > explosionTime)
-        {
-            explode();
-        }
-
-        if (timer > explosionTime + explosionDuration)
-        {
-            Debug.Log("reset");
-            isExploding = false;
-            timer = 0f;
-            sr.color = Color.yellow; // back to yellow
-            heatArea.Disable();
-            //heatArea.HideSprite(); 
-        }
+    private void Update()
+    {
+        _currentTime += Time.deltaTime;
         
+        if (_isExploding && _currentTime >= _timeUntilWarn + _explosionDuration + _warningDuration)
+        {
+            FinishExplode();
+            return;
+        }
+
+        if (!_isExploding && _currentTime >= _timeUntilWarn + _warningDuration)
+        {
+            StartExplode();
+            return;
+        }
+
+        if (!_isWarning && _currentTime >= _timeUntilWarn) 
+        {
+            StartWarning();
+            return;
+        }
     }
 
-    void explode()
+    private void StartWarning()
     {
-        Debug.Log("exploding");
-        isExploding = true;
-        heatArea.Enable();
-        //heatArea.ShowSprite(); //heat area shows orange 
-    }
-
-    void warning()
-    {
-        Debug.Log("warning");
-        sr.color = Color.red;
+        _spriteRenderer.color = Color.yellow;
+        _isWarning = true;
     } 
+
+    private void StartExplode()
+    {
+        _spriteRenderer.color = Color.red;
+        _isExploding = true;
+        _heatArea.Enable();
+    }
+
+    private void FinishExplode()
+    {
+        _currentTime = 0f;
+        _spriteRenderer.color = Color.white;
+        _isExploding = false;
+        _isWarning = false;
+        _heatArea.Disable();
+    }
 }

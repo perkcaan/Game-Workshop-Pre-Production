@@ -10,30 +10,33 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     [SerializeField] float _onDamagedShakeForce;
     [SerializeField] float _onExplodeForce;
     [SerializeField] float _sweepDurationToTakeDamage;
-    [SerializeField] List<Trash> _startingStoredTrash;
-    [SerializeField] List<CloseMeleeEnemy> _spawnableEnemies;
+    [SerializeField] List<GameObject> _startingStoredTrash;
     [SerializeField] Color color;
-    private SpriteRenderer _sprite;
     private float _sweepTimer;
     private float _shakeSpeed = 0.125f;
+    private Tween _shakeTween;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _size = 0;
-        foreach (Trash trash in _startingStoredTrash)
+        foreach (GameObject trash in _startingStoredTrash)
         {
             if(trash == null)
             {
                 Debug.Log(gameObject.name + " is missing trash");
                 break;
             }
-            _size += trash.Size;
+            if (trash.TryGetComponent(out ICleanable cleanable))
+            {
+                _size += cleanable.Size;
+            }
         }
-        _sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
     public void OnSweep(Vector2 position, Vector2 direction, float force)
     {
+        if (_isDestroyed) return;
         if (!isActiveAndEnabled) return;
         _sweepTimer += Time.deltaTime * 2;
         if (_sweepTimer > _sweepDurationToTakeDamage)
@@ -46,27 +49,28 @@ public class TrashPile : Trash, ISweepable, ISwipeable
 
     public void OnSwipe(Vector2 direction, float force)
     {
+        if (_isDestroyed) return;
         TakeDamage(3, direction, force);
         if(this != null && trashMaterial != null)
             ParticleManager.Instance.Play("swipe", transform.position, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), this.trashMaterial.color, transform);
     }
 
-    public override void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    public override void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
+        if (_isDestroyed) return;
         if (Size <= trashBall.Size)
         {
-            Rigidbody2D trashBallRB = trashBall.GetComponent<Rigidbody2D>();
-            ReleaseTrash(trashBallRB.velocity.normalized, trashBallRB.velocity.magnitude);
+            ReleaseTrash(ballVelocity.normalized, ballVelocity.magnitude);
         }
         else
         {
-            Rigidbody2D trashBallRB = trashBall.GetComponent<Rigidbody2D>();
-            TakeDamage(1, trashBallRB.velocity.normalized, trashBallRB.velocity.magnitude);
+            TakeDamage(3, ballVelocity.normalized, ballVelocity.magnitude);
         }
     }
 
     public void TakeDamage(int damage, Vector2 direction, float force)
     {
+        if (_isDestroyed) return;
         _health -= damage;
         if (_health <= 0)
         {
@@ -74,56 +78,65 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         }
         else
         {
+            if (_shakeTween != null && _shakeTween.IsActive()) _shakeTween.Complete();
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(_sprite.transform.DOLocalMove(direction.normalized * _onDamagedShakeForce * damage, _shakeSpeed));
-            sequence.Append(_sprite.transform.DOLocalMove(-direction.normalized * _onDamagedShakeForce * damage / 4, _shakeSpeed));
-            sequence.Append(_sprite.transform.DOLocalMove(Vector3.zero, _shakeSpeed));
+            sequence.Append(_spriteRenderer.transform.DOLocalMove(direction.normalized * _onDamagedShakeForce * damage, _shakeSpeed));
+            sequence.Append(_spriteRenderer.transform.DOLocalMove(-direction.normalized * _onDamagedShakeForce * damage / 4, _shakeSpeed));
+            sequence.Append(_spriteRenderer.transform.DOLocalMove(Vector3.zero, _shakeSpeed));
+            sequence.SetLink(_spriteRenderer.gameObject); 
+            _shakeTween = sequence;
         }
     }
 
     private void ReleaseTrash(Vector2 direction, float force)
     {
-        DOTween.KillAll();
+        if (_isDestroyed) return;
+        _isDestroyed = true;
+        _rigidBody.simulated = false;
+        _parentRoom.ObjectCleaned(this);
+
+        if (_shakeTween != null && _shakeTween.IsActive()) _shakeTween.Kill();
+        transform.DOScale(Vector3.zero, 0.2f)
+                 .SetEase(Ease.OutQuad)
+                 .SetLink(gameObject) 
+                 .OnComplete(() => Destroy(gameObject));
+
         SendScore?.Invoke(_pointValue);
 
         float angleRadians = Mathf.Atan2(direction.y, direction.x);
         Quaternion rotation = Quaternion.Euler(0f, 0f, (angleRadians * Mathf.Rad2Deg)-45f);
         ParticleManager.Instance.Play("DustBurst", transform.position, rotation, color);
 
-        foreach (Trash trash in _startingStoredTrash)
+        foreach (GameObject trash in _startingStoredTrash)
         {
-            Trash releasedTrash = Instantiate(trash);
-            //_parentRoom.AddCleanableToRoom(releasedTrash);
+            if(trash == null)
+            {
+                Debug.Log(gameObject.name + " is missing trash");
+                break;
+            }
+
+            GameObject releasedTrash = Instantiate(trash);
+            
+            if (releasedTrash.TryGetComponent(out ICleanable cleanable))
+            {
+                _parentRoom.AddCleanableToRoom(cleanable);
+            }
+            
+            
             releasedTrash.transform.position = transform.position;
             if (direction != null)
             {
                 float randomAngle = UnityEngine.Random.Range(-_trashSpreadRange, _trashSpreadRange);
                 Vector2 randomDirection = Quaternion.Euler(0, 0, randomAngle) * direction;
 
-                float randomForce = UnityEngine.Random.Range(force * _onExplodeForce, force * _onExplodeForce * 3);
+                float randomForce = UnityEngine.Random.Range(force * _onExplodeForce, force * _onExplodeForce * 2);
                 releasedTrash.GetComponent<Rigidbody2D>().AddForce(randomDirection.normalized * randomForce, ForceMode2D.Impulse);
+                releasedTrash.transform.localScale = Vector3.zero;
+                
+                releasedTrash.transform.DOScale(Vector3.one, 0.3f)
+                             .SetEase(Ease.OutQuad)
+                             .SetLink(releasedTrash.gameObject);
             }
         }
-
-        if (_spawnableEnemies.Count > 0)
-        {
-            foreach (CloseMeleeEnemy enemies in _spawnableEnemies)
-            {
-                CloseMeleeEnemy _spawnedEnemies = Instantiate(enemies);
-                _spawnedEnemies.transform.position = transform.position;
-
-                if (direction != null)
-                {
-                    float randomAngle = UnityEngine.Random.Range(-_trashSpreadRange, _trashSpreadRange);
-                    Vector2 randomDirection = Quaternion.Euler(0, 0, randomAngle) * direction;
-
-                    float randomForce = UnityEngine.Random.Range(force * _onExplodeForce, force * _onExplodeForce * 6);
-                    _spawnedEnemies.GetComponent<Rigidbody2D>().AddForce(randomDirection.normalized * randomForce, ForceMode2D.Impulse);
-                }
-
-            }
-        }
-        _parentRoom.ObjectCleaned(this);
-        Destroy(gameObject);
     }
 }

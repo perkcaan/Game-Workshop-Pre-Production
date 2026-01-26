@@ -18,17 +18,20 @@ public class Lava : MonoBehaviour
             {
                 if (gm.IsGrounded) 
                 {
-                    _delayTimer += Time.fixedDeltaTime;
-                    if (_delayTimer > _delayBeforeHeatingWhenGrounded)
+                    if (gm.IsGrounded < 2)
                     {
-                        if (heat.Heat < _maxHeatWhenGrounded)
+                        _delayTimer += Time.fixedDeltaTime;
+                        if (_delayTimer > _delayBeforeHeatingWhenGrounded)
                         {
-                            heat.ModifyHeat(_heatPerSecondWhenGrounded * Time.fixedDeltaTime);
-                        }
-                        else
-                        {
-                            heat.ModifyHeat(0); // dont cooldown, just stay at max heat
-                        }
+                            if (heat.Heat < _maxHeatWhenGrounded)
+                            {
+                                heat.ModifyHeat(_heatPerSecondWhenGrounded * Time.fixedDeltaTime);
+                            }
+                            else
+                            {
+                                heat.ModifyHeat(0); // dont cooldown, just stay at max heat
+                            }
+                        } 
                     }
                     return;
                 }

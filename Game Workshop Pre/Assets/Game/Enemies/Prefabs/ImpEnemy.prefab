@@ -174,7 +174,7 @@ BoxCollider2D:
     m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 5819770505288760233}
   - component: {fileID: 6694651022442818977}
   - component: {fileID: 6392742393540061338}
-  - component: {fileID: -8721969978632434423}
+  - component: {fileID: -1393150414208117618}
   m_Layer: 10
   m_Name: ImpEnemy
   m_TagString: Untagged
@@ -373,11 +373,13 @@ MonoBehaviour:
   _size: 3
   _minSizeToAbsorb: 6
   _minVelocityToAbsorb: 1
+  _shouldFlipSprite: 0
   _facingRotation: 90
   _attackDashForce: 15
-  _attackStartup: 0.3
-  _attackDuration: 0.5
-  _attackEndlag: 1
+  _attackProperties:
+    _startup: 0.3
+    _duration: 0.5
+    _endlag: 1
   _attackHitbox: {fileID: 1142854894367535693}
   references:
     version: 2
@@ -481,7 +483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isGrounded: 0
---- !u!114 &-8721969978632434423
+--- !u!114 &-1393150414208117618
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

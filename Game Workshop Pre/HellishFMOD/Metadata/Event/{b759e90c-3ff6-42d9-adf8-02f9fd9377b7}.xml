@@ -108,7 +108,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{ae861453-f43b-4662-a3bb-dfe8e1cc2e24}">
 		<property name="volume">
-			<value>-4</value>
+			<value>-8</value>
 		</property>
 		<property name="name">
 			<value>Death From Ball</value>
@@ -126,7 +126,7 @@
 	<object class="MixerBusEffectChain" id="{541867d2-8e9e-46e1-a5bb-450a8aa16e9c}">
 		<relationship name="effects">
 			<destination>{cb177684-becc-4e0d-9ed6-765ecf2b1359}</destination>
-			<destination>{23e4ce3c-49c5-4783-ab19-18ab9e46761e}</destination>
+			<destination>{9270184f-048d-4495-a100-9b7f4c09a124}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{21e872c0-e186-44cf-b708-244d46d6ff0d}" />
@@ -174,9 +174,12 @@
 	</object>
 	<object class="MixerBusPanner" id="{2fd30618-da97-4c65-b2d7-690f0f61c03d}" />
 	<object class="MixerBusFader" id="{cb177684-becc-4e0d-9ed6-765ecf2b1359}" />
-	<object class="SpatialiserEffect" id="{23e4ce3c-49c5-4783-ab19-18ab9e46761e}">
+	<object class="SpatialiserEffect" id="{9270184f-048d-4495-a100-9b7f4c09a124}">
 		<property name="extentMode">
 			<value>1</value>
+		</property>
+		<property name="soundSize">
+			<value>30</value>
 		</property>
 		<property name="minimumExtent">
 			<value>360</value>
