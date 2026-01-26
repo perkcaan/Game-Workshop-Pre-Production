@@ -53,7 +53,7 @@
 			<destination>{34dbffcd-fd26-4c8e-8f4b-cc1bed8d4d80}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{c893bc8b-0639-4601-baef-ee39dc787ade}</destination>
+			<destination>{226d84b9-2c40-492d-a3a7-2b063141b0cc}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{80c5da31-935c-43fa-8bb1-f59f28fe7271}" />
@@ -99,6 +99,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{f10d08e2-a81b-47f3-b65a-97844a0199d2}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{be033338-f388-4e25-8419-fa553a8f4581}</destination>
 		</relationship>
@@ -453,6 +456,9 @@
 	<object class="SpatialiserEffect" id="{0bb3b3b3-1c70-4f9b-ad18-29760e8f57eb}">
 		<property name="extentMode">
 			<value>1</value>
+		</property>
+		<property name="soundSize">
+			<value>20</value>
 		</property>
 		<property name="minimumExtent">
 			<value>360</value>
