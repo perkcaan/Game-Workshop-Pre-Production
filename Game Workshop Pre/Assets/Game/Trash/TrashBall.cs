@@ -13,8 +13,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     [SerializeField] float _scaleMultiplier;
     [SerializeField] float _baseMaxHealth;
     [SerializeField] float _minimumSpeedToAbsorbPlayer;
-    [SerializeField] private float _size = 1f;
-    public float Size
+    [SerializeField] private int _size = 1;
+    public int Size
     {
         get { return _size; }
         set
@@ -502,6 +502,29 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         Destroy(gameObject);
         
         //AudioManager.Instance.ModifyParameter("Ignite", "Size", (Size / 10), "Global");
+    }
+
+    // Non-fire destroy
+    public void PrepareDelete()
+    {
+        _isBeingDestroyed = true;
+    }
+
+    // Non-fire destroy
+    public void Delete()
+    {
+        foreach (IAbsorbable absorbable in absorbedObjects)
+        {
+            absorbable.OnTrashBallIgnite();
+        }
+        absorbedObjects.Clear();
+        absorbedTrash.Clear();
+        SendScore?.Invoke((int)Size);
+        StartCoroutine(PointSound());
+
+        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", 0f, "Global");
+        AudioManager.Instance.Stop("TrashBall");
+        Destroy(gameObject);
     }
 
 
