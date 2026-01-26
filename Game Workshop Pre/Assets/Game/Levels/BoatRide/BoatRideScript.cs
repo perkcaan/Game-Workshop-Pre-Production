@@ -6,15 +6,17 @@ using DG.Tweening;
 public class BoatRideScript : MonoBehaviour
 {
     [Header("Boat Ride Settings")]
-    [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private float rockAmount = 0.5f;
-    [SerializeField] private float rockSpeed = 1.5f;
-    [SerializeField] private float rideDuration = 5f;
+    [SerializeField] float moveSpeed = 2f;
+    [SerializeField] float rockAmount = 0.5f;
+    [SerializeField] float rockSpeed = 1.5f;
+    [SerializeField] Transform endPoint;
+    [SerializeField] float _playerDepositY;
+    [SerializeField] float _grabSpeed;
+    [SerializeField] float playerJumpHeight;
 
     private PlayerMovementController _playerController;
     private bool _isBoatRiding = false;
     private Vector3 _boatStartPosition;
-    private Vector3 _playerStartPosition;
 
     void Start()
     {
@@ -35,23 +37,28 @@ public class BoatRideScript : MonoBehaviour
         if (collision.TryGetComponent(out PlayerMovementController player) && !_isBoatRiding)
         {
             _playerController = player;
-            GrabPlayer();
-            StartBoatRide(player);
+            _playerController.enabled = false;
+            GrabPlayer(player);
         }
     }
 
     private void StartBoatRide(PlayerMovementController player)
     {
         _isBoatRiding = true;
-
+        _playerController.GetComponentInChildren<Animator>().SetInteger("OnBoat", 2);
         RockBoat();
+        float rideDuration = Vector3.Distance(transform.position, endPoint.position) / moveSpeed;
         Invoke(nameof(EndBoatRide), rideDuration);
     }
 
-    private void GrabPlayer()
+    void GrabPlayer(PlayerMovementController player)
     {
+        _playerController.GetComponentInChildren<Animator>().SetInteger("OnBoat", 1);
         _playerController.enabled = false;
-        _playerController.transform.SetParent(transform);
+    
+        Sequence grabSequence = DOTween.Sequence();
+        grabSequence.Append(_playerController.transform.DOLocalMove(transform.position, _grabSpeed));
+        grabSequence.OnComplete(() => {StartBoatRide(player);});
     }
 
     private void RockBoat()
@@ -68,15 +75,15 @@ public class BoatRideScript : MonoBehaviour
 
     private void EndBoatRide()
     {
+        _playerController.GetComponentInChildren<Animator>().SetInteger("OnBoat", 0);
         _isBoatRiding = false;
-
+        this.enabled = false;
+        GetComponent<Collider2D>().enabled = false;
         if (_playerController != null)
         {
-            _playerController.canSweep = true;
-            _playerController.canSwipe = true;
-            _playerController.canDash = true;
+            _playerController.enabled = true;
+            _playerController.transform.DOLocalMoveY(transform.position.y + _playerDepositY, _grabSpeed);
         }
-
         transform.DOKill();
     }
 }
