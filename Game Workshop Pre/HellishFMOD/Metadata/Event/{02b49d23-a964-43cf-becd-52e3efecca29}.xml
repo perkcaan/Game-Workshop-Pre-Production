@@ -165,6 +165,13 @@
 			<value>-8</value>
 		</property>
 	</object>
-	<object class="SpatialiserEffect" id="{1cdab865-548c-4fe4-b1ad-9ae3e097645b}" />
+	<object class="SpatialiserEffect" id="{1cdab865-548c-4fe4-b1ad-9ae3e097645b}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="minimumExtent">
+			<value>360</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{3b297b21-219f-4713-b7a9-723aabf5053c}" />
 </objects>

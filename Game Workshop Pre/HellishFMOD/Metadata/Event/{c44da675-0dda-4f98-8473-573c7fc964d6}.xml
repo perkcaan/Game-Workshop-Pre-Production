@@ -5,7 +5,7 @@
 			<value>PickupSound1</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{3b6b6dca-1149-4601-ab91-a361273c6242}</destination>
@@ -281,6 +281,7 @@
 		<relationship name="effects">
 			<destination>{03f5a5f6-a830-46f0-8e09-91da82d96a24}</destination>
 			<destination>{db5a9da1-f372-4a44-9700-f03e9b98c0df}</destination>
+			<destination>{0bb3b3b3-1c70-4f9b-ad18-29760e8f57eb}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{bb16b6dc-ca38-497f-8740-0823b096e543}" />
@@ -447,6 +448,14 @@
 		</property>
 		<property name="wetLevel">
 			<value>-20</value>
+		</property>
+	</object>
+	<object class="SpatialiserEffect" id="{0bb3b3b3-1c70-4f9b-ad18-29760e8f57eb}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="minimumExtent">
+			<value>360</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{fd2118ad-b966-480c-885d-8a94941a2052}">
