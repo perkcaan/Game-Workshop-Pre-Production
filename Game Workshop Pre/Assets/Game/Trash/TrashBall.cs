@@ -98,7 +98,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         //RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, this.gameObject, rigidBody);
         AudioManager.Instance.PlayOnInstance(this.gameObject, "TrashBall");
-        //AudioManager.Instance.PlayOnInstance(this.gameObject, "wallCollide");
+        AudioManager.Instance.PlayOnInstance(this.gameObject, "wallCollide");
         //AudioManager.Instance.Play("Ignite", transform.position);
     }
 
@@ -119,7 +119,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, null, null, Mathf.Pow(Size, 1f / 3f));
         }
         
-        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", rigidBody.velocity.magnitude * 10, "Global");
+        AudioManager.Instance.ModifyGlobalParameter("RPM", rigidBody.velocity.magnitude * 10);
         
         // _emitter.Play();
 
@@ -223,7 +223,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (isDecaying == _activelyDecaying) return;
         _activelyDecaying = isDecaying;
         AudioManager.Instance.Play("Decay", transform);
-        AudioManager.Instance.ModifyParameter("Decay", "Size", Size, "Global");
+        AudioManager.Instance.ModifyParameter(this.gameObject, "Decay", "Size", Size);
         LayerMask mask = rigidBody.excludeLayers;
         int trashBit = 1 << LayerMask.NameToLayer("Trash");
 
@@ -329,9 +329,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         if (_primaryTrashMaterial == null)
         {
-            AudioManager.Instance.ModifyParameter("TrashBall", "Generic", highestPrecent, "Global");
+            AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "Generic", highestPrecent);
         }
-        AudioManager.Instance.ModifyParameter("TrashBall", _primaryTrashMaterial.name, highestPrecent, "Global");
+        AudioManager.Instance.ModifyGlobalParameter(_primaryTrashMaterial.name, highestPrecent);
         //Debug.Log(_primaryTrashMaterial.name+" sound applied");
 
         rigidBody.sharedMaterial = _physicsMaterial2D;
@@ -340,6 +340,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     private void ApplyTrashMaterial(TrashMaterial material, float precentOf)
     {
+        if (material == null) return;
         _physicsMaterial2D.bounciness += material.bounciness * precentOf;
         rigidBody.drag += material.drag * precentOf;
         rigidBody.mass += material.mass * precentOf;
@@ -416,7 +417,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             else
             _primaryTrashMaterial.whenBallHitsWall(this, TrashMaterialAmount.Primary);
             _secondaryTrashMaterial.whenBallHitsWall(this, TrashMaterialAmount.Secondary);
-            AudioManager.Instance.ModifyParameter("wallCollide", "RPM", rigidBody.velocity.magnitude * 10, "Global");
+            AudioManager.Instance.PlayOnInstance(this.gameObject, "wallCollide");
+            AudioManager.Instance.ModifyParameter(this.gameObject, "wallCollide", "RPM", rigidBody.velocity.magnitude * 10);
 
             //if ()
             //ParticleManager.Instance.Play("WallCollide", transform.position, particleRotation);
@@ -467,9 +469,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallExplode(this);
         }
-        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", 0f, "Global");
-        AudioManager.Instance.Stop("TrashBall");
-        AudioManager.Instance.Stop("Decay");
+        AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM", 0f);
+        AudioManager.Instance.Stop(this.gameObject, "TrashBall");
+        AudioManager.Instance.Stop(this.gameObject, "Decay");
         Destroy(gameObject);
     }
 
@@ -500,8 +502,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         StartCoroutine(PointSound());
         //AudioManager.Instance.Play("Ignite", transform);
         //AudioManager.Instance.PlayOnInstance(gameObject, "Ignite");
-        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", 0f, "Global");
-        AudioManager.Instance.Stop("TrashBall");
+        AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM", 0f);
+        AudioManager.Instance.Stop(this.gameObject, "TrashBall");
         //RuntimeManager.PlayOneShot("event:/Trash/TrashLava", transform.position);
         
         //AudioManager.Instance.ModifyParameter("Ignite", "Size", (Size / 10), "Global");
@@ -544,29 +546,29 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         switch ((int)Size)
         {
             case int n when (n <= 10):
-                AudioManager.Instance.ModifyParameter("Points", "Point", 10, "Local");
+                AudioManager.Instance.ModifyParameter(this.gameObject, "Points", "Point", 10);
                 playing = false;
                 break;
             case int n when (n <= 20):
-                AudioManager.Instance.ModifyParameter("Points", "Point", 20, "Local");
+                AudioManager.Instance.ModifyParameter(this.gameObject, "Points", "Point", 20);
                 break;
 
             case int n when (n <= 30):
-                AudioManager.Instance.ModifyParameter("Points", "Point", 30, "Local");
+                AudioManager.Instance.ModifyParameter(this.gameObject, "Points", "Point", 30);
                 break;
 
             case int n when (n <= 40):
-                AudioManager.Instance.ModifyParameter("Points", "Point", 40, "Local");
+                AudioManager.Instance.ModifyParameter(this.gameObject, "Points", "Point", 40);
                 break;
 
             case int n when (n <= 50):
-                AudioManager.Instance.ModifyParameter("Points", "Point", 30, "Local");
+                AudioManager.Instance.ModifyParameter(this.gameObject, "Points", "Point", 30);
                 break;
 
             default:
                 if ((int)Size > 50)
                 {
-                    AudioManager.Instance.ModifyParameter("Points", "Point", 50, "Local");
+                    AudioManager.Instance.ModifyParameter(this.gameObject, "Points", "Point", 50);
                 }
                 break;
         }

@@ -5,140 +5,95 @@ using FMODUnity;
 using FMOD.Studio;
 using AYellowpaper.SerializedCollections;
 using static UnityEngine.ParticleSystem;
+using UnityEngine.Rendering;
 
 
 
 public class AudioManager : Singleton<AudioManager>
 {
 
-    [SerializedDictionary("ID", "FMODEmitter")]
-    [SerializeField] private SerializedDictionary<string, StudioEventEmitter> _sounds;
-    private StudioEventEmitter sInstance;
-    
+    [SerializedDictionary("Sound Code", "FMODEVent")]
+    [SerializeField] private AYellowpaper.SerializedCollections.SerializedDictionary<string, EventReference> _sounds;
+    private EventReference eventRef;
 
-    private void Start()
-    {
-        
-    }
+
+    //private void Awake()
+    //{
+    //    base.Awake(); 
+    //    Debug.Log($"AudioManager initialized with {_sounds.Count} sounds");
+    //}
     public void Play(string sCode, Transform position)
     {
-        if (_sounds.TryGetValue(sCode, out sInstance))
+        if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
         {
-
-            
-            //sInstance.EventInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(position));
-            
-            //RuntimeManager.PlayOneShotAttached(sCode, position.gameObject);
-            sInstance.Play();
-            
-
-
-
-
+            Debug.LogError($"AudioManager: '{sCode}' not found");
+            return;
         }
-        else
-        {
-            //Unity may throw an error before this ever triggers, but just in case
-            Debug.LogWarning($"AudioManager: FMOD key '{sCode}' not found.");
-        }
+
+        RuntimeManager.PlayOneShot(eventRef, position.position);
     }
 
-    public void Stop(string sCode)
+    public void Stop(GameObject obj, string sCode)
     {
-        if (_sounds.TryGetValue(sCode, out sInstance))
+        if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
         {
-            sInstance.Stop();
+            Debug.LogError($"AudioManager: '{sCode}' not found");
+            return;
         }
-        else
-        {
-            Debug.LogWarning($"AudioManager: FMOD key '{sCode}' not found.");
-        }
-    }
 
-
-    public void ModifyParameter(string sCode, string param, float value, string Itype)
-    {
-        sInstance = _sounds[sCode];
-        if (sInstance != null)
+        foreach (var emitter in obj.GetComponents<StudioEventEmitter>())
         {
-            if (_sounds.TryGetValue(sCode, out sInstance))
+            if (emitter.EventReference.Equals(eventRef))
             {
-
-                switch (Itype)
-                {
-                    case "Global":
-                        RuntimeManager.StudioSystem.setParameterByName(param, value);
-                        break;
-                    case "Local":
-                        sInstance.EventInstance.setParameterByName(param, value);
-                        break;
-                }
-
-
-
-
-
+                emitter.Stop();
+                return;
             }
-            else
+        }
+    }
+
+    public void ModifyGlobalParameter(string param, float value)
+    {
+        RuntimeManager.StudioSystem.setParameterByName(param, value);
+    }
+
+    public void ModifyParameter(GameObject obj, string sCode, string param, float value)
+    {
+        if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
+        {
+            Debug.LogError($"AudioManager: '{sCode}' not found");
+            return;
+        }
+
+        foreach (StudioEventEmitter emitter in obj.GetComponents<StudioEventEmitter>())
+        {
+            if (emitter.EventReference.Equals(eventRef))
             {
-                //If you see this try checking your spelling on either the parameter name or the sound code
-                Debug.LogError("That shit didn't work");
+                emitter.EventInstance.setParameterByName(param, value);
+                return;
             }
         }
     }
     public void PlayOnInstance(GameObject obj, string sCode)
     {
-        
-
-        
-
-        //sInstance = _sounds[;
-
         if (obj == null) return;
-        StudioEventEmitter[] emitters = obj.GetComponents<StudioEventEmitter>();
 
-        if (_sounds.TryGetValue(sCode, out sInstance))
+        if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
         {
-
-            
-            if (emitters != null && emitters.Length != 0)
-            {
-
-                foreach (StudioEventEmitter emitter in emitters)
-                {
-
-                    //if (!_sounds.ContainsKey(sCode))
-                    //{
-                    //    _sounds.Add(sCode, emitter);
-                    //}
-                    
-
-                    Debug.Log(emitters);
-                    Debug.Log(sInstance.EventReference);
-
-                    if (emitter.EventReference.Equals(sInstance.EventReference))
-                    {
-
-
-                        emitter.Play();
-                    }
-                    else
-                    {
-
-                    }
-
-                }
-            }
+            Debug.LogError($"AudioManager: '{sCode}' not found");
+            return;
         }
-        else
+
+        StudioEventEmitter[] emitters = obj.GetComponents<StudioEventEmitter>();
+        foreach (StudioEventEmitter emitter in emitters)
         {
-            _sounds.Add(sCode, sInstance);
-            PlayOnInstance(obj, sCode);
-            Debug.LogWarning($"AudioManager: FMOD key '{sCode}' not found.");
-            Debug.Log(_sounds.ContainsKey(sCode));
+            if (emitter.EventReference.Equals(eventRef))
+            {
+                emitter.Play();
+                return;
+            }
         }
 
         
     }
-
 }
+

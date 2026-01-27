@@ -58,7 +58,7 @@ public class BroomSweepHandler : MonoBehaviour
     public void EndSweep()
     {
         _hitbox.enabled = false;
-        AudioManager.Instance.Stop("Sweep");
+        AudioManager.Instance.Stop(gameObject,"Sweep");
     }
 
 

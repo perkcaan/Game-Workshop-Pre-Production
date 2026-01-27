@@ -129,31 +129,107 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sounds:
     _serializedList:
-    - Key: Lava
-      Value: {fileID: 7147949041992339754}
-    - Key: Decay
-      Value: {fileID: -5607425741268325690, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
-    - Key: Sweep
-      Value: {fileID: 0}
-    - Key: Trash Pickup
-      Value: {fileID: -2850386650212370546, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
-    - Key: TrashBall
-      Value: {fileID: -2150688670721289081, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
-    - Key: Steps
-      Value: {fileID: 0}
-    - Key: Swipe
-      Value: {fileID: 0}
-    - Key: playerDeath
-      Value: {fileID: 0}
-    - Key: Points
-      Value: {fileID: 0}
-    - Key: enemyDeath
-      Value: {fileID: -1393150414208117618, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
-    - Key: Hit
-      Value: {fileID: 0}
     - Key: dashBack
-      Value: {fileID: 0}
+      Value:
+        Guid:
+          Data1: 156751147
+          Data2: 1125884986
+          Data3: -1263044203
+          Data4: -1394182262
+        Path: event:/Player/Dash Recharge
     - Key: Dash
-      Value: {fileID: 0}
+      Value:
+        Guid:
+          Data1: -264624004
+          Data2: 1245912068
+          Data3: 1450169237
+          Data4: -995446733
+        Path: event:/Player/Dash
+    - Key: wallCollide
+      Value:
+        Guid:
+          Data1: -438726971
+          Data2: 1269228003
+          Data3: 91070855
+          Data4: -898168437
+        Path: event:/TrashBall/Wall_Collisions
+    - Key: Decay
+      Value:
+        Guid:
+          Data1: -2018443288
+          Data2: 1310188587
+          Data3: 1940523429
+          Data4: -1995798451
+        Path: event:/TrashBall/Idle_Shake
+    - Key: Sweep
+      Value:
+        Guid:
+          Data1: 1873280380
+          Data2: 1091851715
+          Data3: -862384456
+          Data4: -1400652604
+        Path: event:/Player/Sweep/Sweep
+    - Key: TrashBall
+      Value:
+        Guid:
+          Data1: -1223607366
+          Data2: 1183037148
+          Data3: 498317973
+          Data4: -1996817163
+        Path: event:/TrashBall/TrashBall
+    - Key: Steps
+      Value:
+        Guid:
+          Data1: 2114935274
+          Data2: 1307093174
+          Data3: -1070572912
+          Data4: 506519612
+        Path: event:/Player/Clean Step
+    - Key: Swipe
+      Value:
+        Guid:
+          Data1: -1274869662
+          Data2: 1097679199
+          Data3: 1294576546
+          Data4: -2030261532
+        Path: event:/Player/Swipe/Swipe
+    - Key: playerDeath
+      Value:
+        Guid:
+          Data1: -1181144921
+          Data2: 1232237457
+          Data3: -74243186
+          Data4: -1259412614
+        Path: event:/Player/Death
+    - Key: Points
+      Value:
+        Guid:
+          Data1: 780674560
+          Data2: 1200775962
+          Data3: 1928587417
+          Data4: -1714651333
+        Path: event:/Points
+    - Key: enemyDeath
+      Value:
+        Guid:
+          Data1: -1218844404
+          Data2: 1121533942
+          Data3: -117245779
+          Data4: -1216900099
+        Path: event:/Enemies/Death
     - Key: Heat
-      Value: {fileID: 7826394069858104762}
+      Value:
+        Guid:
+          Data1: 1515016055
+          Data2: 1297398676
+          Data3: -1407158339
+          Data4: 1186683876
+        Path: event:/Heat Meter
+    - Key: Lava
+      Value:
+        Guid:
+          Data1: 946696276
+          Data2: 1207415162
+          Data3: -1113645673
+          Data4: 476402738
+        Path: event:/LavaEnvironment
