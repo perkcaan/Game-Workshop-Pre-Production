@@ -1,2 +1,2 @@
-Go ahead and kill yourself.
+Go ahead and ... uh yeah
 -> END

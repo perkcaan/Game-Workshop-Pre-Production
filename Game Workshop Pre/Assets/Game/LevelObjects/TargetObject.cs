@@ -24,6 +24,7 @@ public class TargetObject : MonoBehaviour
             if (collision.gameObject.GetComponent<TrashBall>().Size >= requiredSize 
                 && Vector3.Magnitude(collision.gameObject.GetComponent<Rigidbody2D>().velocity) >= requiredVelocity)
             {
+                Destroy(gameObject);
                 BreakEvent?.Invoke(); // Call associated event
             }   
         }

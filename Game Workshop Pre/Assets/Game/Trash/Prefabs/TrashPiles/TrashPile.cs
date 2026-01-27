@@ -132,7 +132,6 @@ public class TrashPile : Trash, ISweepable, ISwipeable
                 _parentRoom.AddCleanableToRoom(cleanable);
             }
             
-            
             releasedTrash.transform.position = transform.position;
             if (direction != null)
             {
