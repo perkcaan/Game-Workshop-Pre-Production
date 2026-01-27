@@ -30,9 +30,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     [SerializeField] float _decayTrashDropRate;
 
     [Header("OnSweep Properties")]
-    [SerializeField] float _vacuumForce;
-    [SerializeField] float _minimumVacuumForce;
-    [SerializeField] float _sizeMultiplier;
+    [SerializeField] float _vacuumForce = 1f;
+    [SerializeField] float _minimumVacuumForce= 0.2f;
+    [SerializeField] float _sizeMultiplier= 1.2f;
 
     [Header("Trash Material Properties")]
     [SerializeField] TrashMaterial _baseMaterial;
@@ -451,8 +451,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         seq.SetLink(otherTrashBall.gameObject); 
         seq.Join(otherTrashBall.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
         seq.Join(otherTrashBall.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
-        AudioManager.Instance.PlayOnInstance(gameObject,"Trash Pickup");
         seq.OnComplete(() => Destroy(otherTrashBall?.gameObject));
+
+        //AudioManager.Instance.PlayOnInstance(gameObject,"Trash Pickup");
+        //TODO: FIX AUDIO ERRORS
     }
 
     private void ExplodeTrashBall()
@@ -519,7 +521,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         absorbSequence.Join(absorbedObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
         absorbSequence.Join(absorbedObject.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
         absorbSequence.OnKill(() => absorbedObject?.SetActive(false));
-        AudioManager.Instance.PlayOnInstance(gameObject, "Trash Pickup");
+        //AudioManager.Instance.PlayOnInstance(gameObject, "Trash Pickup");
+        //TODO: FIX AUDIO ERRORS
     }
 
     public IEnumerator PointSound()
