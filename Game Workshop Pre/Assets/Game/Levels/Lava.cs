@@ -18,7 +18,7 @@ public class Lava : MonoBehaviour
             {
                 if (gm.IsGrounded) 
                 {
-                    if (gm.IsGrounded < 2)
+                    if (gm.IsGrounded)
                     {
                         _delayTimer += Time.fixedDeltaTime;
                         if (_delayTimer > _delayBeforeHeatingWhenGrounded)

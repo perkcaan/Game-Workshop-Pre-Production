@@ -79,22 +79,22 @@ public class TrashChute : MonoBehaviour
                 _feeler.transform.position = _landingPoint;
             }
 
-            if (_parentRoom.CurrentTrash - trash.GetComponent<ICleanable>().Size <= 0)
+            if (_parentRoom.FreeTrashAmount - trash.GetComponent<ICleanable>().Size <= 0)
             {
                 StopTrash();
             }
 
-            if (trash != null && trash.GetComponent<ICleanable>().Size + _parentRoom.CurrentTrash < _parentRoom.StartTrash && _canDrop)
-            {
+            //if (trash != null && trash.GetComponent<ICleanable>().Size + _parentRoom.FreeTrashAmount  && _canDrop)
+            //{
 
-                _spawnedTrash = Instantiate(trash, new Vector2(_landingPoint.x, _landingPoint.y + 20), Quaternion.identity);
-                _parentRoom.AddCleanableToRoom(_spawnedTrash.GetComponent<ICleanable>());
-                _trashRb = _spawnedTrash.GetComponent<Rigidbody2D>();
-                _spawnedTrash.GetComponent<Collider2D>().enabled = false;
-                _trashRb.gravityScale = 4;
-                _nextDropTime = Time.time + _dropCooldown;
+            //    _spawnedTrash = Instantiate(trash, new Vector2(_landingPoint.x, _landingPoint.y + 20), Quaternion.identity);
+            //    _parentRoom.AddCleanableToRoom(_spawnedTrash.GetComponent<ICleanable>());
+            //    _trashRb = _spawnedTrash.GetComponent<Rigidbody2D>();
+            //    _spawnedTrash.GetComponent<Collider2D>().enabled = false;
+            //    _trashRb.gravityScale = 4;
+            //    _nextDropTime = Time.time + _dropCooldown;
 
-            }
+            //}
             else
             {
                 trash = null;

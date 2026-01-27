@@ -7,6 +7,7 @@ using AYellowpaper.SerializedCollections;
 using static UnityEngine.ParticleSystem;
 
 
+
 public class AudioManager : Singleton<AudioManager>
 {
 
@@ -87,21 +88,54 @@ public class AudioManager : Singleton<AudioManager>
     }
     public void PlayOnInstance(GameObject obj, string sCode)
     {
-        sInstance = _sounds[sCode];
+        
+
+        
+
+        //sInstance = _sounds[;
+
         if (obj == null) return;
         StudioEventEmitter[] emitters = obj.GetComponents<StudioEventEmitter>();
 
-        foreach (StudioEventEmitter emitter in emitters) 
+        if (_sounds.TryGetValue(sCode, out sInstance))
         {
-            if (emitter.EventReference.Equals(sInstance.EventReference))
+
+            
+            if (emitters != null && emitters.Length != 0)
             {
-                
-                emitter.Play();
+
+                foreach (StudioEventEmitter emitter in emitters)
+                {
+
+                    //if (!_sounds.ContainsKey(sCode))
+                    //{
+                    //    _sounds.Add(sCode, emitter);
+                    //}
+                    
+
+                    Debug.Log(emitters);
+                    Debug.Log(sInstance.EventReference);
+
+                    if (emitter.EventReference.Equals(sInstance.EventReference))
+                    {
+
+
+                        emitter.Play();
+                    }
+                    else
+                    {
+
+                    }
+
+                }
             }
-            else
-            {
-                
-            }
+        }
+        else
+        {
+            _sounds.Add(sCode, sInstance);
+            PlayOnInstance(obj, sCode);
+            Debug.LogWarning($"AudioManager: FMOD key '{sCode}' not found.");
+            Debug.Log(_sounds.ContainsKey(sCode));
         }
 
         
