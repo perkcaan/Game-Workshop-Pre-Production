@@ -34,7 +34,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -4}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3475106608188846289}
@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a90e44352c75cf41af1e2174eddb4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scaleMultiplier: 0.6
+  _scaleMultiplier: 0.4
   _baseMaxHealth: 30
   _minimumSpeedToAbsorbPlayer: 5
   _size: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
   _decayTrashDropRate: 1.2
   _vacuumForce: 1
   _minimumVacuumForce: 0.2
-  _sizeMultiplier: 1.2
+  _sizeMultiplier: 1.05
   _baseMaterial: {fileID: 11400000, guid: 6fb7000f493002749ba7cdd0bb70878d, type: 2}
   _genericMaterial: {fileID: 11400000, guid: dd963f5861bb9344da6b0d92692fad6c, type: 2}
   _dominantThreshold: 0.85
