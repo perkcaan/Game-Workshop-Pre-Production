@@ -13,6 +13,8 @@ public class PressurePlateBehavior : MonoBehaviour
     [SerializeField] float cooldownDuration;
     [Tooltip("The Speed at which the tashball rolls into the center of the man hole")]
     [SerializeField] float fallInConstant = 25f;
+    [Tooltip("The Hangtime before the Trash Ball \"falls through\" the man hole")]
+    [SerializeField] float fallTime = 1.25f;
 
     private bool activated = false;
     private SpriteRenderer sr;
@@ -43,8 +45,12 @@ public class PressurePlateBehavior : MonoBehaviour
             trashballRB.velocity = (((heading * fallInConstant * distance) / maxRollDistance));
 
             if (Mathf.Abs(distance) < 0.05f) {
-                trashballRB.MovePosition(manholeCenterPos);
+                //trashballRB.MovePosition(manholeCenterPos);
+                trashballRB.transform.position = this.transform.position;
                 trashballRB.constraints = RigidbodyConstraints2D.FreezeAll;
+                TrashBall tb = trashballRB.gameObject.GetComponent<TrashBall>();
+                if (tb != null)
+                    StartCoroutine(ManHoleFallThrough(tb));
                 isRollingToCenter = false;
             }
         }
@@ -110,4 +116,26 @@ public class PressurePlateBehavior : MonoBehaviour
             StartCoroutine(PlateCoolDown(cooldownTimer));
     }
 
+    private IEnumerator ManHoleFallThrough(TrashBall tb)
+    {
+        while (fallTime >= 0f)
+        {
+            fallTime -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        //Scale Shrinkage to simulate falling
+
+        fallTime = 1f;
+        while (fallTime > 0f)
+        {
+            tb.gameObject.transform.localScale *= (fallTime);
+            fallTime -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        
+        tb.ClearContents();
+        Destroy(tb.gameObject);
+    }
 }
