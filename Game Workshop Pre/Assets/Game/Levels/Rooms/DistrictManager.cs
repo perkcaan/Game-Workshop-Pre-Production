@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -21,6 +22,9 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private List<Room> _focusedRooms = new List<Room>(); // focused rooms is a list since the player could be in multiple touching rooms.
     public Room FocusedRoom { get { return _focusedRooms.Count > 0 ? _focusedRooms[0] : null; } }
 
+    // Rooms currently loaded
+    private HashSet<Room> _loadedRooms = new HashSet<Room>();
+
 
     [ContextMenu("Generate Rooms")]
     private void GenerateRooms()
@@ -36,7 +40,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         {
             if (!room.IsTrashRoom) continue;
             totalTrashRooms++;
-            if (room.Cleanliness >= 1f)
+            if (room.IsRoomCleaned)
             {
                 completeRooms++;
             }
@@ -51,6 +55,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         {
             _focusedRooms.Add(room);
         }
+        UpdateLoadedRooms();
     }
     public void PlayerExitRoom(Room room)
     {
@@ -58,6 +63,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         {
             _focusedRooms.Remove(room);
         }
+        UpdateLoadedRooms(); 
     }
 
     private void Start()
@@ -68,12 +74,39 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private void Update()
     {
         CheckGateStatus();
+    }
 
-        //TODO: REMOVE THIS IS TEMPORARY
-        if (SceneManager.GetActiveScene().name == "District0" && GetCleanCompletion() == 1f)
+    private void UpdateLoadedRooms()
+    {
+        // Update Loaded rooms should only be called if at least one room is focused. Otherwise it would cause problems when the player isn't in a room.
+        if (_focusedRooms.Count <= 0) return; 
+
+        HashSet<Room> newLoadedRooms = new HashSet<Room>();
+        foreach (Room focusedRoom in _focusedRooms)
         {
-            SceneManager.LoadScene("Dungeon Level");
+            newLoadedRooms.Add(focusedRoom);
+            foreach (Room nearbyRoom in focusedRoom.NearbyRooms)
+            {
+                newLoadedRooms.Add(nearbyRoom);
+            }
         }
+        // In New, not in Old > Activate Room
+        HashSet<Room> roomsToActivate = new HashSet<Room>(newLoadedRooms);
+        roomsToActivate.ExceptWith(_loadedRooms);
+
+        // In Old, not in New > Deactivate Room
+        HashSet<Room> roomsToDeactivate = new HashSet<Room>(_loadedRooms);
+        roomsToDeactivate.ExceptWith(newLoadedRooms);
+
+        foreach (Room room in roomsToActivate)
+        {
+            room.ActivateRoom();
+        }
+        foreach (Room room in roomsToDeactivate)
+        {
+            room.DeactivateRoom();
+        }
+        _loadedRooms = newLoadedRooms;
         
     }
 

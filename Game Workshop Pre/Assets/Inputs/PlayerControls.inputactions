@@ -67,6 +67,15 @@
                     "processors": "StickDeadzone(min=0.01,max=0.01)",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "InteractionInput",
+                    "type": "Button",
+                    "id": "17a6926a-cca0-400b-9fd1-d602aa64dc38",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -199,6 +208,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "EscapeTrashBallInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "81ee45fe-4397-4fd1-ad2a-6456ace2a858",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InteractionInput",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
