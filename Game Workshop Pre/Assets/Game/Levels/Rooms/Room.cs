@@ -11,15 +11,20 @@ public class Room : MonoBehaviour
     public int Temperature { get { return _baseTemperature; } } // Return _baseTemperature + anything that modifies room temperature
 
     private List<ICleanable> _containedCleanable = new List<ICleanable>();
-    private int _roomTrashAmount;
-    private int _roomTrashCount;
+    private int _roomCurrentTrashAmount; // Current amount of trash in the room
+    private int _roomTotalTrashCount; // Starting amount of trash / Max trash allowed in room
     public bool IsTrashRoom { get; set; } = false;
     public float Cleanliness
     {
-        get { return _roomTrashCount == 0 ? 1f : 1f - Mathf.Clamp01(_roomTrashAmount / (float)_roomTrashCount); }
+        get { return _roomTotalTrashCount == 0 ? 1f : 1f - Mathf.Clamp01(_roomCurrentTrashAmount / (float)_roomTotalTrashCount); }
     }
 
-    private void Awake()
+    public int FreeTrashAmount
+    {
+        get { return Mathf.Max(0, _roomTotalTrashCount - _roomCurrentTrashAmount); }
+    }
+
+    private void Start()
     {
         // All trash is assigned its room at start
         ICleanable[] cleanableChildren = GetComponentsInChildren<ICleanable>();
@@ -29,8 +34,8 @@ public class Room : MonoBehaviour
             _containedCleanable.Add(cleanable);
         }
         UpdateRoomCleanliness();
-        _roomTrashCount = _roomTrashAmount;
-        if (_roomTrashCount > 0) IsTrashRoom = true;
+        _roomTotalTrashCount = _roomCurrentTrashAmount;
+        if (_roomTotalTrashCount > 0) IsTrashRoom = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -89,7 +94,7 @@ public class Room : MonoBehaviour
         {
             amountToClean += cleanable.Size;
         }
-        _roomTrashAmount = amountToClean;
+        _roomCurrentTrashAmount = amountToClean;
     }
 
 }

@@ -5,7 +5,7 @@
 			<value>Idle_Shake</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{86491f99-bebe-4c74-bd2c-748e586c9b08}</destination>
@@ -87,7 +87,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{1aa5af28-0c14-4ca8-89e0-f56accf6704a}">
 		<property name="volume">
-			<value>-8</value>
+			<value>-31</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{8bee6726-af68-4e75-9ab6-89744dbf04cb}</destination>
@@ -152,6 +152,7 @@
 	<object class="MixerBusEffectChain" id="{8bee6726-af68-4e75-9ab6-89744dbf04cb}">
 		<relationship name="effects">
 			<destination>{299ed9e9-fa13-47d0-8ac3-70c16916566c}</destination>
+			<destination>{0d18ba8b-bd20-448e-addc-b6e989d9988b}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{f9f4d80c-3d58-44bc-a733-bce30269879c}" />
@@ -171,6 +172,14 @@
 	</object>
 	<object class="MixerBusPanner" id="{f1faa9b7-f841-40ff-91c2-d4a7ac42eaf9}" />
 	<object class="MixerBusFader" id="{299ed9e9-fa13-47d0-8ac3-70c16916566c}" />
+	<object class="SpatialiserEffect" id="{0d18ba8b-bd20-448e-addc-b6e989d9988b}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="minimumExtent">
+			<value>360</value>
+		</property>
+	</object>
 	<object class="AutomationCurve" id="{57b8a627-f8c0-446d-a078-87aeae004086}">
 		<relationship name="parameter">
 			<destination>{6ac8d0b7-e452-4b92-af2d-a2eca317aa4b}</destination>
@@ -184,10 +193,10 @@
 	<object class="MixerBusFader" id="{f5c595c7-0be2-4147-9d0a-a4eac60ca48c}" />
 	<object class="AutomationPoint" id="{10001fba-3144-4000-a62e-e4e8750f2920}">
 		<property name="position">
-			<value>1.05</value>
+			<value>1.4000000000000001</value>
 		</property>
 		<property name="value">
-			<value>-8</value>
+			<value>-26</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{0be70791-a6e4-4a6f-9c25-6b1989d4ee70}">
@@ -198,7 +207,7 @@
 			<value>-80</value>
 		</property>
 		<property name="curveShape">
-			<value>0.487098545</value>
+			<value>0.419444084</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{4ae026c1-70ea-4511-a5cc-24e8a3d86798}">

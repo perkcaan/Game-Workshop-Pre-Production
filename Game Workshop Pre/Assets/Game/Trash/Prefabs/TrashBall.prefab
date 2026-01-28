@@ -117,15 +117,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a90e44352c75cf41af1e2174eddb4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scaleMultiplier: 0.6
+  _scaleMultiplier: 0.5
   _baseMaxHealth: 30
   _minimumSpeedToAbsorbPlayer: 5
   _size: 0
   _idleDecayMultiplier: 10
   _decayTrashDropRate: 1.2
-  _vacuumForce: 1
-  _minimumVacuumForce: 0.2
-  _sizeMultiplier: 1.2
+  _vacuumForce: 1.25
+  _minimumVacuumForce: 0.25
+  _sizeMultiplier: 1.1
   _baseMaterial: {fileID: 11400000, guid: 6fb7000f493002749ba7cdd0bb70878d, type: 2}
   _genericMaterial: {fileID: 11400000, guid: dd963f5861bb9344da6b0d92692fad6c, type: 2}
   _dominantThreshold: 0.85
@@ -183,8 +183,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 30
 --- !u!114 &-2850386650212370546
 MonoBehaviour:
   m_ObjectHideFlags: 0
