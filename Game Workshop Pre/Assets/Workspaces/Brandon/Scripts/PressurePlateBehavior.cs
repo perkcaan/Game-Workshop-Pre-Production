@@ -45,12 +45,8 @@ public class PressurePlateBehavior : MonoBehaviour
             trashballRB.velocity = (((heading * fallInConstant * distance) / maxRollDistance));
 
             if (Mathf.Abs(distance) < 0.05f) {
-                //trashballRB.MovePosition(manholeCenterPos);
                 trashballRB.transform.position = this.transform.position;
                 trashballRB.constraints = RigidbodyConstraints2D.FreezeAll;
-                TrashBall tb = trashballRB.gameObject.GetComponent<TrashBall>();
-                if (tb != null)
-                    StartCoroutine(ManHoleFallThrough(tb));
                 isRollingToCenter = false;
             }
         }
@@ -111,6 +107,10 @@ public class PressurePlateBehavior : MonoBehaviour
         while (isRollingToCenter)
             yield return new WaitForEndOfFrame();
 
+            TrashBall tb = trashballRB.gameObject.GetComponent<TrashBall>();
+            if (tb != null)
+                yield return StartCoroutine(ManHoleFallThrough(tb));
+
         onTriggerEvent?.Invoke();
         if (resettable)
             StartCoroutine(PlateCoolDown(cooldownTimer));
@@ -125,7 +125,6 @@ public class PressurePlateBehavior : MonoBehaviour
         }
 
         //Scale Shrinkage to simulate falling
-
         fallTime = 1f;
         while (fallTime > 0f)
         {
