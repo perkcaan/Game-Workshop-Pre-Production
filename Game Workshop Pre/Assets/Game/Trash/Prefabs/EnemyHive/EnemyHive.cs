@@ -13,7 +13,7 @@ public class EnemyHive : TrashPile
     [SerializeField] private float _spawnRadius = 0.4f;
     [SerializeField] private float _enemyColliderRadius = 0.3f;
     [SerializeField] private LayerMask _invalidSpawnLayers = (1 << 12) | (1 << 14); // 12 and 14 are intended to be Lava and Wall;
-    private float _currentTime;
+    private float _currentTime = 0f;
     private int _currentAliveEnemies = 0;
 
     private void Start()
