@@ -598,13 +598,4 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
         //soundCooldown = 1f;
     }
-
-    public void ClearContents()
-    {
-        absorbedObjects.Clear();
-        absorbedTrash.Clear();
-        SendScore?.Invoke((int)Size);
-        StartCoroutine(PointSound());
-    }
-
 }
