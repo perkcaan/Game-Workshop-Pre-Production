@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class StandingGround : MonoBehaviour
 {
-    private List<GroundedMechanic> groundedObjects = new List<GroundedMechanic>();
+    protected List<GroundedMechanic> groundedObjects = new List<GroundedMechanic>();
     [SerializeField] int groundedLevel = 1;
-    private void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent(out GroundedMechanic gm))
         {
@@ -18,7 +18,7 @@ public class StandingGround : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    protected virtual void OnTriggerExit2D(Collider2D other)
     {
         if (other.TryGetComponent(out GroundedMechanic gm))
         {
