@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using DG.Tweening;
 using UnityEngine.Android;
+using System;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
@@ -52,10 +52,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     [SerializeField] private float _footstepCooldown = 0f;
     private FMOD.Studio.EventInstance _heatSound;
 
-    [Header("Checkpoint")]
-    [SerializeField] private CheckpointManager Checkpoint_Manager;
-    public static System.Action<bool> playerDeath;
-    public HeatMechanic _playerHeat;
+
+    public static Action<bool> playerDeath;
+    
 
     [Header("Item Effected Properties")]
     public bool canSweep = false;
@@ -76,7 +75,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     //context & state
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
-
+    private HeatMechanic _playerHeat;
 
     #endregion
 
@@ -90,6 +89,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
+        _playerHeat = GetComponent<HeatMechanic>();
         _state = new PlayerStateMachine(_ctx);
         _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
     }
@@ -100,7 +100,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         Cursor.lockState = CursorLockMode.Confined;
         
         _heatSound.start();
-        _playerHeat = GetComponent<HeatMechanic>();
     }
 
     private void Update()
@@ -346,7 +345,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void Death()
     {
-        transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
+        CheckpointManager.Instance.GoToCheckpoint(transform);
         AudioManager.Instance.Play("playerDeath", transform.position);
         AudioManager.Instance.Stop("Sweep");
         playerDeath?.Invoke(true);

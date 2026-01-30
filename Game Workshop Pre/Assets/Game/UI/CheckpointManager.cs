@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckpointManager : MonoBehaviour // One for each level
+public class CheckpointManager : StaticInstance<CheckpointManager>
 {
     public List<Checkpoint> checkpoints;
 
@@ -33,6 +33,13 @@ public class CheckpointManager : MonoBehaviour // One for each level
     public void SetActiveCheckpoint(Checkpoint c) // The player can select a checkpoint at any time
     {
         activeCheckpoint = c;
+    }
+
+
+    public void GoToCheckpoint(Transform transform)
+    {
+        transform.position = activeCheckpoint.transform.position;
+        activeCheckpoint.OnGoTo();
     }
 
 }

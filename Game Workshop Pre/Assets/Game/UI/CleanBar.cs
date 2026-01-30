@@ -24,7 +24,8 @@ public class CleanBar : MonoBehaviour
         {
             _cleanBar.SetActive(true);
             _fillImage.fillAmount = fillAmount;
-            _cleanText.text = $"{fillAmount * 100f:0}% clean";
+            int percent = Mathf.FloorToInt(fillAmount * 100f);
+            _cleanText.text = $"{percent}% clean";
         }
         else
         {
