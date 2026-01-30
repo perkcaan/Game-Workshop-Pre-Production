@@ -20,11 +20,21 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     {
         base.Awake();
         _size = 0;
+        RecalculateSize(true);
+    }
+
+    private void OnValidate()
+    {
+        RecalculateSize(false);
+    }
+
+    private void RecalculateSize(bool printError)
+    {
         foreach (GameObject trash in _startingStoredTrash)
         {
             if(trash == null)
             {
-                Debug.Log(gameObject.name + " is missing trash");
+                if (printError) Debug.LogError(gameObject.name + " is missing trash");
                 break;
             }
             if (trash.TryGetComponent(out ICleanable cleanable))
@@ -121,7 +131,6 @@ public class TrashPile : Trash, ISweepable, ISwipeable
             {
                 _parentRoom.AddCleanableToRoom(cleanable);
             }
-            
             
             releasedTrash.transform.position = transform.position;
             if (direction != null)

@@ -13,7 +13,7 @@ public class HiddenArea : MonoBehaviour
 
     private float opacity = 1f;
     [SerializeField] float transitionTime = 2f;
-
+    [SerializeField] float minimumOpacity = 0.25f;
     private void Awake()
     {
         block = new MaterialPropertyBlock();
@@ -32,7 +32,7 @@ public class HiddenArea : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             //reveal area
-            SetOpacity(0f);
+            SetOpacity(minimumOpacity);
         }
     }
 
