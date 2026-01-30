@@ -36,7 +36,6 @@ public class Lava : MonoBehaviour
                 }
                 if (gm.IsGrounded > 0) return;
             }
-
             // otherwise... burn them to a crisp
             heat.ModifyHeat(_heatPerSecond * Time.fixedDeltaTime);
         }

@@ -116,7 +116,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (_particleTimer <= 0 && rigidBody.velocity.magnitude > 0.5f)    
         {
             _particleTimer = 0.1f;
-            ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, null, null, Mathf.Pow(Size, 1f / 3f));
+            ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f));
         }
         
         AudioManager.Instance.ModifyParameter("TrashBall", "RPM", rigidBody.velocity.magnitude * 10, "Global");
@@ -157,7 +157,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         rigidBody.AddForce(directionToCenterPoint * newForce, ForceMode2D.Force);
     }
 
-    public void OnSwipe(Vector2 direction, float force)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collision)
     {
         if (_isBeingDestroyed) return;
 
@@ -173,12 +173,12 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         // particles
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        Quaternion particleRotation = Quaternion.Euler(0, 0, angle + 135);
-        if (Size > 10)
-            ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, null, null, 1f);
-        else
-            ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, null, null, 0.5f);
-        
+        Vector3 contactPoint = collision.ClosestPoint(transform.position);
+        Quaternion particleRotation = Quaternion.Euler(0, 0, angle);
+        float sizeForce = Mathf.Pow(Size, 1f / 5f) - 0.5f;
+        ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: sizeForce);
+        ParticleManager.Instance.Play("ImpactLines", contactPoint, particleRotation, force: 1.4f);
+        ParticleManager.Instance.Play("ImpactCircleS", contactPoint, force: 1.25f);
     }
 
     public void TakeDamage(int damage)

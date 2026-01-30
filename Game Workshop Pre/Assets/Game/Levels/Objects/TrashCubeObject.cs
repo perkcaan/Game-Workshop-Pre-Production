@@ -39,7 +39,7 @@ public class TrashCubeObject : MonoBehaviour, IHeatable, ISweepable, ISwipeable
         rigidBody.AddForce(directionToCenterPoint * newForce, ForceMode2D.Force);
     }
 
-    public void OnSwipe(Vector2 direction, float force)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
     {
         rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
 
