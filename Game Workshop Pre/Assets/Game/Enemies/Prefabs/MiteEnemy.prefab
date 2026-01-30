@@ -156,9 +156,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.0913167}
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.27268314
 --- !u!50 &8288151906358720249
 Rigidbody2D:
   serializedVersion: 4
@@ -238,7 +238,7 @@ MonoBehaviour:
   _moveSpeed: 3
   _size: 1
   _minSizeToAbsorb: 1
-  _minVelocityToAbsorb: 1
+  _minVelocityToAbsorb: 0.5
   _shouldFlipSprite: 1
   _facingRotation: 90
   _attackDashForce: 3
