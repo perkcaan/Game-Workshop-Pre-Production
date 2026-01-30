@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PressurePlateBehavior : MonoBehaviour
+public class ManholePressurePlate : MonoBehaviour
 {
 
     [SerializeField] int minTrashSizeBound;
