@@ -68,7 +68,7 @@ public class Checkpoint : MonoBehaviour
     // called when checkpoint is gone to
     public void OnGoTo()
     {
-        assignedRoom.TriggerRoomClose();
+        if (assignedRoom != null) assignedRoom.TriggerRoomClose();
     }
 
 }
