@@ -15,15 +15,18 @@ public class AudioManager : Singleton<AudioManager>
     [SerializedDictionary("Sound Code", "FMODEVent")]
     [SerializeField] private AYellowpaper.SerializedCollections.SerializedDictionary<string, EventReference> _sounds;
     private EventReference eventRef;
+    private EventInstance parent = new EventInstance();
 
 
     //private void Awake()
     //{
-    //    base.Awake(); 
-    //    Debug.Log($"AudioManager initialized with {_sounds.Count} sounds");
+
+    //    DontDestroyOnLoad(this.gameObject);
     //}
     public void Play(string sCode, Transform position)
     {
+        //bool instance = false;
+        
         if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
         {
             Debug.LogError($"AudioManager: '{sCode}' not found");
@@ -31,6 +34,25 @@ public class AudioManager : Singleton<AudioManager>
         }
 
         RuntimeManager.PlayOneShot(eventRef, position.position);
+
+        //if (!instance)
+        //{
+        //    parent = new EventInstance();
+        //    parent = RuntimeManager.CreateInstance(eventRef);
+        //    parent.start();
+        //    parent.set3DAttributes(RuntimeUtils.To3DAttributes(position));
+        //    instance = true;
+        //    return;
+        //}
+        //else
+        //{
+        //    parent.start();
+        //    return;
+        //}
+
+
+        //RuntimeManager.PlayOneShot(eventRef, position.position);
+
     }
 
     public void Stop(GameObject obj, string sCode)
@@ -41,11 +63,13 @@ public class AudioManager : Singleton<AudioManager>
             return;
         }
 
-        foreach (var emitter in obj.GetComponents<StudioEventEmitter>())
+        foreach (StudioEventEmitter emitter in obj.GetComponents<StudioEventEmitter>())
         {
             if (emitter.EventReference.Equals(eventRef))
             {
+                emitter.EventInstance.Equals(parent);
                 emitter.Stop();
+                Debug.Log($"Stopped sound '{sCode}' on {obj.name}");
                 return;
             }
         }
@@ -68,7 +92,9 @@ public class AudioManager : Singleton<AudioManager>
         {
             if (emitter.EventReference.Equals(eventRef))
             {
+                emitter.EventInstance.Equals(parent);
                 emitter.EventInstance.setParameterByName(param, value);
+                
                 return;
             }
         }
@@ -82,15 +108,29 @@ public class AudioManager : Singleton<AudioManager>
             Debug.LogError($"AudioManager: '{sCode}' not found");
             return;
         }
+        
 
         StudioEventEmitter[] emitters = obj.GetComponents<StudioEventEmitter>();
+
+        
         foreach (StudioEventEmitter emitter in emitters)
         {
+            
             if (emitter.EventReference.Equals(eventRef))
             {
                 emitter.Play();
+                Debug.Log($"Playing sound '{sCode}' on {obj.name}");
+
                 return;
             }
+            //else
+            //{
+            //    
+            //    StudioEventEmitter newEmitter = obj.AddComponent<StudioEventEmitter>();
+            //    newEmitter.EventReference = eventRef;
+            //    newEmitter.Play();
+            //    return;
+            //}
         }
 
         

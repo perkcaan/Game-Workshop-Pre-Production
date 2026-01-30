@@ -42,6 +42,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     public override void ExitState()
     {
         _ctx.SweepHandler.EndSweep();
+        //AudioManager.Instance.Stop(_ctx.SweepHandler.gameObject, "Sweep");
         _ctx.Animator.SetBool("Sweeping", false);
     }
     

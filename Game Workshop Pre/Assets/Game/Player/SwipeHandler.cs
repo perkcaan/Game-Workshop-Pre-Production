@@ -41,8 +41,8 @@ public class SwipeHandler : MonoBehaviour
 
         _hitbox = GetComponent<Collider2D>();
         _hitbox.enabled = false;
-
-        if(_swipeMeter == null)
+        
+        if (_swipeMeter == null)
             _swipeMeter = GameObject.Find("SwipeMeter")?.GetComponent<SwipeMeter>();
     }
 
@@ -61,17 +61,22 @@ public class SwipeHandler : MonoBehaviour
     // Swipe
     public void DoSwipe(float rotation, float swipeForce)
     {
-        if (!connecting)
-        {
-            AudioManager.Instance.ModifyParameter(this.gameObject,"Swipe", "Texture", 1);
-            //_swipeSoundInstance.start();
-            //_swipeSoundInstance.release();
-        }
-        //FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", _parent.transform.position);
         _hitbox.enabled = true;
         _swipeForce = swipeForce;
+
+        _swipeSoundInstance.start();
+        //_swipeSoundInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
+        //_swipeSoundInstance.setVolume(1f);
+        if (!connecting)
+        {
+            _swipeSoundInstance.setParameterByName("Texture", 1);
+            
+
+        }
         
+
         UpdateHitbox(rotation);
+        
     }
 
     public void UpdateHitbox(float rotation)
@@ -99,6 +104,7 @@ public class SwipeHandler : MonoBehaviour
     public void EndSwipe()
     {
         _hitbox.enabled = false;
+        _swipeSoundInstance.release();
         connecting = false;
     }
 
@@ -113,20 +119,23 @@ public class SwipeHandler : MonoBehaviour
         ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
         if (swipeableObject != null)
         {
+            Debug.Log("Swiped object: " + other.gameObject.name);
             connecting = true;
             //FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", contactPoint);
-            AudioManager.Instance.Play("Swipe", transform);
+            
+                _swipeSoundInstance.setParameterByName("Texture", 0);
+                
+
+            
             //Debug.Log("Swiped object: " + other.gameObject.name);
-            if (connecting)
-            {
-                AudioManager.Instance.ModifyParameter(this.gameObject, "Swipe", "Texture", 0);
-                //_swipeSoundInstance.start();
-                //_swipeSoundInstance.
-            }
+
             if (ParticleManager.Instance != null)
                 //ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
-            swipeableObject.OnSwipe(direction.normalized, _swipeForce);
+                swipeableObject.OnSwipe(direction.normalized, _swipeForce);
         }
+
+
+        
     }
 
     public void UpdateSwipeMeter(float chargeTime, float maxCharge)
