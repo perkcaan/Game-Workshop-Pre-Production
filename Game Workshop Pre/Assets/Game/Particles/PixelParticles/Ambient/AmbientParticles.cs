@@ -4,13 +4,24 @@ using UnityEngine.Tilemaps;
 public class LavaParticleManager : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] ParticleSystem lavaParticleSystem;
     [SerializeField] Tilemap lavaTilemap;
     [SerializeField] Camera mainCam;
     [SerializeField] float bubbleChance = 0.2f;
     [SerializeField] float emissionChance = 0.5f;
     [SerializeField] float emissionInterval = 1f;
     private float emissionTimer = 0f;
+
+    void Awake()
+    {
+        if (lavaTilemap == null)
+        {
+            Debug.Log("LavaTileMap is not serialized so ambient lava particles cant spawn, check AmbientParticles under MainCamera on the player.");
+        }
+        else
+        {
+            lavaTilemap = TileSorter.Instance.lavaTilemap;
+        }
+    }
 
     void Update()
     {
