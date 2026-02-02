@@ -38,9 +38,14 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float SwipeCooldown { get { return _swipeCooldown; } }
 
     [Header("Absorbed Properties")]
-    [SerializeField] private float _absorbResistance;
     [SerializeField] private float _minTrashSizeToAbsorb;
     [SerializeField] private int _playerEscapeDamage;
+    public int Size { get { return 0; } }
+    [SerializeField] private TrashMaterial _trashMaterial;
+    public TrashMaterial TrashMat { get { return _trashMaterial; } }
+    [SerializeField] private int _trashMaterialWeight;
+    public int TrashMatWeight { get { return _trashMaterialWeight; } }
+    [SerializeField] protected float _minVelocityToAbsorb;
 
     [Header("Swipe Visual Line")]
     [SerializeField] private float _swipeVisualLineDistance = 10f;
@@ -216,6 +221,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void OnEscapeTrashBallInput(InputValue value)
     {
+        if (!value.isPressed) return;
         if (_ctx.AbsorbedTrashBall != null)
         {
             _ctx.Animator.speed += 0.3f;
@@ -269,6 +275,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _weight = weight;
     }
 
+    [ContextMenu("Swipe")]
+    public void Swipe()
+    {
+        OnSwipe(Vector2.up, 30f, _ctx.Collider);
+    }
 
     // Being swiped puts you into tumble state
     public void OnSwipe(Vector2 direction, float force, Collider2D collider)
@@ -279,20 +290,26 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     // IAbsorbable
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
+    public bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (ballVelocity.magnitude * trashBall.Size > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
+        if (forcedAbsorb || (ballVelocity.magnitude > _minVelocityToAbsorb && trashBall.Size > _minTrashSizeToAbsorb))
         {
-            trashBall.absorbedObjects.Add(this);
             _ctx.AbsorbedTrashBall = trashBall;
             _state.ChangeState(PlayerStateEnum.Absorbed);
+            return true;
         }
+        return false;
     }
 
-    public void OnTrashBallExplode(TrashBall trashBall)
+    public void OnTrashBallRelease(TrashBall trashBall)
     {
         _ctx.AbsorbedTrashBall = null;
         _state.ChangeState(PlayerStateEnum.Idle);
+    }
+
+    public void OnTrashBallDestroy()
+    {
+        Death();
     }
 
     // IHeatable
@@ -336,11 +353,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             Gizmos.color = Color.magenta;
             Gizmos.DrawSphere(_ctx.Player.transform.position + new Vector3(0, 1, 0), 0.1f);
         }
-    }
-
-    public void OnTrashBallIgnite()
-    {
-        Death();
     }
 
     private void Death()

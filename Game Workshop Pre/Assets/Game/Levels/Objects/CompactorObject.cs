@@ -15,14 +15,14 @@ public class CompactorObject : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out TrashBall trashBall))
+        if (collision.TryGetComponent(out TrashBall trashBall))
         {
             cubeChildren.RemoveAll(item => item == null);
             if (trashBall.Size > minTrashBallSize && cubeChildren.Count < maxTrashCubesAtOnce)
             {
                 // Transfer over materials and size to new trash cube
                 TrashCubeObject trashCubeInstance = Instantiate(trashCubePrefab);
-                trashCubeInstance.absorbedObjects = trashBall.absorbedObjects;
+                trashCubeInstance.absorbedObjects = trashBall.AbsorbedObjects;
                 trashCubeInstance.Size = trashBall.Size;
                 trashCubeInstance.transform.position = transform.position;
                 trashCubeInstance.trashPlatformDuration = _trashPlatformDuration;

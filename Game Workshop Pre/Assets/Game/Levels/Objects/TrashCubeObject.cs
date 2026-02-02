@@ -56,7 +56,7 @@ public class TrashCubeObject : MonoBehaviour, IHeatable, ISweepable, ISwipeable
     {
         foreach (IAbsorbable absorbable in absorbedObjects)
         {
-            absorbable.OnTrashBallIgnite();
+            absorbable.OnTrashBallDestroy();
         }
         absorbedObjects.Clear();
         Destroy(gameObject);

@@ -370,11 +370,14 @@ MonoBehaviour:
   _actions:
   - _methodName: MeleeAttack
   _moveSpeed: 10
-  _size: 3
-  _minSizeToAbsorb: 6
-  _minVelocityToAbsorb: 0.8
   _shouldFlipSprite: 0
   _facingRotation: 90
+  _size: 3
+  _trashMaterial: {fileID: 11400000, guid: dd963f5861bb9344da6b0d92692fad6c, type: 2}
+  _trashMaterialWeight: 3
+  _minSizeToAbsorb: 6
+  _minVelocityToAbsorb: 0.8
+  _trashBallExplosionMultiplier: 5
   _attackDashForce: 15
   _attackProperties:
     _startup: 0.3
