@@ -17,6 +17,8 @@ public class ShaderManager : MonoBehaviour
     [SerializeField] private float _dissolveTime = 0.5f;
     [Tooltip("The width of the 'burn' effect on the dissolve animation.")]
     [SerializeField] private float _dissolveBurnWidth = 0.4f;
+    [Tooltip("The time it takes to sink in lava.")]
+    [SerializeField] private float _sinkTime = 3.0f;
     [Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
     [SerializeField] private Texture _meshTexture;
 
@@ -114,4 +116,18 @@ public class ShaderManager : MonoBehaviour
         onDone?.Invoke();
     }
 
+    public void SinkInLava()
+    {
+        float time = 0f;
+
+        while (time < _sinkTime)
+        {
+            float depth = time / _sinkTime;
+            SetFloatProperties("_height", depth);
+            time += Time.deltaTime;
+
+        }
+
+
+    }
 }
