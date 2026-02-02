@@ -17,10 +17,6 @@ public class LavaParticleManager : MonoBehaviour
         {
             Debug.Log("LavaTileMap is not serialized so ambient lava particles cant spawn, check AmbientParticles under MainCamera on the player.");
         }
-        else
-        {
-            lavaTilemap = TileSorter.Instance.lavaTilemap;
-        }
     }
 
     void Update()
