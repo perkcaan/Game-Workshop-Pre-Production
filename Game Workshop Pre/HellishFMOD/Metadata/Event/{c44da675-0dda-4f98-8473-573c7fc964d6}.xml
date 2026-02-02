@@ -5,7 +5,7 @@
 			<value>PickupSound1</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{3b6b6dca-1149-4601-ab91-a361273c6242}</destination>
@@ -53,7 +53,7 @@
 			<destination>{34dbffcd-fd26-4c8e-8f4b-cc1bed8d4d80}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{c893bc8b-0639-4601-baef-ee39dc787ade}</destination>
+			<destination>{226d84b9-2c40-492d-a3a7-2b063141b0cc}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{80c5da31-935c-43fa-8bb1-f59f28fe7271}" />
@@ -99,6 +99,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{f10d08e2-a81b-47f3-b65a-97844a0199d2}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{be033338-f388-4e25-8419-fa553a8f4581}</destination>
 		</relationship>
@@ -281,6 +284,7 @@
 		<relationship name="effects">
 			<destination>{03f5a5f6-a830-46f0-8e09-91da82d96a24}</destination>
 			<destination>{db5a9da1-f372-4a44-9700-f03e9b98c0df}</destination>
+			<destination>{0bb3b3b3-1c70-4f9b-ad18-29760e8f57eb}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{bb16b6dc-ca38-497f-8740-0823b096e543}" />
@@ -447,6 +451,17 @@
 		</property>
 		<property name="wetLevel">
 			<value>-20</value>
+		</property>
+	</object>
+	<object class="SpatialiserEffect" id="{0bb3b3b3-1c70-4f9b-ad18-29760e8f57eb}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="soundSize">
+			<value>20</value>
+		</property>
+		<property name="minimumExtent">
+			<value>360</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{fd2118ad-b966-480c-885d-8a94941a2052}">

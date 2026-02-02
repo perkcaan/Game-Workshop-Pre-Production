@@ -10,7 +10,6 @@ public class SwipeHandler : MonoBehaviour
 
     // Components
     [SerializeField] private DottedParticleLine _dottedLine;
-    ParticleSystem _swipeEffectInstance;
     FMOD.Studio.EventInstance _swipeSoundInstance;
     private PlayerMovementController _parent;
     private Collider2D _hitbox;
@@ -67,7 +66,6 @@ public class SwipeHandler : MonoBehaviour
             _swipeSoundInstance.setParameterByName("Texture", 1);
             _swipeSoundInstance.start();
             _swipeSoundInstance.release();
-
         }
         FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", _parent.transform.position);
         _hitbox.enabled = true;
@@ -126,7 +124,7 @@ public class SwipeHandler : MonoBehaviour
             }
             if (ParticleManager.Instance != null)
                 //ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
-            swipeableObject.OnSwipe(direction.normalized, _swipeForce);
+            swipeableObject.OnSwipe(direction.normalized, _swipeForce, other);
         }
     }
 

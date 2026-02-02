@@ -30,10 +30,10 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 
     protected bool _isDestroyed = false;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (_pointValue <= 0) _pointValue = 1;
     }
     protected void CreateTrashBall()
@@ -41,6 +41,15 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         if (!_rigidBody.simulated) return;
         GameObject trashBallObject = Instantiate(_trashBallPrefab);
         trashBallObject.transform.position = transform.position;
+        if (_parentRoom.ActiveRoomDrawer != null)
+        {
+            trashBallObject.transform.parent = _parentRoom.ActiveRoomDrawer.transform;
+        } else
+        {
+            Debug.LogWarning("TrashBall attempted to be made in an unactive room (" + _parentRoom.name + "). This shouldn't happen. Make sure Room Drawers are set up properly.");
+            trashBallObject.transform.parent = _parentRoom.transform;
+        }
+        
         TrashBall trashBall = trashBallObject.GetComponent<TrashBall>();
 
         if (trashBall == null)
@@ -64,6 +73,16 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
             GivePoints();
             _rigidBody.simulated = false;
             trashBall.AbsorbTrash(this);
+        }
+        if (!forcedAbsorb)
+        {
+            Vector2 direction = transform.position - trashBall.transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);
+            if (Size > 4)
+                ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1.5f);
+            else
+                ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1f);
         }
     }
 
@@ -99,7 +118,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     }
 
     public void OnTrashBallIgnite()
-    {;
+    {
         if (_isDestroyed) return;
         _isDestroyed = true;
 

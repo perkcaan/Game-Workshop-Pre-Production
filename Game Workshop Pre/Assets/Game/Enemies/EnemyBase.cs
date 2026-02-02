@@ -1,29 +1,60 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters;
+using Ink.Parsed;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable
+public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable, ICleanable
 {
-    [SerializeReference, SerializeReferenceDropdown] private BehaviourTreeNode _behaviour;
-    [SerializeField] private bool _enableBehaviourDebug;
-    [SerializeField] private List<UnityEvent> _actionMethods;
+    [Header("Enemy")]
+    [SerializeField] private BehaviourTree _behaviour;
+    [SerializeField] private List<EnemyActionReference> _actions;
 
     // Properties (EnemyBase should only have UNIVERSAL properties. 
     // If a property is on every or almost every enemy, it can go here.)
     [SerializeField] protected float _moveSpeed;
-    [SerializeField] protected float _size;
+    public float MoveSpeed { get { return _moveSpeed * _speedModifier; } }
+    protected float _speedModifier = 1f; // this may need to be expanded
+    public float SpeedModifier { 
+        get { return _speedModifier; }
+        set { _speedModifier = value; } 
+    } 
+    [SerializeField] private int _size;
+    public int Size { get { return _size; } }
     [SerializeField] protected float _minSizeToAbsorb;
     [SerializeField] protected float _minVelocityToAbsorb;
+    [SerializeField] private bool _shouldFlipSprite = false;
+    [SerializeField, Range(0,360)] protected float _facingRotation = 270f;
+    public float FacingRotation { 
+        get { return _facingRotation; } 
+        set // wrap it within 0-360
+        {
+            float wrapped = value % 360f;
+            if (wrapped < 0f) wrapped += 360f;
+            _facingRotation = wrapped;
+            FlipSpriteIfNeeded();
+        }
+    }
 
     // Components
-    protected EnemyBlackboard _blackboard;
     protected Animator _animator;
+    public Animator Animator { get { return _animator; } }
+    private SpriteRenderer _renderer;
     private Rigidbody2D _rigidbody;
     public Rigidbody2D Rigidbody { get { return _rigidbody; } }
     private Collider2D _collider;
     public Collider2D Collider { get { return _collider; } }
+    
+    private EnemyPather _pather;
+    public EnemyPather Pather { get { return _pather; } }
+
+    private Room _parentRoom;
+
+    // Actions
+    public Action OnDestroy;
 
     // Fields
     private bool _isDying = false;
@@ -35,7 +66,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     //internal methods
     private void OnValidate()
     {
-        if (_behaviour != null) _behaviour.CheckRequiredComponents(this);
+        if (_behaviour != null) _behaviour.Validate(this);
     }
 
     // Do NOT use Start or Update in child classes. Use OnStart and OnUpdate!!!!!! 
@@ -44,9 +75,9 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
         _animator = GetComponentInChildren<Animator>();
-        _blackboard = new EnemyBlackboard(this);
-        PrepareBlackboard();
-        _behaviour.Initialize(_blackboard, this);
+        _renderer = GetComponentInChildren<SpriteRenderer>();
+        _pather = GetComponent<EnemyPather>();
+        if (_behaviour != null) _behaviour.Initialize(this);
         OnStart();
     }
 
@@ -56,7 +87,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
         if (_behaviour != null)
         {
-            _behaviour.Evaluate();
+            _behaviour.Tick();
         }
         OnUpdate();
     }
@@ -64,47 +95,50 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     private void FixedUpdate()
     {
         if (_isDying) return;
-
-        UpdateMovement();
     }
 
-    private void PrepareBlackboard()
+    // Get an action from _actions to use 
+    public void PerformAction(int index, Action<bool> onComplete = null)
     {
-        _blackboard.Set<string>("name", gameObject.name);
-        _blackboard.Set<Vector2>("frameVelocity", Vector2.zero);
-        _blackboard.Set<float>("rotation", 90f);
-
-        _blackboard.Set<float>("moveSpeed", _moveSpeed);
-    }
-
-    private void UpdateMovement()
-    {
-        //movement
-        if (!_blackboard.TryGet("frameVelocity", out Vector2 frameVelocity)) { }
-
-        Vector2 velocityDelta = frameVelocity - _rigidbody.velocity;
-        Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta, frameVelocity.magnitude);
-        _rigidbody.AddForce(clampedForce, ForceMode2D.Force);
-        _blackboard.Set<Vector2>("frameVelocity", Vector2.zero); // This is for clean up if behaviour node switches
-        _animator.SetFloat("Speed", frameVelocity.magnitude);
-
-        // rotation
-        if (!_blackboard.TryGet("rotation", out float rotation)) { }
-
-        _animator.SetFloat("Rotation", rotation);
-    }
-
-    public void PerformAction(int actionIndex)
-    {
-        for (int i = 0; i < _actionMethods.Count; i++)
+        if (index >= 0 && index < _actions.Count)
         {
-            if (actionIndex == i) _actionMethods[i]?.Invoke();
+            StartCoroutine(_actions[index].Invoke(this, onComplete));
+        } else
+        {
+            onComplete?.Invoke(false);
         }
     }
 
+    // Simple attack is a basic attack template that has startup, an attack, and endlag
+    protected IEnumerator SimpleAttack(SimpleAttackProperties properties, 
+        Action attackStart = null, Action attack = null, Action attackEnd = null)
+    {
+
+        attackStart?.Invoke();
+        yield return new WaitForSeconds(properties.Startup);
+
+        attack?.Invoke();
+        yield return new WaitForSeconds(properties.Duration);
+        
+        attackEnd?.Invoke();
+        yield return new WaitForSeconds(properties.Endlag);
+    }
+
+    private void FlipSpriteIfNeeded()
+    {
+        if (!_shouldFlipSprite) return;
+
+        float radians = _facingRotation * Mathf.Deg2Rad;
+        bool faceRight = Mathf.Cos(radians) >= 0f;
+
+        _renderer.flipX = !faceRight;
+    }
+
+
     private void OnDrawGizmos()
     {
-        if (_enableBehaviourDebug && _behaviour != null) _behaviour.DrawDebug();
+        //cant figure out a good way to debug draw them
+        if (_behaviour != null) _behaviour.DrawDebug();
     }
 
     public TargetType GetTargetType()
@@ -117,18 +151,21 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void PrepareIgnite(HeatMechanic heat)
     {
         _isDying = true;
+        _pather.Stop();
     }
 
 
     public void OnIgnite(HeatMechanic heat)
     {
+        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
+        AudioManager.Instance.PlayOnInstance(this.gameObject,"enemyDeath");
+
+        OnDestroy?.Invoke();
         Destroy(gameObject);
-        AudioManager.Instance.Play("enemyDeath", transform.position);
     }
 
 
     // IAbsorbable
-
     public void OnTrashBallExplode(TrashBall trashBall)
     {
         gameObject.SetActive(true);
@@ -137,6 +174,9 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     public void OnTrashBallIgnite()
     {
+        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
+
+        OnDestroy?.Invoke();
         Destroy(gameObject);
     }
 
@@ -148,5 +188,10 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             gameObject.SetActive(false);
             trashBall.absorbedObjects.Add(this);
         }
+    }
+    
+    public void SetRoom(Room room)
+    {
+        _parentRoom = room;
     }
 }

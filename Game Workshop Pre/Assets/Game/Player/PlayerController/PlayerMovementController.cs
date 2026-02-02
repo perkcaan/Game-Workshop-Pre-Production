@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using DG.Tweening;
 using UnityEngine.Android;
+using System;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
@@ -52,10 +52,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     [SerializeField] private float _footstepCooldown = 0f;
     private FMOD.Studio.EventInstance _heatSound;
 
-    [Header("Checkpoint")]
-    [SerializeField] private CheckpointManager Checkpoint_Manager;
-    public static System.Action<bool> playerDeath;
-    public HeatMechanic _playerHeat;
+
+    public static Action<bool> playerDeath;
+    
 
     [Header("Item Effected Properties")]
     public bool canSweep = false;
@@ -76,7 +75,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     //context & state
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
-
+    private HeatMechanic _playerHeat;
 
     #endregion
 
@@ -90,6 +89,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
+        _playerHeat = GetComponent<HeatMechanic>();
         _state = new PlayerStateMachine(_ctx);
         _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
     }
@@ -100,7 +100,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         Cursor.lockState = CursorLockMode.Confined;
         
         _heatSound.start();
-        _playerHeat = GetComponent<HeatMechanic>();
     }
 
     private void Update()
@@ -111,7 +110,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void FixedUpdate()
     {
         UpdateMovement();
-        _heatSound.setParameterByName("Heat", (_playerHeat.Heat / 10));
+        _heatSound.setParameterByName("Heat", _playerHeat.Heat / 10);
     }
 
     private void UpdateCooldowns()
@@ -236,16 +235,21 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Animator.SetFloat("Speed", _ctx.FrameVelocity.magnitude);
         _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
 
+        
 
-        _footstepCooldown -= Time.deltaTime;
-
-        if (_ctx.MoveSpeed > 0.1f && _footstepCooldown <= 0f)
+        if (_ctx.MoveSpeed > 0.1f)
         {
-            
-            //AudioManager.Instance.Play("Steps", transform.position);
+            _footstepCooldown -= Time.deltaTime;
+            if (_footstepCooldown <= 0f)
+            {
+                ParticleManager.Instance.Play("PlayerStepDust", transform.position);
+                AudioManager.Instance.Play("Steps", transform.position);
+                _footstepCooldown = 0.3f;
+            }
+        }
+        else if (_ctx.MoveSpeed < 0.01f)
+        {
             _footstepCooldown = 0.3f;
-
-            
         }
     }
 
@@ -267,7 +271,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
 
     // Being swiped puts you into tumble state
-    public void OnSwipe(Vector2 direction, float force)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
     {
         if (force >= _movementProps.EnterTumbleThreshold) _state.ChangeState(PlayerStateEnum.Tumble);
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
@@ -341,7 +345,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void Death()
     {
-        transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
+        CheckpointManager.Instance.GoToCheckpoint(transform);
         AudioManager.Instance.Play("playerDeath", transform.position);
         AudioManager.Instance.Stop("Sweep");
         playerDeath?.Invoke(true);

@@ -23,7 +23,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Background
+  - Lighting
   - Water
   - UI
   - Base
@@ -33,10 +33,10 @@ TagManager:
   - Enemy
   - Room
   - Lava
-  - Distortion
   - CamBound
   - Wall
   - Floor
+  - TrashIgnoreEnemy
   - 
   - 
   - 
@@ -53,12 +53,24 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Background
-    uniqueID: 946985729
+  - name: Floor
+    uniqueID: 1721764203
+    locked: 0
+  - name: Wall
+    uniqueID: 1476323291
+    locked: 0
+  - name: Trash
+    uniqueID: 4014312579
+    locked: 0
+  - name: Objects
+    uniqueID: 2296247347
     locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: VFX
-    uniqueID: 2814613229
+  - name: Player
+    uniqueID: 4284574305
+    locked: 0
+  - name: Foreground
+    uniqueID: 2516608421
     locked: 0

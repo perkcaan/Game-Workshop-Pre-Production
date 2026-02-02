@@ -23,6 +23,8 @@ public class HeatMechanic : MonoBehaviour
         get { return _heat; }
     }
 
+    public bool coolingOff = false;
+
     [Tooltip("The rate per second at which heat returns to room temperature.")]
     [SerializeField] private float _heatRelaxationRate = 0.5f;
     [Tooltip("The time after heat changes until it begins to relax.")]
@@ -38,7 +40,6 @@ public class HeatMechanic : MonoBehaviour
 
     private float _debugTimer = 0f;
     private bool _debugIgnited = false;
-
 
 
     private float _relaxationTimer = 0f;
@@ -102,20 +103,16 @@ public class HeatMechanic : MonoBehaviour
     {
         _ignitionTimer = 0f;
         _hasIgnited = false;
+        coolingOff = false;
         _shaderManager.Reset();
         _heat = DistrictManager.Instance.Temperature;
     }
 
     // Heat mechanics
-    //call to add heat
-    public void ModifyHeat(float change)
-    {
-        ModifyHeat(change, true);
-    }
-
     // doRelaxDelay determines whether or not there should be a relax delay should be delayed afterwards
-    public void ModifyHeat(float change, bool doRelaxDelay)
+    public void ModifyHeat(float change, bool doRelaxDelay = true)
     {
+        if (change > 0) coolingOff = false;
         _heat = Mathf.Clamp(_heat + change, LOWEST_HEAT_VALUE, HIGHEST_HEAT_VALUE);
         if (doRelaxDelay) _relaxationTimer = _timeBeforeRelax;
     }
@@ -132,9 +129,14 @@ public class HeatMechanic : MonoBehaviour
         if (DistrictManager.Instance != null) roomTemperature = DistrictManager.Instance.Temperature;
         if (CurrentRoom != null) roomTemperature = CurrentRoom.Temperature;
 
-        if (_heat != roomTemperature)
+        if (_heat != roomTemperature && _heat > roomTemperature)
         {
             _heat = Mathf.MoveTowards(_heat, roomTemperature, _heatRelaxationRate * Time.deltaTime);
+            coolingOff = true;
+        }
+        else
+        {
+            coolingOff = false;
         }
     }
 

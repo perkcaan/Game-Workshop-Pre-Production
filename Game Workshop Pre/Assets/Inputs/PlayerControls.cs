@@ -89,6 +89,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": ""StickDeadzone(min=0.01,max=0.01)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""InteractionInput"",
+                    ""type"": ""Button"",
+                    ""id"": ""17a6926a-cca0-400b-9fd1-d602aa64dc38"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -223,6 +232,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""EscapeTrashBallInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81ee45fe-4397-4fd1-ad2a-6456ace2a858"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractionInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -238,6 +258,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Default_EscapeTrashBallInput = m_Default.FindAction("EscapeTrashBallInput", throwIfNotFound: true);
         m_Default_MouseMoveInput = m_Default.FindAction("MouseMoveInput", throwIfNotFound: true);
         m_Default_MouseDeltaInput = m_Default.FindAction("MouseDeltaInput", throwIfNotFound: true);
+        m_Default_InteractionInput = m_Default.FindAction("InteractionInput", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -306,6 +327,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_EscapeTrashBallInput;
     private readonly InputAction m_Default_MouseMoveInput;
     private readonly InputAction m_Default_MouseDeltaInput;
+    private readonly InputAction m_Default_InteractionInput;
     public struct DefaultActions
     {
         private @PlayerControls m_Wrapper;
@@ -317,6 +339,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @EscapeTrashBallInput => m_Wrapper.m_Default_EscapeTrashBallInput;
         public InputAction @MouseMoveInput => m_Wrapper.m_Default_MouseMoveInput;
         public InputAction @MouseDeltaInput => m_Wrapper.m_Default_MouseDeltaInput;
+        public InputAction @InteractionInput => m_Wrapper.m_Default_InteractionInput;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -347,6 +370,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseDeltaInput.started += instance.OnMouseDeltaInput;
             @MouseDeltaInput.performed += instance.OnMouseDeltaInput;
             @MouseDeltaInput.canceled += instance.OnMouseDeltaInput;
+            @InteractionInput.started += instance.OnInteractionInput;
+            @InteractionInput.performed += instance.OnInteractionInput;
+            @InteractionInput.canceled += instance.OnInteractionInput;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -372,6 +398,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseDeltaInput.started -= instance.OnMouseDeltaInput;
             @MouseDeltaInput.performed -= instance.OnMouseDeltaInput;
             @MouseDeltaInput.canceled -= instance.OnMouseDeltaInput;
+            @InteractionInput.started -= instance.OnInteractionInput;
+            @InteractionInput.performed -= instance.OnInteractionInput;
+            @InteractionInput.canceled -= instance.OnInteractionInput;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -398,5 +427,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnEscapeTrashBallInput(InputAction.CallbackContext context);
         void OnMouseMoveInput(InputAction.CallbackContext context);
         void OnMouseDeltaInput(InputAction.CallbackContext context);
+        void OnInteractionInput(InputAction.CallbackContext context);
     }
 }

@@ -1,14 +1,17 @@
 using UnityEngine;
 using System.Drawing;
+using System;
 
 public class LooseTrash : Trash, ISweepable, ISwipeable
 {
+    [SerializeField] bool _hasImpactParticle = false;
     [SerializeField] float _sweepDurationToBecomeBall;
     [SerializeField] float _playerEnterKnockback;
     [SerializeField] float _playerEnterTripForce;
     [SerializeField] float _playerExitKnockback;
     [SerializeField] float _playerExitTripForce;
     [SerializeField] float _randomDirectionRange;
+    [SerializeField] float maximumVelocity = 2f;
     [SerializeField] bool _isSwipable;
     private float _sweepTimer;
 
@@ -23,29 +26,14 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
         }
     }
 
-    public void OnSwipe(Vector2 direction, float force)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
     {
         if (!_isSwipable) return;
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        Quaternion particleRotation = Quaternion.Euler(0, 0, angle + 180);
-        Color32 metalColor = new Color32(255,172,28,255);
-
-
-        if (trashMaterial.name == "Metal")
-        {
-            ParticleManager.Instance.Modify("swipe", 0, 75, 0,"Subtract");
-            ParticleManager.Instance.modified = true;
-            ParticleManager.Instance.Play("swipe", transform.position, particleRotation, metalColor, transform);
-        }
-        else
-        {
-            ParticleManager.Instance.modified = false;
-            ParticleManager.Instance.Modify("swipe", 0, 75, 0,"Add");
-            ParticleManager.Instance.Play("swipe", transform.position, particleRotation, trashMaterial.color, transform);
-        }
         
-
+        Quaternion particleRotation = Quaternion.Euler(0, 0, angle + 180);
+        ParticleManager.Instance.Play("swipe", transform.position, particleRotation, trashMaterial.color, transform);
     }
 
     void Update()
@@ -57,12 +45,17 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
     {
         if (other.gameObject.TryGetComponent(out PlayerMovementController player))
         {
+            if (_hasImpactParticle) {
+                Vector3 contactPoint = transform.position; // other.ClosestPoint(transform.position);
+                ParticleManager.Instance.Play("ImpactCircleS", contactPoint);
+            }
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
             Quaternion randomRotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-_randomDirectionRange, _randomDirectionRange));
             Vector3 direction = randomRotation * (transform.position - player.transform.position).normalized;
+            float velocityMultiplier = Math.Min(1 + playerRb.velocity.magnitude/3, maximumVelocity);
 
-            _rigidBody.AddForce(direction * _playerEnterKnockback * (1 + playerRb.velocity.magnitude/3), ForceMode2D.Impulse);
-            playerRb.AddForce(-direction * _playerEnterTripForce * (1 + playerRb.velocity.magnitude/3), ForceMode2D.Impulse);
+            _rigidBody.AddForce(direction * _playerEnterKnockback * velocityMultiplier, ForceMode2D.Impulse);
+            playerRb.AddForce(-direction * _playerEnterTripForce * velocityMultiplier, ForceMode2D.Impulse);
         }
     }
     void OnTriggerExit2D(Collider2D other)
@@ -72,9 +65,10 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
             Quaternion randomRotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-_randomDirectionRange, _randomDirectionRange));
             Vector3 direction = randomRotation * (transform.position - player.transform.position).normalized;
+            float velocityMultiplier = Math.Min(1 + playerRb.velocity.magnitude/3, maximumVelocity);
 
-            _rigidBody.AddForce(direction * _playerExitKnockback * (1 + playerRb.velocity.magnitude/3), ForceMode2D.Impulse);
-            playerRb.AddForce(-direction * _playerExitTripForce * (1 + playerRb.velocity.magnitude/3), ForceMode2D.Impulse);
+            _rigidBody.AddForce(direction * _playerExitKnockback * velocityMultiplier, ForceMode2D.Impulse);
+            playerRb.AddForce(-direction * _playerExitTripForce * velocityMultiplier, ForceMode2D.Impulse);
         }
     }
 }

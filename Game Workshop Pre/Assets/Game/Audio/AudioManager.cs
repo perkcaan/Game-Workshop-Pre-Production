@@ -22,7 +22,7 @@ public class AudioManager : Singleton<AudioManager>
 
 
             sInstance.Play();
-            Debug.Log($"AudioManager: Playing FMOD sound '{sCode}' at position {position}.");
+            //Debug.Log($"AudioManager: Playing FMOD sound '{sCode}' at position {position}.");
 
         }
         else
@@ -72,6 +72,27 @@ public class AudioManager : Singleton<AudioManager>
                 Debug.LogError("That shit didn't work");
             }
         }
+    }
+    public void PlayOnInstance(GameObject obj, string sCode)
+    {
+        sInstance = _sounds[sCode];
+        if (obj == null) return;
+        StudioEventEmitter[] emitters = obj.GetComponents<StudioEventEmitter>();
+
+        foreach (StudioEventEmitter emitter in emitters)
+        {
+            if (emitter.EventReference.Equals(sInstance.EventReference))
+            {
+
+                emitter.Play();
+            }
+            else
+            {
+
+            }
+        }
+
+
     }
 
 }

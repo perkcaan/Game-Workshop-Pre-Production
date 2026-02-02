@@ -1,57 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 // Chases target until close enough
+[BehaviourNode(2, "Actions")]
 public class ChaseTargetNode : BehaviourTreeNode
 {
     // Fields
-    [SerializeField] private float _arrivedAtTargetDistance = 0.5f;
+    [SerializeField] private float _arrivedAtTargetDistance = 1f;
+
+    private Vector2 _storedTargetPos = Vector2.zero;
+    private bool _hasArrived = false;
+
 
     // Behaviour tree
-    public override void CheckRequiredComponents(EnemyBase self)
-    {
-
-    }
-
-    protected override void Initialize()
-    {
-
-    }
-
     public override BTNodeState Evaluate()
     {
-        if (Blackboard.TryGet("targetPosition", out Vector2? targetPosition))
+        if (!Blackboard.TryGet("targetPosition", out Vector2? targetPosition) || !targetPosition.HasValue)
         {
-            if (!targetPosition.HasValue) return BTNodeState.Failure;
+            return BTNodeState.Failure;
         }
-        Vector2 targetPos = targetPosition.Value;
+        _isActive = true;
+        _storedTargetPos = targetPosition.Value;
 
-        if (Vector2.Distance(Self.transform.position, targetPos) <= _arrivedAtTargetDistance)
+        if (_hasArrived) // When arrived, check if the target is here or not
         {
-            return BTNodeState.Success;
+            _hasArrived = false;
+            if (Blackboard.TryGetNotNull("target", out ITargetable target)) {
+                Self.Pather.FacePoint(_storedTargetPos);
+                return BTNodeState.Success;
+            }
+            return BTNodeState.Failure;
         }
 
-
-        Vector2 targetDirection = (targetPos - (Vector2)Self.transform.position).normalized;
-        
-        if (!Blackboard.TryGet("moveSpeed", out float moveSpeed)) { }
-        Vector2 frameVelocity = targetDirection * moveSpeed;
-        float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
-        
-        Blackboard.Set<Vector2>("frameVelocity", frameVelocity);
-        Blackboard.Set<float>("rotation", angle);
-        
+        ChaseTarget();
         return BTNodeState.Running;
     }
 
-
-
-
-    public override void DrawDebug()
+    private void ChaseTarget()
     {
+        Self.Pather.GoToPoint(_storedTargetPos, _arrivedAtTargetDistance, ArrivedAtTarget);
+    }
 
+    private void ArrivedAtTarget()
+    {
+        _hasArrived = true;
+        Self.Pather.Stop();
+    }
+
+    protected override void Reset()
+    {
+        _hasArrived = false;
+    }
+
+
+
+    protected override void DrawDebug()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(_storedTargetPos, _arrivedAtTargetDistance);
     }
 
 }

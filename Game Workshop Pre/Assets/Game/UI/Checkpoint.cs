@@ -4,9 +4,9 @@ public class Checkpoint : MonoBehaviour
 {
     [SerializeField] private Room assignedRoom;
 
-    private CheckpointManager Checkpoint_Manager;
+    private CheckpointManager _checkpointManager;
 
-    private DistrictManager District_Manager;
+    private DistrictManager _districtManager;
 
     private bool checkGained = false;
 
@@ -14,10 +14,10 @@ public class Checkpoint : MonoBehaviour
 
     private void Start()
     {
-        Checkpoint_Manager = FindObjectOfType<CheckpointManager>();
-        District_Manager = FindObjectOfType<DistrictManager>();
+        _checkpointManager = CheckpointManager.Instance;
+        _districtManager = DistrictManager.Instance;
 
-        if (Checkpoint_Manager == null)
+        if (_checkpointManager == null)
         {
             Debug.LogWarning("No CheckpointManager found");
         }
@@ -25,7 +25,7 @@ public class Checkpoint : MonoBehaviour
         if (starterPoint && !checkGained)
         {
           
-            Checkpoint_Manager.checkpoints.Add(this);
+            _checkpointManager.checkpoints.Add(this);
             checkGained = true;
 
         }
@@ -41,28 +41,34 @@ public class Checkpoint : MonoBehaviour
         {
 
 
-            if (District_Manager.FocusedRoom != null && (District_Manager.FocusedRoom == assignedRoom))
+            if (_districtManager.FocusedRoom != null && (_districtManager.FocusedRoom == assignedRoom))
             {
                 
                 if (!checkGained)
                 {
-                    Checkpoint_Manager.checkpoints.Add (this);
+                    _checkpointManager.checkpoints.Add (this);
                     checkGained = true;
                 }
 
-                Checkpoint_Manager.SetActiveCheckpoint(this);
+                _checkpointManager.SetActiveCheckpoint(this);
 
             }
 
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.gameObject.tag == "Player" && Checkpoint_Manager.respawnChoice && Checkpoint_Manager.activeCheckpoint != this)
+        if (collider.TryGetComponent(out PlayerMovementController player) && _checkpointManager.respawnChoice && _checkpointManager.activeCheckpoint != this)
         {
-            Checkpoint_Manager.SetActiveCheckpoint(this);
+            _checkpointManager.SetActiveCheckpoint(this);
         }
+    }
+
+    // called when checkpoint is gone to
+    public void OnGoTo()
+    {
+        if (assignedRoom != null) assignedRoom.TriggerRoomClose();
     }
 
 }
