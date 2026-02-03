@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -14,12 +16,15 @@ public class DistrictManager : StaticInstance<DistrictManager>
     [SerializeField] private Tilemap _roomTilemap;
     private List<Room> _rooms = new List<Room>();
 
-    public bool AreGatesUp { get; private set; }
-    public Action<bool> OnGateFlip;
-
     // Rooms the player is in
     private List<Room> _focusedRooms = new List<Room>(); // focused rooms is a list since the player could be in multiple touching rooms.
     public Room FocusedRoom { get { return _focusedRooms.Count > 0 ? _focusedRooms[0] : null; } }
+
+    //rooms that need to be safely exited.
+    private List<Room> _roomsNeedingSafeExit = new List<Room>();
+
+    // Rooms currently loaded
+    private HashSet<Room> _loadedRooms = new HashSet<Room>();
 
 
     [ContextMenu("Generate Rooms")]
@@ -36,7 +41,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         {
             if (!room.IsTrashRoom) continue;
             totalTrashRooms++;
-            if (room.Cleanliness >= 1f)
+            if (room.IsRoomCleaned)
             {
                 completeRooms++;
             }
@@ -47,17 +52,29 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     public void PlayerEnterRoom(Room room)
     {
-        if (!_focusedRooms.Contains(room))
+        if (_focusedRooms.Contains(room)) return;
+        _focusedRooms.Add(room);
+        if (_roomsNeedingSafeExit.Contains(room)) _roomsNeedingSafeExit.Remove(room);
+        foreach (Room needyRoom in _roomsNeedingSafeExit)
         {
-            _focusedRooms.Add(room);
+            needyRoom.SafeExit();
         }
+        _roomsNeedingSafeExit.Clear();
+        UpdateLoadedRooms();
     }
     public void PlayerExitRoom(Room room)
     {
-        if (_focusedRooms.Contains(room))
+        if (!_focusedRooms.Contains(room)) return;
+        _focusedRooms.Remove(room);
+        
+        if (_focusedRooms.Count > 0) {
+            room.SafeExit();
+        } else
         {
-            _focusedRooms.Remove(room);
+            _roomsNeedingSafeExit.Add(room);
         }
+
+        UpdateLoadedRooms(); 
     }
 
     private void Start()
@@ -65,34 +82,39 @@ public class DistrictManager : StaticInstance<DistrictManager>
         _rooms = new List<Room>(FindObjectsOfType<Room>());
     }
 
-    private void Update()
+    private void UpdateLoadedRooms()
     {
-        CheckGateStatus();
+        // Update Loaded rooms should only be called if at least one room is focused. Otherwise it would cause problems when the player isn't in a room.
+        if (_focusedRooms.Count <= 0) return; 
 
-        //TODO: REMOVE THIS IS TEMPORARY
-        if (SceneManager.GetActiveScene().name == "District0" && GetCleanCompletion() == 1f)
+        HashSet<Room> newLoadedRooms = new HashSet<Room>();
+        foreach (Room focusedRoom in _focusedRooms)
         {
-            SceneManager.LoadScene("Dungeon Level");
+            newLoadedRooms.Add(focusedRoom);
+            foreach (Room nearbyRoom in focusedRoom.NearbyRooms)
+            {
+                newLoadedRooms.Add(nearbyRoom);
+            }
         }
+        // In New, not in Old > Activate Room
+        HashSet<Room> roomsToActivate = new HashSet<Room>(newLoadedRooms);
+        roomsToActivate.ExceptWith(_loadedRooms);
+
+        // In Old, not in New > Deactivate Room
+        HashSet<Room> roomsToDeactivate = new HashSet<Room>(_loadedRooms);
+        roomsToDeactivate.ExceptWith(newLoadedRooms);
+
+        foreach (Room room in roomsToActivate)
+        {
+            room.ActivateRoom();
+        }
+        foreach (Room room in roomsToDeactivate)
+        {
+            room.DeactivateRoom();
+        }
+        _loadedRooms = newLoadedRooms;
         
     }
-
-
-    private void CheckGateStatus()
-    {
-        bool gateStatus = true;
-        if (FocusedRoom == null || FocusedRoom.Cleanliness >= 1f)
-        {
-            gateStatus = false;
-        }
-
-        if (AreGatesUp != gateStatus)
-        {
-            AreGatesUp = gateStatus;
-            OnGateFlip?.Invoke(AreGatesUp);
-        }
-    }
-
 
     
 

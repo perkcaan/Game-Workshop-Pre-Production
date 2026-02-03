@@ -16,13 +16,13 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     [SerializeField] protected int _size;
     public int Size { get { return _size; } }
     public TrashMaterial trashMaterial;
+    public TrashMaterial TrashMat { get { return trashMaterial; } }
     public int trashMaterialWeight = 1;
+    public int TrashMatWeight { get { return trashMaterialWeight; } }
     private FMOD.Studio.EventInstance _sweepSoundInstance;
 
     [SerializeField] protected int _pointValue;
     private bool _pointsConsumed = false;
-    public static Action<int> SendScore;
-
     protected Room _parentRoom;
     public Rigidbody2D _rigidBody;
     protected SpriteRenderer _spriteRenderer;
@@ -41,6 +41,15 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         if (!_rigidBody.simulated) return;
         GameObject trashBallObject = Instantiate(_trashBallPrefab);
         trashBallObject.transform.position = transform.position;
+        if (_parentRoom.ActiveRoomDrawer != null)
+        {
+            trashBallObject.transform.parent = _parentRoom.ActiveRoomDrawer.transform;
+        } else
+        {
+            Debug.LogWarning("TrashBall attempted to be made in an unactive room (" + _parentRoom.name + "). This shouldn't happen. Make sure Room Drawers are set up properly.");
+            trashBallObject.transform.parent = _parentRoom.transform;
+        }
+        
         TrashBall trashBall = trashBallObject.GetComponent<TrashBall>();
 
         if (trashBall == null)
@@ -51,33 +60,41 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         }
 
         GivePoints();
-        _rigidBody.simulated = false;
         gameObject.SetActive(false);
-        trashBall.AbsorbTrash(this);
-        trashBall.GetComponent<Rigidbody2D>().velocity = _rigidBody.velocity;
+        trashBall.AbsorbObject(this);
+        trashBall.Rigidbody.velocity = _rigidBody.velocity;
     }
 
-    public virtual void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
-    {   
-        if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled && _rigidBody.simulated))
-        {
-            GivePoints();
-            _rigidBody.simulated = false;
-            trashBall.AbsorbTrash(this);
-        }
+    // IAbsorbable
+    public virtual bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
+    {
+        if (_isDestroyed) return false;
+
         if (!forcedAbsorb)
         {
             Vector2 direction = transform.position - trashBall.transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);
+            
             if (Size > 4)
+            {
                 ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1.5f);
-            else
+            } else 
+            {
                 ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1f);
+            }
         }
+        
+        if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled && _rigidBody.simulated))
+        {
+            GivePoints();
+            _rigidBody.simulated = false;
+            return true;
+        }
+        return false;
     }
 
-    public void OnTrashBallExplode(TrashBall trashBall)
+    public void OnTrashBallRelease(TrashBall trashBall)
     {
         gameObject.SetActive(true);
         transform.localScale = Vector3.zero;
@@ -91,29 +108,28 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         _rigidBody.velocity = randomForce;
     }
 
-    public void PrepareIgnite(HeatMechanic heat)
-    {
-        foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
-        _rigidBody.velocity = Vector2.zero;
-        _rigidBody.simulated = false;
-    }
-    
-    public void OnIgnite(HeatMechanic heat)
-    {
-        if (_isDestroyed) return;
-        _isDestroyed = true;
-
-        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
-        
-        Destroy(gameObject);
-    }
-
-    public void OnTrashBallIgnite()
+    public void OnTrashBallDestroy()
     {
         if (_isDestroyed) return;
         _isDestroyed = true;
 
         if (_parentRoom != null) _parentRoom.ObjectCleaned(this);
+        Destroy(gameObject);
+    }
+
+    public void PrepareIgnite(HeatMechanic heat)
+    {
+        if (_isDestroyed) return;
+        _isDestroyed = true;
+
+        foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
+        _rigidBody.velocity = Vector2.zero;
+        _rigidBody.simulated = false;
+        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
+    }
+    
+    public void OnIgnite(HeatMechanic heat)
+    {
         Destroy(gameObject);
     }
 
@@ -126,7 +142,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     {
         if (!_pointsConsumed)
         {
-            SendScore?.Invoke(_pointValue);
+            ScoreBehavior.SendScore?.Invoke(_pointValue);
             StartCoroutine(Sound());
             _pointsConsumed = true;
         }

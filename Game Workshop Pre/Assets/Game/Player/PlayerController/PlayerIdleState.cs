@@ -10,7 +10,6 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
     //movement
     private float _zeroMoveTimer = 0f;
 
-
     public PlayerIdleState(PlayerContext context, PlayerStateMachine state)
     {
         _ctx = context;
@@ -36,7 +35,6 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
 
     public override void ExitState()
     {
-
     }
 
     //movement

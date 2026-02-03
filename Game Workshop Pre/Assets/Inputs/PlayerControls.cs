@@ -89,6 +89,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": ""StickDeadzone(min=0.01,max=0.01)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""InteractionInput"",
+                    ""type"": ""Button"",
+                    ""id"": ""17a6926a-cca0-400b-9fd1-d602aa64dc38"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -140,6 +149,61 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""right"",
                     ""id"": ""4341879b-429a-407a-ade0-edf1078b2d7c"",
                     ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""e8e10cf3-ad99-491e-88a6-228c8d12e5c1"",
+                    ""path"": ""2DVector(mode=1)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveInput"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""fa3416ed-515c-4b63-a858-f56f1132afd7"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""53e2f6c4-57e1-4583-b343-88c6e2d9a094"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""435ebaef-1fc9-4d12-9391-eb2d1260b771"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""7e9810f1-5245-4e88-8433-1e310fc9fef0"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -223,6 +287,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""EscapeTrashBallInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81ee45fe-4397-4fd1-ad2a-6456ace2a858"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractionInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -238,6 +313,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Default_EscapeTrashBallInput = m_Default.FindAction("EscapeTrashBallInput", throwIfNotFound: true);
         m_Default_MouseMoveInput = m_Default.FindAction("MouseMoveInput", throwIfNotFound: true);
         m_Default_MouseDeltaInput = m_Default.FindAction("MouseDeltaInput", throwIfNotFound: true);
+        m_Default_InteractionInput = m_Default.FindAction("InteractionInput", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -306,6 +382,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_EscapeTrashBallInput;
     private readonly InputAction m_Default_MouseMoveInput;
     private readonly InputAction m_Default_MouseDeltaInput;
+    private readonly InputAction m_Default_InteractionInput;
     public struct DefaultActions
     {
         private @PlayerControls m_Wrapper;
@@ -317,6 +394,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @EscapeTrashBallInput => m_Wrapper.m_Default_EscapeTrashBallInput;
         public InputAction @MouseMoveInput => m_Wrapper.m_Default_MouseMoveInput;
         public InputAction @MouseDeltaInput => m_Wrapper.m_Default_MouseDeltaInput;
+        public InputAction @InteractionInput => m_Wrapper.m_Default_InteractionInput;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -347,6 +425,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseDeltaInput.started += instance.OnMouseDeltaInput;
             @MouseDeltaInput.performed += instance.OnMouseDeltaInput;
             @MouseDeltaInput.canceled += instance.OnMouseDeltaInput;
+            @InteractionInput.started += instance.OnInteractionInput;
+            @InteractionInput.performed += instance.OnInteractionInput;
+            @InteractionInput.canceled += instance.OnInteractionInput;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -372,6 +453,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseDeltaInput.started -= instance.OnMouseDeltaInput;
             @MouseDeltaInput.performed -= instance.OnMouseDeltaInput;
             @MouseDeltaInput.canceled -= instance.OnMouseDeltaInput;
+            @InteractionInput.started -= instance.OnInteractionInput;
+            @InteractionInput.performed -= instance.OnInteractionInput;
+            @InteractionInput.canceled -= instance.OnInteractionInput;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -398,5 +482,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnEscapeTrashBallInput(InputAction.CallbackContext context);
         void OnMouseMoveInput(InputAction.CallbackContext context);
         void OnMouseDeltaInput(InputAction.CallbackContext context);
+        void OnInteractionInput(InputAction.CallbackContext context);
     }
 }

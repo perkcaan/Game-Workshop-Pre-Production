@@ -20,11 +20,23 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     {
         base.Awake();
         _size = 0;
+        RecalculateSize(true);
+    }
+
+    private void OnValidate()
+    {
+        RecalculateSize(false);
+    }
+
+    private void RecalculateSize(bool printError)
+    {
+        _size = 0;
         foreach (GameObject trash in _startingStoredTrash)
         {
+            
             if(trash == null)
             {
-                Debug.Log(gameObject.name + " is missing trash");
+                if (printError) Debug.LogError(gameObject.name + " is missing trash");
                 break;
             }
             if (trash.TryGetComponent(out ICleanable cleanable))
@@ -47,7 +59,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     }
 
 
-    public void OnSwipe(Vector2 direction, float force)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
     {
         if (_isDestroyed) return;
         TakeDamage(3, direction, force);
@@ -55,9 +67,9 @@ public class TrashPile : Trash, ISweepable, ISwipeable
             ParticleManager.Instance.Play("swipe", transform.position, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), this.trashMaterial.color, transform);
     }
 
-    public override void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
+    public override bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (_isDestroyed) return;
+        if (_isDestroyed) return false;
         if (Size <= trashBall.Size)
         {
             ReleaseTrash(ballVelocity.normalized, ballVelocity.magnitude);
@@ -66,6 +78,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         {
             TakeDamage(3, ballVelocity.normalized, ballVelocity.magnitude);
         }
+        return false;
     }
 
     public void TakeDamage(int damage, Vector2 direction, float force)
@@ -101,7 +114,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
                  .SetLink(gameObject) 
                  .OnComplete(() => Destroy(gameObject));
 
-        SendScore?.Invoke(_pointValue);
+        ScoreBehavior.SendScore?.Invoke(_pointValue);
 
         float angleRadians = Mathf.Atan2(direction.y, direction.x);
         Quaternion rotation = Quaternion.Euler(0f, 0f, (angleRadians * Mathf.Rad2Deg)-45f);
@@ -121,7 +134,6 @@ public class TrashPile : Trash, ISweepable, ISwipeable
             {
                 _parentRoom.AddCleanableToRoom(cleanable);
             }
-            
             
             releasedTrash.transform.position = transform.position;
             if (direction != null)

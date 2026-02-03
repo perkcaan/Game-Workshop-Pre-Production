@@ -5,12 +5,18 @@ using UnityEngine.Events;
 
 public class DialogueTriggerTest : MonoBehaviour
 {
+    [SerializeField] private bool _shouldTriggerStartOnStart = false;
     [SerializeField] private UnityEvent _startDialogue;
     [SerializeField] private UnityEvent _forceEndDialogue;
     [SerializeField] private UnityEvent _chooseChoice;
     [SerializeField] private UnityEvent _goToPath;
     [SerializeField] private UnityEvent _forceToPath;
     [SerializeField] private UnityEvent _setDialogue;
+
+    private void Start()
+    {
+        if (_shouldTriggerStartOnStart) _startDialogue?.Invoke();
+    }
 
     [ContextMenu("Trigger Start Dialogue")]
     private void TriggerStartDialogue()

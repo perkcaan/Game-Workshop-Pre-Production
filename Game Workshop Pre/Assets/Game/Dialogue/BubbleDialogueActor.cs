@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Ink.Runtime;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,6 +15,12 @@ public class BubbleDialogueActor : MonoBehaviour
     private BubbleDialogue _dialogue;
     private Story _story;
     private bool _isInDialogue = false;
+
+    private Animator _animator;
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+    }
 
     public void SetDialogue(TextAsset newAsset)
     {
@@ -29,6 +36,7 @@ public class BubbleDialogueActor : MonoBehaviour
         if (_isInDialogue || _dialogue != null)
         {
             _isInDialogue = false;
+            _animator.SetBool("inDialogue", false);
             _dialogue.End();
             _story = null;
             _dialogue = null;
@@ -49,11 +57,13 @@ public class BubbleDialogueActor : MonoBehaviour
         if (_story.canContinue)
         {
             _isInDialogue = true;
+            _animator.SetBool("inDialogue", true);
             _dialogue.Write(_story.Continue(), NextDialogueLine);
         } else
         {
             _dialogue.Close();
             _isInDialogue = false;
+            _animator.SetBool("inDialogue", false);
             if (_story.currentChoices.Count > 0)
             {
                 

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters;
+using DG.Tweening;
 using Ink.Parsed;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
@@ -22,10 +23,6 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         get { return _speedModifier; }
         set { _speedModifier = value; } 
     } 
-    [SerializeField] private int _size;
-    public int Size { get { return _size; } }
-    [SerializeField] protected float _minSizeToAbsorb;
-    [SerializeField] protected float _minVelocityToAbsorb;
     [SerializeField] private bool _shouldFlipSprite = false;
     [SerializeField, Range(0,360)] protected float _facingRotation = 270f;
     public float FacingRotation { 
@@ -38,6 +35,18 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             FlipSpriteIfNeeded();
         }
     }
+
+    [Header("Absorbed Properties")]
+    [SerializeField] private int _size;
+    public int Size { get { return _size; } }
+    [SerializeField] private TrashMaterial _trashMaterial;
+    public TrashMaterial TrashMat { get { return _trashMaterial; } }
+    [SerializeField] private int _trashMaterialWeight = 1;
+    public int TrashMatWeight { get { return _trashMaterialWeight; } }
+
+    [SerializeField] protected float _minSizeToAbsorb;
+    [SerializeField] protected float _minVelocityToAbsorb;
+    [SerializeField] private float _trashBallExplosionMultiplier = 1f;
 
     // Components
     protected Animator _animator;
@@ -58,6 +67,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     // Fields
     private bool _isDying = false;
+    private bool _isAbsorbed = false;
 
     // external methods (use in specific enemies!)
     protected abstract void OnStart();
@@ -84,6 +94,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     private void Update()
     {
         if (_isDying) return;
+        if (_isAbsorbed) return;
 
         if (_behaviour != null)
         {
@@ -152,13 +163,14 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     {
         _isDying = true;
         _pather.Stop();
+        StopAllCoroutines();
     }
 
 
     public void OnIgnite(HeatMechanic heat)
     {
         if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
-        AudioManager.Instance.PlayOnInstance(this.gameObject,"enemyDeath");
+        AudioManager.Instance.PlayOnInstance(gameObject,"enemyDeath");
 
         OnDestroy?.Invoke();
         Destroy(gameObject);
@@ -166,13 +178,37 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
 
     // IAbsorbable
-    public void OnTrashBallExplode(TrashBall trashBall)
+
+    public bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        gameObject.SetActive(true);
-        transform.position = trashBall.transform.position;
+        if (_isDying) return false;
+        if (forcedAbsorb || (ballSize > _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled))
+        {
+            StopAllCoroutines();
+            _isAbsorbed = true;
+            _rigidbody.simulated = false;
+            return true;
+        }
+        return false;
     }
 
-    public void OnTrashBallIgnite()
+    public void OnTrashBallRelease(TrashBall trashBall)
+    {
+        _isAbsorbed = false;
+
+        gameObject.SetActive(true);
+        transform.localScale = Vector3.zero;
+        transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
+
+        Rigidbody.simulated = true;
+        transform.position = trashBall.transform.position;
+
+        float explosionForce = (float)(Math.Sqrt(trashBall.Size) * _trashBallExplosionMultiplier);
+        Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
+        Rigidbody.velocity = randomForce;
+    }
+
+    public void OnTrashBallDestroy()
     {
         if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
 
@@ -180,16 +216,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         Destroy(gameObject);
     }
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
-    {
-        if (_isDying) return;
-        if (forcedAbsorb || (ballSize > _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled))
-        {
-            gameObject.SetActive(false);
-            trashBall.absorbedObjects.Add(this);
-        }
-    }
-    
+
+    // ICleanable
     public void SetRoom(Room room)
     {
         _parentRoom = room;
