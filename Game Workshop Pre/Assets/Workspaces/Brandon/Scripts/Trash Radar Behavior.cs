@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class TrashRadar : MonoBehaviour
 {
 
-    private TrashRadar _instance;
+    void Start()
+    {
+    }
+}
+
+   /*private TrashRadar _instance;
     public TrashRadar Instance
     {
         get { return _instance; }
@@ -67,6 +73,4 @@ public class TrashRadar : MonoBehaviour
         float pointerAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         gameObject.transform.rotation = Quaternion.Euler(0.0f,0.0f, pointerAngle - 90);
         sweepableObjects.Enqueue(nearestItem, distance);
-    }
-
-}
+    }*/
