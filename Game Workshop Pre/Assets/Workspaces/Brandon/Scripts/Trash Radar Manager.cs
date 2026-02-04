@@ -18,6 +18,8 @@ public class TrashRadarManager : MonoBehaviour
         private set { _targetList = value; }
     }
 
+    protected Heap heap = new Heap();
+
     void Start()
     {
         if (Instance != null && Instance != this)
@@ -101,6 +103,8 @@ public class TrashRadarManager : MonoBehaviour
             Location = NodeObject.transform.position;
             Distance = Vector3.Distance(Location, _radarObject.transform.position);
             CompareDistances(Distance, LeftChild, RightChild);
+            if (Parent == null)
+                Instance.heap.MakeHead(this);
         }
 
         private void CompareDistances(float distance, Node LeftChild, Node RightChild)
@@ -141,15 +145,15 @@ public class TrashRadarManager : MonoBehaviour
         private Node _tailNode;
         private int _depth;
         private Node[] depthQueue;
-        private int nodeNumber;
+        private static int nodeNumber;
         
-        protected List<Node> TargetsList
+        public List<Node> TargetsList
         {
             get { return _targets; }
             private set { _targets = value; }
         }
 
-        protected Node Head
+        public Node Head
         {
             get { return _headNode; }
             private set { _headNode = value; }
@@ -181,16 +185,31 @@ public class TrashRadarManager : MonoBehaviour
                 nodeNumber++;
                 return;
             }
-            
+
             if (nodeNumber == depthQueue.Length)
             {
-                Node[] tempQueue = new Node[nodeNumber * 2];
-                //self reminder Creating a queue to determine Tail Node:
+                ConstructNewQueue();
+                nodeNumber = 0;
+                InsertNode(Tail);
             }
 
+            MakeTail(depthQueue[++nodeNumber]);
+            InsertNode(Tail);
         }
 
-        void MakeHead(Node node)
+        void ConstructNewQueue()
+        {
+            Node[] tempQueue = new Node[nodeNumber * 2];
+            for (int i = depthQueue.Length; i > 0; i--)
+            {
+                tempQueue[(i * 2) - 1] = depthQueue[i - 1].RightChild;
+                tempQueue[(i * 2) - 2] = depthQueue[i - 1].LeftChild;
+            }
+            depthQueue = tempQueue;
+            MakeTail(depthQueue[0]);
+        }
+
+        public void MakeHead(Node node)
         {
             Head = node;
         }
