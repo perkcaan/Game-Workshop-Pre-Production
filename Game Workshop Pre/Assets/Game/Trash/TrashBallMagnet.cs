@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class TrashBallMagnet : MonoBehaviour
 {
-    public TrashBall parentTrashBall;
-    void Awake()
+    private TrashBall _parentTrashBall;
+
+    private void Awake()
     {
-        parentTrashBall = GetComponentInParent<TrashBall>();
+        _parentTrashBall = GetComponentInParent<TrashBall>();
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D collider)
     {
-        parentTrashBall.MagnetCollide(other);
+        _parentTrashBall.OnMagnetStay(collider);
     }
 }

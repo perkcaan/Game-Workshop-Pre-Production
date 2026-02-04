@@ -27,6 +27,8 @@ public class ScoreBehavior : MonoBehaviour
     [SerializeField] float textSizeChange;
     [SerializeField] float delayBeforeTickingDown;
 
+    public static Action<int> SendScore; // Send score through here
+
     private readonly string BST = "+";
     private readonly string CST = "Score: ";
     private readonly float DEFAULT_BONUS_BAR_TIMER = 15f;
@@ -49,9 +51,7 @@ public class ScoreBehavior : MonoBehaviour
         timeLeft = 0;
 
         resetBonus += ResetBonus;
-        Trash.SendScore += IncreaseScore;
-        BaseEnemy.SendScore += IncreaseScore;
-        TrashBall.SendScore += IncreaseScore;
+        SendScore += IncreaseScore;
         PlayerMovementController.playerDeath = LoseBonusScore;
 
         bonusTable.Columns.Add("Threshold", typeof(int));

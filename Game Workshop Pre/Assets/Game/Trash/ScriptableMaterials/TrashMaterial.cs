@@ -13,8 +13,7 @@ public class TrashMaterial : ScriptableObject
     public float decayMultiplier;
     public float damageMultiplier;
     public float swipeForceMultiplier;
-    public float knockbackMultiplier;
-    public float sizeToAbsorbChange;
+    public float ballMaxHealthChange;
 
     public virtual void materialEnd(TrashBall trashBall) { }
     public virtual void whenBallRolls(TrashBall trashBall, TrashMaterialAmount amount) { }
