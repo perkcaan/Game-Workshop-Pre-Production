@@ -18,13 +18,14 @@ public class ShaderManager : MonoBehaviour
     [Tooltip("The width of the 'burn' effect on the dissolve animation.")]
     [SerializeField] private float _dissolveBurnWidth = 0.4f;
     [Tooltip("The time it takes to sink in lava.")]
-    [SerializeField] private float _sinkTime = 3.0f;
+    [SerializeField] private float _height = 1.0f;
     [Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
     [SerializeField] private Texture _meshTexture;
 
     private float _flashPhase = 0f; // This is the time spent in the heat warning threshold.
     private MaterialPropertyBlock _block;
     private Coroutine _dissolveCoroutine;
+    private Coroutine _lavaCoroutine;
 
     private void Awake()
     {
@@ -116,18 +117,32 @@ public class ShaderManager : MonoBehaviour
         onDone?.Invoke();
     }
 
-    public void SinkInLava()
+    //Called on lava script
+    public void SinkInLava(Action onDone = null)
+    {
+        if (_lavaCoroutine != null)
+        {
+            StopCoroutine(_lavaCoroutine);
+        }
+
+        _lavaCoroutine = StartCoroutine(LavaCoroutine(onDone));
+    }
+
+    private IEnumerator LavaCoroutine(Action onDone)
     {
         float time = 0f;
 
-        while (time < _sinkTime)
+        while (time < 3f)
         {
-            float depth = time / _sinkTime;
-            SetFloatProperties("_height", depth);
+            float height = time / 3f;
+            SetFloatProperties("_height", height);
             time += Time.deltaTime;
-
+            yield return null;
         }
 
+        SetFloatProperties("_height", 1);
 
+        _lavaCoroutine = null;
+        onDone?.Invoke();
     }
 }
