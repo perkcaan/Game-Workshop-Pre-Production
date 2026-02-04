@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject inventoryMenuUI;
     public GameObject optionsMenuUI;
+    [SerializeField] public Slider[] _pauseSliders;
+    private SettingsMenuBehavior _behavior;
 
     private FMOD.Studio.EventInstance _music;
 
@@ -21,6 +24,8 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         Resume();
+        
+        //_pauseSliders[0].value = _behavior._menuSliders[0].value;
         _music = RuntimeManager.CreateInstance("event:/Music/Hellish Sample");
         _music.start();
 
