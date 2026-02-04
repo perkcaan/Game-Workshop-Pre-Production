@@ -9,7 +9,6 @@ public class CollectableItem : MonoBehaviour
 {
     // Item is the item that ends up in the inventory, CollectableItem is the prefab in the world
     public Item item;
-    [SerializeField] ObjectGate[] linkedGates;
     
     [Header("Sparkle Effects")]
     [SerializeField] float sparkleRotationSpeed;
@@ -36,7 +35,6 @@ public class CollectableItem : MonoBehaviour
         {
             isCollected = true;
             Sequence sequence = DOTween.Sequence();
-            linkedGates.ToList().ForEach(gate => gate.SetGates(false));
             sequence.Append(transform.DOScale(new Vector3(1.2f, 1.2f, 1), 0.4f).SetEase(Ease.OutQuad));
             sequence.Append(transform.DOScale(new Vector3(0f, 0f, 1), 0.3f).SetEase(Ease.OutQuad));
             sequence.OnComplete(OnCollect);

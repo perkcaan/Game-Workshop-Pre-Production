@@ -19,9 +19,9 @@ public class TargetObject : MonoBehaviour
     {
         // Check that object is Trash Ball
         // and that its Size and Speed are equal to or exceed the Target Object's
-        if (collision.gameObject.GetComponent<TrashBall>() == true)
+        if (collision.GetComponent<TrashBall>() == true)
         {
-            if (collision.gameObject.GetComponent<TrashBall>().Size >= requiredSize 
+            if (collision.GetComponent<TrashBall>().Size >= requiredSize 
                 && Vector3.Magnitude(collision.gameObject.GetComponent<Rigidbody2D>().velocity) >= requiredVelocity)
             {
                 Destroy(gameObject);

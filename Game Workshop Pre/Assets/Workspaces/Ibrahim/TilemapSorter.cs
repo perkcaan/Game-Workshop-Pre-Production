@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TileSorter : MonoBehaviour
+public class TileSorter : StaticInstance<TileSorter>
 {
     [Header("Tilemaps")]
     public Tilemap unsortedTilemap; 
@@ -20,6 +20,7 @@ public class TileSorter : MonoBehaviour
     public List<TileBase> decorationTiles;
 
     [ContextMenu("Sort All Tiles")]
+
     public void SortTiles()
     {
         BoundsInt bounds = unsortedTilemap.cellBounds;

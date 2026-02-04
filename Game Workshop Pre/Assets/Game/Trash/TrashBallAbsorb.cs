@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class TrashBallAbsorb : MonoBehaviour
 {
-    public TrashBall parentTrashBall;
-    void Awake()
+    private TrashBall _parentTrashBall;
+    
+    private void Awake()
     {
-        parentTrashBall = GetComponentInParent<TrashBall>();
+        _parentTrashBall = GetComponentInParent<TrashBall>();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        parentTrashBall.AbsorbCollide(other);
+        _parentTrashBall.OnAbsorbTrigger(collider);
     }
 }
