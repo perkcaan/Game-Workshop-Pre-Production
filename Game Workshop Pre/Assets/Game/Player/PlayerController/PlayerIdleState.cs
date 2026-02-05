@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class PlayerIdleState : BaseState<PlayerStateEnum>
@@ -56,13 +57,14 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
             {
                 _ctx.MoveSpeed = 0f;
                 // Cancels sliding with an opposing force
-                Vector2 velocity = _ctx.Rigidbody.velocity;
-                if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxWalkSpeed) && _ctx.Props.WillCancelSlide)
+                Vector2 velocity = _ctx.Rigidbody.velocity;        
+                if ((velocity.magnitude > 0.1f) && (velocity.magnitude < _ctx.MaxWalkSpeed) && _ctx.Props.WillCancelSlide)
                 {
                     Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxWalkSpeed;
-                    _ctx.FrameVelocity = fullCancelForce;
+                    _ctx.FrameVelocity = Vector2.ClampMagnitude(fullCancelForce, (-velocity * _ctx.Rigidbody.mass / Time.fixedDeltaTime).magnitude);
                     return;
                 }
+
             }
         }
 

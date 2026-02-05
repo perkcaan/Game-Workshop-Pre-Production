@@ -114,7 +114,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
                 if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxSwipeWalkSpeed) && _ctx.Props.WillCancelSwipeSlide)
                 {
                     Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxSwipeWalkSpeed;
-                    _ctx.FrameVelocity = fullCancelForce;
+                    _ctx.FrameVelocity = Vector2.ClampMagnitude(fullCancelForce, (-velocity * _ctx.Rigidbody.mass / Time.fixedDeltaTime).magnitude);
                     return;
                 }
             }

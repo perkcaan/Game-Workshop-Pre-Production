@@ -75,7 +75,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
                 if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxSweepWalkSpeed) && _ctx.Props.WillCancelSweepSlide)
                 {
                     Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxSweepWalkSpeed;
-                    _ctx.FrameVelocity = fullCancelForce;
+                    _ctx.FrameVelocity = Vector2.ClampMagnitude(fullCancelForce, (-velocity * _ctx.Rigidbody.mass / Time.fixedDeltaTime).magnitude);
                     return;
                 }
             }
