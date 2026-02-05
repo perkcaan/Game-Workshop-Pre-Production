@@ -7,18 +7,23 @@ using UnityEngine;
 
 public class SizeLabel : MonoBehaviour
 {
-    private TMP_Text _text;
+    [SerializeField] private TMP_Text _text;
     private bool _startVisible;
 
     private void Awake()
     {
-        _text = GetComponent<TMP_Text>();
         if (!_startVisible) Hide();
     }
 
     public void UpdateSizeLabel(int size)
     {
-        _text.text = size.ToString();
+        string text = size.ToString();
+        _text.text = text;
+    }
+
+    public void SetColor(Color color)
+    {
+        _text.color = color;
     }
 
     public void Hide()
