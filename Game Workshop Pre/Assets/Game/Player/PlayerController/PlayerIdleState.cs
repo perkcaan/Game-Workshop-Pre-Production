@@ -45,17 +45,24 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
         if (input.sqrMagnitude > 0.01f)
         {
             _zeroMoveTimer = 0f;
-            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxWalkSpeed, _ctx.Acceleration * Time.deltaTime);
+            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxWalkSpeed, _ctx.Acceleration * Time.fixedDeltaTime);
         }
         else
         {
-            if (_zeroMoveTimer < 0.05)
+            if (_zeroMoveTimer < 0.02)
             {
                 _zeroMoveTimer += Time.deltaTime;
-            }
-            if (_zeroMoveTimer >= 0.05)
+            } else
             {
                 _ctx.MoveSpeed = 0f;
+                // Cancels sliding with an opposing force
+                Vector2 velocity = _ctx.Rigidbody.velocity;
+                if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxWalkSpeed) && _ctx.Props.WillCancelSlide)
+                {
+                    Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxWalkSpeed;
+                    _ctx.FrameVelocity = fullCancelForce;
+                    return;
+                }
             }
         }
 
