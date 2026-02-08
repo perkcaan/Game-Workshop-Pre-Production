@@ -182,11 +182,16 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
         if (_isDying) return false;
+
         if (forcedAbsorb || (ballSize > _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled))
         {
             StopAllCoroutines();
             _isAbsorbed = true;
             _rigidbody.simulated = false;
+
+            if (forcedAbsorb) return true;
+            PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
+            
             return true;
         }
         return false;

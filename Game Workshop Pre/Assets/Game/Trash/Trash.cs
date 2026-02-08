@@ -69,13 +69,16 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     public virtual bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
         if (_isDestroyed) return false;
-
-        if (!forcedAbsorb)
+        
+        if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled && _rigidBody.simulated))
         {
+            GivePoints();
+            _rigidBody.simulated = false;
+            if (forcedAbsorb) return true;
+            
             Vector2 direction = transform.position - trashBall.transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);
-            
+            Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);    
             if (Size > 4)
             {
                 ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1.5f);
@@ -83,12 +86,9 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
             {
                 ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1f);
             }
-        }
-        
-        if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled && _rigidBody.simulated))
-        {
-            GivePoints();
-            _rigidBody.simulated = false;
+            
+            PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
+            
             return true;
         }
         return false;
