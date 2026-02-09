@@ -6,23 +6,43 @@ using FMOD.Studio;
 using AYellowpaper.SerializedCollections;
 using static UnityEngine.ParticleSystem;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 
 
 public class AudioManager : Singleton<AudioManager>
 {
+    
 
     [SerializedDictionary("Sound Code", "FMODEVent")]
     [SerializeField] private AYellowpaper.SerializedCollections.SerializedDictionary<string, EventReference> _sounds;
+
+    [SerializedDictionary("Bus Name", "Bus Path")]
+    [SerializeField] private AYellowpaper.SerializedCollections.SerializedDictionary<string, Bus> _buses;
     private EventReference eventRef;
     private EventInstance parent = new EventInstance();
 
+    public Bus _masterBus;
+    public Bus _sfxBus;
+    public Bus _musicBus;
 
-    //private void Awake()
-    //{
+    
 
-    //    DontDestroyOnLoad(this.gameObject);
-    //}
+    
+
+
+    public void Start()
+    {
+        _masterBus = RuntimeManager.GetBus("bus:/");
+        _musicBus = RuntimeManager.GetBus("bus:/SFX");
+        _sfxBus = RuntimeManager.GetBus("bus:/MUSIC");
+
+        _buses["Master"] = _masterBus;
+        _buses["Music"] = _musicBus;
+        _buses["SFX"] = _sfxBus;
+
+        
+    }
     public void Play(string sCode, Transform position)
     {
         //bool instance = false;
@@ -134,6 +154,22 @@ public class AudioManager : Singleton<AudioManager>
         }
 
         
+    }
+
+    public void ModifyBusVolume(Slider busSlider, string attachedBus)
+    {
+
+        if (_buses.TryGetValue(attachedBus, out Bus currentBus))
+        {
+            _buses[attachedBus] = currentBus;
+            currentBus.setVolume(busSlider.value);
+        }
+        
+        
+        
+        
+
+
     }
 }
 

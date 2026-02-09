@@ -20,12 +20,17 @@ public class PauseMenu : MonoBehaviour
     void Awake()
     {
         OpenInventory();
+        _pauseSliders[0].value = 1;
+        _pauseSliders[1].value = 1;
+        _pauseSliders[2].value = 1;
+
+
     }
     void Start()
     {
         Resume();
         
-        //_pauseSliders[0].value = _behavior._menuSliders[0].value;
+        
         _music = RuntimeManager.CreateInstance("event:/Music/Hellish Sample");
         _music.start();
 
@@ -40,6 +45,8 @@ public class PauseMenu : MonoBehaviour
                 Pause();
                 
 
+                
+
             }
             else
             {
@@ -47,6 +54,9 @@ public class PauseMenu : MonoBehaviour
                 
             }
         }
+        AudioManager.Instance.ModifyBusVolume(_pauseSliders[0], "Master");
+        AudioManager.Instance.ModifyBusVolume(_pauseSliders[1], "SFX");
+        AudioManager.Instance.ModifyBusVolume(_pauseSliders[2], "Music");
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -74,6 +84,7 @@ public class PauseMenu : MonoBehaviour
     public void OpenOptions()
     {
         ChangeMenu(optionsMenuUI);
+
     }
     
     public void Restart()

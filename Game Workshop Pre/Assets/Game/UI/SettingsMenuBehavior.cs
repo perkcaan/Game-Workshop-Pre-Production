@@ -26,10 +26,13 @@ public class SettingsMenuBehavior : MonoBehaviour
         _menuSliders[1].value = 1f;
         _menuSliders[2].value = 1f;
 
-        RuntimeManager.PlayOneShot("event:/Music/Title Music");
         _masterBus = RuntimeManager.GetBus("bus:/");
         _musicBus = RuntimeManager.GetBus("bus:/SFX");
         _sfxBus = RuntimeManager.GetBus("bus:/MUSIC");
+
+        
+        
+        
     }
 
     void Update()
@@ -40,9 +43,14 @@ public class SettingsMenuBehavior : MonoBehaviour
             settingsMenu.SetActive(false);
         }
 
-        _masterBus.setVolume(_menuSliders[0].value);
-        _musicBus.setVolume(_menuSliders[2].value);
-        _sfxBus.setVolume(_menuSliders[1].value);
+       
+        AudioManager.Instance.ModifyBusVolume(_menuSliders[0], "Master");
+        AudioManager.Instance.ModifyBusVolume(_menuSliders[1], "SFX");
+        AudioManager.Instance.ModifyBusVolume(_menuSliders[2], "Music");
+
+        //_masterBus.setVolume(_menuSliders[0].value);
+        //_musicBus.setVolume(_menuSliders[2].value);
+        //_sfxBus.setVolume(_menuSliders[1].value);
     }
 
     public void OnReturnButtonPressed()
