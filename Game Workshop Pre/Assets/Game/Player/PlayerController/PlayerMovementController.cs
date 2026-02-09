@@ -54,7 +54,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public int SwipeVisualLineSegments { get { return _swipeVisualLineSegments; } }
 
     [Header("Audio")]
-    [SerializeField] private float _footstepCooldown = 0f;
+    private float _footstepCooldown = 0f; // this is used for particles
     private FMOD.Studio.EventInstance _heatSound;
 
 
@@ -248,7 +248,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             _footstepCooldown -= Time.deltaTime;
             if (_footstepCooldown <= 0f)
             {
-                ParticleManager.Instance.Play("PlayerStepDust", transform.position);
+                ParticleManager.Instance.Play("PlayerStepDust", transform.position, parent:_ctx.Player.transform);
                 AudioManager.Instance.Play("Steps", transform.position);
                 _footstepCooldown = 0.3f;
             }

@@ -19,7 +19,7 @@ public class LavaParticleManager : MonoBehaviour
         }
     }
 
-    void Update()
+void Update()
     {
         float height = 2f * mainCam.orthographicSize;
         float width = height * mainCam.aspect;
@@ -38,8 +38,7 @@ public class LavaParticleManager : MonoBehaviour
             }
         }
     }
-
-    void SpawnRandomLavaPop(Vector2 minBound, Vector2 maxBound)
+void SpawnRandomLavaPop(Vector2 minBound, Vector2 maxBound)
     {
         float randX = Random.Range(minBound.x, maxBound.x);
         float randY = Random.Range(minBound.y, maxBound.y);
@@ -51,11 +50,23 @@ public class LavaParticleManager : MonoBehaviour
         {
             if (Random.value < bubbleChance)
             {
-                ParticleManager.Instance.Play("LavaBubble", lavaTilemap.GetCellCenterWorld(cellPos) + (Vector3)Random.insideUnitCircle * 0.2f);
+                bool hasRight = lavaTilemap.HasTile(cellPos + Vector3Int.right);
+                bool hasUp   = lavaTilemap.HasTile(cellPos + Vector3Int.up);
+                bool hasLeft  = lavaTilemap.HasTile(cellPos + Vector3Int.left);
+                bool hasDown  = lavaTilemap.HasTile(cellPos + Vector3Int.down);
+                if (hasRight && hasUp && hasLeft && hasDown) // this is to make sure that the lava bubbles only spawns in big lava pools
+                {
+                    ParticleManager.Instance.Play("LavaBubble", lavaTilemap.GetCellCenterWorld(cellPos));
+                }
+                else
+                {
+                    ParticleManager.Instance.Play("LavaAmbient", lavaTilemap.GetCellCenterWorld(cellPos));
+                    ParticleManager.Instance.Play("CinderBeads", lavaTilemap.GetCellCenterWorld(cellPos));
+                }
             }
             else
             {
-                ParticleManager.Instance.Play("LavaAmbient", lavaTilemap.GetCellCenterWorld(cellPos) + (Vector3)Random.insideUnitCircle * 0.2f);
+                ParticleManager.Instance.Play("LavaAmbient", lavaTilemap.GetCellCenterWorld(cellPos));
             }
         }
     }

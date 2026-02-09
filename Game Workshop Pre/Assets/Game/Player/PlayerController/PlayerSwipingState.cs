@@ -76,7 +76,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     {
         int rotation = Mathf.RoundToInt(_ctx.Rotation/45f)*45;
         Quaternion burstRotation = Quaternion.Euler(0, 0, rotation-90);
-        ParticleManager.Instance.Play("PlayerSwipeDust", _ctx.Player.transform.position, burstRotation, Color.white, _ctx.Player.transform);
+        ParticleManager.Instance.Play("PlayerSwipeDust", _ctx.Player.transform.position, burstRotation, parent:_ctx.Player.transform);
 
         _ctx.Animator.SetBool("Swiping", true);
         _ctx.Animator.SetBool("HoldingSwipe", false);

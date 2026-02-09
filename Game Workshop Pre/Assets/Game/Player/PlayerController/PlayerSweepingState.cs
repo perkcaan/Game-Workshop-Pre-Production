@@ -8,7 +8,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     // Context & State
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
-
+    private float _dustParticleCooldown = 0f;
     // Fields
     //movement
     private float _zeroMoveTimer = 0f;
@@ -32,6 +32,12 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
 
     public override void Update()
     {
+        _dustParticleCooldown -= Time.deltaTime;
+        if (_dustParticleCooldown <= 0f)
+        {
+            ParticleManager.Instance.Play("PlayerSweepDust", _ctx.Player.transform.position, Quaternion.Euler(0, 0, _ctx.Rotation), parent:_ctx.Player.transform);
+            _dustParticleCooldown = 0.3f;
+        }
         HandleMovement();
         HandleRotation();
         float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;

@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.79607844, g: 0.79607844, b: 0.79607844, a: 1}
+      maxColor: {r: 0.745283, g: 0.73209995, b: 0.7136436, a: 0.56078434}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1358,7 +1358,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 0
+    enabled: 1
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -1383,17 +1383,17 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 65535
-        atime2: 0
+        atime1: 46646
+        atime2: 65535
         atime3: 0
         atime4: 0
         atime5: 0
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_ColorSpace: -1
+        m_ColorSpace: 0
         m_NumColorKeys: 2
-        m_NumAlphaKeys: 2
+        m_NumAlphaKeys: 3
       minGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1545,12 +1545,10 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 1445054834, guid: 4b272ae3ed656ae49898b502bd1fed63, type: 3}
-    - sprite: {fileID: 34975912, guid: 4b272ae3ed656ae49898b502bd1fed63, type: 3}
-    - sprite: {fileID: -839999416, guid: 4b272ae3ed656ae49898b502bd1fed63, type: 3}
-    - sprite: {fileID: 1459920530, guid: 4b272ae3ed656ae49898b502bd1fed63, type: 3}
-    - sprite: {fileID: 907368925, guid: 4b272ae3ed656ae49898b502bd1fed63, type: 3}
-    - sprite: {fileID: -1292988840, guid: 4b272ae3ed656ae49898b502bd1fed63, type: 3}
+    - sprite: {fileID: -1740985667, guid: 1a778be1031e31548abccf3a2e176ec5, type: 3}
+    - sprite: {fileID: -641032415, guid: 1a778be1031e31548abccf3a2e176ec5, type: 3}
+    - sprite: {fileID: -1931668042, guid: 1a778be1031e31548abccf3a2e176ec5, type: 3}
+    - sprite: {fileID: -1009837564, guid: 1a778be1031e31548abccf3a2e176ec5, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -2145,7 +2143,7 @@ ParticleSystem:
     m_Curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: -0.2
       minScalar: 0
       maxCurve:
         serializedVersion: 2
