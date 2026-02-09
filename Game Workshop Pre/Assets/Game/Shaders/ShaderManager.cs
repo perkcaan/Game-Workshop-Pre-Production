@@ -22,6 +22,13 @@ public class ShaderManager : MonoBehaviour
     [Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
     [SerializeField] private Texture _meshTexture;
 
+    [SerializeField] private float sinkSpeed = 0.3f;
+    [SerializeField] private float maxHeight = 1f;
+
+    private float currentHeight = 0f;
+    private bool inLava = false;
+    private bool sinkComplete = false;
+
     private float _flashPhase = 0f; // This is the time spent in the heat warning threshold.
     private MaterialPropertyBlock _block;
     private Coroutine _dissolveCoroutine;
@@ -31,6 +38,7 @@ public class ShaderManager : MonoBehaviour
     {
         if (_renderers.Count <= 0) _renderers.Add(GetComponent<Renderer>());
         DOTween.Init(true, true, LogBehaviour.ErrorsOnly); 
+
     }
     private void Start()
     {
@@ -46,6 +54,7 @@ public class ShaderManager : MonoBehaviour
             renderer.SetPropertyBlock(_block);
         }
     }
+
     
     public void Reset()
     {
@@ -54,6 +63,38 @@ public class ShaderManager : MonoBehaviour
         SetFloatProperties("_FlashPhase", _flashPhase);
         SetFloatProperties("_Dissolve", 0f);
     }
+
+    private void Update()
+    {
+        if (!inLava || sinkComplete) return;
+
+        currentHeight += sinkSpeed * Time.deltaTime;
+        currentHeight = Mathf.Clamp01(currentHeight);
+
+
+
+        if (currentHeight >= 1f)
+        {
+            currentHeight = 0f;
+            sinkComplete = true;
+        }
+
+        SetFloatProperties("_Height", currentHeight);
+    }
+
+    public void SetInLava(bool value)
+    {
+        if (sinkComplete) return;
+
+        inLava = value;
+
+        if (!value)
+        {
+            currentHeight = 0f;
+            SetFloatProperties("_height", 0f);
+        }
+    }
+
 
 
     // Have this be called from HeatMechanic
@@ -134,7 +175,7 @@ public class ShaderManager : MonoBehaviour
 
         while (time < 3f)
         {
-            float height = time / 3f;
+            float height = time;
             SetFloatProperties("_height", height);
             time += Time.deltaTime;
             yield return null;

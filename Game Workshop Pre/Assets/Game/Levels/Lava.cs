@@ -43,12 +43,13 @@ public class Lava : MonoBehaviour
             // otherwise... burn them to a crisp
             heat.ModifyHeat(_heatPerSecond * Time.fixedDeltaTime);
 
-           
-            if (collider.TryGetComponent(out ShaderManager _shaderManager))
+
+            if (collider.GetComponentInChildren<ShaderManager>() is ShaderManager shaderManager)
             {
-                _shaderManager.SinkInLava();
                 Debug.Log("Sink!");
+                shaderManager.SetInLava(true);
             }
+
         }
     }
 
@@ -57,6 +58,12 @@ public class Lava : MonoBehaviour
         if (collider.TryGetComponent(out GroundedMechanic gm))
         {
             _delayTimer = 0f;
+        }
+
+        var shaderManager = collider.GetComponentInParent<ShaderManager>();
+        if (shaderManager != null)
+        {
+            shaderManager.SetInLava(false);
         }
     }
 }
