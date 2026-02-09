@@ -134,7 +134,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,Color.white, transform);
+                ParticleManager.Instance.Play("StarWave", transform.position, parent:transform, force:0.5f);
                 AudioManager.Instance.Play("dashBack", transform.position);
             }
         }
