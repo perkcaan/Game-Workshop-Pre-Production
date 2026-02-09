@@ -22,10 +22,17 @@ public class SettingsMenuBehavior : MonoBehaviour
 
     private void Start()
     {
-        _menuSliders[0].value = 1f;
-        _menuSliders[1].value = 1f;
-        _menuSliders[2].value = 1f;
-
+        if (PlayerPrefs.HasKey("MasterVolume") && PlayerPrefs.HasKey("SFXVolume") && PlayerPrefs.HasKey("MusicVolume"))
+        {
+            _menuSliders[0].value = PlayerPrefs.GetFloat("MasterVolume");
+            _menuSliders[1].value = PlayerPrefs.GetFloat("SFXVolume");
+            _menuSliders[2].value = PlayerPrefs.GetFloat("MusicVolume");
+        }
+        else
+        {
+            
+        }
+        
         _masterBus = RuntimeManager.GetBus("bus:/");
         _musicBus = RuntimeManager.GetBus("bus:/SFX");
         _sfxBus = RuntimeManager.GetBus("bus:/MUSIC");
@@ -41,12 +48,21 @@ public class SettingsMenuBehavior : MonoBehaviour
         {
             settingsMenuClosed.Invoke(false);
             settingsMenu.SetActive(false);
+            
         }
 
        
-        AudioManager.Instance.ModifyBusVolume(_menuSliders[0], "Master");
-        AudioManager.Instance.ModifyBusVolume(_menuSliders[1], "SFX");
-        AudioManager.Instance.ModifyBusVolume(_menuSliders[2], "Music");
+        
+        
+        
+            AudioManager.Instance.ModifyBusVolume(_menuSliders[0], "Master");
+            AudioManager.Instance.ModifyBusVolume(_menuSliders[1], "SFX");
+            AudioManager.Instance.ModifyBusVolume(_menuSliders[2], "Music");
+        
+        
+
+        
+
 
         //_masterBus.setVolume(_menuSliders[0].value);
         //_musicBus.setVolume(_menuSliders[2].value);
@@ -56,6 +72,11 @@ public class SettingsMenuBehavior : MonoBehaviour
     public void OnReturnButtonPressed()
     {
         Debug.Log("Return Button Pressed");
+
+        PlayerPrefs.SetFloat("MasterVolume", _menuSliders[0].value);
+        PlayerPrefs.SetFloat("SFXVolume", _menuSliders[1].value);
+        PlayerPrefs.SetFloat("MusicVolume", _menuSliders[2].value);
+        PlayerPrefs.Save();
         settingsMenuClosed.Invoke(false);
         settingsMenu.SetActive(false);
     }
