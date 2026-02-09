@@ -358,5 +358,9 @@
 	</object>
 	<object class="MixerBusFader" id="{8d2470f6-743b-4d79-8caa-c8fa325a89f3}" />
 	<object class="SpatialiserEffect" id="{1980d7dc-c647-4abc-ac54-e059881f2e47}" />
-	<object class="SFXReverbEffect" id="{a50a8f0e-12cf-4935-9565-5557b031191b}" />
+	<object class="SFXReverbEffect" id="{a50a8f0e-12cf-4935-9565-5557b031191b}">
+		<property name="decayTime">
+			<value>1000</value>
+		</property>
+	</object>
 </objects>
