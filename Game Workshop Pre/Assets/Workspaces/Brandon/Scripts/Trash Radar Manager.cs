@@ -20,12 +20,12 @@ public class TrashRadarManager : MonoBehaviour
 
     protected Heap heap;
     private bool adding = false;
-    private CircleCollider2D _proxyCollider;
     [SerializeField] float proxyTimer = 5.0f;
     private float _pTimer;
     [SerializeField] GameObject radarPointer;
     private bool inProximity = false;
     private List<GameObject> _proximityList;
+
 
     void Awake()
     {
@@ -36,7 +36,6 @@ public class TrashRadarManager : MonoBehaviour
         }
         Instance = this;
         
-        _proxyCollider = GetComponent<CircleCollider2D>();
         _pTimer = proxyTimer;
         _proximityList = new List<GameObject>();
     }
