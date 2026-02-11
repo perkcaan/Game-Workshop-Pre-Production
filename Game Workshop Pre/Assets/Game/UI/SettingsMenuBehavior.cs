@@ -30,7 +30,9 @@ public class SettingsMenuBehavior : MonoBehaviour
         }
         else
         {
-            
+            _menuSliders[0].value = 1;
+            _menuSliders[1].value = 1;
+            _menuSliders[2].value = 1;
         }
         
         _masterBus = RuntimeManager.GetBus("bus:/");
