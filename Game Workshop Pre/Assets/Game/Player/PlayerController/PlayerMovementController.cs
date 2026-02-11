@@ -54,7 +54,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public int SwipeVisualLineSegments { get { return _swipeVisualLineSegments; } }
 
     [Header("Audio")]
-    [SerializeField] private float _footstepCooldown = 0f;
+    private float _footstepCooldown = 0f; // this is used for particles
     private FMOD.Studio.EventInstance _heatSound;
 
 
@@ -134,7 +134,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,Color.white, transform);
+                ParticleManager.Instance.Play("StarWave", transform.position, parent:transform, force:0.5f);
                 AudioManager.Instance.Play("dashBack", transform.position);
             }
         }
@@ -238,7 +238,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Rigidbody.AddForce(clampedForce, ForceMode2D.Force);
 
 
-        _ctx.Animator.SetFloat("Speed", _ctx.FrameVelocity.magnitude);
+        _ctx.Animator.SetFloat("Speed", _ctx.MovementInput.magnitude);
         _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
 
         
@@ -248,7 +248,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             _footstepCooldown -= Time.deltaTime;
             if (_footstepCooldown <= 0f)
             {
-                ParticleManager.Instance.Play("PlayerStepDust", transform.position);
+                ParticleManager.Instance.Play("PlayerStepDust", transform.position, parent:_ctx.Player.transform);
                 AudioManager.Instance.Play("Steps", transform.position);
                 _footstepCooldown = 0.3f;
             }
@@ -275,16 +275,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _weight = weight;
     }
 
-    [ContextMenu("Swipe")]
-    public void Swipe()
-    {
-        OnSwipe(Vector2.up, 30f, _ctx.Collider);
-    }
-
     // Being swiped puts you into tumble state
     public void OnSwipe(Vector2 direction, float force, Collider2D collider)
     {
-        if (force >= _movementProps.EnterTumbleThreshold) _state.ChangeState(PlayerStateEnum.Tumble);
+        //if (force >= _movementProps.EnterTumbleThreshold) _state.ChangeState(PlayerStateEnum.Tumble);
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 

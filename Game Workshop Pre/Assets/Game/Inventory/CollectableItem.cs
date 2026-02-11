@@ -35,6 +35,7 @@ public class CollectableItem : MonoBehaviour
         {
             isCollected = true;
             Sequence sequence = DOTween.Sequence();
+            ParticleManager.Instance.Play("StarWave", transform.position);
             sequence.Append(transform.DOScale(new Vector3(1.2f, 1.2f, 1), 0.4f).SetEase(Ease.OutQuad));
             sequence.Append(transform.DOScale(new Vector3(0f, 0f, 1), 0.3f).SetEase(Ease.OutQuad));
             sequence.OnComplete(OnCollect);

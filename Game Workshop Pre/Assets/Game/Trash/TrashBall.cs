@@ -437,6 +437,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             return;
         }
         AudioManager.Instance.ModifyParameter("TrashBall", _primaryTrashMaterial.name, highestPercent, "Global");
+
+        // Update label color
+        _label.SetColor(_primaryTrashMaterial.color);
     }
 
     // Resets trash material to base

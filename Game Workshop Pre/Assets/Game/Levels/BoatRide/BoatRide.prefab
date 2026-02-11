@@ -151,11 +151,12 @@ MonoBehaviour:
   rockAmount: 0.1
   rockSpeed: 0.5
   endPoint: {fileID: 8626739995198962032}
-  sparkle: {fileID: 219612740165771574}
-  sparkleRotationSpeed: 1
   _playerDepositY: 3
   _grabSpeed: 1
   playerJumpHeight: 1
+  arrow: {fileID: 219612740165771574}
+  arrowWaveHeight: 0.1
+  arrowWaveSpeed: 1
 --- !u!114 &6265420854262508003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,8 +227,8 @@ Transform:
   m_GameObject: {fileID: 7283980208081199689}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.036, z: 1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 870011300949498349}
@@ -273,10 +274,10 @@ SpriteRenderer:
   m_SortingLayerID: -1998719949
   m_SortingLayer: -1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 72537d1e4e5a5f4439e4cc71c63bb04d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.60784316}
+  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 0
   m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
