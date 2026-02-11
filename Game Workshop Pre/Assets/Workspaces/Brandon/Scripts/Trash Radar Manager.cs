@@ -18,10 +18,14 @@ public class TrashRadarManager : MonoBehaviour
         protected set { _closestCleanable = value; }
     }
 
-    private List<GameObject> cleanablesMaintainersList;
-
     protected Heap heap;
     private bool adding = false;
+    private CircleCollider2D _proxyCollider;
+    [SerializeField] float proxyTimer = 5.0f;
+    private float _pTimer;
+    [SerializeField] GameObject radarPointer;
+    private bool inProximity = false;
+    private List<GameObject> _proximityList;
 
     void Awake()
     {
@@ -31,12 +35,16 @@ public class TrashRadarManager : MonoBehaviour
             return;
         }
         Instance = this;
+        
+        _proxyCollider = GetComponent<CircleCollider2D>();
+        _pTimer = proxyTimer;
+        _proximityList = new List<GameObject>();
     }
 
     void Start()
     {
-        cleanablesMaintainersList = new List<GameObject>();
-        AddNewCleanables();
+        AddNewCleanables(true);
+        radarPointer.SetActive(false);
     }
 
     void Update()
@@ -44,14 +52,12 @@ public class TrashRadarManager : MonoBehaviour
         if (heap == null || heap.Head == null)
             return;
 
-        heap.PruneNullTargets();
+        bool removed = heap.PruneNullTargets();
 
         if (heap.Head == null)
             return;
 
-        Debug.Log(cleanablesMaintainersList.Count);
-        Debug.Log(heap.TargetsList.Count);
-        if (cleanablesMaintainersList.Count != heap.TargetsList.Count && !adding)
+        if (removed && !adding)
             StartCoroutine(AddCleanablesTickDown());
 
         heap.RefreshDistances();
@@ -66,76 +72,113 @@ public class TrashRadarManager : MonoBehaviour
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationDirection);
     }
 
-    void AddNewCleanables()
+    void AddNewCleanables(bool initial)
     {
+        if (!initial && !adding)
+            adding = true;
 
         GameObject[] allGameObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
 
         foreach (GameObject go in allGameObjects)
         {
-            
             Trash trashTester = go.GetComponent<Trash>();
             EnemyBase enemyTester = go.GetComponent<EnemyBase>();
+            TrashBall tbTester = go.GetComponent<TrashBall>();
 
-            if (trashTester == null && enemyTester == null)
+            if (trashTester == null && enemyTester == null && tbTester == null)
                 continue;
-
-            Node node = new Node(go, this.gameObject);
 
             if (heap != null && heap.TargetsList.Exists(n => n.NodeObject == go))
                 continue;
+
+            Node node = new Node(go, this.gameObject);
 
             if (heap == null)
                 heap = new Heap(node);
             else
                 heap.InsertNode(node);
-
-            cleanablesMaintainersList.Add(go);
         }
 
         if (heap != null)
             heap.Heapify();
     }
+
     IEnumerator AddCleanablesTickDown()
     {
+        if (adding)
+            yield break;
 
-        adding = true;
-        yield return StartCoroutine(AddCleanablesCorutine());
-        adding = false;
+        yield return StartCoroutine(AddCleanablesCoroutine(false));
     }
 
-    IEnumerator AddCleanablesCorutine()
+    IEnumerator AddCleanablesCoroutine(bool initial)
     {
-        cleanablesMaintainersList = new List<GameObject>();
-        GameObject[] allGameObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
-
-        foreach (GameObject go in allGameObjects)
-        {
-            
-            Trash trashTester = go.GetComponent<Trash>();
-            EnemyBase enemyTester = go.GetComponent<EnemyBase>();
-
-            if (trashTester == null && enemyTester == null)
-                continue;
-
-            Node node = new Node(go, this.gameObject);
-
-            cleanablesMaintainersList.Add(go);
-
-            if (heap != null && heap.TargetsList.Exists(n => n.NodeObject == go))
-                continue;
-
-            if (heap == null)
-                heap = new Heap(node);
-            else
-                heap.InsertNode(node);
-
-        }
-
-        if (heap != null)
-            heap.Heapify();
-
+        AddNewCleanables(initial);
+        adding = false;
         yield return new WaitForEndOfFrame();
+    }
+
+    IEnumerator StartProxyTimer()
+    {
+        while (_pTimer >+0f && !inProximity)
+        {
+            _pTimer -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        radarPointer.SetActive(true);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        GameObject go = other.gameObject;
+
+        Trash trashTester = go.GetComponent<Trash>();
+        EnemyBase enemyTester = go.GetComponent<EnemyBase>();
+        TrashBall tbTester = go.GetComponent<TrashBall>();
+
+        if (trashTester == null && enemyTester == null && tbTester == null)
+            return;
+        
+        if (!_proximityList.Contains(other.gameObject))
+            _proximityList.Add(other.gameObject);
+
+        inProximity = true;
+        radarPointer.SetActive(false);
+        _pTimer = proxyTimer;
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        GameObject go = other.gameObject;
+
+        Trash trashTester = go.GetComponent<Trash>();
+        EnemyBase enemyTester = go.GetComponent<EnemyBase>();
+        TrashBall tbTester = go.GetComponent<TrashBall>();
+
+        if (trashTester == null && enemyTester == null && tbTester == null)
+            return;
+
+        inProximity = true;
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        GameObject go = other.gameObject;
+
+        Trash trashTester = go.GetComponent<Trash>();
+        EnemyBase enemyTester = go.GetComponent<EnemyBase>();
+        TrashBall tbTester = go.GetComponent<TrashBall>();
+
+        if (trashTester == null && enemyTester == null && tbTester == null)
+            return;
+
+        _proximityList.Remove(other.gameObject);
+
+        if (_proximityList.Count  == 0)
+        {
+            inProximity = false;
+            StartCoroutine(StartProxyTimer());
+        }
     }
 
 
@@ -305,9 +348,10 @@ public class TrashRadarManager : MonoBehaviour
             Head = (TargetsList.Count > 0) ? TargetsList[0] : null;
         }
 
-        public void PruneNullTargets()
+        public bool PruneNullTargets()
         {
             bool hasNull = false;
+
             for (int i = 0; i < TargetsList.Count; i++)
             {
                 if (TargetsList[i] == null || TargetsList[i].NodeObject == null)
@@ -318,9 +362,10 @@ public class TrashRadarManager : MonoBehaviour
             }
 
             if (!hasNull)
-                return;
+                return false;
 
             List<GameObject> survivors = new List<GameObject>();
+
             for (int i = 0; i < TargetsList.Count; i++)
             {
                 if (TargetsList[i] != null && TargetsList[i].NodeObject != null)
@@ -334,6 +379,7 @@ public class TrashRadarManager : MonoBehaviour
             for (int i = 0; i < survivors.Count; i++)
             {
                 Node n = new Node(survivors[i], Instance.gameObject);
+
                 if (Head == null)
                 {
                     Head = n;
@@ -348,6 +394,8 @@ public class TrashRadarManager : MonoBehaviour
 
             if (Head != null)
                 Heapify();
+
+            return true;
         }
     }
 }
