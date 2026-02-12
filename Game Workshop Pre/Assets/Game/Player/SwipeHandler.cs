@@ -131,7 +131,7 @@ public class SwipeHandler : MonoBehaviour
 
             if (ParticleManager.Instance != null)
                 //ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
-                swipeableObject.OnSwipe(direction.normalized, _swipeForce);
+            swipeableObject.OnSwipe(direction.normalized, _swipeForce, other);
         }
 
 

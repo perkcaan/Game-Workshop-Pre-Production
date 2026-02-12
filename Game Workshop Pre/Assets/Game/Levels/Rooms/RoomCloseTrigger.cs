@@ -22,10 +22,7 @@ public class RoomCloseTrigger : MonoBehaviour
     {
         if (collider.TryGetComponent(out PlayerMovementController player))
         {
-            Debug.Log("Player entered room: " + _parentRoom.name);
-            // This needs to call a function on the parent room if its NOT focused and NOT cleared
-            // Parent room then has references to every gate that connects with it.
-            // Parent room SHUTS its gates (as long as player is in it. If player leaves then it has to open its gates)
+            _parentRoom.TriggerRoomClose();
         }
     }
 }

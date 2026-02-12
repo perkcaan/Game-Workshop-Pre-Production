@@ -1,7 +1,10 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -14,17 +17,17 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     [SerializeField] private Tilemap _roomTilemap;
     private List<Room> _rooms = new List<Room>();
-
-    public bool AreGatesUp { get; private set; }
-    public Action<bool> OnGateFlip;
-
+    [SerializeField] TextMeshProUGUI _coinText;
     // Rooms the player is in
     private List<Room> _focusedRooms = new List<Room>(); // focused rooms is a list since the player could be in multiple touching rooms.
     public Room FocusedRoom { get { return _focusedRooms.Count > 0 ? _focusedRooms[0] : null; } }
 
+    //rooms that need to be safely exited.
+    private List<Room> _roomsNeedingSafeExit = new List<Room>();
+
     // Rooms currently loaded
     private HashSet<Room> _loadedRooms = new HashSet<Room>();
-
+    private int coinsEarned;
 
     [ContextMenu("Generate Rooms")]
     private void GenerateRooms()
@@ -51,29 +54,58 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     public void PlayerEnterRoom(Room room)
     {
-        if (!_focusedRooms.Contains(room))
+        if (_focusedRooms.Contains(room)) return;
+        _focusedRooms.Add(room);
+        if (_roomsNeedingSafeExit.Contains(room)) _roomsNeedingSafeExit.Remove(room);
+        foreach (Room needyRoom in _roomsNeedingSafeExit)
         {
-            _focusedRooms.Add(room);
+            needyRoom.SafeExit();
         }
+        _roomsNeedingSafeExit.Clear();
         UpdateLoadedRooms();
     }
     public void PlayerExitRoom(Room room)
     {
-        if (_focusedRooms.Contains(room))
+        if (!_focusedRooms.Contains(room)) return;
+        _focusedRooms.Remove(room);
+        
+        if (_focusedRooms.Count > 0) {
+            room.SafeExit();
+        } else
         {
-            _focusedRooms.Remove(room);
+            _roomsNeedingSafeExit.Add(room);
         }
+
         UpdateLoadedRooms(); 
     }
 
     private void Start()
     {
         _rooms = new List<Room>(FindObjectsOfType<Room>());
+        DOTween.To(() => _coinText.alpha, x => _coinText.alpha = x, 0f, 0f);
+        if (PlayerPrefs.HasKey("Coins"))
+            coinsEarned = PlayerPrefs.GetInt("Coins");
+        else
+            coinsEarned = 0;
+        _coinText.text = $"Coins: {PlayerPrefs.GetInt("Coins")}";
     }
 
-    private void Update()
+    public void AwardCoins(int amount)
     {
-        CheckGateStatus();
+        
+        int coinsToAward = amount;
+        //coinsToAward += amount;
+        //int awardedCoins = coinsToAward + amount;
+        coinsEarned += coinsToAward;
+        PlayerPrefs.SetInt("Coins", coinsEarned);
+        PlayerPrefs.Save();
+        DOTween.To(() => _coinText.alpha, x => _coinText.alpha = x, 1f, 1f);
+        _coinText.DOFade(1f, 1f).OnComplete(() => _coinText.DOFade(0f, 1f));        
+        DOTween.To(() => _coinText.characterSpacing, x => _coinText.characterSpacing = x, 10f, 1f).OnComplete(() =>
+            DOTween.To(() => _coinText.characterSpacing, x => _coinText.characterSpacing = x, 0f, 1f));
+        _coinText.text = $"Coins: {coinsEarned}";
+        
+
     }
 
     private void UpdateLoadedRooms()
@@ -109,23 +141,6 @@ public class DistrictManager : StaticInstance<DistrictManager>
         _loadedRooms = newLoadedRooms;
         
     }
-
-
-    private void CheckGateStatus()
-    {
-        bool gateStatus = true;
-        if (FocusedRoom == null || FocusedRoom.Cleanliness >= 1f)
-        {
-            gateStatus = false;
-        }
-
-        if (AreGatesUp != gateStatus)
-        {
-            AreGatesUp = gateStatus;
-            OnGateFlip?.Invoke(AreGatesUp);
-        }
-    }
-
 
     
 

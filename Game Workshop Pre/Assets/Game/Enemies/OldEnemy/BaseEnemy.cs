@@ -74,6 +74,12 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     public static Action<int> SendScore;
     private readonly int ABSORB_VALUE = 2;
 
+    public int Size => throw new NotImplementedException();
+
+    public TrashMaterial TrashMat => throw new NotImplementedException();
+
+    public int TrashMatWeight => throw new NotImplementedException();
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -267,7 +273,7 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     {
         if (forcedAbsorb || (ballVelocity > trashBallSpeedToAbsorb && ballSize > minTrashBallAbsorbSize))
         {
-            trashBall.absorbedObjects.Add(this);
+            //trashBall.absorbedObjects.Add(this);
             SendScore?.Invoke(ABSORB_VALUE);
             isAbsorbed = true;
             gameObject.SetActive(false);
@@ -277,7 +283,7 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     public void OnTrashBallExplode(TrashBall trashBall)
     {
         transform.position = trashBall.transform.position;
-        float explosionForce = 1 + (1 * trashBall.absorbedObjects.Count);
+        float explosionForce = 1 + (1 * trashBall.AbsorbedObjects.Count);
         Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
 
         rb.AddForce(randomForce);
@@ -287,6 +293,21 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
     {
         SendScore?.Invoke(_pointValue * 2);
         Destroy(gameObject);
+    }
+
+    public bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnTrashBallRelease(TrashBall trashBall)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnTrashBallDestroy()
+    {
+        throw new NotImplementedException();
     }
 
     #endregion

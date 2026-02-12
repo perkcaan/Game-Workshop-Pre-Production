@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
@@ -8,16 +9,17 @@ public class CollectableItem : MonoBehaviour
 {
     // Item is the item that ends up in the inventory, CollectableItem is the prefab in the world
     public Item item;
-
+    
     [Header("Sparkle Effects")]
     [SerializeField] float sparkleRotationSpeed;
     [SerializeField] Transform largeSparkle;
     [SerializeField] Transform smallSparkle;
+
     private bool isCollected;
 
     void Awake()
     {
-        //GetComponent<SpriteRenderer>().sprite = item.displayIcon;
+        GetComponent<SpriteRenderer>().sprite = item.displayIcon;
     }
 
     void Update()
@@ -33,6 +35,7 @@ public class CollectableItem : MonoBehaviour
         {
             isCollected = true;
             Sequence sequence = DOTween.Sequence();
+            ParticleManager.Instance.Play("StarWave", transform.position);
             sequence.Append(transform.DOScale(new Vector3(1.2f, 1.2f, 1), 0.4f).SetEase(Ease.OutQuad));
             sequence.Append(transform.DOScale(new Vector3(0f, 0f, 1), 0.3f).SetEase(Ease.OutQuad));
             sequence.OnComplete(OnCollect);

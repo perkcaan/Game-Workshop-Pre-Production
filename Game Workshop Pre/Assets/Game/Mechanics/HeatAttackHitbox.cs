@@ -50,10 +50,13 @@ public class HeatAttackHitbox : MonoBehaviour
             float rotationRad = _rotation * Mathf.Deg2Rad;
             Vector2 direction = new Vector2(Mathf.Cos(rotationRad), Mathf.Sin(rotationRad)).normalized;
 
-            swipeable.OnSwipe(direction, _knockbackApplied);
-
+            swipeable.OnSwipe(direction, _knockbackApplied, collider);
             Vector3 contactPoint = collider.ClosestPoint(transform.position);
-            //ParticleManager.Instance.Play("DustBurst", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f));
+            if (collider.gameObject.TryGetComponent(out PlayerMovementController player))
+            {
+                ParticleManager.Instance.Play("ImpactLines", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), force: 1.25f);
+            }
+            ParticleManager.Instance.Play("ImpactCircleS", contactPoint, force: 1.25f);
         }
     }
 }

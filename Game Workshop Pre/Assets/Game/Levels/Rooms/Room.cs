@@ -22,9 +22,12 @@ public class Room : MonoBehaviour
     private List<ICleanable> _containedCleanable = new List<ICleanable>();
     private int _roomCurrentTrashAmount = 0; // Current amount of trash in the room
     private int _roomTotalTrashCount = 0; // Starting amount of trash / Max trash allowed in room
+
+    public int MaxTrashBallSize { get { return _maxTrashBallSize; } }
+    private int _maxTrashBallSize;
     public float Cleanliness
     {
-        get { return _roomTotalTrashCount == 0 ? 1f : 1f - Mathf.Clamp01(_roomCurrentTrashAmount / (float)_roomTotalTrashCount); }
+        get { return _roomTotalTrashCount == 0 ? 1f : 1f - Mathf.Clamp01((float) _roomCurrentTrashAmount / _roomTotalTrashCount); }
     }
 
     public int FreeTrashAmount
@@ -46,10 +49,15 @@ public class Room : MonoBehaviour
         }
     }
 
+    // Gates tied to this room
+    [SerializeField] private List<Gate> _connectedGates;
+    [SerializeField] private bool _openGatesOnClean = true; 
+
     // Room State
     private bool _isRoomCleaned = false;
     public bool IsRoomCleaned { get { return _isRoomCleaned; } }
-    private bool _isDrawerOut;
+    private bool _isDrawerOut = false;
+    private bool _isRoomClosed = false;
 
     private void Awake()
     {
@@ -58,6 +66,13 @@ public class Room : MonoBehaviour
         { 
             OnDrawerOpen();
         }
+        _maxTrashBallSize = 0;
+    }
+
+    public void NewTrashBallSize(int size)
+    {
+        if(size > _maxTrashBallSize) _maxTrashBallSize = size;
+        Debug.Log("New Trash Ball Size: " + size + ". Max Trash Ball Size: " + _maxTrashBallSize);
     }
 
     public void ActivateRoom()
@@ -85,6 +100,28 @@ public class Room : MonoBehaviour
             Destroy(ActiveRoomDrawer);
         }
         _isDrawerOut = false;
+    }
+
+    public void TriggerRoomClose()
+    {
+        if (_isRoomCleaned || _isRoomClosed) return;
+        _isRoomClosed = true;
+        foreach (Gate gate in _connectedGates)
+        {
+            gate.Close(this);
+        }
+    }
+
+    // Called when player exits the room, BUT the player is safely inside of a different room.
+    public void SafeExit()
+    {
+        if (!_isRoomClosed) return;
+
+        _isRoomClosed = false;
+        foreach (Gate gate in _connectedGates)
+        {
+            gate.Open(this);
+        }
     }
 
     private void OnDrawerOpen()
@@ -159,13 +196,30 @@ public class Room : MonoBehaviour
 
     private void UpdateRoomCleanliness()
     {
+        if (_isRoomCleaned) return; // don't need to update cleanliness if room is already clean.
+
         int amountToClean = 0;
         foreach (ICleanable cleanable in _containedCleanable)
         {
             amountToClean += cleanable.Size;
         }
         _roomCurrentTrashAmount = amountToClean;
-        if (amountToClean <= 0) _isRoomCleaned = true;
+        if (amountToClean <= 0) {
+            _isRoomCleaned = true;
+            
+            OnRoomClean();
+        }
+    }
+
+    private void OnRoomClean()
+    {
+        if (_openGatesOnClean)
+        {
+            if(IsTrashRoom)
+                DistrictManager.Instance.AwardCoins(_maxTrashBallSize);
+            _isRoomClosed = false;
+            foreach (Gate gate in _connectedGates) gate.Open(this);
+        }
     }
 
 }

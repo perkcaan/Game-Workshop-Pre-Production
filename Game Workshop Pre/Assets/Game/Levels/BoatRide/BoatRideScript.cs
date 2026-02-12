@@ -10,21 +10,32 @@ public class BoatRideScript : MonoBehaviour
     [SerializeField] float rockAmount = 0.5f;
     [SerializeField] float rockSpeed = 1.5f;
     [SerializeField] Transform endPoint;
+
+    [Header("Player Movement Settings")]
     [SerializeField] float _playerDepositY;
     [SerializeField] float _grabSpeed;
     [SerializeField] float playerJumpHeight;
 
+    [Header("Pointing Arrow Settings")]
+    [SerializeField] Transform arrow;
+    [SerializeField] float arrowWaveHeight = 1;
+    [SerializeField] float arrowWaveSpeed = 1;
+
     private PlayerMovementController _playerController;
     private bool _isBoatRiding = false;
     private Vector3 _boatStartPosition;
-
+    private float timer = 0;
+    private float startingArrowY;
     void Start()
     {
         _boatStartPosition = transform.position;
+        startingArrowY = arrow.localPosition.y;
     }
 
     void Update()
     {
+        timer += Time.deltaTime * arrowWaveSpeed;
+        arrow.localPosition = new Vector2(0, startingArrowY + Mathf.Sin(timer) * arrowWaveHeight);
         if (_isBoatRiding)
         {
             transform.position += Vector3.left * moveSpeed * Time.deltaTime;
@@ -46,6 +57,7 @@ public class BoatRideScript : MonoBehaviour
     {
         _isBoatRiding = true;
         _playerController.GetComponentInChildren<Animator>().SetInteger("OnBoat", 2);
+        arrow.gameObject.SetActive(false);
         RockBoat();
         float rideDuration = Vector3.Distance(transform.position, endPoint.position) / moveSpeed;
         Invoke(nameof(EndBoatRide), rideDuration);

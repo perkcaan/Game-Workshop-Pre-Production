@@ -35,10 +35,10 @@ public class BreakableWall : MonoBehaviour,ISwipeable
     {
         TrashBall trashBall = collision.gameObject.GetComponent<TrashBall>();
 
-        if (trashBall != null && (trashBall.Size > breakSize) && ((trashBall.rigidBody.velocity.magnitude * 10) > breakSpeed))
-        {
-            Destroy(this.gameObject);
-        }
+        //if (trashBall != null && (trashBall.Size > breakSize) && ((trashBall.RigidBody.velocity.magnitude * 10) > breakSpeed))
+        //{
+        //    Destroy(this.gameObject);
+        //}
     }
 
     public void OnSwipe(Vector2 direction, float force)
@@ -58,5 +58,10 @@ public class BreakableWall : MonoBehaviour,ISwipeable
 
         
         
+    }
+
+    public void OnSwipe(Vector2 direction, float force, Collider2D collision)
+    {
+        throw new System.NotImplementedException();
     }
 }
