@@ -59,6 +59,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff867476c286fb1469f12e3ca37dfefa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  proxyTimer: 5
+  radarPointer: {fileID: 0}
 --- !u!58 &1020777216945181062
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -93,7 +95,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 3.5
 --- !u!1 &3464204424447591426
 GameObject:
   m_ObjectHideFlags: 0

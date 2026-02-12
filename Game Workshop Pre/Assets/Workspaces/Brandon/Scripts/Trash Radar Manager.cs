@@ -19,12 +19,28 @@ public class TrashRadarManager : MonoBehaviour
     }
 
     protected Heap heap;
-    private bool adding = false;
-    [SerializeField] float proxyTimer = 5.0f;
-    private float _pTimer;
+
     [SerializeField] GameObject radarPointer;
-    private bool inProximity = false;
+
+    [SerializeField] float proxyTimer = 5.0f;
+    [SerializeField] float pointerFadeTimer = 1.0f;
+
+    [Tooltip("A reference to the pointer sprite for the radar, set as an array incase it's a composit of sprites")]
+    [SerializeField] SpriteRenderer[] pointerSprite;
+
+    private float _pTimer;
+
+    private bool _inProximity = false;
+    private bool _adding = false;
+    private bool _fading = false;
+
     private List<GameObject> _proximityList;
+
+    private int _maintainerCount;
+    private int _lastCount;
+
+    private readonly Color _alphaFull = new Color(1f, 1f, 1f, 1f);
+    private readonly Color _alphaZero = new Color(1f, 1f, 1f, 0f);
 
 
     void Awake()
@@ -38,16 +54,24 @@ public class TrashRadarManager : MonoBehaviour
         
         _pTimer = proxyTimer;
         _proximityList = new List<GameObject>();
+        _maintainerCount = 0;
+        _lastCount = 0;
+
+        AddNewCleanables();
+
+        StartCoroutine(SetSpriteVisability(pointerSprite, _alphaZero, false));
+        StartCoroutine(ItemScan());
     }
 
     void Start()
     {
-        AddNewCleanables(true);
-        radarPointer.SetActive(false);
+        StartCoroutine(StartProxyTimer());
     }
+
 
     void Update()
     {
+
         if (heap == null || heap.Head == null)
             return;
 
@@ -56,7 +80,7 @@ public class TrashRadarManager : MonoBehaviour
         if (heap.Head == null)
             return;
 
-        if (removed && !adding)
+        if (removed || (_maintainerCount != _lastCount))
             StartCoroutine(AddCleanablesTickDown());
 
         heap.RefreshDistances();
@@ -71,12 +95,11 @@ public class TrashRadarManager : MonoBehaviour
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationDirection);
     }
 
-    void AddNewCleanables(bool initial)
+    void AddNewCleanables()
     {
-        if (!initial && !adding)
-            adding = true;
-
+        _adding = true;
         GameObject[] allGameObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+        _lastCount = allGameObjects.Length;
 
         foreach (GameObject go in allGameObjects)
         {
@@ -100,32 +123,78 @@ public class TrashRadarManager : MonoBehaviour
 
         if (heap != null)
             heap.Heapify();
+        _adding = false;
     }
 
     IEnumerator AddCleanablesTickDown()
     {
-        if (adding)
+        if (_adding)
             yield break;
 
-        yield return StartCoroutine(AddCleanablesCoroutine(false));
-    }
-
-    IEnumerator AddCleanablesCoroutine(bool initial)
-    {
-        AddNewCleanables(initial);
-        adding = false;
-        yield return new WaitForEndOfFrame();
+        _adding = true;
+        AddNewCleanables();
+        _adding = false;
+        yield return null;
     }
 
     IEnumerator StartProxyTimer()
     {
-        while (_pTimer >+0f && !inProximity)
+        while (_pTimer >= 0f && !_inProximity)
         {
             _pTimer -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        radarPointer.SetActive(true);
+        StartCoroutine(SetSpriteVisability(pointerSprite, _alphaFull, false));
     }
+
+    IEnumerator ItemScan()
+    {
+        yield return new WaitForSeconds(3.0f);
+        while (true)
+        {
+            GameObject[] array = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+            _maintainerCount = array.Length;
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+
+    IEnumerator SetSpriteVisability(SpriteRenderer[] sprite, Color targetAlpha, bool fade)
+    {
+        _fading = true;
+
+        if (!fade)
+        {
+            foreach (SpriteRenderer sr in sprite)
+                sr.color = targetAlpha;
+        }
+        else
+        {
+            Color startColor;
+            if (targetAlpha != _alphaFull && targetAlpha != _alphaZero)
+            {
+                yield break;
+            }
+            else if (targetAlpha == _alphaZero)
+                startColor = _alphaFull;
+            else
+                startColor = _alphaZero;
+
+            float timer = pointerFadeTimer;
+            while (timer >= 0f)
+            {
+                foreach (SpriteRenderer s in pointerSprite)
+                {
+                    float t = 1 - (timer / pointerFadeTimer);
+                    s.color = startColor + ((targetAlpha - startColor) * t);
+                    timer -= Time.deltaTime;
+                    yield return null;
+                }
+            }
+        }
+        _fading = false;
+    }
+
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -141,8 +210,10 @@ public class TrashRadarManager : MonoBehaviour
         if (!_proximityList.Contains(other.gameObject))
             _proximityList.Add(other.gameObject);
 
-        inProximity = true;
-        radarPointer.SetActive(false);
+        if (!_fading && !_inProximity)
+            StartCoroutine(SetSpriteVisability(pointerSprite, _alphaZero, true));
+
+        _inProximity = true;
         _pTimer = proxyTimer;
     }
 
@@ -157,7 +228,7 @@ public class TrashRadarManager : MonoBehaviour
         if (trashTester == null && enemyTester == null && tbTester == null)
             return;
 
-        inProximity = true;
+        _inProximity = true;
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -175,10 +246,11 @@ public class TrashRadarManager : MonoBehaviour
 
         if (_proximityList.Count  == 0)
         {
-            inProximity = false;
+            _inProximity = false;
             StartCoroutine(StartProxyTimer());
         }
     }
+
 
 
     protected class Node
