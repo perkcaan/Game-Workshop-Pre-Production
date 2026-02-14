@@ -87,7 +87,8 @@ public class DistrictManager : StaticInstance<DistrictManager>
             coinsEarned = PlayerPrefs.GetInt("Coins");
         else
             coinsEarned = 0;
-        _coinText.text = $"Coins: {PlayerPrefs.GetInt("Coins")}";
+        if(_coinText != null)
+            _coinText.text = $"Coins: {PlayerPrefs.GetInt("Coins")}";
     }
 
     public void AwardCoins(int amount)
