@@ -80,6 +80,31 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private void Start()
     {
         _rooms = new List<Room>(FindObjectsOfType<Room>());
+        DOTween.To(() => _coinText.alpha, x => _coinText.alpha = x, 0f, 0f);
+        if (PlayerPrefs.HasKey("Coins"))
+            coinsEarned = PlayerPrefs.GetInt("Coins");
+        else
+            coinsEarned = 0;
+        if(_coinText != null)
+            _coinText.text = $"Coins: {PlayerPrefs.GetInt("Coins")}";
+    }
+
+    public void AwardCoins(int amount)
+    {
+        
+        int coinsToAward = amount;
+        //coinsToAward += amount;
+        //int awardedCoins = coinsToAward + amount;
+        coinsEarned += coinsToAward;
+        PlayerPrefs.SetInt("Coins", coinsEarned);
+        PlayerPrefs.Save();
+        DOTween.To(() => _coinText.alpha, x => _coinText.alpha = x, 1f, 1f);
+        _coinText.DOFade(1f, 1f).OnComplete(() => _coinText.DOFade(0f, 1f));        
+        DOTween.To(() => _coinText.characterSpacing, x => _coinText.characterSpacing = x, 10f, 1f).OnComplete(() =>
+            DOTween.To(() => _coinText.characterSpacing, x => _coinText.characterSpacing = x, 0f, 1f));
+        _coinText.text = $"Coins: {coinsEarned}";
+        
+
     }
 
     private void UpdateLoadedRooms()
