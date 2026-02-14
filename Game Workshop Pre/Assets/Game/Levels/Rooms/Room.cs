@@ -63,6 +63,13 @@ public class Room : MonoBehaviour
         { 
             OnDrawerOpen();
         }
+        _maxTrashBallSize = 0;
+    }
+
+    public void NewTrashBallSize(int size)
+    {
+        if(size > _maxTrashBallSize) _maxTrashBallSize = size;
+        
     }
 
     public void ActivateRoom()

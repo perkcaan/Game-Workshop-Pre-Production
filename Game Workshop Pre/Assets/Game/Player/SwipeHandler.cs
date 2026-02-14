@@ -42,8 +42,35 @@ public class SwipeHandler : MonoBehaviour
         _hitbox = GetComponent<Collider2D>();
         _hitbox.enabled = false;
 
-        if(_swipeMeter == null)
-            _swipeMeter = GameObject.Find("SwipeMeter")?.GetComponent<SwipeMeter>();
+        connecting = false;
+}
+
+// Collision trigger
+private void OnTriggerEnter2D(Collider2D other)
+{
+    Vector2 direction = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
+    Vector3 contactPoint = other.ClosestPoint(transform.position);
+        
+
+
+    ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
+    if (swipeableObject != null)
+    {
+        
+        connecting = true;
+            //FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", contactPoint);
+
+            //_swipeSoundInstance.setParameterByName("Texture", 0);
+            
+            _audioManager.PlayInstance("Swipe");
+
+
+
+            
+
+            if (ParticleManager.Instance != null)
+            //ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
+        swipeableObject.OnSwipe(direction.normalized, _swipeForce, other);
     }
 
     public void Initialize(SwipeMeter swipeMeter)
