@@ -185,6 +185,14 @@ MonoBehaviour:
           Data3: -1070572912
           Data4: 506519612
         Path: event:/Player/Clean Step
+    - Key: SwipeMiss
+      Value:
+        Guid:
+          Data1: -910041533
+          Data2: 1242012186
+          Data3: 447816615
+          Data4: -1560589920
+        Path: event:/Player/Swipe/SwipeMiss
     - Key: Swipe
       Value:
         Guid:
@@ -216,7 +224,7 @@ MonoBehaviour:
           Data2: 1121533942
           Data3: -117245779
           Data4: -1216900099
-        Path: event:/Enemies/Death
+        Path: event:/Enemies/Imp/Death
     - Key: Heat
       Value:
         Guid:
@@ -224,7 +232,7 @@ MonoBehaviour:
           Data2: 1297398676
           Data3: -1407158339
           Data4: 1186683876
-        Path: event:/Heat Meter
+        Path: event:/Heat System/Heat Meter
     - Key: Lava
       Value:
         Guid:
@@ -233,3 +241,5 @@ MonoBehaviour:
           Data3: -1113645673
           Data4: 476402738
         Path: event:/LavaEnvironment
+  _buses:
+    _serializedList: []

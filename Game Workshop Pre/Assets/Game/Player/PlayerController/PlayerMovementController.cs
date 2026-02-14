@@ -97,8 +97,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _playerHeat = GetComponent<HeatMechanic>();
         _state = new PlayerStateMachine(_ctx);
-        _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat System/Heat Meter");
-        AudioManager.Instance.Play("Heat",transform);
+        //_heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat System/Heat Meter");
+        
 
     }
 
@@ -106,7 +106,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
-        AudioManager.Instance.PlayOnInstance(gameObject,"Heat");
+        AudioManager.Instance.PlayInstance("Heat");
         //_heatSound.start();
         _playerHeat = GetComponent<HeatMechanic>();
     }
@@ -120,7 +120,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         UpdateMovement();
         //_heatSound.setParameterByName("Heat", _playerHeat.Heat / 10);
-        AudioManager.Instance.ModifyGlobalParameter("Heat", _playerHeat.Heat / 10);
+        AudioManager.Instance.ModifyParameter(FindObjectOfType<AudioManager>().gameObject,"Heat", "Heat", _playerHeat.Heat / 10);
+
+        
     }
 
     private void UpdateCooldowns()

@@ -25,6 +25,7 @@ public class MainMenuBehavior : MonoBehaviour
     public void Start()
     {
         musicInstance = RuntimeManager.CreateInstance("event:/Music/Title Music");
+
         musicInstance.start();
     }
     public void OnPlayButtonClicked()

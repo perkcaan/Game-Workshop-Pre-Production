@@ -2,6 +2,7 @@ using DG.Tweening;
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,9 +13,9 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject inventoryMenuUI;
     public GameObject optionsMenuUI;
+    public GameObject quitUI;
     [SerializeField] public Slider[] _pauseSliders;
-    private SettingsMenuBehavior _behavior;
-
+    [SerializeField] public TextMeshProUGUI _coinText;
     private FMOD.Studio.EventInstance _music;
 
     void Awake()
@@ -51,6 +52,7 @@ public class PauseMenu : MonoBehaviour
             if (currentOpenMenu == null)
             {
                 // if game is running pause it, else close the current menu
+                _coinText.text = "Coins: " + PlayerPrefs.GetInt("Coins");
                 Pause();
                 
 
@@ -101,7 +103,11 @@ public class PauseMenu : MonoBehaviour
         ChangeMenu(optionsMenuUI);
 
     }
-    
+
+    public void OpenQuit()
+    {
+        ChangeMenu(quitUI);
+    }
     public void Restart()
     {
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -114,6 +120,13 @@ public class PauseMenu : MonoBehaviour
         DOTween.KillAll();
         SceneManager.LoadScene(sceneIndex);
     }
+
+    public void QuitGame()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+
 
     public void Pause()
     {
@@ -131,6 +144,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(false);
         inventoryMenuUI.SetActive(false);
         optionsMenuUI.SetActive(false);
+        quitUI.SetActive(false);
         if (newMenu != null)
         {
             Time.timeScale = 0f;

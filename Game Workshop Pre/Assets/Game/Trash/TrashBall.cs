@@ -124,7 +124,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
 
         // Sound
-        AudioManager.Instance.ModifyGlobalParameter("RPM", Rigidbody.velocity.magnitude * 10);
+        AudioManager.Instance.ModifyParameter(gameObject,"TrashBall","RPM2", Rigidbody.velocity.magnitude * 10);
         FMOD.ATTRIBUTES_3D attributes = RuntimeUtils.To3DAttributes(gameObject, Rigidbody);
         _sweepSoundInstance.set3DAttributes(attributes);
 
