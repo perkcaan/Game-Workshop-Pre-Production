@@ -13,7 +13,7 @@ public class TrashPlatform : StandingGround
         {
             foreach (GroundedMechanic gm in groundedObjects)
             {
-                gm.IsGrounded--;
+                gm.IsGrounded = false;
             }
             groundedObjects.Clear();
             Destroy(gameObject);

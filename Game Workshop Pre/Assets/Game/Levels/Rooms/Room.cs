@@ -22,6 +22,9 @@ public class Room : MonoBehaviour
     private List<ICleanable> _containedCleanable = new List<ICleanable>();
     private int _roomCurrentTrashAmount = 0; // Current amount of trash in the room
     private int _roomTotalTrashCount = 0; // Starting amount of trash / Max trash allowed in room
+
+    public int MaxTrashBallSize { get { return _maxTrashBallSize; } }
+    private int _maxTrashBallSize;
     public float Cleanliness
     {
         get { return _roomTotalTrashCount == 0 ? 1f : 1f - Mathf.Clamp01((float) _roomCurrentTrashAmount / _roomTotalTrashCount); }
@@ -63,6 +66,13 @@ public class Room : MonoBehaviour
         { 
             OnDrawerOpen();
         }
+        _maxTrashBallSize = 0;
+    }
+
+    public void NewTrashBallSize(int size)
+    {
+        if(size > _maxTrashBallSize) _maxTrashBallSize = size;
+        Debug.Log("New Trash Ball Size: " + size + ". Max Trash Ball Size: " + _maxTrashBallSize);
     }
 
     public void ActivateRoom()
@@ -196,6 +206,7 @@ public class Room : MonoBehaviour
         _roomCurrentTrashAmount = amountToClean;
         if (amountToClean <= 0) {
             _isRoomCleaned = true;
+            
             OnRoomClean();
         }
     }
@@ -204,6 +215,8 @@ public class Room : MonoBehaviour
     {
         if (_openGatesOnClean)
         {
+            if(IsTrashRoom)
+                DistrictManager.Instance.AwardCoins(_maxTrashBallSize);
             _isRoomClosed = false;
             foreach (Gate gate in _connectedGates) gate.Open(this);
         }

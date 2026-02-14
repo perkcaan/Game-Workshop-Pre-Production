@@ -41,7 +41,7 @@ public class BreakingFloor : StandingGround
         isBroken = true;
         foreach (GroundedMechanic gm in groundedObjects)
         {
-            gm.IsGrounded--;
+            gm.IsGrounded = false;
         }
         groundedObjects.Clear();
         yield return new WaitForSeconds(stayBrokenDuration);

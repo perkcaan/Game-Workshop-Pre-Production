@@ -13,7 +13,7 @@ public class StandingGround : MonoBehaviour
             if (!groundedObjects.Contains(gm))
             {
                 groundedObjects.Add(gm);
-                gm.IsGrounded += groundedLevel;
+                //gm.IsGrounded += groundedLevel;
             }
         }
     }
@@ -25,7 +25,7 @@ public class StandingGround : MonoBehaviour
             if (groundedObjects.Contains(gm))
             {
                 groundedObjects.Remove(gm);
-                gm.IsGrounded -= groundedLevel;
+                //gm.IsGrounded -= groundedLevel;
             }
         }
     }
