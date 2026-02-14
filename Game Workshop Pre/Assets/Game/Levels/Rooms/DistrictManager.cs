@@ -55,6 +55,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         if (_focusedRooms.Contains(room)) return;
         _focusedRooms.Add(room);
         if (_roomsNeedingSafeExit.Contains(room)) _roomsNeedingSafeExit.Remove(room);
+        room.TriggerRoomClose();
         foreach (Room needyRoom in _roomsNeedingSafeExit)
         {
             needyRoom.SafeExit();
