@@ -72,7 +72,7 @@ public class Room : MonoBehaviour
     public void NewTrashBallSize(int size)
     {
         if(size > _maxTrashBallSize) _maxTrashBallSize = size;
-        Debug.Log("New Trash Ball Size: " + size + ". Max Trash Ball Size: " + _maxTrashBallSize);
+        
     }
 
     public void ActivateRoom()

@@ -134,7 +134,7 @@ private void OnTriggerEnter2D(Collider2D other)
     ISwipeable swipeableObject = other.gameObject.GetComponent<ISwipeable>();
     if (swipeableObject != null)
     {
-        Debug.Log("Swiped object: " + other.gameObject.name);
+        
         connecting = true;
             //FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Swipe/Swipe", contactPoint);
 
@@ -144,7 +144,7 @@ private void OnTriggerEnter2D(Collider2D other)
 
 
 
-            //Debug.Log("Swiped object: " + other.gameObject.name);
+            
 
             if (ParticleManager.Instance != null)
             //ParticleManager.Instance.Play("swipe", contactPoint, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), transform);
