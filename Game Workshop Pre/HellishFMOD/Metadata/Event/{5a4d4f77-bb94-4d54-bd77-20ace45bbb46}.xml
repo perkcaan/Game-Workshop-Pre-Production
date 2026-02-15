@@ -335,14 +335,20 @@
 		<property name="length">
 			<value>5.5</value>
 		</property>
+		<property name="delayType">
+			<value>0</value>
+		</property>
+		<property name="maximumTimeDelay">
+			<value>1000</value>
+		</property>
 		<property name="pitch">
 			<value>-3</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>3000</value>
+			<value>5000</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>6000</value>
+			<value>16000</value>
 		</property>
 		<property name="minimumScatterDistance">
 			<value>0</value>
@@ -684,7 +690,7 @@
 			<value>3</value>
 		</property>
 		<property name="value">
-			<value>-24</value>
+			<value>-30</value>
 		</property>
 		<property name="curveShape">
 			<value>0.17759937</value>
@@ -695,7 +701,7 @@
 			<value>6</value>
 		</property>
 		<property name="value">
-			<value>-16</value>
+			<value>-18</value>
 		</property>
 	</object>
 	<object class="AutomationCurve" id="{b5e8c1f0-e1bb-4ac5-b199-3c0bfff4da9a}">
