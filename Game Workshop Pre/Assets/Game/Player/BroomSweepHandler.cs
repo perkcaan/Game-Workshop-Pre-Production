@@ -1,4 +1,3 @@
-using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +12,7 @@ public class BroomSweepHandler : MonoBehaviour
     private PlayerMovementController _parent;
     private Collider2D _hitbox;
     private PlayerContext _ctx;
-    private FMOD.Studio.EventInstance _sweepSoundInstance;
+
     // Fields
     private float _rotation = 0f;
     private float _sweepForce = 1f;
@@ -30,9 +29,8 @@ public class BroomSweepHandler : MonoBehaviour
         }
         _hitbox = GetComponent<Collider2D>();
         _hitbox.enabled = false;
-        _sweepSoundInstance = RuntimeManager.CreateInstance("event:/Player/Sweep/Sweep");
-
-
+        
+        
     }
 
     // Sweep
@@ -40,13 +38,9 @@ public class BroomSweepHandler : MonoBehaviour
     {
         _hitbox.enabled = true;
         if(_hitbox.enabled)
-            _sweepSoundInstance.start();
-        else
-        {
-            _sweepSoundInstance.release();
-        }
+            AudioManager.Instance.Play("Sweep", transform.position);
 
-            UpdateHitbox(rotation, sweepForce);
+        UpdateHitbox(rotation, sweepForce);
     }
 
     public void UpdateHitbox(float rotation, float sweepForce)
@@ -64,9 +58,7 @@ public class BroomSweepHandler : MonoBehaviour
     public void EndSweep()
     {
         _hitbox.enabled = false;
-        _sweepSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        //AudioManager.Instance.Stop(gameObject,"Sweep");
-        Debug.Log("Ended Sweep");
+        AudioManager.Instance.Stop("Sweep");
     }
 
 

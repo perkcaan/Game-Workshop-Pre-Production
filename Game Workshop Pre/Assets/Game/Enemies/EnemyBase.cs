@@ -227,9 +227,4 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     {
         _parentRoom = room;
     }
-
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
-    {
-        throw new NotImplementedException();
-    }
 }

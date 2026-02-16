@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Android;
 using System;
-using FMODUnity;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
@@ -97,18 +96,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _playerHeat = GetComponent<HeatMechanic>();
         _state = new PlayerStateMachine(_ctx);
-        //_heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat System/Heat Meter");
-        
-
+        _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
     }
 
     private void Start()
     {
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
-        AudioManager.Instance.PlayInstance("Heat");
-        //_heatSound.start();
-        _playerHeat = GetComponent<HeatMechanic>();
+        
+        _heatSound.start();
     }
 
     private void Update()
@@ -119,10 +115,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void FixedUpdate()
     {
         UpdateMovement();
-        //_heatSound.setParameterByName("Heat", _playerHeat.Heat / 10);
-        AudioManager.Instance.ModifyParameter(FindObjectOfType<AudioManager>().gameObject,"Heat", "Heat", _playerHeat.Heat / 10);
-
-        
+        _heatSound.setParameterByName("Heat", _playerHeat.Heat / 10);
     }
 
     private void UpdateCooldowns()
@@ -142,7 +135,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
                 ParticleManager.Instance.Play("StarWave", transform.position, parent:transform, force:0.5f);
-                AudioManager.Instance.Play("dashBack", transform);
+                AudioManager.Instance.Play("dashBack", transform.position);
             }
         }
 
@@ -194,7 +187,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         if (!value.isPressed) return;
         if (_ctx.CanDash && _ctx.DashesRemaining > 0 && _ctx.DashRowCooldownTimer <= 0f)
         {
-            AudioManager.Instance.Play("Dash", transform);
+            AudioManager.Instance.Play("Dash", transform.position);
             _state.ChangeState(PlayerStateEnum.Dash);
         }
     }
@@ -256,7 +249,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             if (_footstepCooldown <= 0f)
             {
                 ParticleManager.Instance.Play("PlayerStepDust", transform.position, parent:_ctx.Player.transform);
-                AudioManager.Instance.Play("Steps", transform);
+                AudioManager.Instance.Play("Steps", transform.position);
                 _footstepCooldown = 0.3f;
             }
         }
@@ -359,15 +352,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void Death()
     {
         CheckpointManager.Instance.GoToCheckpoint(transform);
-        AudioManager.Instance.Play("playerDeath", transform);
-        AudioManager.Instance.Stop(gameObject,"Sweep");
+        AudioManager.Instance.Play("playerDeath", transform.position);
+        AudioManager.Instance.Stop("Sweep");
         playerDeath?.Invoke(true);
         
         //Debug.Log("Return to Checkpoint");
-    }
-
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
-    {
-        
     }
 }

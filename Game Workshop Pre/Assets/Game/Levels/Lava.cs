@@ -16,9 +16,10 @@ public class Lava : MonoBehaviour
             //Check for grounded safety. but still toast them a little
             if (collider.TryGetComponent(out GroundedMechanic gm))
             {
-                if (gm.IsGrounded) 
+                if (gm.IsGrounded == 1) 
                 {
-                    
+                    if (gm.IsGrounded < 2)
+                    {
                         _delayTimer += Time.fixedDeltaTime;
                         if (_delayTimer > _delayBeforeHeatingWhenGrounded)
                         {
@@ -31,9 +32,9 @@ public class Lava : MonoBehaviour
                                 heat.ModifyHeat(0); // dont cooldown, just stay at max heat
                             }
                         } 
-                    
+                    }
                 }
-                if (!gm.IsGrounded) return;
+                if (gm.IsGrounded > 0) return;
             }
             // otherwise... burn them to a crisp
             heat.ModifyHeat(_heatPerSecond * Time.fixedDeltaTime);

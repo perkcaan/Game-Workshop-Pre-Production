@@ -1,4 +1,4 @@
-public enum TargetType { Player, Enemy , Other }
+public enum TargetType { Player, Enemy }
 
 
 // Interface for things to implement so that AI knows what to target

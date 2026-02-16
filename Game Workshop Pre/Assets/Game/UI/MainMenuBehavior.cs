@@ -4,8 +4,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using FMODUnity;
-using FMOD.Studio;
 
 public class MainMenuBehavior : MonoBehaviour
 {
@@ -16,25 +14,15 @@ public class MainMenuBehavior : MonoBehaviour
     [SerializeField] Button creditsButton;
     [SerializeField] Button exitButton;
     [SerializeField] GameObject settingsMenu;
-    private EventInstance musicInstance;
-
 
     private bool settingsMenuIsOpen;
 
-
-    public void Start()
-    {
-        musicInstance = RuntimeManager.CreateInstance("event:/Music/Title Music");
-
-        musicInstance.start();
-    }
     public void OnPlayButtonClicked()
     {
         if (settingsMenuIsOpen)
             return;
 
         Debug.Log("Play Clicked");
-        musicInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         SceneManager.LoadScene("District0");
     }
 

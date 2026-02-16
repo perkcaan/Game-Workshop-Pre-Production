@@ -1,9 +1,7 @@
-using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,7 +15,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     [SerializeField] private Tilemap _roomTilemap;
     private List<Room> _rooms = new List<Room>();
-    [SerializeField] TextMeshProUGUI _coinText;
+
     // Rooms the player is in
     private List<Room> _focusedRooms = new List<Room>(); // focused rooms is a list since the player could be in multiple touching rooms.
     public Room FocusedRoom { get { return _focusedRooms.Count > 0 ? _focusedRooms[0] : null; } }
@@ -27,7 +25,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     // Rooms currently loaded
     private HashSet<Room> _loadedRooms = new HashSet<Room>();
-    private int coinsEarned;
+
 
     [ContextMenu("Generate Rooms")]
     private void GenerateRooms()
@@ -82,30 +80,6 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private void Start()
     {
         _rooms = new List<Room>(FindObjectsOfType<Room>());
-        DOTween.To(() => _coinText.alpha, x => _coinText.alpha = x, 0f, 0f);
-        if (PlayerPrefs.HasKey("Coins"))
-            coinsEarned = PlayerPrefs.GetInt("Coins");
-        else
-            coinsEarned = 0;
-        _coinText.text = $"Coins: {PlayerPrefs.GetInt("Coins")}";
-    }
-
-    public void AwardCoins(int amount)
-    {
-        
-        int coinsToAward = amount;
-        //coinsToAward += amount;
-        //int awardedCoins = coinsToAward + amount;
-        coinsEarned += coinsToAward;
-        PlayerPrefs.SetInt("Coins", coinsEarned);
-        PlayerPrefs.Save();
-        DOTween.To(() => _coinText.alpha, x => _coinText.alpha = x, 1f, 1f);
-        _coinText.DOFade(1f, 1f).OnComplete(() => _coinText.DOFade(0f, 1f));        
-        DOTween.To(() => _coinText.characterSpacing, x => _coinText.characterSpacing = x, 10f, 1f).OnComplete(() =>
-            DOTween.To(() => _coinText.characterSpacing, x => _coinText.characterSpacing = x, 0f, 1f));
-        _coinText.text = $"Coins: {coinsEarned}";
-        
-
     }
 
     private void UpdateLoadedRooms()
