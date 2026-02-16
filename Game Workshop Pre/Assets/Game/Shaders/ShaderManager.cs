@@ -88,6 +88,14 @@ public class ShaderManager : MonoBehaviour
         _dissolveCoroutine = StartCoroutine(DissolveCoroutine(onDone));
     }
 
+    public void SquashnStrech(float value, float duration)
+    {
+        transform.DOKill();
+        // Keep both the value and the duration under 1 ideally, Any more than one on the value leads to no movement
+        // Lower duration for snappier effect
+        transform.DOScaleY(value, duration).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutSine);
+    }
+
 
 
     private IEnumerator DissolveCoroutine(Action onDone)

@@ -15,21 +15,26 @@ public class PlayerMovementProps
     public float RotationSpeed { get { return _rotationSpeed; } }
     [SerializeField] private bool _willCancelSlide;
     public bool WillCancelSlide { get { return _willCancelSlide; } }
+
     [Header("Sweeping Movement")]
     [SerializeField] private float _sweepMaxSpeedModifier;
     public float SweepMaxSpeedModifier { get { return _sweepMaxSpeedModifier; } }
     [SerializeField] private float _sweepAccelerationModifier;
     public float SweepAccelerationModifier { get { return _sweepAccelerationModifier; } }
+
     [SerializeField] private bool _willCancelSweepSlide;
     public bool WillCancelSweepSlide { get { return _willCancelSweepSlide; } }
+
 
     [Header("Swipe Movement")]
     [SerializeField] private float _swipeMaxSpeedModifier;
     public float SwipeMaxSpeedModifier { get { return _swipeMaxSpeedModifier; } }
     [SerializeField] private float _swipeAccelerationModifier;
     public float SwipeAccelerationModifier { get { return _swipeAccelerationModifier; } }
+
     [SerializeField] private bool _willCancelSwipeSlide;
     public bool WillCancelSwipeSlide { get { return _willCancelSwipeSlide; } }
+
 
     [Header("Dashing")]
     [SerializeField] private int _dashRowCount;

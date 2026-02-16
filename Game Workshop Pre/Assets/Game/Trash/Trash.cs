@@ -97,12 +97,9 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     public void OnTrashBallRelease(TrashBall trashBall)
     {
         gameObject.SetActive(true);
-        transform.localScale = Vector3.zero;
         transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
-
         _rigidBody.simulated = true;
         transform.position = trashBall.transform.position;
-
         float explosionForce = (float)(Math.Sqrt(trashBall.Size) * _explosionMultiplier);
         Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
         _rigidBody.velocity = randomForce;

@@ -6,8 +6,8 @@ using UnityEngine;
 // Maybe make it a full height system and add some kind of falling animation later?
 public class GroundedMechanic : MonoBehaviour
 {
-    [SerializeField, ReadOnly] private int _isGrounded = 0;
-    public int IsGrounded
+    [SerializeField] private bool _isGrounded = false;
+    public bool IsGrounded
     {
         get { return _isGrounded; }
         set

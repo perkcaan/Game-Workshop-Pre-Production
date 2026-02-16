@@ -2,8 +2,10 @@ using DG.Tweening;
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -11,12 +13,17 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject inventoryMenuUI;
     public GameObject optionsMenuUI;
-
+    public GameObject quitUI;
+    [SerializeField] public Slider[] _pauseSliders;
+    [SerializeField] public TextMeshProUGUI _coinText;
     private FMOD.Studio.EventInstance _music;
 
     void Awake()
     {
         OpenInventory();
+        
+
+
     }
     void Start()
     {
@@ -48,16 +55,26 @@ public class PauseMenu : MonoBehaviour
             if (currentOpenMenu == null)
             {
                 // if game is running pause it, else close the current menu
+                _coinText.text = "Coins: " + PlayerPrefs.GetInt("Coins");
                 Pause();
+                
+
                 
 
             }
             else
             {
                 Resume();
-                
+                PlayerPrefs.SetFloat("MasterVolume", _pauseSliders[0].value);
+                PlayerPrefs.SetFloat("SFXVolume", _pauseSliders[1].value);
+                PlayerPrefs.SetFloat("MusicVolume", _pauseSliders[2].value);
+                PlayerPrefs.Save();
+
             }
         }
+        AudioManager.Instance.ModifyBusVolume(_pauseSliders[0], "Master");
+        AudioManager.Instance.ModifyBusVolume(_pauseSliders[1], "SFX");
+        AudioManager.Instance.ModifyBusVolume(_pauseSliders[2], "Music");
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -77,6 +94,8 @@ public class PauseMenu : MonoBehaviour
     {
         ChangeMenu(null);
         _music.setParameterByName("Pause", 0f);
+
+        
     }
     public void OpenInventory()
     {
@@ -93,7 +112,6 @@ public class PauseMenu : MonoBehaviour
         if (quitUI != null)
             ChangeMenu(quitUI);
     }
-    
     public void Restart()
     {
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -107,10 +125,21 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(sceneIndex);
     }
 
+    public void QuitGame()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+
+
     public void Pause()
     {
         ChangeMenu(pauseMenuUI);
         _music.setParameterByName("Pause", 1f);
+        PlayerPrefs.SetFloat("MasterVolume", _pauseSliders[0].value);
+        PlayerPrefs.SetFloat("SFXVolume", _pauseSliders[1].value);
+        PlayerPrefs.SetFloat("MusicVolume", _pauseSliders[2].value);
+        PlayerPrefs.Save();
     }
 
     void ChangeMenu(GameObject newMenu)
@@ -119,6 +148,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(false);
         inventoryMenuUI.SetActive(false);
         optionsMenuUI.SetActive(false);
+        quitUI.SetActive(false);
         if (newMenu != null)
         {
             Time.timeScale = 0f;

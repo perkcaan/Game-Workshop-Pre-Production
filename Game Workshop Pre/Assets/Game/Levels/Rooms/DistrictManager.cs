@@ -1,7 +1,9 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,7 +17,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     [SerializeField] private Tilemap _roomTilemap;
     private List<Room> _rooms = new List<Room>();
-
+    [SerializeField] TextMeshProUGUI _coinText;
     // Rooms the player is in
     private List<Room> _focusedRooms = new List<Room>(); // focused rooms is a list since the player could be in multiple touching rooms.
     public Room FocusedRoom { get { return _focusedRooms.Count > 0 ? _focusedRooms[0] : null; } }
@@ -25,7 +27,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     // Rooms currently loaded
     private HashSet<Room> _loadedRooms = new HashSet<Room>();
-
+    private int coinsEarned;
 
     [ContextMenu("Generate Rooms")]
     private void GenerateRooms()

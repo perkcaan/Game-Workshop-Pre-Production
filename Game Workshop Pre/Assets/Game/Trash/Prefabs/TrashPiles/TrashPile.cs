@@ -48,7 +48,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
 
     public void OnSweep(Vector2 position, Vector2 direction, float force)
     {
-        if (_isDestroyed) return;
+        //if (_isDestroyed) return;
         if (!isActiveAndEnabled) return;
         _sweepTimer += Time.deltaTime * 2;
         if (_sweepTimer > _sweepDurationToTakeDamage)
@@ -61,11 +61,12 @@ public class TrashPile : Trash, ISweepable, ISwipeable
 
     public void OnSwipe(Vector2 direction, float force, Collider2D collider)
     {
-        if (_isDestroyed) return;
+        //if (_isDestroyed) return;
         TakeDamage(3, direction, force);
         if(this != null && trashMaterial != null)
             ParticleManager.Instance.Play("swipe", transform.position, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), this.trashMaterial.color, transform);
     }
+
 
     public override bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
@@ -83,7 +84,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
 
     public void TakeDamage(int damage, Vector2 direction, float force)
     {
-        if (_isDestroyed) return;
+        //if (_isDestroyed) return;
         _health -= damage;
         if (_health <= 0)
         {
@@ -103,8 +104,8 @@ public class TrashPile : Trash, ISweepable, ISwipeable
 
     private void ReleaseTrash(Vector2 direction, float force)
     {
-        if (_isDestroyed) return;
-        _isDestroyed = true;
+        //if (_isDestroyed) return;
+        //_isDestroyed = true;
         _rigidBody.simulated = false;
         _parentRoom.ObjectCleaned(this);
 
