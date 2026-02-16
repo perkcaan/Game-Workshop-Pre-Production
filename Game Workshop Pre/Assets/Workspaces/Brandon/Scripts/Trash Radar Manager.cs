@@ -5,6 +5,7 @@ using UnityEngine;
 public class TrashRadarManager : MonoBehaviour
 {
     private static TrashRadarManager _instance;
+    
     public static TrashRadarManager Instance
     {
         get { return _instance; }
@@ -20,7 +21,7 @@ public class TrashRadarManager : MonoBehaviour
 
     protected Heap heap;
 
-    [SerializeField] DistrictManager dm;
+     [SerializeField] DistrictManager dm;
     [SerializeField] Transform[] gateSequence;
 
     [SerializeField] GameObject radarPointer;
