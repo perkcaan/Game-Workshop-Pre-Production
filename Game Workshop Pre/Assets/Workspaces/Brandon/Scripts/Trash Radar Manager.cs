@@ -36,6 +36,7 @@ public class TrashRadarManager : MonoBehaviour
     private bool _inProximity = false;
     private bool _adding = false;
     private bool _fading = false;
+    private bool _firstEnter = true;
 
     private List<GameObject> _proximityList;
 
@@ -98,11 +99,15 @@ public class TrashRadarManager : MonoBehaviour
         if (ClosestCleanable == null)
             return;
         
-        
-        if (dm.FocusedRoom != null && !_visitedRooms.Contains(dm.FocusedRoom))
+        if (dm.FocusedRoom != null && !_visitedRooms.Contains(dm.FocusedRoom) && _firstEnter)
         {
             _visitedRooms.Add(dm.FocusedRoom);
-            _gateNumber++;
+            _firstEnter = false;
+        }
+        else if (dm.FocusedRoom != null && !_visitedRooms.Contains(dm.FocusedRoom))
+        {
+            _visitedRooms.Add(dm.FocusedRoom);
+            IncreaseSequenceNumber();
         }
 
 
@@ -284,6 +289,7 @@ public class TrashRadarManager : MonoBehaviour
     public static void IncreaseSequenceNumber()
     {
         _gateNumber++;
+        Debug.Log(_gateNumber);
     }
 
 

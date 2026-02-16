@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PointTestScript : MonoBehaviour
 {
+
+    private bool _activated = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +21,12 @@ public class PointTestScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.name == "PlayerController")
+        if (other.gameObject.name == "PlayerController" && _activated == false)
             TrashRadarManager.IncreaseSequenceNumber();
+        else
+            return;
+
+        _activated = true;
     }
 
 }
