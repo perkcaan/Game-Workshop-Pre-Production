@@ -20,6 +20,7 @@ public class PlayerContext
     public Vector2 MouseInput { get; set; } = Vector2.zero;
     public bool IsSweepPressed { get; set; } = false;
     public bool IsSwipePressed { get; set; } = false;
+    public bool IsHookPressed { get; set; } = false;
     public bool PlayerHasControl { get; set; } = true;
 
     //swiping
