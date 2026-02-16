@@ -28,8 +28,6 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         Resume();
-
-        if(_pauseSliders.Length > 0) { 
         if (PlayerPrefs.HasKey("MasterVolume") && PlayerPrefs.HasKey("SFXVolume") && PlayerPrefs.HasKey("MusicVolume"))
         {
             _pauseSliders[0].value = PlayerPrefs.GetFloat("MasterVolume");
@@ -41,7 +39,6 @@ public class PauseMenu : MonoBehaviour
             _pauseSliders[0].value = 1;
             _pauseSliders[1].value = 1;
             _pauseSliders[2].value = 1;
-        }
         }
 
         _music = RuntimeManager.CreateInstance("event:/Music/Hellish Sample");
@@ -109,8 +106,7 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenQuit()
     {
-        if (quitUI != null)
-            ChangeMenu(quitUI);
+        ChangeMenu(quitUI);
     }
     public void Restart()
     {
