@@ -279,7 +279,7 @@ public class TrashRadarManager : MonoBehaviour
 
         _proximityList.Remove(other.gameObject);
 
-        if (_proximityList.Count  == 0)
+        if (_proximityList.Count  == 0 && !_adding)
         {
             _inProximity = false;
             StartCoroutine(StartProxyTimer());
