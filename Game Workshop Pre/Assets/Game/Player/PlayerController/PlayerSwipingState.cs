@@ -136,7 +136,5 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
                 _state.ChangeState(PlayerStateEnum.Idle);
             }
         }
-
     }
-
 }

@@ -9,7 +9,8 @@ public class PlayerStatEffect : ItemEffect
     {
         canSweep,
         canSwipe,
-         canDash,
+        canDash,
+        canHook,
     }
     public StatType statToModify;
     public float boostAmount;
@@ -25,6 +26,9 @@ public class PlayerStatEffect : ItemEffect
                 break;
             case StatType.canDash:
                 player.canDash = true;
+                break;
+            case StatType.canHook:
+                player.canHook = true;
                 break;
         }
     }

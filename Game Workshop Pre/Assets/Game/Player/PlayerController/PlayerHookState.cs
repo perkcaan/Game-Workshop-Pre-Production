@@ -39,7 +39,7 @@ public class PlayerHookState : BaseState<PlayerStateEnum>
         if (!_ctx.IsHookPressed && !_hasHookBeenThrown) DoSwipe();
         if (_hasHookBeenThrown)
         {
-            //_ctx.SwipeHandler.UpdateHitbox(_ctx.Rotation);
+            _ctx.HookHandler.UpdateHitbox(_ctx.Rotation);
         }
         else
         {
@@ -50,19 +50,14 @@ public class PlayerHookState : BaseState<PlayerStateEnum>
             _ctx.Rotation = Mathf.DeltaAngle(0f, targetAngle);
         }
 
-        if (_chargeTimer > 0 && !_hasHookBeenThrown)
-        {
-            //_ctx.SwipeHandler.UpdateLine(_ctx.Rotation, _ctx.Player.SwipeVisualLineDistance, _ctx.Player.SwipeVisualLineSegments);   
-        }
         _chargeTimer = _chargeTimer + Time.deltaTime;
     }
 
     public override void ExitState()
     {
-        //if (_swipeCoroutine != null) _ctx.Player.StopCoroutine(_swipeCoroutine);
-        //_ctx.SwipeHandler.EndSwipe();
-        //_ctx.SwipeCooldownTimer = _ctx.Player.SwipeCooldown;
-        //_ctx.Animator.SetBool("Swiping", false);
+        if (_swipeCoroutine != null) _ctx.Player.StopCoroutine(_swipeCoroutine);
+        _ctx.HookHandler.EndSwipe();
+        _ctx.HookCooldownTimer = _ctx.Player.HookCooldown;
     }
 
 

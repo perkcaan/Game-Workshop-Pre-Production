@@ -27,6 +27,10 @@ public class PlayerContext
     public bool CanSwipe { get; set; } = true;
     public float SwipeCooldownTimer { get; set; } = 0f;
 
+    //throwing hook
+    public bool CanHook { get; set; } = true;
+    public float HookCooldownTimer { get; set; } = 0f;
+
     //dashing
     public bool CanDash { get; set; } = true;
     public bool IsDashing { get; set; } = false;
@@ -54,6 +58,7 @@ public class PlayerContext
     public Animator Animator { get; set; }
     public SwipeHandler SwipeHandler { get;  set; }
     public BroomSweepHandler SweepHandler { get; set; }
+    public HookHandler HookHandler { get; set; }
     public TrashBall AbsorbedTrashBall { get; set; }
 
     public PlayerContext(PlayerMovementController player, PlayerMovementProps props)
