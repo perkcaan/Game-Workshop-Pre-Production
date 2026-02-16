@@ -20,6 +20,9 @@ public class TrashRadarManager : MonoBehaviour
 
     protected Heap heap;
 
+    [SerializeField] DistrictManager dm;
+    [SerializeField] Transform[] gateSequence;
+
     [SerializeField] GameObject radarPointer;
 
     [SerializeField] float proxyTimer = 5.0f;
@@ -38,9 +41,12 @@ public class TrashRadarManager : MonoBehaviour
 
     private int _maintainerCount;
     private int _lastCount;
+    static private int _gateNumber = 0;
 
     private readonly Color _alphaFull = new Color(1f, 1f, 1f, 1f);
     private readonly Color _alphaZero = new Color(1f, 1f, 1f, 0f);
+
+    private List<Room> _visitedRooms;
 
 
     void Awake()
@@ -56,6 +62,7 @@ public class TrashRadarManager : MonoBehaviour
         _proximityList = new List<GameObject>();
         _maintainerCount = 0;
         _lastCount = 0;
+        _visitedRooms = new List<Room>();
 
         AddNewCleanables();
 
@@ -85,14 +92,36 @@ public class TrashRadarManager : MonoBehaviour
 
         heap.RefreshDistances();
         heap.Heapify();
+        _gateNumber = Mathf.Clamp(_gateNumber, 0, gateSequence.Length -1);
 
         ClosestCleanable = heap.Head.NodeObject;
         if (ClosestCleanable == null)
             return;
+        
+        
+        if (dm.FocusedRoom != null && !_visitedRooms.Contains(dm.FocusedRoom))
+        {
+            _visitedRooms.Add(dm.FocusedRoom);
+            _gateNumber++;
+        }
 
-        Vector2 targetDirection = (Vector2)(ClosestCleanable.transform.position - transform.position);
-        float rotationDirection = (Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg) - 90f;
-        transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationDirection);
+
+        Vector2 targetDirection;
+        float rotationDirection;
+
+        if (dm.FocusedRoom == null || dm.FocusedRoom.IsRoomCleaned)
+        {
+            targetDirection = (Vector2)(gateSequence[_gateNumber].position - transform.position);
+            rotationDirection = (Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg) - 90f;
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationDirection);
+        }
+        else
+        {
+            targetDirection = (Vector2)(ClosestCleanable.transform.position - transform.position);
+            rotationDirection = (Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg) - 90f;
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationDirection);
+        }
+
     }
 
     void AddNewCleanables()
@@ -249,6 +278,12 @@ public class TrashRadarManager : MonoBehaviour
             _inProximity = false;
             StartCoroutine(StartProxyTimer());
         }
+    }
+
+    //Used to increment the sequence for scenarios other than entering the next uncleaned room.
+    public static void IncreaseSequenceNumber()
+    {
+        _gateNumber++;
     }
 
 
