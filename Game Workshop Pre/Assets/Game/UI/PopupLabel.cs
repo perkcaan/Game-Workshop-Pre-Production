@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Reflection.Emit;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using Color = UnityEngine.Color;
 
 public class PopupLabel : MonoBehaviour
 {
@@ -36,6 +38,22 @@ public class PopupLabel : MonoBehaviour
         newLabel.Setup(position, color, size);
     }
 
+    public static void CreateCoinLabel(Vector2 position, Color color, int coins)
+    {
+        
+        PopupLabel newLabel = null;
+        PopupLabelPooler plp = PopupLabelPooler.Instance;
+        if (plp == null)
+        {
+            Debug.LogWarning("Add a PopupLabelPooler prefab to the scene.");
+            return;
+        }
+        newLabel = plp.GetLabel();
+        newLabel.CoinSetup(position, color, coins);
+
+
+    }
+
     public void Setup(Vector2 position, Color color, int size)
     {
 
@@ -53,6 +71,26 @@ public class PopupLabel : MonoBehaviour
         Vector3 offset = Random.insideUnitCircle * _randomOffsetDistance;
         transform.position += offset;
         PlayPlusAnimation(labelScale);
+    }
+
+    public void CoinSetup(Vector2 position, Color color, int coins)
+    {
+        coins = PlayerPrefs.GetInt("Coins");
+        string labelText = $"Coins: { coins}";
+        float labelScale = 1;
+        labelScale = Mathf.Clamp(labelScale, _minScaleSize, _maxScaleSize);
+
+        gameObject.name = "Coin Label: " + labelText;
+        transform.position = position;
+        string text = labelText;
+        _text.text = text;
+        _text.color = color;
+        transform.localScale = Vector3.one;
+        _text.alpha = 1f;
+        Vector3 offset = Random.insideUnitCircle * _randomOffsetDistance;
+        transform.position += offset;
+        PlayPlusAnimation(labelScale);
+
     }
 
     private void PlayPlusAnimation(float labelScale)

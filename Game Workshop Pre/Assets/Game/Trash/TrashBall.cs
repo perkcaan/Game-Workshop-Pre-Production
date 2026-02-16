@@ -223,7 +223,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     // Removes the trash ball entirely
     public void Delete()
     {
-        AudioManager.Instance.ModifyGlobalParameter("RPM", 0f);
+        AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "RPM2", 0f);
         AudioManager.Instance.Stop(gameObject,"TrashBall");
         Destroy(gameObject);
     }
@@ -303,7 +303,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallRelease(this);
         }
-        AudioManager.Instance.ModifyGlobalParameter("RPM", 0f);
+        AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "RPM2", 0f);
         AudioManager.Instance.Stop(gameObject, "TrashBall");
         AudioManager.Instance.Stop(gameObject, "Decay");
         Destroy(gameObject);
