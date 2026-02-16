@@ -38,7 +38,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float SwipeCooldown { get { return _swipeCooldown; } }
 
     [Header("Hook Properties")]
-    [SerializeField] private float _hookThrowForce = 5f;
+    [SerializeField] private float _hookPullForce = 5f;
+    public float HookPullForce { get { return _hookPullForce; } }
     [SerializeField][Range(0f, 2f)] private float _hookThrowMovementScaler = 0.1f;
     public float HookThrowMovementScaler { get { return _hookThrowMovementScaler; } }
     [SerializeField] private float _hookDuration = 0.5f;
@@ -136,6 +137,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         if (_ctx.SwipeCooldownTimer > 0f)
         {
             _ctx.SwipeCooldownTimer = Mathf.Max(_ctx.SwipeCooldownTimer - Time.deltaTime, 0f);
+        }
+
+        if (_ctx.HookCooldownTimer > 0f)
+        {
+            _ctx.HookCooldownTimer = Mathf.Max(_ctx.HookCooldownTimer - Time.deltaTime, 0f);
         }
 
         // Dash timer
