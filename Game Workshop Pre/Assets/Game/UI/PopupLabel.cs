@@ -90,10 +90,6 @@ public class PopupLabel : MonoBehaviour
             return;
         }
 
-        
-        
-
-        
         RectTransform rectTransform = GetComponent<RectTransform>();
         if (rectTransform == null)
             rectTransform = gameObject.AddComponent<RectTransform>();
@@ -101,11 +97,9 @@ public class PopupLabel : MonoBehaviour
         transform.SetParent(canvas.transform, false);
 
 
-        rectTransform.anchoredPosition = new Vector2(-941.5f, 354.3f);
+        rectTransform.anchoredPosition = new Vector2(-950f, 354.3f);
 
         gameObject.name = "Coin Label: " + labelText;
-
-        
         _coinText.text = text;
         _coinText.color = color;
         _coinText.alpha = 1f;
