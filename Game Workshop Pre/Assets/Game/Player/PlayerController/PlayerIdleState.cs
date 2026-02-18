@@ -10,6 +10,7 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
     // Fields
     //movement
     private float _zeroMoveTimer = 0f;
+    private bool _particlesPlayed = false;
 
     public PlayerIdleState(PlayerContext context, PlayerStateMachine state)
     {
@@ -42,9 +43,11 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
     private void HandleMovement()
     {
         Vector2 input = _ctx.MovementInput;
-
+        Vector2 velocity = _ctx.Rigidbody.velocity; 
+        
         if (input.sqrMagnitude > 0.01f)
         {
+            if (velocity.magnitude > 1f) _particlesPlayed = false;
             _zeroMoveTimer = 0f;
             _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxWalkSpeed, _ctx.Acceleration * Time.fixedDeltaTime);
         }
@@ -56,10 +59,16 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
             } else
             {
                 _ctx.MoveSpeed = 0f;
-                // Cancels sliding with an opposing force
-                Vector2 velocity = _ctx.Rigidbody.velocity;        
+                // Cancels sliding with an opposing force       
                 if ((velocity.magnitude > 0.1f) && (velocity.magnitude < _ctx.MaxWalkSpeed) && _ctx.Props.WillCancelSlide)
                 {
+                    if (!_particlesPlayed)
+                    {
+                        _particlesPlayed = true;
+                        Vector3 direction = velocity.normalized;
+                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                        ParticleManager.Instance.Play("SideStepDust", _ctx.Player.transform.position, Quaternion.Euler(0, 0, angle));
+                    }
                     Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxWalkSpeed;
                     _ctx.FrameVelocity = Vector2.ClampMagnitude(fullCancelForce, (-velocity * _ctx.Rigidbody.mass / Time.fixedDeltaTime).magnitude);
                     return;
