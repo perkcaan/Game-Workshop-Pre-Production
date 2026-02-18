@@ -11,6 +11,7 @@ public class PopupLabel : MonoBehaviour
 {
 
     [SerializeField] private TMP_Text _text;
+    [SerializeField] private TextMeshProUGUI _coinText;
     [SerializeField] private float _minScaleSize = 1.2f;
     [SerializeField] private float _maxScaleSize = 3f;
     [SerializeField] private int _sizeOfMaxScale = 40;
@@ -38,7 +39,7 @@ public class PopupLabel : MonoBehaviour
         newLabel.Setup(position, color, size);
     }
 
-    public static void CreateCoinLabel(Vector2 position, Color color, int coins)
+    public static void CreateCoinLabel(Color color, int coins)
     {
         
         PopupLabel newLabel = null;
@@ -48,8 +49,9 @@ public class PopupLabel : MonoBehaviour
             Debug.LogWarning("Add a PopupLabelPooler prefab to the scene.");
             return;
         }
-        newLabel = plp.GetLabel();
-        newLabel.CoinSetup(position, color, coins);
+        newLabel = plp.GetCoinLabel();
+
+        newLabel.CoinSetup(color, coins);
 
 
     }
@@ -73,32 +75,50 @@ public class PopupLabel : MonoBehaviour
         PlayPlusAnimation(labelScale);
     }
 
-    public void CoinSetup(Vector2 position, Color color, int coins)
+    public void CoinSetup(Color color, int coins)
     {
         coins = PlayerPrefs.GetInt("Coins");
-        string labelText = $"Coins: { coins}";
+        string labelText = $"Coins: {coins}";
         float labelScale = 1;
-        labelScale = Mathf.Clamp(labelScale, _minScaleSize, _maxScaleSize);
+        string text = labelText;
+        Canvas canvas = FindObjectOfType<Canvas>();
+        
+
+        if (canvas == null)
+        {
+            Debug.LogWarning("No Canvas found in scene.");
+            return;
+        }
+
+        
+        
+
+        
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        if (rectTransform == null)
+            rectTransform = gameObject.AddComponent<RectTransform>();
+
+        transform.SetParent(canvas.transform, false);
+
+
+        rectTransform.anchoredPosition = new Vector2(-941.5f, 354.3f);
 
         gameObject.name = "Coin Label: " + labelText;
-        transform.position = position;
-        string text = labelText;
-        _text.text = text;
-        _text.color = color;
-        transform.localScale = Vector3.one;
-        _text.alpha = 1f;
-        Vector3 offset = Random.insideUnitCircle * _randomOffsetDistance;
-        transform.position += offset;
-        PlayPlusAnimation(labelScale);
 
+        
+        _coinText.text = text;
+        _coinText.color = color;
+        _coinText.alpha = 1f;
+
+        PlayPlusAnimation(labelScale);
     }
 
+
+
     private void PlayPlusAnimation(float labelScale)
-    {   
-        
+    {
         if (_sequence != null && _sequence.IsActive())
         {
-            Debug.Log("Have to kill you. Sorry.");
             _sequence.Kill();
         }
 
@@ -118,20 +138,15 @@ public class PopupLabel : MonoBehaviour
         );
 
         // Fade after delay
-        _sequence.Append(
-            _text.DOFade(0f, _fadeAwayDuration)
-            .SetDelay(_fadeAwayDelay)
-            .OnComplete(() => TweenComplete())
-        );
-
-        // Float up
-        _sequence.Join(
-            transform.DOMoveY(transform.position.y + _floatUpDistance, Mathf.Min(_floatUpDuration, _fadeAwayDelay + _fadeAwayDelay))
-            .SetEase(Ease.OutQuad)
-        );
-
-
+        TMP_Text targetText = _coinText != null && _coinText.text != "" ? _coinText : _text;
+        if (targetText != null)
+        {
+            _sequence.Append(
+                targetText.DOFade(0f, _fadeAwayDuration)
+                .SetDelay(_fadeAwayDelay));
+        }
     }
+                
 
     private void TweenComplete()
     {
@@ -141,6 +156,7 @@ public class PopupLabel : MonoBehaviour
             _sequence?.Kill();
             _sequence = null;
             plp.ReturnLabel(this);
+            
         }
     }
 }

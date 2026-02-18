@@ -89,6 +89,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
             
             PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
             
+
             return true;
         }
         return false;

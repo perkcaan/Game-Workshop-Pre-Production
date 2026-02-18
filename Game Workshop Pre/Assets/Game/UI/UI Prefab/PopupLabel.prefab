@@ -100,7 +100,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +1
+  m_text: +2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 753fcb3897f636a408fad10b40a3a320, type: 2}
   m_sharedMaterial: {fileID: -142395910698434132, guid: 753fcb3897f636a408fad10b40a3a320, type: 2}
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0.54088044, g: 0.40367594, b: 0.3350737, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 0
   m_fontColorGradient:
@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 4587910021154920613}
+  _coinText: {fileID: 0}
   _minScaleSize: 1.2
   _maxScaleSize: 3
   _sizeOfMaxScale: 15
@@ -192,7 +193,7 @@ MonoBehaviour:
   _scaleDownSize: 0.8
   _scaleDownTime: 0.3
   _randomOffsetDistance: 0.1
-  floatUpDistance: 0.5
-  floatUpDuration: 0.6
-  fadeAwayDelay: 0.3
-  fadeAwayDuration: 0.3
+  _floatUpDistance: 0.5
+  _floatUpDuration: 0.6
+  _fadeAwayDelay: 0.3
+  _fadeAwayDuration: 0.3
