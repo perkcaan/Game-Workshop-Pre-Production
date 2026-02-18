@@ -15,4 +15,5 @@ public class TrashBallAbsorb : MonoBehaviour
     {
         _parentTrashBall.OnAbsorbTrigger(collider);
     }
+
 }
