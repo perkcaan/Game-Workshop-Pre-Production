@@ -15,7 +15,8 @@ public class CollectableItem : MonoBehaviour
     [SerializeField] Transform largeSparkle;
     [SerializeField] Transform smallSparkle;
 
-    private bool isCollected;
+
+    public bool isCollected;
 
     void Awake()
     {
@@ -24,8 +25,11 @@ public class CollectableItem : MonoBehaviour
 
     void Update()
     {
-        smallSparkle.Rotate(0, 0, 3 * sparkleRotationSpeed * Time.deltaTime);
-        largeSparkle.Rotate(0, 0, sparkleRotationSpeed * Time.deltaTime);
+        if (smallSparkle != null && largeSparkle != null)
+        {
+            smallSparkle.Rotate(0, 0, 3 * sparkleRotationSpeed * Time.deltaTime);
+            largeSparkle.Rotate(0, 0, sparkleRotationSpeed * Time.deltaTime);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

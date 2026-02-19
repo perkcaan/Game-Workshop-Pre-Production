@@ -24,9 +24,11 @@ public class MainMenuBehavior : MonoBehaviour
 
     public void Start()
     {
+        RuntimeManager.GetBus("bus:/").stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
         musicInstance = RuntimeManager.CreateInstance("event:/Music/Title Music");
 
         musicInstance.start();
+
     }
     public void OnPlayButtonClicked()
     {

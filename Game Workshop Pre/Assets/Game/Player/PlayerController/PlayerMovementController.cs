@@ -116,9 +116,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _state.Update();
         UpdateCooldowns();
 
-        if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetKeyDown(KeyCode.K))
         {
-            DistrictManager.Instance.AwardCoins(10);
+            DistrictManager.Instance.AwardCoins(100);
         }
     }
     private void FixedUpdate()

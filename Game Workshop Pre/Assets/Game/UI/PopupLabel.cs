@@ -81,20 +81,19 @@ public class PopupLabel : MonoBehaviour
         string labelText = $"Coins: {coins}";
         float labelScale = 1;
         string text = labelText;
-        Canvas canvas = FindObjectOfType<Canvas>();
-        
 
-        if (canvas == null)
+        Canvas parent = FindFirstObjectByType<Canvas>();
+        if (parent != null)
         {
-            Debug.LogWarning("No Canvas found in scene.");
-            return;
+            transform.SetParent(parent.transform, false);
         }
+
 
         RectTransform rectTransform = GetComponent<RectTransform>();
         if (rectTransform == null)
             rectTransform = gameObject.AddComponent<RectTransform>();
 
-        transform.SetParent(canvas.transform, false);
+        
 
 
         rectTransform.anchoredPosition = new Vector2(-950f, 354.3f);
@@ -139,6 +138,8 @@ public class PopupLabel : MonoBehaviour
                 targetText.DOFade(0f, _fadeAwayDuration)
                 .SetDelay(_fadeAwayDelay));
         }
+
+        
     }
                 
 

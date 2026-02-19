@@ -13,7 +13,7 @@ public class Shop : MonoBehaviour
     {
         foreach (ShopItem item in shopList)
         {
-            Instantiate(item);
+            Instantiate(item,item.spawnPosition,Quaternion.identity);
             
         }
     }

@@ -127,13 +127,9 @@ public class DistrictManager : StaticInstance<DistrictManager>
         int coinsToAward = amount;
         
         coinsEarned -= coinsToAward;
+        PopupLabel.CreateCoinLabel(Color.white, coinsEarned);
         PlayerPrefs.SetInt("Coins", coinsEarned);
         PlayerPrefs.Save();
-        DOTween.To(() => _coinText.alpha, x => _coinText.alpha = x, 1f, 1f);
-        _coinText.DOFade(1f, 1f).OnComplete(() => _coinText.DOFade(0f, 1f));
-        DOTween.To(() => _coinText.characterSpacing, x => _coinText.characterSpacing = x, 10f, 1f).OnComplete(() =>
-            DOTween.To(() => _coinText.characterSpacing, x => _coinText.characterSpacing = x, 0f, 1f));
-        _coinText.text = $"Coins: {coinsEarned}";
     }
 
     private void UpdateLoadedRooms()
