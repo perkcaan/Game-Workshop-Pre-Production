@@ -120,6 +120,13 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         }
     }
 
+    public float MinSizeToAbsorb
+    {
+        get { return _minSizeToAbsorb; }
+        set { _minSizeToAbsorb = value; }
+    }
+
+
     // Simple attack is a basic attack template that has startup, an attack, and endlag
     protected IEnumerator SimpleAttack(SimpleAttackProperties properties, 
         Action attackStart = null, Action attack = null, Action attackEnd = null)
