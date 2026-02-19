@@ -310,5 +310,10 @@ public class BaseEnemy : MonoBehaviour, IAbsorbable
         throw new NotImplementedException();
     }
 
+    public void OnTrashBallRelease(TrashBall trashBall, Vector2 unitVectorAngle)
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 }

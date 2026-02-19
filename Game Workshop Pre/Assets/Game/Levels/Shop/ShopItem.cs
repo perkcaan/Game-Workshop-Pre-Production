@@ -53,7 +53,7 @@ public class ShopItem : MonoBehaviour
         this.price = price;
         int coins = PlayerPrefs.GetInt("Coins");
 
-        if (coins > price)
+        if (coins >= price)
         {
             DistrictManager.Instance.RemoveCoins(price);
             quantity--;

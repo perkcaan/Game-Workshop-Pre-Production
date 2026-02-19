@@ -6,14 +6,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "TrashMaterial", menuName = "ScriptableObjects/TrashMaterial/Generic", order = 1)]
 public class TrashMaterial : ScriptableObject
 {
+    [Header("Additive Material Stats (BaseMaterial + (% of) Material)")]
     public Color color;
     public float bounciness;
     public float mass;
     public float drag;
+    public float maxHealthMultiplier;
     public float decayMultiplier;
     public float damageMultiplier;
     public float swipeForceMultiplier;
-    public float ballMaxHealthChange;
+
 
     public virtual void materialEnd(TrashBall trashBall) { }
     public virtual void whenBallRolls(TrashBall trashBall, TrashMaterialAmount amount) { }

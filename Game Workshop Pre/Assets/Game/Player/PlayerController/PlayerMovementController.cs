@@ -290,7 +290,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     // Being swiped puts you into tumble state
     public void OnSwipe(Vector2 direction, float force, Collider2D collider)
     {
-        //if (force >= _movementProps.EnterTumbleThreshold) _state.ChangeState(PlayerStateEnum.Tumble);
+        if (force >= _movementProps.EnterTumbleThreshold) _state.ChangeState(PlayerStateEnum.Tumble);
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
@@ -298,7 +298,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     public bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (ballVelocity.magnitude > _minVelocityToAbsorb && trashBall.Size > _minTrashSizeToAbsorb))
+        if (forcedAbsorb || (ballVelocity.magnitude > _minVelocityToAbsorb && trashBall.Size >= _minTrashSizeToAbsorb))
         {
             _ctx.AbsorbedTrashBall = trashBall;
             _state.ChangeState(PlayerStateEnum.Absorbed);
@@ -307,11 +307,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         return false;
     }
 
-    public void OnTrashBallRelease(TrashBall trashBall)
+    public void OnTrashBallRelease(TrashBall trashBall, Vector2 unitVectorAngle)
     {
         _ctx.AbsorbedTrashBall = null;
         _state.ChangeState(PlayerStateEnum.Idle);
     }
+
 
     public void OnTrashBallDestroy()
     {

@@ -8,6 +8,8 @@ public class SerializeReferenceDropdownAttribute : PropertyAttribute { }
 
 public class ReadOnlyAttribute : PropertyAttribute { }
 
+[AttributeUsage(AttributeTargets.Method)]
+public class EventActionAttribute : PropertyAttribute { }
 
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]

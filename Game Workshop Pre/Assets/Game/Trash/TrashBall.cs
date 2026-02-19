@@ -1,12 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using System;
 using FMOD.Studio;
 using FMODUnity;
-using Cinemachine.Utility;
-using Unity.PlasticSCM.Editor.WebApi;
+using System.Collections;
 
 // Primary script for TrashBall gameobject. Acts as a container for IAbsorbable (primarily Trash).
 public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
@@ -21,44 +19,47 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         set { SetSize(value); }
     }
 
-    [SerializeField] float _baseMaxHealth = 30f;
+    [SerializeField] float _baseMaxHealth = 3f;
     [SerializeField] float _scaleMultiplier = 0.5f;
     [SerializeField] float _maxScale = 5f;
 
     [Header("Ball Decay Properties")]
-    [SerializeField] float _idleDecayMultiplier;
+    [SerializeField] float _defaultDecayMultiplier;
     [SerializeField] float _timeUntilDecay = 30f;
     [SerializeField] float _decayTrashDropRate;
 
+    [Header("Ball Structure Properties")]
+    [SerializeField, ReadOnly] private float _maxHealth;
+    [SerializeField, ReadOnly] private float _health;
+    public float HealthPercent
+    {
+        get { return _health / _maxHealth; }
+    }
 
     [Header("Sweep Properties")]
     [SerializeField] float _vacuumForce = 1f;
     [SerializeField] float _minimumVacuumForce = 0.2f;
-    [SerializeField] float _sizeSweepMultiplier = 1.2f;
+    [SerializeField] float _sizeSweepMultiplier = 1.2f;    
 
     [Header("Trash Material Properties")]
     [SerializeField, ReadOnly] TrashMaterial _primaryTrashMaterial;
     [SerializeField, ReadOnly] TrashMaterial _secondaryTrashMaterial;
     [SerializeField] private TrashMaterial _baseMaterial;
     [SerializeField] private TrashMaterial _genericMaterial;
-    [SerializeField] float _dominantThreshold = 8.5f;
+    [SerializeField] float _dominantThreshold = 0.85f;
     [SerializeField] float _primaryThreshold = 0.5f;
     [SerializeField] float _secondaryThreshold = 0.15f;
-
-    // stats
-    [Header("Modified Stats")]
-    [SerializeField, ReadOnly] private float _maxHealth;
-    [SerializeField, ReadOnly] private float _health;
 
 
     // state of trashball
     private static int _nextID = 0; // universal count for trash ball IDs
     private int _trashID; //individual identifier for this trash ball
     private bool _isBeingDestroyed = false;
-    private bool _activelyDecaying = false;
+    private bool _isDecaying = false;
     private float _decayTimer = 0f;
 
     // material stats
+    private float _maxHealthMultiplier = 1f;
     private float _decayMultiplier = 0f;
     private float _damageMultiplier = 0f;
     private float _swipeForceMultiplier = 0f;
@@ -107,26 +108,29 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         AudioManager.Instance.Play("TrashBall", transform);
         _label.Show();
     }
-
+    
     private void Update()
     {
         if (_isBeingDestroyed) return;
 
         // Material
         ActionOnMaterials((material, amount) => material.whenBallRolls(this, amount));
+        foreach (IAbsorbable absorbable in AbsorbedObjects)
+        {
+            absorbable.TrashBallUpdate(this);
+        }
 
         // Particles
         _particleTimer -= Time.deltaTime * Rigidbody.velocity.magnitude / 10f;
-        if (_particleTimer <= 0 && Rigidbody.velocity.magnitude > 0.5f)
+        if (_particleTimer <= 0 && Rigidbody.velocity.magnitude > 0.5f)    
         {
             _particleTimer = 0.1f;
             ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f));
         }
-
+        
         // Sound
-        AudioManager.Instance.ModifyParameter(gameObject,"TrashBall","RPM2", Rigidbody.velocity.magnitude * 10);
-        FMOD.ATTRIBUTES_3D attributes = RuntimeUtils.To3DAttributes(gameObject, Rigidbody);
-        _sweepSoundInstance.set3DAttributes(attributes);
+        AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "RPM2", Rigidbody.velocity.magnitude * 10);
+        
 
         // 3D Ball rotation
         Vector3 rotationAxis = new Vector3(Rigidbody.velocity.y, -Rigidbody.velocity.x, 0);
@@ -135,18 +139,24 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         float rotationAngle = (distance / circumference) * 360f;
         _ballTransform.Rotate(rotationAxis, rotationAngle, Space.World);
 
-        // Decay
+        // Health Decay
         if (Rigidbody.velocity.magnitude < 1)
         {
-            _decayTimer -= Time.deltaTime * _idleDecayMultiplier * _decayMultiplier;
-            if (_decayTimer < 0)
+            _decayTimer -= Time.deltaTime * _defaultDecayMultiplier * _decayMultiplier;
+            if (_decayTimer <= 0)
             {
                 DegradeTrashBall();
-                _decayTimer += _decayTrashDropRate;
+                _decayTimer = _decayTrashDropRate;
             }
         }
-    }
 
+        // Can't decay when moving
+        if (Rigidbody.velocity.magnitude > 1)
+        {
+            SetDecaying(false);
+        }
+    }
+    
     private void FixedUpdate()
     {
         Collider.radius = _ballTransform.localScale.x * 0.5f;
@@ -179,8 +189,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         ActionOnMaterials((material, amount) => material.whenAbsorbTrash(this, amount));
 
         Size += absorbable.Size;
-        DistrictManager.Instance.FocusedRoom.NewTrashBallSize(Size);
-        _health = _maxHealth = Size + _baseMaxHealth;
 
         if (absorbable.TrashMat == null) return;
         for (int i = 0; i < _trashMaterialCounts.Count; i++)
@@ -214,7 +222,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         {
             absorbable.OnTrashBallDestroy(); // notify absorbed object
         }
-
+        
         _isBeingDestroyed = true;
         AbsorbedObjects.Clear();
         ScoreBehavior.SendScore?.Invoke(Size);
@@ -228,28 +236,52 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         Destroy(gameObject);
     }
 
+    // Removes a specific item from trash ball (Made for enemies) TODO: Switch to damage and squirm
+    public void EscapeFromTrashBall(IAbsorbable absorbable, float damageToBall, Vector2 escapeAngle)
+    {
+        if (!AbsorbedObjects.Contains(absorbable)) return;
+
+        SetDecaying(true);
+
+        for (int i = 0; i < _trashMaterialCounts.Count; i++)
+        {
+            if (absorbable.TrashMat == _trashMaterialCounts[i])
+            {
+                _trashMaterialSize[i] -= absorbable.Size * absorbable.TrashMatWeight;
+                break;
+            }
+        }
+        Size -= absorbable.Size;
+        absorbable.OnTrashBallRelease(this, escapeAngle);
+        StartCoroutine(RemoveFromAbsorbedNextFrame(absorbable));
+
+        if (_health <= 0)
+        {
+            ExplodeTrashBall();
+        }
+    }
+
     #endregion
 
 
     #region Private methods
 
+    // Sets the trash ball to decay (Can't decay when trashball is moving)
     private void SetDecaying(bool isDecaying)
     {
         if (_isBeingDestroyed) return;
-        if (isDecaying == _activelyDecaying) return;
+        if (isDecaying == _isDecaying) return;
 
-        _activelyDecaying = isDecaying;
+        _isDecaying = isDecaying;
         LayerMask mask = Rigidbody.excludeLayers;
         int trashBit = 1 << LayerMask.NameToLayer("Trash");
         int enemyBit = 1 << LayerMask.NameToLayer("Enemy");
         int combinedBit = trashBit | enemyBit;
 
-        if (isDecaying)
-        {
+        if (isDecaying) {
             mask |= combinedBit;
         }
-        else
-        {
+        else {
             mask &= ~combinedBit;
         }
         Rigidbody.excludeLayers = mask;
@@ -273,12 +305,12 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         int randomTrashRemove = -1;
         while (_needTrash) // get random trash, ensure its not player
         {
-            randomTrashRemove = UnityEngine.Random.Range(0, AbsorbedObjects.Count);
+            randomTrashRemove = UnityEngine.Random.Range(0, AbsorbedObjects.Count); 
             if ((AbsorbedObjects[randomTrashRemove] as MonoBehaviour).TryGetComponent(out PlayerMovementController player)) continue;
             _needTrash = false;
         }
 
-
+        
         for (int i = 0; i < _trashMaterialCounts.Count; i++)
         {
             if (AbsorbedObjects[randomTrashRemove].TrashMat == _trashMaterialCounts[i])
@@ -288,7 +320,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             }
         }
         Size -= AbsorbedObjects[randomTrashRemove].Size;
-        AbsorbedObjects[randomTrashRemove].OnTrashBallRelease(this);
+        AbsorbedObjects[randomTrashRemove].OnTrashBallRelease(this, UnityEngine.Random.onUnitSphere);
         AbsorbedObjects.Remove(AbsorbedObjects[randomTrashRemove]);
     }
 
@@ -296,12 +328,13 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private void ExplodeTrashBall()
     {
         if (_isBeingDestroyed) return;
-
+        _isBeingDestroyed = true;
+        
         foreach (IAbsorbable absorbable in AbsorbedObjects)
         {
             MonoBehaviour trashMono = absorbable as MonoBehaviour;
             trashMono.gameObject.SetActive(true);
-            absorbable.OnTrashBallRelease(this);
+            absorbable.OnTrashBallRelease(this, UnityEngine.Random.onUnitSphere);
         }
         AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "RPM2", 0f);
         AudioManager.Instance.Stop(gameObject, "TrashBall");
@@ -313,6 +346,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private void SetSize(int newSize)
     {
         if (_isBeingDestroyed) return;
+
+        // update health
+        float healthDifference = (newSize - _size) * _maxHealthMultiplier;
+        _maxHealth += healthDifference;
+        _health += healthDifference;
 
         _size = newSize;
         _label.UpdateSizeLabel(_size);
@@ -328,26 +366,31 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         if (_isBeingDestroyed || otherTrashBall._isBeingDestroyed) return;
         if (!otherTrashBall.isActiveAndEnabled) return;
+
+        float healthPercent = HealthPercent;
+        float otherHealthPercent = otherTrashBall.HealthPercent;
+        float sizePercent = Size / Size + otherTrashBall.Size;
+        float otherSizePercent = otherTrashBall.Size / Size + otherTrashBall.Size;
+        _decayTimer = _timeUntilDecay;
+
         foreach (IAbsorbable absorbable in otherTrashBall.AbsorbedObjects)
         {
-            if (absorbable.OnAbsorbedByTrashBall(this, Vector2.zero, 0, true))
-            {
+            if (absorbable.OnAbsorbedByTrashBall(this, Vector2.zero, 0, true)) {
                 AbsorbObject(absorbable);
             }
 
         }
-
+        //average health percents between the two balls based on size
+        _health = Mathf.Min((healthPercent * sizePercent + otherHealthPercent * otherSizePercent) *_maxHealth, _maxHealth); 
 
         // particles
         Vector2 direction = otherTrashBall.transform.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle - 45);
-        if (otherTrashBall.Size > 10)
-        {
+        Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);
+        if (otherTrashBall.Size > 10) {
             ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: 1f);
         }
-        else
-        {
+        else {
             ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: 0.5f);
         }
 
@@ -357,7 +400,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         otherTrashBall.Rigidbody.simulated = false;
 
         Sequence seq = DOTween.Sequence();
-        seq.SetLink(otherTrashBall.gameObject);
+        seq.SetLink(otherTrashBall.gameObject, LinkBehaviour.KillOnDestroy); 
         seq.Join(otherTrashBall._ballTransform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
         seq.Join(otherTrashBall.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
         seq.OnComplete(() => Destroy(otherTrashBall?.gameObject));
@@ -379,11 +422,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     {
         TrashMaterial _newPrimaryTrashMaterial = _genericMaterial;
         TrashMaterial _newSecondaryTrashMaterial = _genericMaterial;
-
+    
         // Get total Trash Material Size
         float totalSize = 0f;
-        for (int i = 0; i < _trashMaterialSize.Count; i++)
-        {
+        for (int i = 0; i < _trashMaterialSize.Count; i++) {
             totalSize += _trashMaterialSize[i];
         }
 
@@ -395,8 +437,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             float percent = _trashMaterialSize[i] / totalSize;
             if (percent > highestPercent)
             {
-                if (highestPercent != _primaryThreshold)
-                {
+                if (highestPercent != _primaryThreshold) {
                     // Highest > Second Highest
                     secondHighestPercent = highestPercent;
                     _newSecondaryTrashMaterial = _newPrimaryTrashMaterial;
@@ -441,10 +482,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         // Update trash material on audio
         if (_primaryTrashMaterial == null)
         {
-            AudioManager.Instance.ModifyGlobalParameter("Generic", highestPercent);
+            AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "Generic", highestPercent);
             return;
         }
-        AudioManager.Instance.ModifyGlobalParameter(_primaryTrashMaterial.name, highestPercent);
+        AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", _primaryTrashMaterial.name, highestPercent);
 
         // Update label color
         _label.SetColor(_primaryTrashMaterial.color);
@@ -456,13 +497,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         Rigidbody.sharedMaterial.bounciness = _baseMaterial.bounciness;
         Rigidbody.drag = _baseMaterial.drag;
         Rigidbody.mass = _baseMaterial.mass;
+        _maxHealthMultiplier = _baseMaterial.maxHealthMultiplier;
         _decayMultiplier = _baseMaterial.decayMultiplier;
         _damageMultiplier = _baseMaterial.damageMultiplier;
         _swipeForceMultiplier = _baseMaterial.swipeForceMultiplier;
-
-        float currentHealthPercent = _health / _maxHealth;
-        _maxHealth = _baseMaxHealth;
-        _health = currentHealthPercent * _maxHealth;
     }
 
     // Apply the material properties to the trash ball. 1f - Dominant, 0.66 - Primary, 0.33 - 
@@ -472,16 +510,23 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         Rigidbody.sharedMaterial.bounciness += material.bounciness * percentOf;
         Rigidbody.drag += material.drag * percentOf;
         Rigidbody.mass += material.mass * percentOf;
+        _maxHealthMultiplier += material.maxHealthMultiplier * percentOf;
         _decayMultiplier += material.decayMultiplier * percentOf;
         _damageMultiplier += material.damageMultiplier * percentOf;
         _swipeForceMultiplier += material.swipeForceMultiplier * percentOf;
+        UpdateMaxHealthMultiplier();
+    }
 
-        float currentHealthPercent = _health / _maxHealth;
-        _maxHealth += material.ballMaxHealthChange * percentOf;
+    // Updates _health and _maxHealth to the current _maxHealthMultiplier
+    private void UpdateMaxHealthMultiplier()
+    {
+        float currentHealthPercent = HealthPercent;
+        _maxHealthMultiplier = Mathf.Max(_maxHealthMultiplier, 0.1f); // Cap max health multiplier at 0.1 to prevent divide by 0 errors
+        _maxHealth = _baseMaxHealth + (Size * _maxHealthMultiplier);
         _health = currentHealthPercent * _maxHealth;
     }
 
-
+    // Quick way to call material methods
     private void ActionOnMaterials(Action<TrashMaterial, TrashMaterialAmount> actionToPerform)
     {
         if (_secondaryTrashMaterial == _genericMaterial)
@@ -493,6 +538,13 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             actionToPerform?.Invoke(_primaryTrashMaterial, TrashMaterialAmount.Primary);
             actionToPerform?.Invoke(_secondaryTrashMaterial, TrashMaterialAmount.Secondary);
         }
+    }
+
+    // A way to safely remove from AbsorbedObjects during IAbsorbable.Update();
+    private IEnumerator RemoveFromAbsorbedNextFrame(IAbsorbable absorbable)
+    {
+        yield return new WaitForEndOfFrame();
+        AbsorbedObjects.Remove(absorbable);
     }
 
     #endregion
@@ -515,13 +567,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         if (collider.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
         {
-            if (_activelyDecaying) return;
+            if (_isDecaying) return;
             if (absorbableObject.OnAbsorbedByTrashBall(this, Rigidbody.velocity, Size, false))
             {
                 AbsorbObject(absorbableObject);
             }
-            _health += Mathf.Min(absorbableObject.Size, _maxHealth); //health 
-            _decayTimer = _timeUntilDecay;
             return;
         }
 
@@ -531,8 +581,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
             if (otherTrashBall == null || gameObject == null) return;
             if (!otherTrashBall.isActiveAndEnabled || !isActiveAndEnabled) return;
-            _health = Mathf.Min((_health + otherTrashBall._health) * 0.5f, _maxHealth);
-            _decayTimer = _timeUntilDecay;
 
             if (Size > otherTrashBall.Size)
             {
@@ -592,7 +640,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     public void OnSweep(Vector2 center, Vector2 direction, float force)
     {
         if (_isBeingDestroyed) return;
-        SetDecaying(false);
         _decayTimer = _timeUntilDecay;
 
         Vector3 centerPoint = center + (direction * Mathf.Pow(Size, 1f / 3f) / Mathf.PI);
@@ -609,9 +656,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         ActionOnMaterials((material, amount) => material.whenBallSwiped(this, amount));
 
-        SetDecaying(false);
-        _health = _maxHealth;
         _decayTimer = _timeUntilDecay;
+        
 
         Rigidbody.AddForce(direction * force * _swipeForceMultiplier, ForceMode2D.Impulse);
 
@@ -623,8 +669,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: sizeForce);
         ParticleManager.Instance.Play("ImpactLines", contactPoint, particleRotation, force: 1.4f);
         ParticleManager.Instance.Play("ImpactCircleS", contactPoint, force: 1.25f);
-
     }
-
+    
     #endregion
 }
+

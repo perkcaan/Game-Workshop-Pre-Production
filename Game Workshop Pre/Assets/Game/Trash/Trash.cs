@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;  
 using JetBrains.Annotations;
 using UnityEngine;
@@ -27,8 +28,11 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     public Rigidbody2D _rigidBody;
     protected SpriteRenderer _spriteRenderer;
     private float soundCooldown = 1f;
-
     protected bool _isDestroyed = false;
+    protected bool _isAbsorbed = false;
+    protected Tween _shakeTween;
+    [SerializeField] float _onFailAbsorbShakeForce = 0.5f;
+    protected float _shakeSpeed = 0.125f;
 
     protected virtual void Awake()
     {
@@ -70,14 +74,17 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     {
         if (_isDestroyed) return false;
         
-        if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled && _rigidBody.simulated))
+
+        Vector2 direction = transform.position - trashBall.transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled && _rigidBody.simulated && !_isAbsorbed))
         {
             GivePoints();
             _rigidBody.simulated = false;
+            _isAbsorbed = true;
             if (forcedAbsorb) return true;
             
-            Vector2 direction = transform.position - trashBall.transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);    
             if (Size > 4)
             {
@@ -89,21 +96,67 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
             
             PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
             
-
             return true;
         }
+        if (isActiveAndEnabled && _rigidBody.simulated && !_isAbsorbed) // reason it failed was because of low trashball size
+        {
+            if (_shakeTween != null && _shakeTween.IsActive()) _shakeTween.Complete();
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_spriteRenderer.transform.DOLocalMove(direction.normalized * _onFailAbsorbShakeForce, _shakeSpeed));
+            sequence.Append(_spriteRenderer.transform.DOLocalMove(-direction.normalized * _onFailAbsorbShakeForce / 4, _shakeSpeed));
+            sequence.Append(_spriteRenderer.transform.DOLocalMove(Vector3.zero, _shakeSpeed));
+            sequence.SetLink(_spriteRenderer.gameObject); 
+            _shakeTween = sequence;            
+        }
+
         return false;
     }
 
-    public void OnTrashBallRelease(TrashBall trashBall)
+    public void OnTrashBallRelease(TrashBall trashBall, Vector2 unitVectorAngle)
     {
         gameObject.SetActive(true);
-        transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
-        _rigidBody.simulated = true;
+
+        List<Collider2D> colliders = new List<Collider2D>();
+        _rigidBody.GetAttachedColliders(colliders);
+        foreach (Collider2D collider in colliders)
+        {
+            Physics2D.IgnoreCollision(collider, trashBall.Collider, true);
+            Physics2D.IgnoreCollision(collider, trashBall.MagnetCollider, true);
+        }
+        
         transform.position = trashBall.transform.position;
-        float explosionForce = (float)(Math.Sqrt(trashBall.Size) * _explosionMultiplier);
-        Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
-        _rigidBody.velocity = randomForce;
+
+        
+        transform.localScale = Vector3.zero;
+        transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
+
+        StartCoroutine(ExplodeOutOfBall(trashBall, unitVectorAngle));
+    }
+
+    private IEnumerator ExplodeOutOfBall(TrashBall trashBall, Vector2 unitVectorAngle)
+    {
+        int size = trashBall.Size; //store size early for safety
+
+        // Wait a frame to ensure collision is ignored, then explode out of the ball
+        yield return new WaitForEndOfFrame();
+        _rigidBody.simulated = true;
+        // This is a sloppy way of doing it... but it should properly keep magnitude the same as before while letting ball control the angle
+        float explosionForce = (float)(Math.Sqrt(size) * _explosionMultiplier);
+        float randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce)).magnitude;
+        _rigidBody.velocity = randomForce * unitVectorAngle;
+
+        yield return new WaitForSeconds(0.3f);
+        _isAbsorbed = false;
+        if (trashBall != null && trashBall.isActiveAndEnabled)
+        {
+            List<Collider2D> colliders = new List<Collider2D>();
+            _rigidBody.GetAttachedColliders(colliders);
+            foreach (Collider2D collider in colliders) {
+                Physics2D.IgnoreCollision(collider, trashBall.Collider, false);
+                Physics2D.IgnoreCollision(collider, trashBall.MagnetCollider, false);
+            }
+        }
+
     }
 
     public void OnTrashBallDestroy()
