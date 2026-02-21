@@ -42,6 +42,7 @@ public class PlayerContext
     public float MaxWalkSpeed { get; set; } = 0f;
     public float MaxSweepWalkSpeed { get; set; } = 0f;
     public float MaxSwipeWalkSpeed { get; set; } = 0f;
+    public float MaxHookWalkSpeed { get; set; } = 0f;
     public float Acceleration { get; set; } = 0f;
     public float SweepAcceleration { get; set; } = 0f;
     public float SwipeAcceleration { get; set; } = 0f;

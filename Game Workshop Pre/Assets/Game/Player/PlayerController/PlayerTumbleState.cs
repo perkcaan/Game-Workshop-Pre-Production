@@ -23,6 +23,7 @@ public class PlayerTumbleState : BaseState<PlayerStateEnum>
     public override void EnterState()
     {
         _ctx.Animator.SetBool("Tumbling", true);
+        _ctx.CanHook = false;
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
         _ctx.PlayerHasControl = false;

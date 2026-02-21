@@ -23,6 +23,7 @@ public class PlayerHookState : BaseState<PlayerStateEnum>
     //state
     public override void EnterState()
     {
+        _ctx.CanHook = false;
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
         _hasHookBeenThrown = false;
@@ -83,7 +84,7 @@ public class PlayerHookState : BaseState<PlayerStateEnum>
         if (input.sqrMagnitude > 0.01f)
         {
             _zeroMoveTimer = 0f;
-            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxSwipeWalkSpeed, _ctx.Acceleration * Time.fixedDeltaTime);
+            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxHookWalkSpeed, _ctx.Acceleration * Time.fixedDeltaTime);
         }
         else
         {
@@ -95,9 +96,9 @@ public class PlayerHookState : BaseState<PlayerStateEnum>
                 _ctx.MoveSpeed = 0f;
                 // Cancels sliding with an opposing force
                 Vector2 velocity = _ctx.Rigidbody.velocity;
-                if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxSwipeWalkSpeed) && _ctx.Props.WillCancelSwipeSlide)
+                if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxHookWalkSpeed) && _ctx.Props.WillCancelSwipeSlide)
                 {
-                    Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxSwipeWalkSpeed;
+                    Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxHookWalkSpeed;
                     _ctx.FrameVelocity = Vector2.ClampMagnitude(fullCancelForce, (-velocity * _ctx.Rigidbody.mass / Time.fixedDeltaTime).magnitude);
                     return;
                 }

@@ -123,6 +123,12 @@ public class HookHandler : MonoBehaviour
         if (!_isActive || _isRetracting) return;
 
         if (other.TryGetComponent(out PlayerMovementController player)) return;
+        if (other.TryGetComponent(out Sticky sticky)) {
+            Vector2 directionToPlayer = (_parent.transform.position - _hookHead.position).normalized;
+            _parent.OnSwipe(directionToPlayer, -_pullForce * 2, other);
+            StartRetract();
+            return;
+        }
         if (other.TryGetComponent(out Wall wall)) {
             StartRetract();
             return;
