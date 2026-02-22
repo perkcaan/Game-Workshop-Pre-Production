@@ -106,8 +106,16 @@ public class Room : MonoBehaviour
     {
         if (_isRoomCleaned || _isRoomClosed) return;
         _isRoomClosed = true;
+
+        if (IsTrashRoom && !IsRoomCleaned)
+        {
+            PlayerMovementController player = FindObjectOfType<PlayerMovementController>();
+            AudioManager.Instance.Play("gateUp", player.transform);
+        }
+
         foreach (Gate gate in _connectedGates)
         {
+            
             gate.Close(this);
         }
     }
@@ -118,6 +126,8 @@ public class Room : MonoBehaviour
         if (!_isRoomClosed) return;
 
         _isRoomClosed = false;
+
+        
         foreach (Gate gate in _connectedGates)
         {
             gate.Open(this);
@@ -144,6 +154,7 @@ public class Room : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out PlayerMovementController player))
         {
             if (DistrictManager.Instance != null) DistrictManager.Instance.PlayerEnterRoom(this);
+            
         }
 
         if (collision.gameObject.TryGetComponent(out HeatMechanic heatable))
@@ -215,9 +226,15 @@ public class Room : MonoBehaviour
     {
         if (_openGatesOnClean)
         {
-            if(IsTrashRoom)
+            if (IsTrashRoom)
+            {
                 DistrictManager.Instance.AwardCoins(_maxTrashBallSize);
+                PlayerMovementController player = FindObjectOfType<PlayerMovementController>();
+                AudioManager.Instance.Play("gateDown", player.transform);
+            }
             _isRoomClosed = false;
+
+
             foreach (Gate gate in _connectedGates) gate.Open(this);
         }
     }

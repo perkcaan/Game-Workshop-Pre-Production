@@ -221,7 +221,9 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
             _ballDamageTimer = _trashBallDamageTime;
             _ballSquirmTimer = _trashBallSquirmTime;
+            AudioManager.Instance.PlayOnInstance(gameObject, "enemyPickup");
             return true;
+            
         }
         return false;
     }

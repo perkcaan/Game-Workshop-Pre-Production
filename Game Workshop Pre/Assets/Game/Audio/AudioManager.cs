@@ -46,7 +46,7 @@ public void Start()
 }
 public void Play(string sCode, Transform position)
 {
-    //bool instance = false;
+    
         
     if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
     {
@@ -56,23 +56,7 @@ public void Play(string sCode, Transform position)
 
     RuntimeManager.PlayOneShot(eventRef, position.position);
 
-    //if (!instance)
-    //{
-    //    parent = new EventInstance();
-    //    parent = RuntimeManager.CreateInstance(eventRef);
-    //    parent.start();
-    //    parent.set3DAttributes(RuntimeUtils.To3DAttributes(position));
-    //    instance = true;
-    //    return;
-    //}
-    //else
-    //{
-    //    parent.start();
-    //    return;
-    //}
-
-
-    //RuntimeManager.PlayOneShot(eventRef, position.position);
+    
 
 }
 
@@ -181,14 +165,7 @@ public void PlayOnInstance(GameObject obj, string sCode)
 
             return;
         }
-        //else
-        //{
-        //    
-        //    StudioEventEmitter newEmitter = obj.AddComponent<StudioEventEmitter>();
-        //    newEmitter.EventReference = eventRef;
-        //    newEmitter.Play();
-        //    return;
-        //}
+        
     }
 
         

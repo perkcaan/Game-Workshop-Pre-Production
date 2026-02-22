@@ -105,7 +105,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     private void Start()
     {
         RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, gameObject, Rigidbody);
-        AudioManager.Instance.Play("TrashBall", transform);
+        AudioManager.Instance.PlayOnInstance(this.gameObject, "TrashBall");
         _label.Show();
     }
     
@@ -129,8 +129,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         }
         
         // Sound
-        AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "RPM2", Rigidbody.velocity.magnitude * 10);
-        
+        AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM", this.Rigidbody.velocity.magnitude * 10);
+        //AudioManager.Instance.ModifyGlobalParameter("RPM", this.Rigidbody.velocity.magnitude * 10);
+
 
         // 3D Ball rotation
         Vector3 rotationAxis = new Vector3(Rigidbody.velocity.y, -Rigidbody.velocity.x, 0);
@@ -178,7 +179,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             isPlayer = true;
         }
 
-        ScoreBehavior.SendScore?.Invoke(0);
+        //ScoreBehavior.SendScore?.Invoke(0);
 
         AbsorbedObjects.Add(absorbable);
         if (Rigidbody.simulated && !isPlayer)
@@ -225,14 +226,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         
         _isBeingDestroyed = true;
         AbsorbedObjects.Clear();
-        ScoreBehavior.SendScore?.Invoke(Size);
+        //ScoreBehavior.SendScore?.Invoke(Size);
     }
 
     // Removes the trash ball entirely
     public void Delete()
     {
-        AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "RPM2", 0f);
-        AudioManager.Instance.Stop(gameObject,"TrashBall");
+        AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM2", 0f);
+        AudioManager.Instance.Stop(this.gameObject,"TrashBall");
         Destroy(gameObject);
     }
 
@@ -336,9 +337,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
             trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallRelease(this, UnityEngine.Random.onUnitSphere);
         }
-        AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "RPM2", 0f);
-        AudioManager.Instance.Stop(gameObject, "TrashBall");
-        AudioManager.Instance.Stop(gameObject, "Decay");
+        AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM2", 0f);
+        AudioManager.Instance.Stop(this.gameObject, "TrashBall");
+        AudioManager.Instance.Stop(this.gameObject, "Decay");
         Destroy(gameObject);
     }
 
@@ -558,6 +559,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (collision.gameObject.TryGetComponent(out Wall wall))
         {
             ActionOnMaterials((material, amount) => material.whenBallHitsWall(this, amount));
+            Debug.Log("Collided with wall, speed: " + Rigidbody.velocity.magnitude);
+            
         }
     }
 

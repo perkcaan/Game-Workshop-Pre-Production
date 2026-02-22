@@ -7,6 +7,7 @@ using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
@@ -35,6 +36,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         RoomPolygonGenerator.GeneratePolygonColliders(transform, _roomTilemap);
     }
 
+
     public float GetCleanCompletion()
     {
         int completeRooms = 0;
@@ -46,6 +48,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
             if (room.IsRoomCleaned)
             {
                 completeRooms++;
+
             }
         }
 
@@ -58,6 +61,8 @@ public class DistrictManager : StaticInstance<DistrictManager>
         _focusedRooms.Add(room);
         if (_roomsNeedingSafeExit.Contains(room)) _roomsNeedingSafeExit.Remove(room);
         room.TriggerRoomClose();
+
+        
         foreach (Room needyRoom in _roomsNeedingSafeExit)
         {
             needyRoom.SafeExit();
@@ -65,6 +70,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         _roomsNeedingSafeExit.Clear();
         UpdateLoadedRooms();
     }
+
     public void PlayerExitRoom(Room room)
     {
         if (!_focusedRooms.Contains(room)) return;
@@ -83,22 +89,10 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private void Start()
     {
         _rooms = new List<Room>(FindObjectsOfType<Room>());
-        //DOTween.To(() => _coinText.alpha, x => _coinText.alpha = x, 0f, 0f);
-        //if (PlayerPrefs.HasKey("Coins"))
-        //    coinsEarned = PlayerPrefs.GetInt("Coins");
-        //else
-        //    coinsEarned = 0;
-        //if(_coinText != null)
-        //    _coinText.text = $"Coins: {PlayerPrefs.GetInt("Coins")}";
-
         if (PlayerPrefs.HasKey("Coins"))
             coinsEarned = PlayerPrefs.GetInt("Coins");
         else
             coinsEarned = 0;
-        //PopupLabel.CreateCoinLabel(Color.white, coinsEarned);
-
-
-
     }
 
     public void AwardCoins(int amount)
@@ -112,7 +106,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         PlayerPrefs.SetInt("Coins", coinsEarned);
         PlayerPrefs.Save();
         PopupLabel.CreateCoinLabel(Color.white, coinsEarned);
-        Debug.Log("Awarded " + coinsToAward + " coins! Total coins: " + coinsEarned);
+        
 
         
 
