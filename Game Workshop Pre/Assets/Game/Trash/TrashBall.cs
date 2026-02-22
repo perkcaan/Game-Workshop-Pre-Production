@@ -354,7 +354,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
         _size = newSize;
         _label.UpdateSizeLabel(_size);
-
+        DistrictManager.Instance.FocusedRoom?.NewTrashBallSize(_size);
         // Formula for size -> scale
         // scale = CubeRoot(size) * multiplier
         float scale = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
@@ -482,10 +482,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         // Update trash material on audio
         if (_primaryTrashMaterial == null)
         {
-            AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "Generic", highestPercent);
+            //AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "Generic", highestPercent);
             return;
         }
-        AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", _primaryTrashMaterial.name, highestPercent);
+        //AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", _primaryTrashMaterial.name, highestPercent);
 
         // Update label color
         _label.SetColor(_primaryTrashMaterial.color);

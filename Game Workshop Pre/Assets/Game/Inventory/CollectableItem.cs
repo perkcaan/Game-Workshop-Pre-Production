@@ -15,8 +15,8 @@ public class CollectableItem : MonoBehaviour
     [SerializeField] Transform largeSparkle;
     [SerializeField] Transform smallSparkle;
 
-
-    public bool isCollected;
+    public bool shopItem;
+    private bool isCollected;
 
     void Awake()
     {
@@ -35,8 +35,10 @@ public class CollectableItem : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (isCollected) return;
+        if (shopItem) return;
         if (other.TryGetComponent(out PlayerMovementController player))
         {
+
             isCollected = true;
             Sequence sequence = DOTween.Sequence();
             ParticleManager.Instance.Play("StarWave", transform.position);

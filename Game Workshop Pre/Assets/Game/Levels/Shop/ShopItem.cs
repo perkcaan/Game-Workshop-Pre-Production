@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class ShopItem : MonoBehaviour
 {
+    // Item Fields
     [SerializeField] public int price;
     [SerializeField] public int quantity;
     [SerializeField] TMP_Text priceText;
@@ -17,15 +18,30 @@ public class ShopItem : MonoBehaviour
     [SerializeField] GameObject descriptionBox;
     [SerializeField] Item attachedItem;
     public Vector3 spawnPosition;
-    public Collider2D triggerCollider;
+    
+
+    // Amount Tracking and Trigger Checks
     private bool inTrigger;
+    private int initialQuantity;
+    private bool isPurchased;
+
+
     // Start is called before the first frame update
     void Start()
     {
         descriptionBox.gameObject.SetActive(false);
         gameObject.name = itemName.text;
-        CollectableItem collectableItem = GetComponent<CollectableItem>();
-        collectableItem.isCollected = true;
+
+        if (attachedItem != null)
+        {
+            attachedItem.displayName = itemName.text;
+            description.text = attachedItem.discriptionText;
+            sprite.sprite = attachedItem.displayIcon;
+            CollectableItem collectableItem = GetComponent<CollectableItem>();
+            collectableItem.shopItem = true;
+        }
+        initialQuantity = quantity;
+
     }
 
     // Update is called once per frame
@@ -41,10 +57,9 @@ public class ShopItem : MonoBehaviour
 
         }
 
-        //transform.DOMoveY(0, 0.2f).SetLoops(1, LoopType.Restart).SetEase(Ease.InOutSine);
-        float newY = spawnPosition.y + Mathf.Sin(Time.time * 1f) * 0.2f;
 
-        // Update the object's position
+
+        float newY = spawnPosition.y + Mathf.Sin(Time.time * 1f) * 0.2f;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
 
@@ -61,8 +76,15 @@ public class ShopItem : MonoBehaviour
             if (quantity <= 0)
             {
                 gameObject.SetActive(false);
+            }
+
+            if (!isPurchased)
+            {
                 Inventory.Instance.StoreItem(attachedItem);
             }
+
+            isPurchased = true;
+            attachedItem.displayName = itemName.text + $"({Mathf.Abs(quantity - initialQuantity)} x )";
 
         }
         else
@@ -73,7 +95,7 @@ public class ShopItem : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        triggerCollider = collision;
+        
         if (collision.TryGetComponent(out PlayerMovementController player))
         {
             descriptionBox.gameObject.SetActive(true);

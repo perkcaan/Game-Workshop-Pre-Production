@@ -109,6 +109,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         AudioManager.Instance.PlayInstance("Heat");
         //_heatSound.start();
         _playerHeat = GetComponent<HeatMechanic>();
+        
     }
 
     private void Update()
@@ -118,7 +119,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
         if(Input.GetKeyDown(KeyCode.K))
         {
-            DistrictManager.Instance.AwardCoins(100);
+            DistrictManager.Instance.AwardCoins(10);
         }
     }
     private void FixedUpdate()
