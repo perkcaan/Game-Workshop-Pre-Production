@@ -25,6 +25,7 @@ public class Room : MonoBehaviour
 
     public int MaxTrashBallSize { get { return _maxTrashBallSize; } }
     private int _maxTrashBallSize;
+    public int coinsAwarded;
     public float Cleanliness
     {
         get { return _roomTotalTrashCount == 0 ? 1f : 1f - Mathf.Clamp01((float) _roomCurrentTrashAmount / _roomTotalTrashCount); }
@@ -228,7 +229,7 @@ public class Room : MonoBehaviour
         {
             if (IsTrashRoom)
             {
-                DistrictManager.Instance.AwardCoins(_maxTrashBallSize);
+                DistrictManager.Instance.AwardCoins(coinsAwarded);
                 PlayerMovementController player = FindObjectOfType<PlayerMovementController>();
                 AudioManager.Instance.Play("gateDown", player.transform);
             }

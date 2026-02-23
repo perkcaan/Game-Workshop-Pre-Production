@@ -18,7 +18,10 @@ public class ShopItem : MonoBehaviour
     [SerializeField] GameObject descriptionBox;
     [SerializeField] Item attachedItem;
     public Vector3 spawnPosition;
-    
+
+    public float shakeDuration = 0.5f;
+    public float shakeMagnitude = 0.1f;
+
 
     // Amount Tracking and Trigger Checks
     private bool inTrigger;
@@ -53,8 +56,6 @@ public class ShopItem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && inTrigger)
         {
             Purchase(price);
-            
-
         }
 
 
@@ -67,11 +68,13 @@ public class ShopItem : MonoBehaviour
     {
         this.price = price;
         int coins = PlayerPrefs.GetInt("Coins");
+        
 
         if (coins >= price)
         {
             DistrictManager.Instance.RemoveCoins(price);
             quantity--;
+            
 
             if (quantity <= 0)
             {
@@ -89,11 +92,44 @@ public class ShopItem : MonoBehaviour
         }
         else
         {
+            TriggerShake();
             Debug.Log("YOU'RE TOO POOR");
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
+    public void TriggerShake()
+    {
+        // Store the original position before shaking
+        spawnPosition = transform.localPosition;
+        StartCoroutine(Shake());
+    }
+     
+    private IEnumerator Shake()
+    {
+        float elapsed = 0.0f;
+        
+
+        while (elapsed < shakeDuration/3)
+        {
+            Vector3 randomOffset = Random.insideUnitCircle * shakeMagnitude;
+            transform.localPosition = spawnPosition + randomOffset;
+            elapsed += Time.deltaTime;
+            yield return null; 
+        }
+
+        while (elapsed < shakeDuration / 2)
+        {
+            Vector3 randomOffset = Random.insideUnitCircle * shakeMagnitude;
+            transform.localPosition = spawnPosition + (randomOffset * 0.6f);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+
+        transform.localPosition = spawnPosition;
+    }
+
+public void OnTriggerEnter2D(Collider2D collision)
     {
         
         if (collision.TryGetComponent(out PlayerMovementController player))

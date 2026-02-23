@@ -830,7 +830,8 @@ MonoBehaviour:
   descriptionBox: {fileID: 1300283007902580552}
   attachedItem: {fileID: 11400000, guid: e2b94e853790e054ab5331cb0fe3d5bc, type: 2}
   spawnPosition: {x: 42.5, y: 9, z: 0}
-  triggerCollider: {fileID: -5002112990385744907}
+  shakeDuration: 0.5
+  shakeMagnitude: 0.1
 --- !u!61 &-5002112990385744907
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -937,4 +938,4 @@ MonoBehaviour:
   sparkleRotationSpeed: 0
   largeSparkle: {fileID: 0}
   smallSparkle: {fileID: 0}
-  isCollected: 0
+  shopItem: 0

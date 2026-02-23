@@ -484,9 +484,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         if (_primaryTrashMaterial == null)
         {
             //AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "Generic", highestPercent);
+            AudioManager.Instance.ModifyGlobalParameter("Generic", highestPercent);
             return;
         }
         //AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", _primaryTrashMaterial.name, highestPercent);
+        AudioManager.Instance.ModifyGlobalParameter(_primaryTrashMaterial.name, highestPercent);
 
         // Update label color
         _label.SetColor(_primaryTrashMaterial.color);
