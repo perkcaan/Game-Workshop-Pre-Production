@@ -60,17 +60,21 @@ Material:
     - _Cull: 2
     - _DstBlend: 0
     - _FlowSpeed: 0.31
-    - _NewNoise1: 29.2
-    - _NewNoise2: 50.91
+    - _NewNoise1: 39.7
+    - _NewNoise2: 51.25
     - _PixelCount: 16
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SrcBlend: 1
     - _Surface: 0
     - _ThreshA: 0
-    - _ThreshB: 0.6
+    - _ThreshA_B: 0.08
+    - _ThreshB: 0.68
+    - _ThreshB_C: 0.68
     - _ThreshC: 0.8
+    - _ThreshC_D: 0.92
     - _ThreshD: 1
+    - _ThreshD_E: 1.16
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
@@ -81,8 +85,8 @@ Material:
     - _ColorD: {r: 1, g: 0.58427644, b: 0, a: 0}
     - _ColorE: {r: 1, g: 0.7296851, b: 0, a: 0}
     - _ColorGradient: {r: 26.4, g: 0.41, b: -0.02, a: 0}
-    - _Noise2_ST: {r: 0.21, g: 0.23, b: 0, a: 0}
-    - _Noise_ST: {r: 0.73, g: 0.79, b: 0.54, a: 0}
+    - _Noise2_ST: {r: 0.23, g: 0.23, b: 0, a: 0}
+    - _Noise_ST: {r: 0.45, g: 0.79, b: 0.54, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &5581633541201501303
 MonoBehaviour:
