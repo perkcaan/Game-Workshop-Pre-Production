@@ -27,6 +27,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     public override void EnterState()
     {
         _ctx.Animator.SetBool("HoldingSwipe", true);
+        _ctx.CanHook = false;
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
         _hasSwipeBeenActivated = false;
@@ -136,7 +137,5 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
                 _state.ChangeState(PlayerStateEnum.Idle);
             }
         }
-
     }
-
 }

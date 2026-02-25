@@ -116,6 +116,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToClean: 1.4
 --- !u!1 &1007944768278704012
 GameObject:
@@ -333,11 +334,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 798
+  _size: 6
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 9164155546719665749}
+  _onFailAbsorbShakeForce: 0.5
   _health: 3
   _trashSpreadRange: 70
   _onDamagedShakeForce: 0.05
@@ -480,11 +482,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 1463
+  _size: 11
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 1973197737270378517}
+  _onFailAbsorbShakeForce: 0.5
   _health: 6
   _trashSpreadRange: 70
   _onDamagedShakeForce: 0.05
@@ -737,6 +740,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToClean: 1.4
 --- !u!1 &2123556049799590438
 GameObject:
@@ -855,6 +859,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0.3
   _swipesIntoTrashBall: 0
 --- !u!114 &6114190248901146545
@@ -1092,11 +1097,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 1463
+  _size: 11
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 7709554105730430451}
+  _onFailAbsorbShakeForce: 0.5
   _health: 6
   _trashSpreadRange: 70
   _onDamagedShakeForce: 0.05
@@ -1245,6 +1251,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0.5
   _swipesIntoTrashBall: 0
 --- !u!114 &4365842765911115062
@@ -1523,12 +1530,15 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
+  _hasImpactParticle: 0
   _sweepDurationToBecomeBall: 0.3
   _playerEnterKnockback: 0.1
   _playerEnterTripForce: 0.1
   _playerExitKnockback: 0.1
   _playerExitTripForce: 0.1
   _randomDirectionRange: 15
+  maximumVelocity: 2
   _isSwipable: 0
 --- !u!114 &7400415174499916176
 MonoBehaviour:
@@ -1661,11 +1671,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 931
+  _size: 7
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 5289131835549563442}
+  _onFailAbsorbShakeForce: 0.5
   _health: 3
   _trashSpreadRange: 15
   _onDamagedShakeForce: 0.05
@@ -1850,12 +1861,15 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
+  _hasImpactParticle: 0
   _sweepDurationToBecomeBall: 0.6
   _playerEnterKnockback: 5
   _playerEnterTripForce: 0
   _playerExitKnockback: 0
   _playerExitTripForce: 0
   _randomDirectionRange: 0
+  maximumVelocity: 2
   _isSwipable: 1
 --- !u!114 &1968995294237533803
 MonoBehaviour:
@@ -1988,11 +2002,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 798
+  _size: 6
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 4609073982198759485}
+  _onFailAbsorbShakeForce: 0.5
   _health: 6
   _trashSpreadRange: 70
   _onDamagedShakeForce: 0.05
@@ -2150,6 +2165,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0.4
   _swipesIntoTrashBall: 0
 --- !u!114 &1903530802505152469
@@ -2491,11 +2507,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 931
+  _size: 7
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 8559131475632037152}
+  _onFailAbsorbShakeForce: 0.5
   _health: 3
   _trashSpreadRange: 15
   _onDamagedShakeForce: 0.05
@@ -2644,6 +2661,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0.3
   _swipesIntoTrashBall: 0
 --- !u!114 &5935769795705017246
@@ -2782,6 +2800,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0.5
   _swipesIntoTrashBall: 0
 --- !u!114 &4184109545636775954
@@ -2919,6 +2938,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToClean: 1.4
 --- !u!1 &3839612723487207146
 GameObject:
@@ -3245,6 +3265,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0.5
   _swipesIntoTrashBall: 0
 --- !u!114 &4037889464270963851
@@ -3419,12 +3440,15 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
+  _hasImpactParticle: 0
   _sweepDurationToBecomeBall: 0.3
   _playerEnterKnockback: 0.1
   _playerEnterTripForce: 0.1
   _playerExitKnockback: 0.1
   _playerExitTripForce: 0.1
   _randomDirectionRange: 15
+  maximumVelocity: 2
   _isSwipable: 0
 --- !u!114 &7172985889485098935
 MonoBehaviour:
@@ -3557,11 +3581,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 931
+  _size: 7
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 7838457946491708629}
+  _onFailAbsorbShakeForce: 0.5
   _health: 3
   _trashSpreadRange: 15
   _onDamagedShakeForce: 0.05
@@ -3710,6 +3735,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 1
   _swipesIntoTrashBall: 0
 --- !u!114 &4121082059779822686
@@ -3947,11 +3973,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 1197
+  _size: 9
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 3573593508705044739}
+  _onFailAbsorbShakeForce: 0.5
   _health: 6
   _trashSpreadRange: 25
   _onDamagedShakeForce: 0.05
@@ -4450,12 +4477,15 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
+  _hasImpactParticle: 0
   _sweepDurationToBecomeBall: 0.2
   _playerEnterKnockback: -0.3
   _playerEnterTripForce: 0.3
   _playerExitKnockback: 0.3
   _playerExitTripForce: 1
   _randomDirectionRange: 15
+  maximumVelocity: 2
   _isSwipable: 0
 --- !u!114 &3689370837235298022
 MonoBehaviour:
@@ -4817,6 +4847,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3444853452007146028}
+  - {fileID: 7202283921704360713}
   - {fileID: 917037239263222345}
   - {fileID: 3683677777496047188}
   - {fileID: 4969314282285634962}
@@ -5107,12 +5139,15 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
+  _hasImpactParticle: 0
   _sweepDurationToBecomeBall: 0.2
   _playerEnterKnockback: 0.1
   _playerEnterTripForce: 0.1
   _playerExitKnockback: 0.1
   _playerExitTripForce: 0.1
   _randomDirectionRange: 15
+  maximumVelocity: 2
   _isSwipable: 0
 --- !u!114 &7448438702537787582
 MonoBehaviour:
@@ -5438,6 +5473,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0.7
   _swipesIntoTrashBall: 0
 --- !u!114 &7402498691406990122
@@ -5571,11 +5607,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 1463
+  _size: 11
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 4804026225507425592}
+  _onFailAbsorbShakeForce: 0.5
   _health: 6
   _trashSpreadRange: 70
   _onDamagedShakeForce: 0.05
@@ -6140,6 +6177,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0.7
   _swipesIntoTrashBall: 0
 --- !u!114 &6869393641548103833
@@ -6278,6 +6316,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0.4
   _swipesIntoTrashBall: 0
 --- !u!114 &2755112707365362689
@@ -6807,11 +6846,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 1596
+  _size: 12
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 675585766061840319}
+  _onFailAbsorbShakeForce: 0.5
   _health: 6
   _trashSpreadRange: 70
   _onDamagedShakeForce: 0.05
@@ -7251,6 +7291,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0.5
   _swipesIntoTrashBall: 0
 --- !u!114 &646011953375064286
@@ -7425,12 +7466,15 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
+  _hasImpactParticle: 0
   _sweepDurationToBecomeBall: 0.4
   _playerEnterKnockback: 1
   _playerEnterTripForce: -3
   _playerExitKnockback: 1
   _playerExitTripForce: 4
   _randomDirectionRange: 5
+  maximumVelocity: 2
   _isSwipable: 0
 --- !u!114 &8272240713373557034
 MonoBehaviour:
@@ -7604,12 +7648,15 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
+  _hasImpactParticle: 0
   _sweepDurationToBecomeBall: 0.6
   _playerEnterKnockback: 5
   _playerEnterTripForce: 0
   _playerExitKnockback: 0
   _playerExitTripForce: 0
   _randomDirectionRange: 0
+  maximumVelocity: 2
   _isSwipable: 1
 --- !u!114 &6698029712269070537
 MonoBehaviour:
@@ -7838,3 +7885,135 @@ MonoBehaviour:
   _dissolveTime: 1
   _dissolveBurnWidth: 0.4
   _meshTexture: {fileID: 0}
+--- !u!1001 &443271599778279631
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7569430298084556000}
+    m_Modifications:
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.87785065
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.3434033
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9059869807988121454, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_Name
+      value: ImpEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 9059869807988121454, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+--- !u!4 &3444853452007146028 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+  m_PrefabInstance: {fileID: 443271599778279631}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5340114448073206250
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7569430298084556000}
+    m_Modifications:
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9059869807988121454, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_Name
+      value: ImpEnemy (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9059869807988121454, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+--- !u!4 &7202283921704360713 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3019737068816806627, guid: e5164d8697ae8594d95837a90dd21dca, type: 3}
+  m_PrefabInstance: {fileID: 5340114448073206250}
+  m_PrefabAsset: {fileID: 0}
