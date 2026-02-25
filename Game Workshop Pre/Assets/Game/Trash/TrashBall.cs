@@ -201,6 +201,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
                 return;
             }
         }
+        
         _trashMaterialCounts.Add(absorbable.TrashMat);
         _trashMaterialSize.Add(absorbable.Size * absorbable.TrashMatWeight);
         UpdateMaterial();

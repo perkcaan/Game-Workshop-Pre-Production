@@ -96,6 +96,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
             
             PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
             
+
             return true;
         }
         if (isActiveAndEnabled && _rigidBody.simulated && !_isAbsorbed) // reason it failed was because of low trashball size

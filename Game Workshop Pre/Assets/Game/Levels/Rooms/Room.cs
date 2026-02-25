@@ -232,6 +232,8 @@ public class Room : MonoBehaviour
                 DistrictManager.Instance.AwardCoins(coinsAwarded);
                 PlayerMovementController player = FindObjectOfType<PlayerMovementController>();
                 AudioManager.Instance.Play("gateDown", player.transform);
+                if (coinsAwarded > 0)
+                    PopupLabel.CreateImageLabel(player.transform.position, UnityEngine.Color.white);
             }
             _isRoomClosed = false;
 

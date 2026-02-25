@@ -12,6 +12,7 @@ public class PopupLabel : MonoBehaviour
 
     [SerializeField] private TMP_Text _text;
     [SerializeField] private TextMeshProUGUI _coinText;
+    [SerializeField] private SpriteRenderer ImageLabel;
     [SerializeField] private float _minScaleSize = 1.2f;
     [SerializeField] private float _maxScaleSize = 3f;
     [SerializeField] private int _sizeOfMaxScale = 40;
@@ -52,6 +53,22 @@ public class PopupLabel : MonoBehaviour
         newLabel = plp.GetCoinLabel();
 
         newLabel.CoinSetup(color, coins);
+
+
+    }
+    public static void CreateImageLabel(Vector3 position, Color color)
+    {
+        
+        PopupLabel newLabel = null;
+        PopupLabelPooler plp = PopupLabelPooler.Instance;
+        if (plp == null)
+        {
+            Debug.LogWarning("Add a PopupLabelPooler prefab to the scene.");
+            return;
+        }
+        newLabel = plp.GetImageLabel();
+
+        newLabel.ImageSetup(position, color);
 
 
     }
@@ -106,6 +123,17 @@ public class PopupLabel : MonoBehaviour
         PlayPlusAnimation(labelScale);
     }
 
+    public void ImageSetup(Vector3 position, Color color)
+    {
+        transform.position = position;
+        transform.rotation = Quaternion.identity;
+
+        //ImageLabel.sprite = sprite;
+        ImageLabel.color = color;
+        ImageLabel.DOFade(1f, 0.1f);
+        PlayPlusAnimation(1f);
+    }
+
 
 
     private void PlayPlusAnimation(float labelScale)
@@ -139,7 +167,14 @@ public class PopupLabel : MonoBehaviour
                 .SetDelay(_fadeAwayDelay));
         }
 
-        
+        if (ImageLabel != null && ImageLabel.sprite != null)
+        {
+            _sequence.Join(
+                ImageLabel.DOFade(0f, _fadeAwayDuration)
+                .SetDelay(_fadeAwayDelay));
+        }
+
+
     }
                 
 
