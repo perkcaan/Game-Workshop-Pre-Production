@@ -387,7 +387,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1.5, y: 0.5}
+  m_Size: {x: 1.5, y: 1.5}
   m_Direction: 1
 --- !u!114 &7292192537079099995
 MonoBehaviour:
@@ -880,7 +880,7 @@ MonoBehaviour:
     _accelerationReduction: 0.5
     _rotationSpeedReduction: 0.8
   _startAngle: -90
-  _sweepForce: 20
+  _sweepForce: 35
   _sweepForceMovementScaler: 0.12
   _baseSwipeForce: 3
   _fullChargeSwipeForce: 10
@@ -900,7 +900,7 @@ MonoBehaviour:
   _minVelocityToAbsorb: 7
   _swipeVisualLineDistance: 3
   _swipeVisualLineSegments: 5
-  canSweep: 0
+  canSweep: 1
   canSwipe: 1
   canDash: 1
   canHook: 0

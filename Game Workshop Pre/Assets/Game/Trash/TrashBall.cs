@@ -264,7 +264,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     #endregion
 
-
     #region Private methods
 
     // Sets the trash ball to decay (Can't decay when trashball is moving)
@@ -621,7 +620,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
 
     #endregion
 
-
     #region Interfaces
     //IHeatable
     public void PrepareIgnite(HeatMechanic heat)
@@ -644,10 +642,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _decayTimer = _timeUntilDecay;
 
         Vector3 centerPoint = center + (direction * Mathf.Pow(Size, 1f / 3f) / Mathf.PI);
-        float distance = Vector2.Distance(transform.position, centerPoint);
-        float newForce = force * distance * (_minimumVacuumForce + (_vacuumForce / Size * _sizeSweepMultiplier));
-        Vector2 directionToCenterPoint = (centerPoint - transform.position).normalized;
-        Rigidbody.AddForce(directionToCenterPoint * newForce, ForceMode2D.Force);
+        Vector2 displacement = (Vector2)centerPoint - (Vector2)transform.position;
+        float pullStrength = force * (_minimumVacuumForce + (_vacuumForce / Size * _sizeSweepMultiplier));
+        Vector2 springForce = displacement * pullStrength;
+        Vector2 dampingForce = -Rigidbody.velocity * 4f;
+        Rigidbody.AddForce(springForce + dampingForce, ForceMode2D.Force);
     }
 
     //ISwipeable
