@@ -84,10 +84,14 @@ public class ShopItem : MonoBehaviour
             if (!isPurchased)
             {
                 Inventory.Instance.StoreItem(attachedItem);
+
+               
             }
 
             isPurchased = true;
             attachedItem.displayName = itemName.text + $"({Mathf.Abs(quantity - initialQuantity)} x )";
+
+            
 
         }
         else
