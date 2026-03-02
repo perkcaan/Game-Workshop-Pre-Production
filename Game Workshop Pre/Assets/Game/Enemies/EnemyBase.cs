@@ -13,6 +13,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     [Header("Enemy")]
     [SerializeField] private BehaviourTree _behaviour;
     [SerializeField] private List<EnemyActionReference> _actions;
+    private Coroutine _currentAction;
+    private Action<bool> _currentActionComplete;
 
     // Properties (EnemyBase should only have UNIVERSAL properties. 
     // If a property is on every or almost every enemy, it can go here.)
@@ -46,7 +48,9 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     [SerializeField] protected float _minSizeToAbsorb;
     [SerializeField] protected float _minVelocityToAbsorb;
-    [SerializeField] private float _trashBallExplosionMultiplier = 1f;
+    [SerializeField] private float _trashBallEscapeForce = 1f;
+    [SerializeField] private float _trashBallDamageTime = 20f;
+    [SerializeField] private float _trashBallSquirmTime = 5f;
 
     // Components
     protected Animator _animator;
@@ -68,6 +72,9 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     // Fields
     private bool _isDying = false;
     private bool _isAbsorbed = false;
+    // Timers
+    private float _ballDamageTimer = 0;
+    private float _ballSquirmTimer = 0;
 
     // external methods (use in specific enemies!)
     protected abstract void OnStart();
@@ -113,11 +120,31 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     {
         if (index >= 0 && index < _actions.Count)
         {
-            StartCoroutine(_actions[index].Invoke(this, onComplete));
+            _currentActionComplete = onComplete;
+            _currentAction = StartCoroutine(_actions[index].Invoke(this, CompleteAction));
         } else
         {
             onComplete?.Invoke(false);
         }
+    }
+    // Run to complete an action properly
+    public void CompleteAction(bool completeStatus)
+    {
+        _currentActionComplete?.Invoke(completeStatus);
+        _currentAction = null;
+        _currentActionComplete = null;
+    }
+
+    // Cancels current action safely
+    public void CancelAction()
+    {
+        _currentActionComplete?.Invoke(false);
+        if (_currentAction != null)
+        {
+            StopCoroutine(_currentAction);
+            _currentAction = null;
+        }
+        _currentActionComplete = null;
     }
 
     // Simple attack is a basic attack template that has startup, an attack, and endlag
@@ -163,6 +190,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     {
         _isDying = true;
         _pather.Stop();
+        CancelAction();
         StopAllCoroutines();
     }
 
@@ -182,30 +210,68 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
         if (_isDying) return false;
-        if (forcedAbsorb || (ballSize > _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled))
+        if (forcedAbsorb || (ballSize >= _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled && !_isAbsorbed))
         {
+            CancelAction();
             StopAllCoroutines();
             _isAbsorbed = true;
             _rigidbody.simulated = false;
+
+            if (forcedAbsorb) return true;
+            PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
+            _ballDamageTimer = _trashBallDamageTime;
+            _ballSquirmTimer = _trashBallSquirmTime;
             return true;
         }
         return false;
     }
 
-    public void OnTrashBallRelease(TrashBall trashBall)
+    public void OnTrashBallRelease(TrashBall trashBall, Vector2 unitVectorAngle)
     {
-        _isAbsorbed = false;
-
         gameObject.SetActive(true);
+        
+        List<Collider2D> colliders = new List<Collider2D>();
+        Rigidbody.GetAttachedColliders(colliders);
+        foreach (Collider2D collider in colliders)
+        {
+            Physics2D.IgnoreCollision(collider, trashBall.Collider, true);
+            Physics2D.IgnoreCollision(collider, trashBall.MagnetCollider, true);
+        }
+
+        transform.position = trashBall.transform.position;
+
+        
         transform.localScale = Vector3.zero;
         transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
 
-        Rigidbody.simulated = true;
-        transform.position = trashBall.transform.position;
+        StartCoroutine(ExplodeOutOfBall(trashBall, unitVectorAngle));
+    }
 
-        float explosionForce = (float)(Math.Sqrt(trashBall.Size) * _trashBallExplosionMultiplier);
-        Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
-        Rigidbody.velocity = randomForce;
+
+    private IEnumerator ExplodeOutOfBall(TrashBall trashBall, Vector2 unitVectorAngle)
+    {
+        int size = trashBall.Size; //store size early for safety
+
+        // Wait a frame to ensure collision is ignored, then explode out of the ball
+        yield return new WaitForEndOfFrame();
+        Rigidbody.simulated = true;
+        // This is a sloppy way of doing it... but it should properly keep magnitude the same as before while letting ball control the angle
+        float explosionForce = (float)(Math.Sqrt(size) * _trashBallEscapeForce);
+        float randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce)).magnitude;
+        Rigidbody.velocity = randomForce * unitVectorAngle;
+
+        yield return new WaitForSeconds(0.3f);
+        _isAbsorbed = false;
+        if (trashBall != null && trashBall.isActiveAndEnabled)
+        {
+            List<Collider2D> colliders = new List<Collider2D>();
+            Rigidbody.GetAttachedColliders(colliders);
+            foreach (Collider2D collider in colliders) {
+                Physics2D.IgnoreCollision(collider, trashBall.Collider, false);
+                Physics2D.IgnoreCollision(collider, trashBall.MagnetCollider, false);
+            }
+        }
+
     }
 
     public void OnTrashBallDestroy()
@@ -216,6 +282,23 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         Destroy(gameObject);
     }
 
+    // Update method for trashball
+    public void TrashBallUpdate(TrashBall trashBall)
+    {
+        if (_ballDamageTimer <= 0)
+        {
+            //TODO: DAMAGE TRASH BALL
+            return;
+        }
+        _ballDamageTimer -= Time.deltaTime;
+
+        if (_ballSquirmTimer <= 0)
+        {
+            //TODO: SQUIRM TIMER
+            _ballSquirmTimer += _trashBallSquirmTime;
+        }
+        _ballSquirmTimer -= Time.deltaTime;
+    }
 
     // ICleanable
     public void SetRoom(Room room)

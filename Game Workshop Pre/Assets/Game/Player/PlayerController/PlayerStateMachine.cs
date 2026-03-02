@@ -11,7 +11,8 @@ public enum PlayerStateEnum
     Swiping,
     Dash,
     Tumble,
-    Absorbed
+    Absorbed,
+    HookThrow
 } 
 
 public class PlayerStateMachine : BaseStateMachine<PlayerStateEnum>
@@ -27,7 +28,8 @@ public class PlayerStateMachine : BaseStateMachine<PlayerStateEnum>
             { PlayerStateEnum.Swiping, new PlayerSwipingState(context, this) },
             { PlayerStateEnum.Dash, new PlayerDashState(context, this) },
             { PlayerStateEnum.Tumble, new PlayerTumbleState(context, this) },
-            { PlayerStateEnum.Absorbed, new PlayerAbsorbedState(context, this) }
+            { PlayerStateEnum.Absorbed, new PlayerAbsorbedState(context, this) },
+            { PlayerStateEnum.HookThrow, new PlayerHookState(context, this) }
         };
         _ctx = context;
         Setup(states, PlayerStateEnum.Idle);

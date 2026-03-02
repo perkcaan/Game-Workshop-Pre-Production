@@ -13,8 +13,6 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     [SerializeField] List<GameObject> _startingStoredTrash;
     [SerializeField] Color color;
     private float _sweepTimer;
-    private float _shakeSpeed = 0.125f;
-    private Tween _shakeTween;
 
     protected override void Awake()
     {
