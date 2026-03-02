@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e8ec68b7f5c0a6644811471b183620d8, type: 2}
+  - {fileID: 2100000, guid: 6cf14628cc1339a449fb7cfeef552e81, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -232,13 +232,11 @@ MonoBehaviour:
   _baseMaxHealth: 3
   _scaleMultiplier: 0.5
   _maxScale: 5
+  _defaultDecayMultiplier: 10
+  _timeUntilDecay: 30
+  _decayTrashDropRate: 3
   _maxHealth: 0
   _health: 0
-  _degradeWhileMoving: 1
-  _defaultDecayMultiplier: 10
-  _decayTrashDropRate: 3
-  _sweepHealPerSecond: 13
-  _swipeBonusHealth: 10
   _vacuumForce: 1.25
   _minimumVacuumForce: 0.25
   _sizeSweepMultiplier: 1.1
@@ -483,8 +481,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3475106608188846289}
-  - component: {fileID: 3325556117375529226}
   - component: {fileID: 3488484795273988948}
+  - component: {fileID: 3325556117375529226}
   - component: {fileID: 3130954535914247153}
   - component: {fileID: 7208263676142163432}
   m_Layer: 8
@@ -504,21 +502,13 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8563161721370600188}
   - {fileID: 391232378384322600}
   m_Father: {fileID: 8082838714821394459}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3325556117375529226
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5613526296850362621}
-  m_Mesh: {fileID: -5495902117074765545, guid: 2eae4bcbbf6a20f45bf3772ac9cdbe17, type: 3}
 --- !u!23 &3488484795273988948
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -562,6 +552,14 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &3325556117375529226
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5613526296850362621}
+  m_Mesh: {fileID: -5495902117074765545, guid: 2eae4bcbbf6a20f45bf3772ac9cdbe17, type: 3}
 --- !u!114 &3130954535914247153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -575,12 +573,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderers:
-  - {fileID: 3488484795273988948}
+  - {fileID: 4738383655784634681}
   _maxFlashFrequency: 10
   _heatFlashRamp: 2
-  _dissolveTime: 2
+  _dissolveTime: 1
   _dissolveBurnWidth: 0.4
+  _height: 1
   _meshTexture: {fileID: 2800000, guid: 5c9175d51ecf2cc488d21ca71ff76edc, type: 3}
+  sinkSpeed: 0.3
+  maxHeight: 1
 --- !u!210 &7208263676142163432
 SortingGroup:
   m_ObjectHideFlags: 0
