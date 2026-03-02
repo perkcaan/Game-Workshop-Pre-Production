@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
 
-
 [BehaviourNode(6, "Actions")]
 public class RandomWanderNode : BehaviourTreeNode
 {
@@ -22,10 +21,12 @@ public class RandomWanderNode : BehaviourTreeNode
     protected override void Initialize() {
         _homePosition = Self.transform.position;
         _hasArrived = true;
+        
     }
 
     public override BTNodeState Evaluate()
     {
+        
         _isActive = true;
         if (_hasArrived) {
             _waitTimer -= Time.deltaTime;

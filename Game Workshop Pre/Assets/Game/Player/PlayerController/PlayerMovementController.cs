@@ -385,4 +385,14 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         
         //Debug.Log("Return to Checkpoint");
     }
+
+    public void ApplyWebSlow(float slowAmount)
+    {
+        SetWeight(_weight + slowAmount);
+    }
+
+    public void RemoveWebSlow(float slowAmount)
+    {
+        SetWeight(_weight - slowAmount);
+    }
 }
