@@ -48,12 +48,10 @@ public class EnemyPather : MonoBehaviour
         _isPathing = false;
         _targetDestination = Vector2.zero;
         
-        // Brian - Added checks to prevent interference with
-        // enemies lacking animators
-        if (_enemy.Animator != null) 
-        {
-            _enemy.Animator.SetFloat("Speed", 0f);
-        }
+
+        
+        _enemy.Animator.SetFloat("Speed", 0f);
+        
   
         _arriveAction = null;
         _arrivalProximity = 0.1f;
@@ -85,15 +83,12 @@ public class EnemyPather : MonoBehaviour
         Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta, frameVelocity.magnitude);
         rigidbody.AddForce(clampedForce, ForceMode2D.Force);
 
-        // Brian - Added checks to prevent interference with
-        // enemies lacking animators
-        if (_enemy.Animator != null)
-        {
-            animator.SetFloat("Speed", frameVelocity.magnitude);
         
-            _enemy.FacingRotation = facingAngle;
-            animator.SetFloat("Rotation", _enemy.FacingRotation);
-        }
+        animator.SetFloat("Speed", frameVelocity.magnitude);
+        
+        _enemy.FacingRotation = facingAngle;
+        animator.SetFloat("Rotation", _enemy.FacingRotation);
+        
 
     }
 
