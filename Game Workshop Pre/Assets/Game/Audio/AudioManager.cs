@@ -111,7 +111,7 @@ public void Stop(GameObject obj, string sCode)
         {
             emitter.EventInstance.Equals(parent);
             emitter.Stop();
-            Debug.Log($"Stopped sound '{sCode}' on {obj.name}");
+            
             return;
         }
     }
@@ -161,7 +161,7 @@ public void PlayOnInstance(GameObject obj, string sCode)
         if (emitter.EventReference.Equals(eventRef))
         {
             emitter.Play();
-            Debug.Log($"Playing sound '{sCode}' on {obj.name}");
+           
 
             return;
         }
