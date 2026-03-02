@@ -38,6 +38,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     [SerializeField] private float _swipeCooldown = 1f;
     public float SwipeCooldown { get { return _swipeCooldown; } }
 
+    [Header("Hook Properties")]
+    [SerializeField] private float _hookPullForce = 5f;
+    public float HookPullForce { get { return _hookPullForce; } }
+    [SerializeField][Range(0f, 2f)] private float _hookThrowMovementScaler = 0.1f;
+    public float HookThrowMovementScaler { get { return _hookThrowMovementScaler; } }
+    [SerializeField] private float _hookDuration = 0.5f;
+    public float HookDuration { get { return _hookDuration; } }
+    [SerializeField] private float _hookCooldown = 1f;
+    public float HookCooldown { get { return _hookCooldown; } }
+
     [Header("Absorbed Properties")]
     [SerializeField] private float _minTrashSizeToAbsorb;
     [SerializeField] private int _playerEscapeDamage;
@@ -66,6 +76,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public bool canSweep = false;
     public bool canSwipe = false;
     public bool canDash = false;
+    public bool canHook = false;
 
     // Fields
     //weight
@@ -93,6 +104,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Animator = GetComponentInChildren<Animator>();
         _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
         _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
+        _ctx.HookHandler = GetComponentInChildren<HookHandler>();
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
         _playerHeat = GetComponent<HeatMechanic>();
@@ -138,6 +150,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         if (_ctx.SwipeCooldownTimer > 0f)
         {
             _ctx.SwipeCooldownTimer = Mathf.Max(_ctx.SwipeCooldownTimer - Time.deltaTime, 0f);
+        }
+
+        if (_ctx.HookCooldownTimer > 0f)
+        {
+            _ctx.HookCooldownTimer = Mathf.Max(_ctx.HookCooldownTimer - Time.deltaTime, 0f);
         }
 
         // Dash timer
@@ -231,6 +248,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         }
     }
 
+    private void OnHookInput(InputValue value)
+    {
+        if (!canHook) return;
+        _ctx.IsHookPressed = value.isPressed;
+        if (_ctx.CanHook && _ctx.HookCooldownTimer <= 0f && value.isPressed)
+        {
+            _state.ChangeState(PlayerStateEnum.HookThrow);
+        }
+    }
 
     private void OnEscapeTrashBallInput(InputValue value)
     {

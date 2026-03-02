@@ -23,6 +23,7 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
     //state
     public override void EnterState()
     {
+        _ctx.CanHook = true;
         _ctx.CanSwipe = true;
         _ctx.CanDash = true;
         _zeroMoveTimer = 0f;

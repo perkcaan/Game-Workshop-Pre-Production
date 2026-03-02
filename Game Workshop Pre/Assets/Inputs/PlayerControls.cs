@@ -98,6 +98,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HookInput"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d43670a-6f30-4ab9-8b23-678d279737f3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -298,6 +307,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""InteractionInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76d7bec7-fac0-4865-aee9-679b3ce4bcae"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HookInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -314,6 +334,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Default_MouseMoveInput = m_Default.FindAction("MouseMoveInput", throwIfNotFound: true);
         m_Default_MouseDeltaInput = m_Default.FindAction("MouseDeltaInput", throwIfNotFound: true);
         m_Default_InteractionInput = m_Default.FindAction("InteractionInput", throwIfNotFound: true);
+        m_Default_HookInput = m_Default.FindAction("HookInput", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -383,6 +404,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_MouseMoveInput;
     private readonly InputAction m_Default_MouseDeltaInput;
     private readonly InputAction m_Default_InteractionInput;
+    private readonly InputAction m_Default_HookInput;
     public struct DefaultActions
     {
         private @PlayerControls m_Wrapper;
@@ -395,6 +417,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @MouseMoveInput => m_Wrapper.m_Default_MouseMoveInput;
         public InputAction @MouseDeltaInput => m_Wrapper.m_Default_MouseDeltaInput;
         public InputAction @InteractionInput => m_Wrapper.m_Default_InteractionInput;
+        public InputAction @HookInput => m_Wrapper.m_Default_HookInput;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -428,6 +451,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @InteractionInput.started += instance.OnInteractionInput;
             @InteractionInput.performed += instance.OnInteractionInput;
             @InteractionInput.canceled += instance.OnInteractionInput;
+            @HookInput.started += instance.OnHookInput;
+            @HookInput.performed += instance.OnHookInput;
+            @HookInput.canceled += instance.OnHookInput;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -456,6 +482,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @InteractionInput.started -= instance.OnInteractionInput;
             @InteractionInput.performed -= instance.OnInteractionInput;
             @InteractionInput.canceled -= instance.OnInteractionInput;
+            @HookInput.started -= instance.OnHookInput;
+            @HookInput.performed -= instance.OnHookInput;
+            @HookInput.canceled -= instance.OnHookInput;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -483,5 +512,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnMouseMoveInput(InputAction.CallbackContext context);
         void OnMouseDeltaInput(InputAction.CallbackContext context);
         void OnInteractionInput(InputAction.CallbackContext context);
+        void OnHookInput(InputAction.CallbackContext context);
     }
 }

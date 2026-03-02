@@ -8,7 +8,11 @@ public class Lava : MonoBehaviour
     [SerializeField] private float _heatPerSecondWhenGrounded = 10f;
     [SerializeField] private float _maxHeatWhenGrounded = 70f;
     [SerializeField] private float _delayBeforeHeatingWhenGrounded = 1f;
+    [SerializeField] private float _delayBeforeSinking = 1f;
     private float _delayTimer = 0f;
+
+    private ShaderManager _shaderManager;
+   
     private void OnTriggerStay2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out HeatMechanic heat))
@@ -16,9 +20,10 @@ public class Lava : MonoBehaviour
             //Check for grounded safety. but still toast them a little
             if (collider.TryGetComponent(out GroundedMechanic gm))
             {
-                if (gm.IsGrounded) 
+                if (gm.IsGrounded == 1)
                 {
-                    
+                    if (gm.IsGrounded < 2)
+                    {
                         _delayTimer += Time.fixedDeltaTime;
                         if (_delayTimer > _delayBeforeHeatingWhenGrounded)
                         {
@@ -30,13 +35,21 @@ public class Lava : MonoBehaviour
                             {
                                 heat.ModifyHeat(0); // dont cooldown, just stay at max heat
                             }
-                        } 
-                    
+                        }
+                    }
                 }
-                if (!gm.IsGrounded) return;
+                if (gm.IsGrounded > 0) return;
             }
             // otherwise... burn them to a crisp
             heat.ModifyHeat(_heatPerSecond * Time.fixedDeltaTime);
+
+
+            if (collider.GetComponentInChildren<ShaderManager>() is ShaderManager shaderManager)
+            {
+                Debug.Log("Sink!");
+                shaderManager.SetInLava(true);
+            }
+
         }
     }
 
@@ -45,6 +58,12 @@ public class Lava : MonoBehaviour
         if (collider.TryGetComponent(out GroundedMechanic gm))
         {
             _delayTimer = 0f;
+        }
+
+        var shaderManager = collider.GetComponentInParent<ShaderManager>();
+        if (shaderManager != null)
+        {
+            shaderManager.SetInLava(false);
         }
     }
 }
