@@ -9,7 +9,7 @@ public class PlayerDashState : BaseState<PlayerStateEnum>
     private PlayerStateMachine _state;
     private Coroutine _dashCoroutine;
     // Fields
-
+    private float _timer = 0f;
     // Constructor
     public PlayerDashState(PlayerContext context, PlayerStateMachine state)
     {
@@ -22,12 +22,14 @@ public class PlayerDashState : BaseState<PlayerStateEnum>
     public override void EnterState()
     {
         _ctx.Animator.SetBool("Dashing", true);
+        _ctx.CanHook = false;
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
         _ctx.DashesRemaining -= 1;
         Vector2 velocityToUse = _ctx.FrameVelocity.normalized;
         _ctx.FrameVelocity = Vector2.zero;
         _dashCoroutine = _ctx.Player.StartCoroutine(DashDuration());
+        _timer = 0.1f;
 
         // Fallback to using rotation instead of current velocity if you're standing still
         if (velocityToUse == Vector2.zero)
@@ -38,11 +40,19 @@ public class PlayerDashState : BaseState<PlayerStateEnum>
         float radAngle = Mathf.Atan2(velocityToUse.y, velocityToUse.x) * Mathf.Rad2Deg;
         _ctx.Rotation = Mathf.DeltaAngle(0f, radAngle);
         _ctx.Rigidbody.AddForce(velocityToUse * _ctx.Props.DashForce, ForceMode2D.Impulse);
+
+        Vector3 footstepPosition = _ctx.Player.transform.position + new Vector3(0, -0.5f, 0);
+        ParticleManager.Instance.Play("PlayerDashBurst", footstepPosition, Quaternion.Euler(0, 0, _ctx.Rotation));
     }
 
     public override void Update()
     {
-
+        _timer -= Time.deltaTime;
+        if (_timer <= 0)
+        {
+            _timer = 0.05f;
+            ParticleManager.Instance.Play("PlayerStepDust", _ctx.Player.transform.position);
+        }
     }
 
     public override void ExitState()

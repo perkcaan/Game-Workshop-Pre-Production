@@ -112,7 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 1
+  _size: 0
   trashMaterial: {fileID: 0}
   trashMaterialWeight: 1
   _pointValue: 0
@@ -123,6 +123,7 @@ MonoBehaviour:
   _onExplodeForce: 15
   _sweepDurationToTakeDamage: 1
   _startingStoredTrash: []
+  color: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &-4139108686608868786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _heat: 20
+  coolingOff: 0
   _heatRelaxationRate: 5
   _timeBeforeRelax: 1
   _warningThreshold: 60
@@ -212,9 +214,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -280654717
+  m_SortingLayer: -2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

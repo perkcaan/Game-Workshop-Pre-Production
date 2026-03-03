@@ -1,32 +1,78 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
+using System.Runtime.Serialization.Formatters;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable
+public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable, ICleanable
 {
-    [SerializeReference, SerializeReferenceDropdown] private BehaviourTreeNode _behaviour;
-    [SerializeField] private bool _enableBehaviourDebug;
-    [SerializeField] private List<UnityEvent> _actionMethods;
+    [Header("Enemy")]
+    [SerializeField] private BehaviourTree _behaviour;
+    [SerializeField] private List<EnemyActionReference> _actions;
+    private Coroutine _currentAction;
+    private Action<bool> _currentActionComplete;
 
     // Properties (EnemyBase should only have UNIVERSAL properties. 
     // If a property is on every or almost every enemy, it can go here.)
     [SerializeField] protected float _moveSpeed;
-    [SerializeField] protected float _size;
+    public float MoveSpeed { get { return _moveSpeed * _speedModifier; } }
+    protected float _speedModifier = 1f; // this may need to be expanded
+    public float SpeedModifier { 
+        get { return _speedModifier; }
+        set { _speedModifier = value; } 
+    } 
+    [SerializeField] private bool _shouldFlipSprite = false;
+    [SerializeField, Range(0,360)] protected float _facingRotation = 270f;
+    public float FacingRotation { 
+        get { return _facingRotation; } 
+        set // wrap it within 0-360
+        {
+            float wrapped = value % 360f;
+            if (wrapped < 0f) wrapped += 360f;
+            _facingRotation = wrapped;
+            FlipSpriteIfNeeded();
+        }
+    }
+
+    [Header("Absorbed Properties")]
+    [SerializeField] private int _size;
+    public int Size { get { return _size; } }
+    [SerializeField] private TrashMaterial _trashMaterial;
+    public TrashMaterial TrashMat { get { return _trashMaterial; } }
+    [SerializeField] private int _trashMaterialWeight = 1;
+    public int TrashMatWeight { get { return _trashMaterialWeight; } }
+
     [SerializeField] protected float _minSizeToAbsorb;
     [SerializeField] protected float _minVelocityToAbsorb;
+    [SerializeField] private float _trashBallEscapeForce = 1f;
+    [SerializeField] private float _trashBallDamageTime = 20f;
+    [SerializeField] private float _trashBallSquirmTime = 5f;
 
     // Components
-    protected EnemyBlackboard _blackboard;
     protected Animator _animator;
+    public Animator Animator { get { return _animator; } }
+    private SpriteRenderer _renderer;
     private Rigidbody2D _rigidbody;
     public Rigidbody2D Rigidbody { get { return _rigidbody; } }
     private Collider2D _collider;
     public Collider2D Collider { get { return _collider; } }
+    
+    private EnemyPather _pather;
+    public EnemyPather Pather { get { return _pather; } }
+
+    private Room _parentRoom;
+
+    // Actions
+    public Action OnDestroy;
 
     // Fields
     private bool _isDying = false;
+    private bool _isAbsorbed = false;
+    // Timers
+    private float _ballDamageTimer = 0;
+    private float _ballSquirmTimer = 0;
 
     // external methods (use in specific enemies!)
     protected abstract void OnStart();
@@ -35,7 +81,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     //internal methods
     private void OnValidate()
     {
-        if (_behaviour != null) _behaviour.CheckRequiredComponents(this);
+        if (_behaviour != null) _behaviour.Validate(this);
     }
 
     // Do NOT use Start or Update in child classes. Use OnStart and OnUpdate!!!!!! 
@@ -44,19 +90,20 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
         _animator = GetComponentInChildren<Animator>();
-        _blackboard = new EnemyBlackboard(this);
-        PrepareBlackboard();
-        _behaviour.Initialize(_blackboard, this);
+        _renderer = GetComponentInChildren<SpriteRenderer>();
+        _pather = GetComponent<EnemyPather>();
+        if (_behaviour != null) _behaviour.Initialize(this);
         OnStart();
     }
 
     private void Update()
     {
         if (_isDying) return;
-        
+        if (_isAbsorbed) return;
+
         if (_behaviour != null)
         {
-            _behaviour.Evaluate();
+            _behaviour.Tick();
         }
         OnUpdate();
     }
@@ -64,47 +111,70 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     private void FixedUpdate()
     {
         if (_isDying) return;
-
-        UpdateMovement();
     }
 
-    private void PrepareBlackboard()
+    // Get an action from _actions to use 
+    public void PerformAction(int index, Action<bool> onComplete = null)
     {
-        _blackboard.Set<string>("name", gameObject.name);
-        _blackboard.Set<Vector2>("frameVelocity", Vector2.zero);
-        _blackboard.Set<float>("rotation", 90f);
-
-        _blackboard.Set<float>("moveSpeed", _moveSpeed);
-    }
-
-    private void UpdateMovement()
-    {
-        //movement
-        if (!_blackboard.TryGet("frameVelocity", out Vector2 frameVelocity)) { }
-
-        Vector2 velocityDelta = frameVelocity - _rigidbody.velocity;
-        Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta, frameVelocity.magnitude);
-        _rigidbody.AddForce(clampedForce, ForceMode2D.Force);
-        _blackboard.Set<Vector2>("frameVelocity", Vector2.zero); // This is for clean up if behaviour node switches
-        _animator.SetFloat("Speed", frameVelocity.magnitude);
-
-        // rotation
-        if (!_blackboard.TryGet("rotation", out float rotation)) { }
-
-        _animator.SetFloat("Rotation", rotation);
-    }
-
-    public void PerformAction(int actionIndex)
-    {
-        for (int i = 0; i < _actionMethods.Count; i++)
+        if (index >= 0 && index < _actions.Count)
         {
-            if (actionIndex == i) _actionMethods[i]?.Invoke();
+            _currentActionComplete = onComplete;
+            _currentAction = StartCoroutine(_actions[index].Invoke(this, CompleteAction));
+        } else
+        {
+            onComplete?.Invoke(false);
         }
     }
+    // Run to complete an action properly
+    public void CompleteAction(bool completeStatus)
+    {
+        _currentActionComplete?.Invoke(completeStatus);
+        _currentAction = null;
+        _currentActionComplete = null;
+    }
+
+    // Cancels current action safely
+    public void CancelAction()
+    {
+        _currentActionComplete?.Invoke(false);
+        if (_currentAction != null)
+        {
+            StopCoroutine(_currentAction);
+            _currentAction = null;
+        }
+        _currentActionComplete = null;
+    }
+
+    // Simple attack is a basic attack template that has startup, an attack, and endlag
+    protected IEnumerator SimpleAttack(SimpleAttackProperties properties, 
+        Action attackStart = null, Action attack = null, Action attackEnd = null)
+    {
+
+        attackStart?.Invoke();
+        yield return new WaitForSeconds(properties.Startup);
+
+        attack?.Invoke();
+        yield return new WaitForSeconds(properties.Duration);
+        
+        attackEnd?.Invoke();
+        yield return new WaitForSeconds(properties.Endlag);
+    }
+
+    private void FlipSpriteIfNeeded()
+    {
+        if (!_shouldFlipSprite) return;
+
+        float radians = _facingRotation * Mathf.Deg2Rad;
+        bool faceRight = Mathf.Cos(radians) >= 0f;
+
+        _renderer.flipX = !faceRight;
+    }
+
 
     private void OnDrawGizmos()
     {
-        if (_enableBehaviourDebug && _behaviour != null) _behaviour.DrawDebug();
+        //cant figure out a good way to debug draw them
+        if (_behaviour != null) _behaviour.DrawDebug();
     }
 
     public TargetType GetTargetType()
@@ -117,36 +187,120 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void PrepareIgnite(HeatMechanic heat)
     {
         _isDying = true;
+        _pather.Stop();
+        CancelAction();
+        StopAllCoroutines();
     }
-    
-    
+
+
     public void OnIgnite(HeatMechanic heat)
     {
+        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
+        AudioManager.Instance.PlayOnInstance(gameObject,"enemyDeath");
+
+        OnDestroy?.Invoke();
         Destroy(gameObject);
-        AudioManager.Instance.Play("enemyDeath", transform.position);
     }
 
 
     // IAbsorbable
 
-    public void OnTrashBallExplode(TrashBall trashBall)
+    public bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        gameObject.SetActive(true);
-        transform.position = trashBall.transform.position;
+        if (_isDying) return false;
+        if (forcedAbsorb || (ballSize >= _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled && !_isAbsorbed))
+        {
+            CancelAction();
+            StopAllCoroutines();
+            _isAbsorbed = true;
+            _rigidbody.simulated = false;
+
+            if (forcedAbsorb) return true;
+            PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
+            _ballDamageTimer = _trashBallDamageTime;
+            _ballSquirmTimer = _trashBallSquirmTime;
+            return true;
+        }
+        return false;
     }
 
-    public void OnTrashBallIgnite()
+    public void OnTrashBallRelease(TrashBall trashBall, Vector2 unitVectorAngle)
     {
+        gameObject.SetActive(true);
+        
+        List<Collider2D> colliders = new List<Collider2D>();
+        Rigidbody.GetAttachedColliders(colliders);
+        foreach (Collider2D collider in colliders)
+        {
+            Physics2D.IgnoreCollision(collider, trashBall.Collider, true);
+            Physics2D.IgnoreCollision(collider, trashBall.MagnetCollider, true);
+        }
+
+        transform.position = trashBall.transform.position;
+
+        
+        transform.localScale = Vector3.zero;
+        transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
+
+        StartCoroutine(ExplodeOutOfBall(trashBall, unitVectorAngle));
+    }
+
+
+    private IEnumerator ExplodeOutOfBall(TrashBall trashBall, Vector2 unitVectorAngle)
+    {
+        int size = trashBall.Size; //store size early for safety
+
+        // Wait a frame to ensure collision is ignored, then explode out of the ball
+        yield return new WaitForEndOfFrame();
+        Rigidbody.simulated = true;
+        // This is a sloppy way of doing it... but it should properly keep magnitude the same as before while letting ball control the angle
+        float explosionForce = (float)(Math.Sqrt(size) * _trashBallEscapeForce);
+        float randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce)).magnitude;
+        Rigidbody.velocity = randomForce * unitVectorAngle;
+
+        yield return new WaitForSeconds(0.3f);
+        _isAbsorbed = false;
+        if (trashBall != null && trashBall.isActiveAndEnabled)
+        {
+            List<Collider2D> colliders = new List<Collider2D>();
+            Rigidbody.GetAttachedColliders(colliders);
+            foreach (Collider2D collider in colliders) {
+                Physics2D.IgnoreCollision(collider, trashBall.Collider, false);
+                Physics2D.IgnoreCollision(collider, trashBall.MagnetCollider, false);
+            }
+        }
+
+    }
+
+    public void OnTrashBallDestroy()
+    {
+        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
+
+        OnDestroy?.Invoke();
         Destroy(gameObject);
     }
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
+    // Update method for trashball
+    public void TrashBallUpdate(TrashBall trashBall)
     {
-        if (_isDying) return;
-        if (forcedAbsorb || (ballSize > _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled))
+        if (_ballDamageTimer <= 0)
         {
-            gameObject.SetActive(false);
-            trashBall.absorbedObjects.Add(this);
+            //TODO: DAMAGE TRASH BALL
+            return;
         }
+        _ballDamageTimer -= Time.deltaTime;
+
+        if (_ballSquirmTimer <= 0)
+        {
+            //TODO: SQUIRM TIMER
+            _ballSquirmTimer += _trashBallSquirmTime;
+        }
+        _ballSquirmTimer -= Time.deltaTime;
+    }
+
+    // ICleanable
+    public void SetRoom(Room room)
+    {
+        _parentRoom = room;
     }
 }

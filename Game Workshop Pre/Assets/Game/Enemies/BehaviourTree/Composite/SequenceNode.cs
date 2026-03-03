@@ -1,30 +1,13 @@
-using UnityEngine;
-
 // A sequence node is a composite note that runs its children in order until one fails and 
 // it will lock (not continue) on Running, meaning children MUST return Success in order to continue. 
-public class SequenceNode : BehaviourTreeNode
+[BehaviourNode(1, "Composite")]
+public class SequenceNode : CompositeNode
 {
-    [SerializeReference, SerializeReferenceDropdown] public BehaviourTreeNode[] children;
-
-    public override void CheckRequiredComponents(EnemyBase self)
-    {
-        foreach (BehaviourTreeNode child in children)
-        {
-            if (child != null) child.CheckRequiredComponents(self);
-        }
-    }
-
-    protected override void Initialize()
-    {
-        foreach (BehaviourTreeNode child in children)
-        {
-            child.Initialize(Blackboard, Self);
-        }
-    }
-
     public override BTNodeState Evaluate()
     {
-        foreach (BehaviourTreeNode child in children)
+        _isActive = true;
+
+        foreach (BehaviourTreeNode child in Children)
         {
             switch (child.Evaluate())
             {
@@ -37,15 +20,5 @@ public class SequenceNode : BehaviourTreeNode
         return BTNodeState.Success;
     }
 
-    public override void DrawDebug()
-    {
-        foreach (BehaviourTreeNode child in children)
-        {
-            if (child != null) child.DrawDebug();
-        }
-    }
-
-
-    
 
 }

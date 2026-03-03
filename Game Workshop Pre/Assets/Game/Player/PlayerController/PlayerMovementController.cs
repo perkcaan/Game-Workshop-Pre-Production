@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using DG.Tweening;
 using UnityEngine.Android;
+using System;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
@@ -20,6 +20,17 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float SweepForce { get { return _sweepForce; } }
     [SerializeField][Range(0f, 2f)] private float _sweepForceMovementScaler = 0.1f;
     public float SweepForceMovementScaler { get { return _sweepForceMovementScaler; } }
+
+    [Header("Sweep Poke Properties")]
+    [SerializeField] private float _sweepAllowPokeTime = 0.1f;
+    public float SweepAllowPokeTime { get { return _sweepAllowPokeTime; } }
+    [SerializeField] private float _pokeForce = 5f;
+    public float PokeForce { get { return _pokeForce; } }
+
+    [SerializeField] private float _pokeDuration = 0.5f;
+    public float PokeDuration { get { return _pokeDuration; } }
+    [SerializeField] private float _pokeCooldown = 1f;
+    public float PokeCooldown { get { return _pokeCooldown; } }
     
     [Header("Swipe Properties")]
     [SerializeField] private float _baseSwipeForce = 5f;
@@ -37,10 +48,25 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     [SerializeField] private float _swipeCooldown = 1f;
     public float SwipeCooldown { get { return _swipeCooldown; } }
 
+    [Header("Hook Properties")]
+    [SerializeField] private float _hookPullForce = 5f;
+    public float HookPullForce { get { return _hookPullForce; } }
+    [SerializeField][Range(0f, 2f)] private float _hookThrowMovementScaler = 0.1f;
+    public float HookThrowMovementScaler { get { return _hookThrowMovementScaler; } }
+    [SerializeField] private float _hookDuration = 0.5f;
+    public float HookDuration { get { return _hookDuration; } }
+    [SerializeField] private float _hookCooldown = 1f;
+    public float HookCooldown { get { return _hookCooldown; } }
+
     [Header("Absorbed Properties")]
-    [SerializeField] private float _absorbResistance;
     [SerializeField] private float _minTrashSizeToAbsorb;
     [SerializeField] private int _playerEscapeDamage;
+    public int Size { get { return 0; } }
+    [SerializeField] private TrashMaterial _trashMaterial;
+    public TrashMaterial TrashMat { get { return _trashMaterial; } }
+    [SerializeField] private int _trashMaterialWeight;
+    public int TrashMatWeight { get { return _trashMaterialWeight; } }
+    [SerializeField] protected float _minVelocityToAbsorb;
 
     [Header("Swipe Visual Line")]
     [SerializeField] private float _swipeVisualLineDistance = 10f;
@@ -49,18 +75,19 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public int SwipeVisualLineSegments { get { return _swipeVisualLineSegments; } }
 
     [Header("Audio")]
-    [SerializeField] private float _footstepCooldown = 0f;
+    private float _footstepCooldown = 0f; // this is used for particles
     private FMOD.Studio.EventInstance _heatSound;
 
-    [Header("Checkpoint")]
-    [SerializeField] private CheckpointManager Checkpoint_Manager;
-    public static System.Action<bool> playerDeath;
-    public HeatMechanic _playerHeat;
+
+    public static Action<bool> playerDeath;
+    
 
     [Header("Item Effected Properties")]
     public bool canSweep = false;
+    public bool canPoke = false;
     public bool canSwipe = false;
     public bool canDash = false;
+    public bool canHook = false;
 
     // Fields
     //weight
@@ -76,7 +103,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     //context & state
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
-
+    private HeatMechanic _playerHeat;
 
     #endregion
 
@@ -88,8 +115,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Animator = GetComponentInChildren<Animator>();
         _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
         _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
+        _ctx.HookHandler = GetComponentInChildren<HookHandler>();
         _ctx.Collider = GetComponent<Collider2D>();
         _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
+        _playerHeat = GetComponent<HeatMechanic>();
         _state = new PlayerStateMachine(_ctx);
         _heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat Meter");
     }
@@ -100,7 +129,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         Cursor.lockState = CursorLockMode.Confined;
         
         _heatSound.start();
-        _playerHeat = GetComponent<HeatMechanic>();
     }
 
     private void Update()
@@ -111,7 +139,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private void FixedUpdate()
     {
         UpdateMovement();
-        _heatSound.setParameterByName("Heat", (_playerHeat.Heat / 10));
+        _heatSound.setParameterByName("Heat", _playerHeat.Heat / 10);
     }
 
     private void UpdateCooldowns()
@@ -123,6 +151,16 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             _ctx.SwipeCooldownTimer = Mathf.Max(_ctx.SwipeCooldownTimer - Time.deltaTime, 0f);
         }
 
+        if (_ctx.HookCooldownTimer > 0f)
+        {
+            _ctx.HookCooldownTimer = Mathf.Max(_ctx.HookCooldownTimer - Time.deltaTime, 0f);
+        }
+
+        if (_ctx.PokeCooldownTimer > 0f)
+        {
+            _ctx.PokeCooldownTimer = Mathf.Max(_ctx.PokeCooldownTimer - Time.deltaTime, 0f);
+        }
+
         // Dash timer
         if (_ctx.DashCooldownTimer > 0f)
         {
@@ -130,7 +168,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             if (_ctx.DashCooldownTimer == 0f)
             {
                 _ctx.DashesRemaining = _movementProps.DashRowCount;
-                ParticleManager.Instance.Play("dashBack", transform.position,Quaternion.identity,Color.white, transform);
+                ParticleManager.Instance.Play("StarWave", transform.position, parent:transform, force:0.5f);
                 AudioManager.Instance.Play("dashBack", transform.position);
             }
         }
@@ -214,9 +252,19 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         }
     }
 
+    private void OnHookInput(InputValue value)
+    {
+        if (!canHook) return;
+        _ctx.IsHookPressed = value.isPressed;
+        if (_ctx.CanHook && _ctx.HookCooldownTimer <= 0f && value.isPressed)
+        {
+            _state.ChangeState(PlayerStateEnum.HookThrow);
+        }
+    }
 
     private void OnEscapeTrashBallInput(InputValue value)
     {
+        if (!value.isPressed) return;
         if (_ctx.AbsorbedTrashBall != null)
         {
             _ctx.Animator.speed += 0.3f;
@@ -233,19 +281,24 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.Rigidbody.AddForce(clampedForce, ForceMode2D.Force);
 
 
-        _ctx.Animator.SetFloat("Speed", _ctx.FrameVelocity.magnitude);
+        _ctx.Animator.SetFloat("Speed", _ctx.MovementInput.magnitude);
         _ctx.Animator.SetFloat("Rotation", _ctx.Rotation);
 
+        
 
-        _footstepCooldown -= Time.deltaTime;
-
-        if (_ctx.MoveSpeed > 0.1f && _footstepCooldown <= 0f)
+        if (_ctx.MoveSpeed > 0.1f)
         {
-            
-            AudioManager.Instance.Play("Steps", transform.position);
+            _footstepCooldown -= Time.deltaTime;
+            if (_footstepCooldown <= 0f)
+            {
+                ParticleManager.Instance.Play("PlayerStepDust", transform.position, parent:_ctx.Player.transform);
+                AudioManager.Instance.Play("Steps", transform.position);
+                _footstepCooldown = 0.3f;
+            }
+        }
+        else if (_ctx.MoveSpeed < 0.01f)
+        {
             _footstepCooldown = 0.3f;
-
-            
         }
     }
 
@@ -265,9 +318,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _weight = weight;
     }
 
-
     // Being swiped puts you into tumble state
-    public void OnSwipe(Vector2 direction, float force)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
     {
         if (force >= _movementProps.EnterTumbleThreshold) _state.ChangeState(PlayerStateEnum.Tumble);
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
@@ -275,20 +327,27 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     // IAbsorbable
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
+    public bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (ballVelocity.magnitude * trashBall.Size > _absorbResistance && trashBall.Size > _minTrashSizeToAbsorb))
+        if (forcedAbsorb || (ballVelocity.magnitude > _minVelocityToAbsorb && trashBall.Size >= _minTrashSizeToAbsorb))
         {
-            trashBall.absorbedObjects.Add(this);
             _ctx.AbsorbedTrashBall = trashBall;
             _state.ChangeState(PlayerStateEnum.Absorbed);
+            return true;
         }
+        return false;
     }
 
-    public void OnTrashBallExplode(TrashBall trashBall)
+    public void OnTrashBallRelease(TrashBall trashBall, Vector2 unitVectorAngle)
     {
         _ctx.AbsorbedTrashBall = null;
         _state.ChangeState(PlayerStateEnum.Idle);
+    }
+
+
+    public void OnTrashBallDestroy()
+    {
+        Death();
     }
 
     // IHeatable
@@ -334,18 +393,23 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         }
     }
 
-    public void OnTrashBallIgnite()
-    {
-        Death();
-    }
-
     private void Death()
     {
-        transform.position = Checkpoint_Manager.activeCheckpoint.transform.position;
+        CheckpointManager.Instance.GoToCheckpoint(transform);
         AudioManager.Instance.Play("playerDeath", transform.position);
         AudioManager.Instance.Stop("Sweep");
         playerDeath?.Invoke(true);
         
         //Debug.Log("Return to Checkpoint");
+    }
+
+    public void ApplyWebSlow(float slowAmount)
+    {
+        SetWeight(_weight + slowAmount);
+    }
+
+    public void RemoveWebSlow(float slowAmount)
+    {
+        SetWeight(_weight - slowAmount);
     }
 }

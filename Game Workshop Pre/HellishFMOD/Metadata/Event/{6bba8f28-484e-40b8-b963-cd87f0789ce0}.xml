@@ -197,6 +197,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{db96cb79-2f63-43ec-b9f0-4493d8088862}">
+		<property name="volume">
+			<value>-18.5</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -213,6 +216,7 @@
 	<object class="MixerBusEffectChain" id="{24e3c88a-b307-4a91-96db-4aec2664ffc1}">
 		<relationship name="effects">
 			<destination>{bb2bd0f9-1ec4-4606-ac46-dc046bfd4b49}</destination>
+			<destination>{cf7f487e-faf6-4b36-aeac-4b1c2238b0a2}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9a4a5d80-5132-4cf3-a4e0-34ff4b6a89d7}" />
@@ -344,6 +348,14 @@
 	</object>
 	<object class="MixerBusPanner" id="{f4fa8fd0-7d5f-46b2-a6c9-fe67683c907c}" />
 	<object class="MixerBusFader" id="{bb2bd0f9-1ec4-4606-ac46-dc046bfd4b49}" />
+	<object class="SpatialiserEffect" id="{cf7f487e-faf6-4b36-aeac-4b1c2238b0a2}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="minimumExtent">
+			<value>360</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{8d2470f6-743b-4d79-8caa-c8fa325a89f3}" />
 	<object class="SpatialiserEffect" id="{1980d7dc-c647-4abc-ac54-e059881f2e47}" />
 	<object class="SFXReverbEffect" id="{a50a8f0e-12cf-4935-9565-5557b031191b}">

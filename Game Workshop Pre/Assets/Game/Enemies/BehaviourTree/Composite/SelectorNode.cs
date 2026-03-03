@@ -1,31 +1,15 @@
-using System.Net.NetworkInformation;
-using UnityEngine;
+
 
 // A selector node is a composite note that runs its children in order until one succeeds and 
 // it will lock (not continue) on Running, meaning children MUST return Failure in order to continue. 
-public class SelectorNode : BehaviourTreeNode
+[BehaviourNode(0, "Composite")]
+public class SelectorNode : CompositeNode
 {
-    [SerializeReference, SerializeReferenceDropdown] public BehaviourTreeNode[] children;
-
-    public override void CheckRequiredComponents(EnemyBase self)
-    {
-        foreach (BehaviourTreeNode child in children)
-        {
-            if (child != null) child.CheckRequiredComponents(self);
-        }
-    }
-
-    protected override void Initialize()
-    {
-        foreach (BehaviourTreeNode child in children)
-        {
-            child.Initialize(Blackboard, Self);
-        }
-    }
-
     public override BTNodeState Evaluate()
     {
-        foreach (BehaviourTreeNode child in children)
+        _isActive = true;
+
+        foreach (BehaviourTreeNode child in Children)
         {
             switch (child.Evaluate())
             {
@@ -36,14 +20,6 @@ public class SelectorNode : BehaviourTreeNode
             }
         }
         return BTNodeState.Failure;
-    }
-
-    public override void DrawDebug()
-    {
-        foreach (BehaviourTreeNode child in children)
-        {
-            if (child != null) child.DrawDebug();
-        }
     }
 
 }

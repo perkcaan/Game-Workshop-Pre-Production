@@ -6,7 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class EnemySpawnData
 {
-    public BaseEnemy enemy; // Reference to the enemy prefab
+    public EnemyBase enemy; // Reference to the enemy prefab
     [Range(0f, 100f)] public float spawnChance; // Spawn chance
 }
 
@@ -69,7 +69,7 @@ public class EnemySpawner : MonoBehaviour
 
         for (int i = 0; i < spawnAmount; i++)
         {
-            BaseEnemy newEnemy = GetRandomEnemy();
+            EnemyBase newEnemy = GetRandomEnemy();
 
             Vector2 spawnPos = FindSpawnPos();
 
@@ -99,7 +99,7 @@ public class EnemySpawner : MonoBehaviour
         return Vector2.zero;
     }
 
-    private BaseEnemy GetRandomEnemy()
+    private EnemyBase GetRandomEnemy()
     {
         float sum = 0f;
         foreach (var enemyInfo in enemiesToSpawn)
@@ -193,7 +193,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    public void SetSpawnChance(BaseEnemy enemy, float newSpawnChance)
+    public void SetSpawnChance(EnemyBase enemy, float newSpawnChance)
     {
         var enemyInfo = enemiesToSpawn.Find(eInfo => eInfo.enemy == enemy);
         if (enemyInfo == null)

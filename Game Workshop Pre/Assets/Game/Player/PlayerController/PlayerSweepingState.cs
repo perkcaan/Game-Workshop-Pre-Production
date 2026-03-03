@@ -8,10 +8,14 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     // Context & State
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
-
+    private float _dustParticleCooldown = 0f;
     // Fields
     //movement
     private float _zeroMoveTimer = 0f;
+    private float _sweepPokeTimer = 0f;
+
+    //temp
+    private float t_pokeTime = 1f;
 
     public PlayerSweepingState(PlayerContext context, PlayerStateMachine state)
     {
@@ -24,18 +28,32 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     public override void EnterState()
     {
         _ctx.Animator.SetBool("Sweeping", true);
+        _ctx.CanHook = true;
         _ctx.CanSwipe = true;
         _ctx.CanDash = true;
+
+        _sweepPokeTimer = 0;
         float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
         _ctx.SweepHandler.BeginSweep(_ctx.Rotation, sweepForce);
     }
 
     public override void Update()
     {
+        _dustParticleCooldown -= Time.deltaTime;
+        if (_dustParticleCooldown <= 0f)
+        {
+            ParticleManager.Instance.Play("PlayerSweepDust", _ctx.Player.transform.position, Quaternion.Euler(0, 0, _ctx.Rotation), parent:_ctx.Player.transform);
+            _dustParticleCooldown = 0.3f;
+        }
         HandleMovement();
         HandleRotation();
         float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
         _ctx.SweepHandler.UpdateHitbox(_ctx.Rotation, sweepForce);
+
+        if (_sweepPokeTimer < _ctx.Player.SweepAllowPokeTime)
+        {
+            _sweepPokeTimer += Time.deltaTime;
+        }
         TryChangeState();
     }
 
@@ -52,6 +70,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
 
 
     //movement
+    // This is the exact same movement as PlayerIdleState
     private void HandleMovement()
     {
         Vector2 input = _ctx.MovementInput;
@@ -59,18 +78,24 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         if (input.sqrMagnitude > 0.01f)
         {
             _zeroMoveTimer = 0f;
-            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxSweepWalkSpeed, _ctx.SweepAcceleration * Time.deltaTime);
-         
+            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxSweepWalkSpeed, _ctx.Acceleration * Time.fixedDeltaTime);
         }
         else
         {
-            if (_zeroMoveTimer < 0.05)
+            if (_zeroMoveTimer < 0.02)
             {
                 _zeroMoveTimer += Time.deltaTime;
-            }
-            if (_zeroMoveTimer >= 0.05)
+            } else
             {
                 _ctx.MoveSpeed = 0f;
+                // Cancels sliding with an opposing force
+                Vector2 velocity = _ctx.Rigidbody.velocity;
+                if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxSweepWalkSpeed) && _ctx.Props.WillCancelSweepSlide)
+                {
+                    Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxSweepWalkSpeed;
+                    _ctx.FrameVelocity = Vector2.ClampMagnitude(fullCancelForce, (-velocity * _ctx.Rigidbody.mass / Time.fixedDeltaTime).magnitude);
+                    return;
+                }
             }
         }
 
@@ -95,7 +120,15 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     //state
     private void TryChangeState()
     {
-        if (!_ctx.IsSweepPressed) _state.ChangeState(PlayerStateEnum.Idle);
+        if (!_ctx.IsSweepPressed) {
+            if (_sweepPokeTimer < _ctx.Player.SweepAllowPokeTime && _ctx.Player.canPoke && _ctx.PokeCooldownTimer <= 0f)
+            {
+                _state.ChangeState(PlayerStateEnum.SweepPoke);
+            } else
+            {
+                _state.ChangeState(PlayerStateEnum.Idle);
+            }
+        }
     }
 
     private void DrawRotationGizmo()

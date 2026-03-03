@@ -1,24 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // A negation node is a decorator node that negates the output of what it decorates.
 // So Success becomes Failure and Failure becomes Success.
-public class NegationNode : BehaviourTreeNode
+[BehaviourNode(0, "Decorator")]
+public class NegationNode : DecoratorNode
 {
-    [SerializeReference, SerializeReferenceDropdown] public BehaviourTreeNode child;
-
-    public override void CheckRequiredComponents(EnemyBase self)
-    {
-        if (child != null) child.CheckRequiredComponents(self);
-    }
-
-    protected override void Initialize()
-    {
-        child.Initialize(Blackboard, Self);
-    }
-
     public override BTNodeState Evaluate()
     {
-        switch (child.Evaluate())
+        _isActive = true;
+        switch (Child.Evaluate())
         {
             case BTNodeState.Success:
                 return BTNodeState.Failure;
@@ -27,13 +18,5 @@ public class NegationNode : BehaviourTreeNode
         }
         return BTNodeState.Running;
     }
-
-    public override void DrawDebug()
-    {
-        if (child != null) child.DrawDebug();
-    }
-
-
-    
 
 }

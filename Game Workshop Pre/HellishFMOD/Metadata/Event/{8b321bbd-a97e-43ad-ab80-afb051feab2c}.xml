@@ -5,7 +5,7 @@
 			<value>TrashLava</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{3b6b6dca-1149-4601-ab91-a361273c6242}</destination>
@@ -124,7 +124,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{1f4f5f2e-6fb5-46ab-9fc0-296c92f86684}">
 		<property name="volume">
-			<value>-6</value>
+			<value>-14.5</value>
 		</property>
 		<property name="name">
 			<value>FireBurst</value>
@@ -142,6 +142,7 @@
 	<object class="MixerBusEffectChain" id="{7d5058a3-4f11-4c81-a9e5-18f6d141a832}">
 		<relationship name="effects">
 			<destination>{9a8fd719-083b-4639-8605-6df71450409b}</destination>
+			<destination>{c608aad2-3ac5-4113-a917-2ea73a2dfb38}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{daecd452-f410-4a5c-bc4a-28e6558d71a8}" />
@@ -188,6 +189,14 @@
 	</object>
 	<object class="MixerBusPanner" id="{2399b4d5-c0c5-4bcf-a1aa-0d9b8e68138e}" />
 	<object class="MixerBusFader" id="{9a8fd719-083b-4639-8605-6df71450409b}" />
+	<object class="SpatialiserEffect" id="{c608aad2-3ac5-4113-a917-2ea73a2dfb38}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="minimumExtent">
+			<value>360</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{4b069314-a141-463a-8e4a-96dafc822300}" />
 	<object class="MultibandEqEffect" id="{5e7f9fc8-81d9-4c1b-a3f2-b221154ac3cc}">
 		<property name="bypass">

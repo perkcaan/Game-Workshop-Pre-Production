@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
+[Serializable]
 public enum BTNodeState { Running, Success, Failure }
 
 
@@ -19,6 +22,21 @@ public enum BTNodeState { Running, Success, Failure }
 [Serializable]
 public abstract class BehaviourTreeNode
 {
+
+    #if UNITY_EDITOR
+    //name of the node. For use within the editor.
+    public string DisplayName = "Node";
+    #endif
+
+
+    [SerializeReference] public List<BehaviourTreeNode> Children = new List<BehaviourTreeNode>();
+    
+    //override if node has children
+    public virtual int MaxChildren => 0; //-1 for virtually infinite possible children
+    
+
+
+
     // Call Blackboard to get a reference to the enemy blackboard in child objects
     private EnemyBlackboard _blackboard;
     protected EnemyBlackboard Blackboard { get { return _blackboard; } }
@@ -26,15 +44,49 @@ public abstract class BehaviourTreeNode
     private EnemyBase _self;
     protected EnemyBase Self { get { return _self; } }
 
-    public abstract void CheckRequiredComponents(EnemyBase self);
-    protected abstract void Initialize();
-    public abstract BTNodeState Evaluate();
-    public virtual void DrawDebug() { }
+    protected bool _isActive = false;
+    protected bool _canReset = false;
+
+    protected virtual void CheckRequiredComponents() { }
+    protected virtual void Initialize() { }
+    protected virtual void Reset() { }
+    protected virtual void DrawDebug() { }
+
+    public void Validate(EnemyBase self)
+    {
+        _self = self;
+        CheckRequiredComponents(); 
+    }
 
     public void Initialize(EnemyBlackboard blackboard, EnemyBase self)
     {
         _blackboard = blackboard;
         _self = self;
+        Children.RemoveAll(child => child == null); 
         Initialize();
     }
+
+
+    public void ResetInactive()
+    {
+        if (_isActive) // A node needs to set itself as active each frame otherwise it will reset
+        {
+            _isActive = false;
+            _canReset = true; // Since it was active, it now may need to be reset
+        } else { // Node didn't set itself as active, so it can safely reset. 
+            if (_canReset)
+            {
+                Reset();
+                _canReset = false;
+            }
+        }
+    }
+
+    public abstract BTNodeState Evaluate();
+    
+    public void DrawDebugIfActive()
+    {
+        if (_isActive) DrawDebug();
+    }
+
 }

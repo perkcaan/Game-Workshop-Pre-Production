@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7842517598588326482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1841731196696334460}
+  - component: {fileID: 3142809995613462505}
+  - component: {fileID: 5287172312070976147}
+  m_Layer: 0
+  m_Name: DialogueActorDemo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1841731196696334460
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7842517598588326482}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.5, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3142809995613462505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7842517598588326482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bf879866ded42e48b3e61f023fd781c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bubbleOffset: {x: 0, y: 0.5}
+  _inkJSON: {fileID: 4900000, guid: 44719ee511c026f42915e770e15e44bd, type: 3}
+--- !u!114 &5287172312070976147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7842517598588326482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10159498c4f9d8e4b9ff412871c75eb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startDialogue:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3142809995613462505}
+        m_TargetAssemblyTypeName: BubbleDialogueActor, Assembly-CSharp
+        m_MethodName: StartDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _forceEndDialogue:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3142809995613462505}
+        m_TargetAssemblyTypeName: BubbleDialogueActor, Assembly-CSharp
+        m_MethodName: ForceEndDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _chooseChoice:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3142809995613462505}
+        m_TargetAssemblyTypeName: BubbleDialogueActor, Assembly-CSharp
+        m_MethodName: ChooseChoice
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Yes
+          m_BoolArgument: 0
+        m_CallState: 2
+  _goToPath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3142809995613462505}
+        m_TargetAssemblyTypeName: BubbleDialogueActor, Assembly-CSharp
+        m_MethodName: GoToPath
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: branch
+          m_BoolArgument: 0
+        m_CallState: 2
+  _forceToPath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3142809995613462505}
+        m_TargetAssemblyTypeName: BubbleDialogueActor, Assembly-CSharp
+        m_MethodName: ForceToPath
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: branch
+          m_BoolArgument: 0
+        m_CallState: 2
+  _setDialogue:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3142809995613462505}
+        m_TargetAssemblyTypeName: BubbleDialogueActor, Assembly-CSharp
+        m_MethodName: SetDialogue
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 4900000, guid: 741cf9cff8ef88f49bc637eda121d508, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.TextAsset, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
