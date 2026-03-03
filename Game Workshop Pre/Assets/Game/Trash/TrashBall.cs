@@ -645,10 +645,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         if (_isBeingDestroyed) return;
         _decayTimer = _timeUntilDecay;
 
-        Vector3 centerPoint = center + (direction * Mathf.Pow(Size, 1f / 3f) / Mathf.PI);
-        Vector2 displacement = (Vector2)centerPoint - (Vector2)transform.position;
+        // Vector3 centerPoint = center + (direction * Mathf.Pow(Size, 1f / 3f) / Mathf.PI);
+        // Vector2 displacement = (Vector2)centerPoint - (Vector2)transform.position;
         float pullStrength = force * (_minimumVacuumForce + (_vacuumForce / Size * _sizeSweepMultiplier));
-        Vector2 springForce = displacement * pullStrength;
+        Vector2 springForce = direction * pullStrength;
         Vector2 dampingForce = -Rigidbody.velocity * 4f;
         Rigidbody.AddForce(springForce + dampingForce, ForceMode2D.Force);
     }
