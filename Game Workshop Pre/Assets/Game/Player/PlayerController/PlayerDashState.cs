@@ -22,6 +22,7 @@ public class PlayerDashState : BaseState<PlayerStateEnum>
     public override void EnterState()
     {
         _ctx.Animator.SetBool("Dashing", true);
+        _ctx.CanHook = false;
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
         _ctx.DashesRemaining -= 1;

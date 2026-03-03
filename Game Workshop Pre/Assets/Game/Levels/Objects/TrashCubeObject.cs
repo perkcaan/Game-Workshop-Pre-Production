@@ -15,6 +15,8 @@ public class TrashCubeObject : MonoBehaviour, IHeatable, ISweepable, ISwipeable
     private int _size = 1;
     private float _particleTimer = 0f;
 
+    public float SizeRadius { get { return _size/2f; } } //????
+
     [Header("OnSweep Properties")]
     [SerializeField] float _vacuumForce;
     [SerializeField] float _minimumVacuumForce;

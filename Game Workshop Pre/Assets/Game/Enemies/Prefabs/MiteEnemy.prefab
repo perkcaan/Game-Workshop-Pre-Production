@@ -95,9 +95,9 @@ GameObject:
   - component: {fileID: 7331644319445660340}
   - component: {fileID: 3530756158366900762}
   - component: {fileID: 8288151906358720249}
+  - component: {fileID: 7717461760388640528}
   - component: {fileID: 4642591943622303075}
   - component: {fileID: 3215131827249086728}
-  - component: {fileID: 7717461760388640528}
   - component: {fileID: 6083144468083164269}
   m_Layer: 10
   m_Name: MiteEnemy
@@ -186,37 +186,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &4642591943622303075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3142780765432232938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f15b54fd5202f44097d52e2dfee6476, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _heat: 0
-  coolingOff: 0
-  _heatRelaxationRate: 1
-  _timeBeforeRelax: 3
-  _warningThreshold: 40
-  _ignitionThreshold: 60
-  _ignitionTime: 0.2
---- !u!114 &3215131827249086728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3142780765432232938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc609b0e3380d254280d9592ce7027e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7717461760388640528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,7 +212,9 @@ MonoBehaviour:
   _trashMaterialWeight: 1
   _minSizeToAbsorb: 1
   _minVelocityToAbsorb: 0.5
-  _trashBallExplosionMultiplier: 4
+  _trashBallEscapeForce: 4
+  _trashBallDamageTime: 20
+  _trashBallSquirmTime: 5
   _attackDashForce: 3
   _attackProperties:
     _startup: 0.5
@@ -339,6 +310,37 @@ MonoBehaviour:
         _invalidLayers:
           serializedVersion: 2
           m_Bits: 20480
+--- !u!114 &4642591943622303075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3142780765432232938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f15b54fd5202f44097d52e2dfee6476, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heat: 0
+  coolingOff: 0
+  _heatRelaxationRate: 1
+  _timeBeforeRelax: 3
+  _warningThreshold: 40
+  _ignitionThreshold: 60
+  _ignitionTime: 0.2
+--- !u!114 &3215131827249086728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3142780765432232938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc609b0e3380d254280d9592ce7027e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6083144468083164269
 MonoBehaviour:
   m_ObjectHideFlags: 0

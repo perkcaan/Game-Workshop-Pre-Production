@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Drawing;
 using System;
 
-public class LooseTrash : Trash, ISweepable, ISwipeable
+public class LooseTrash : Trash, ISweepable, ISwipeable, IPokeable
 {
     [SerializeField] bool _hasImpactParticle = false;
     [SerializeField] float _sweepDurationToBecomeBall;
@@ -10,9 +10,11 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
     [SerializeField] float _playerEnterTripForce;
     [SerializeField] float _playerExitKnockback;
     [SerializeField] float _playerExitTripForce;
+    [SerializeField] float _pokeForceMultiplier = 1f;
     [SerializeField] float _randomDirectionRange;
     [SerializeField] float maximumVelocity = 2f;
     [SerializeField] bool _isSwipable;
+
     private float _sweepTimer;
 
     public void OnSweep(Vector2 position, Vector2 direction, float force)
@@ -34,6 +36,12 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
         
         Quaternion particleRotation = Quaternion.Euler(0, 0, angle + 180);
         ParticleManager.Instance.Play("swipe", transform.position, particleRotation, trashMaterial.color, transform);
+    }
+
+    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    {
+        if (!isActiveAndEnabled) return;
+         _rigidBody.AddForce(direction * force * _pokeForceMultiplier * _rigidBody.mass, ForceMode2D.Impulse);
     }
 
     void Update()
