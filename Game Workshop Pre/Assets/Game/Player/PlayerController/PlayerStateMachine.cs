@@ -12,7 +12,8 @@ public enum PlayerStateEnum
     Dash,
     Tumble,
     Absorbed,
-    HookThrow
+    HookThrow,
+    SweepPoke
 } 
 
 public class PlayerStateMachine : BaseStateMachine<PlayerStateEnum>
@@ -29,7 +30,8 @@ public class PlayerStateMachine : BaseStateMachine<PlayerStateEnum>
             { PlayerStateEnum.Dash, new PlayerDashState(context, this) },
             { PlayerStateEnum.Tumble, new PlayerTumbleState(context, this) },
             { PlayerStateEnum.Absorbed, new PlayerAbsorbedState(context, this) },
-            { PlayerStateEnum.HookThrow, new PlayerHookState(context, this) }
+            { PlayerStateEnum.HookThrow, new PlayerHookState(context, this) },
+            { PlayerStateEnum.SweepPoke, new PlayerSweepPokeState(context, this) }
         };
         _ctx = context;
         Setup(states, PlayerStateEnum.Idle);

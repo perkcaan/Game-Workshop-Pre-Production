@@ -13,7 +13,7 @@ public class SwipeHandler : MonoBehaviour
     FMOD.Studio.EventInstance _swipeSoundInstance;
     private PlayerMovementController _parent;
     private Collider2D _hitbox;
-    public bool connecting;
+    private bool connecting;
 
 
     // Fields

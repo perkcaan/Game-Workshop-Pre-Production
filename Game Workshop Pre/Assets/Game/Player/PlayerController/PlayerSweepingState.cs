@@ -12,6 +12,10 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     // Fields
     //movement
     private float _zeroMoveTimer = 0f;
+    private float _sweepPokeTimer = 0f;
+
+    //temp
+    private float t_pokeTime = 1f;
 
     public PlayerSweepingState(PlayerContext context, PlayerStateMachine state)
     {
@@ -27,6 +31,8 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         _ctx.CanHook = true;
         _ctx.CanSwipe = true;
         _ctx.CanDash = true;
+
+        _sweepPokeTimer = 0;
         float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
         _ctx.SweepHandler.BeginSweep(_ctx.Rotation, sweepForce);
     }
@@ -43,6 +49,11 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         HandleRotation();
         float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
         _ctx.SweepHandler.UpdateHitbox(_ctx.Rotation, sweepForce);
+
+        if (_sweepPokeTimer < _ctx.Player.SweepAllowPokeTime)
+        {
+            _sweepPokeTimer += Time.deltaTime;
+        }
         TryChangeState();
     }
 
@@ -109,7 +120,15 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     //state
     private void TryChangeState()
     {
-        if (!_ctx.IsSweepPressed) _state.ChangeState(PlayerStateEnum.Idle);
+        if (!_ctx.IsSweepPressed) {
+            if (_sweepPokeTimer < _ctx.Player.SweepAllowPokeTime && _ctx.Player.canPoke && _ctx.PokeCooldownTimer <= 0f)
+            {
+                _state.ChangeState(PlayerStateEnum.SweepPoke);
+            } else
+            {
+                _state.ChangeState(PlayerStateEnum.Idle);
+            }
+        }
     }
 
     private void DrawRotationGizmo()

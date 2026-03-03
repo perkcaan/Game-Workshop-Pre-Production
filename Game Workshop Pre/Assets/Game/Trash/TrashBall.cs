@@ -7,7 +7,7 @@ using FMODUnity;
 using System.Collections;
 
 // Primary script for TrashBall gameobject. Acts as a container for IAbsorbable (primarily Trash).
-public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
+public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeatable
 {
     #region Fields/Properties
 
@@ -39,7 +39,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     [Header("Sweep Properties")]
     [SerializeField] float _vacuumForce = 1f;
     [SerializeField] float _minimumVacuumForce = 0.2f;
-    [SerializeField] float _sizeSweepMultiplier = 1.2f;    
+    [SerializeField] float _sizeSweepMultiplier = 1.2f;
+    [SerializeField] float _pokeForceMultiplier = 1f;    
 
     [Header("Trash Material Properties")]
     [SerializeField, ReadOnly] TrashMaterial _primaryTrashMaterial;
@@ -78,6 +79,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
     // Components
     public Rigidbody2D Rigidbody { get; private set; }
     public CircleCollider2D Collider { get; private set; }
+    public float SizeRadius { get { return Collider.radius; } }
     [SerializeField] private Transform _ballTransform; // Reference to the transform of the Ball Mesh
     public CircleCollider2D AbsorbCollider { get; private set; }
     public CircleCollider2D MagnetCollider { get; private set; }
@@ -644,10 +646,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         _decayTimer = _timeUntilDecay;
 
         Vector3 centerPoint = center + (direction * Mathf.Pow(Size, 1f / 3f) / Mathf.PI);
-        float distance = Vector2.Distance(transform.position, centerPoint);
-        float newForce = force * distance * (_minimumVacuumForce + (_vacuumForce / Size * _sizeSweepMultiplier));
-        Vector2 directionToCenterPoint = (centerPoint - transform.position).normalized;
-        Rigidbody.AddForce(directionToCenterPoint * newForce, ForceMode2D.Force);
+        Vector2 displacement = (Vector2)centerPoint - (Vector2)transform.position;
+        float pullStrength = force * (_minimumVacuumForce + (_vacuumForce / Size * _sizeSweepMultiplier));
+        Vector2 springForce = displacement * pullStrength;
+        Vector2 dampingForce = -Rigidbody.velocity * 4f;
+        Rigidbody.AddForce(springForce + dampingForce, ForceMode2D.Force);
     }
 
     //ISwipeable
@@ -670,6 +673,15 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IHeatable
         ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: sizeForce);
         ParticleManager.Instance.Play("ImpactLines", contactPoint, particleRotation, force: 1.4f);
         ParticleManager.Instance.Play("ImpactCircleS", contactPoint, force: 1.25f);
+    }
+
+    //IPokeable
+
+    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    {
+        if (_isBeingDestroyed) return;
+        _decayTimer = _timeUntilDecay;
+        Rigidbody.AddForce(direction * force * _pokeForceMultiplier, ForceMode2D.Impulse);
     }
     
     #endregion

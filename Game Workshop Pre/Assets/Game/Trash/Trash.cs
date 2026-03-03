@@ -27,6 +27,9 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     protected Room _parentRoom;
     public Rigidbody2D _rigidBody;
     protected SpriteRenderer _spriteRenderer;
+    private CircleCollider2D _collider;
+    public float SizeRadius { get { return _collider.radius; } }
+
     private float soundCooldown = 1f;
     protected bool _isDestroyed = false;
     protected bool _isAbsorbed = false;
@@ -36,6 +39,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
 
     protected virtual void Awake()
     {
+        _collider = GetComponent<CircleCollider2D>();
         _rigidBody = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (_pointValue <= 0) _pointValue = 1;

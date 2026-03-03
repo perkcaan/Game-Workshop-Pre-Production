@@ -232,16 +232,15 @@ MonoBehaviour:
   _baseMaxHealth: 3
   _scaleMultiplier: 0.5
   _maxScale: 5
+  _defaultDecayMultiplier: 10
+  _timeUntilDecay: 30
+  _decayTrashDropRate: 3
   _maxHealth: 0
   _health: 0
-  _degradeWhileMoving: 1
-  _defaultDecayMultiplier: 10
-  _decayTrashDropRate: 3
-  _sweepHealPerSecond: 13
-  _swipeBonusHealth: 10
-  _vacuumForce: 1.25
-  _minimumVacuumForce: 0.25
-  _sizeSweepMultiplier: 1.1
+  _vacuumForce: 2
+  _minimumVacuumForce: 1
+  _sizeSweepMultiplier: 1
+  _pokeForceMultiplier: 1
   _primaryTrashMaterial: {fileID: 0}
   _secondaryTrashMaterial: {fileID: 0}
   _baseMaterial: {fileID: 11400000, guid: 6fb7000f493002749ba7cdd0bb70878d, type: 2}

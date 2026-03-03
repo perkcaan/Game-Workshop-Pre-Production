@@ -20,6 +20,17 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float SweepForce { get { return _sweepForce; } }
     [SerializeField][Range(0f, 2f)] private float _sweepForceMovementScaler = 0.1f;
     public float SweepForceMovementScaler { get { return _sweepForceMovementScaler; } }
+
+    [Header("Sweep Poke Properties")]
+    [SerializeField] private float _sweepAllowPokeTime = 0.1f;
+    public float SweepAllowPokeTime { get { return _sweepAllowPokeTime; } }
+    [SerializeField] private float _pokeForce = 5f;
+    public float PokeForce { get { return _pokeForce; } }
+
+    [SerializeField] private float _pokeDuration = 0.5f;
+    public float PokeDuration { get { return _pokeDuration; } }
+    [SerializeField] private float _pokeCooldown = 1f;
+    public float PokeCooldown { get { return _pokeCooldown; } }
     
     [Header("Swipe Properties")]
     [SerializeField] private float _baseSwipeForce = 5f;
@@ -73,6 +84,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     [Header("Item Effected Properties")]
     public bool canSweep = false;
+    public bool canPoke = false;
     public bool canSwipe = false;
     public bool canDash = false;
     public bool canHook = false;
@@ -142,6 +154,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         if (_ctx.HookCooldownTimer > 0f)
         {
             _ctx.HookCooldownTimer = Mathf.Max(_ctx.HookCooldownTimer - Time.deltaTime, 0f);
+        }
+
+        if (_ctx.PokeCooldownTimer > 0f)
+        {
+            _ctx.PokeCooldownTimer = Mathf.Max(_ctx.PokeCooldownTimer - Time.deltaTime, 0f);
         }
 
         // Dash timer
