@@ -75,7 +75,9 @@ public class HeatMechanic : MonoBehaviour
         }
         if (_debugTimer >= 10f)
         {
-            Debug.Log("Something is wrong with this object. DI: " + _debugIgnited);
+            Debug.LogWarning("Something is wrong with this object (" + gameObject.name + "). DI: " + _debugIgnited);
+            Debug.LogWarning("Heatable object has been messed up. Destroying...");
+            Destroy(gameObject);
             _debugTimer = 0f;
         }
     }

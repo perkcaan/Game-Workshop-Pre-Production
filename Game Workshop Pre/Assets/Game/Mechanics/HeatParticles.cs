@@ -49,8 +49,8 @@ public class HeatParticles : MonoBehaviour
             {   
                 if (temperatureStage < TemperatureStage.Burning)
                 {
-                    ParticleManager.Instance.Play("SmokeBlast", transform.position, null, smokeColor, null, 0.8f);
-                    ParticleManager.Instance.Play("SmokeBlast", transform.position, null, smokeColor, null, 1.2f);
+                    ParticleManager.Instance.Play("SmokeBlast", transform.position);
+                    ParticleManager.Instance.Play("SmokeBlast", transform.position, force: 0.5f);
                     temperatureStage = TemperatureStage.Burning;
                 }
                 if (particleTimer <= 0f)
@@ -60,7 +60,7 @@ public class HeatParticles : MonoBehaviour
             }
             else if (temperatureStage != TemperatureStage.Smoking)
             {
-                ParticleManager.Instance.Play("SmokeBlast", transform.position, null, smokeColor, null, 0.8f);
+                ParticleManager.Instance.Play("SmokeBlast", transform.position, force: 0.8f);
                 temperatureStage = TemperatureStage.Smoking;
             }
             if (particleTimer <= 0f)
@@ -85,8 +85,7 @@ public class HeatParticles : MonoBehaviour
             {
                 if (temperatureStage > TemperatureStage.Steaming)
                 {
-                    ParticleManager.Instance.Play("SmokeBlast", transform.position, null, steamColor, null, 0.4f);
-                    ParticleManager.Instance.Play("SmokeBlast", transform.position, null, steamColor, null, 0.6f);
+                    ParticleManager.Instance.Play("SteamBlast", transform.position);
                     temperatureStage = TemperatureStage.Steaming;
                 }
                 if (particleTimer <= 0f)
@@ -96,7 +95,7 @@ public class HeatParticles : MonoBehaviour
             }
             else if (temperatureStage != TemperatureStage.Sweating)
             {
-                ParticleManager.Instance.Play("SmokeBlast", transform.position, null, steamColor, null, 0.4f);
+                ParticleManager.Instance.Play("SteamBlast", transform.position, force: 0.8f);
                 temperatureStage = TemperatureStage.Sweating;
             }
             if (particleTimer <= 0f)

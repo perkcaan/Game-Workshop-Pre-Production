@@ -13,7 +13,7 @@ public class BoostPad : MonoBehaviour
         if (collision.CompareTag("TrashBall"))
         {
             TrashBall trashBall = collision.GetComponent<TrashBall>();
-            Rigidbody2D rb = trashBall.rigidBody;
+            Rigidbody2D rb = trashBall.Rigidbody;
 
             //relative velocity in boost pad's local space
             Vector2 localVelocity = transform.InverseTransformDirection(rb.velocity);
@@ -26,6 +26,7 @@ public class BoostPad : MonoBehaviour
 
 
     }
+
 
     public void Boost(Rigidbody2D rigidbody)
     {

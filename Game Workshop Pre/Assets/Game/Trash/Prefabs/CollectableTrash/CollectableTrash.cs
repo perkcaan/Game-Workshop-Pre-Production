@@ -17,7 +17,7 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable
             CreateTrashBall();
         }
     }
-    public void OnSwipe(Vector2 direction, float force)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collision)
     {
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
         if (_swipesIntoTrashBall) CreateTrashBall();

@@ -27,6 +27,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     public override void EnterState()
     {
         _ctx.Animator.SetBool("HoldingSwipe", true);
+        _ctx.CanHook = false;
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
         _hasSwipeBeenActivated = false;
@@ -76,7 +77,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     {
         int rotation = Mathf.RoundToInt(_ctx.Rotation/45f)*45;
         Quaternion burstRotation = Quaternion.Euler(0, 0, rotation-90);
-        ParticleManager.Instance.Play("PlayerSwipeDust", _ctx.Player.transform.position, burstRotation, Color.white, _ctx.Player.transform);
+        ParticleManager.Instance.Play("PlayerSwipeDust", _ctx.Player.transform.position, burstRotation, parent:_ctx.Player.transform);
 
         _ctx.Animator.SetBool("Swiping", true);
         _ctx.Animator.SetBool("HoldingSwipe", false);
@@ -91,7 +92,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     }
 
     //movement
-    // This is the exact same movement and PlayerIdleState
+    // This is the exact same movement as PlayerIdleState
     private void HandleMovement()
     {
         Vector2 input = _ctx.MovementInput;
@@ -99,21 +100,28 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
         if (input.sqrMagnitude > 0.01f)
         {
             _zeroMoveTimer = 0f;
-            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxWalkSpeed, _ctx.Acceleration * Time.deltaTime);
+            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxSwipeWalkSpeed, _ctx.Acceleration * Time.fixedDeltaTime);
         }
         else
         {
-            if (_zeroMoveTimer < 0.05)
+            if (_zeroMoveTimer < 0.02)
             {
                 _zeroMoveTimer += Time.deltaTime;
-            }
-            if (_zeroMoveTimer >= 0.05)
+            } else
             {
                 _ctx.MoveSpeed = 0f;
+                // Cancels sliding with an opposing force
+                Vector2 velocity = _ctx.Rigidbody.velocity;
+                if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxSwipeWalkSpeed) && _ctx.Props.WillCancelSwipeSlide)
+                {
+                    Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxSwipeWalkSpeed;
+                    _ctx.FrameVelocity = Vector2.ClampMagnitude(fullCancelForce, (-velocity * _ctx.Rigidbody.mass / Time.fixedDeltaTime).magnitude);
+                    return;
+                }
             }
         }
 
-        _ctx.FrameVelocity = _ctx.MaxSwipeWalkSpeed * input.normalized;
+        _ctx.FrameVelocity = _ctx.MoveSpeed * input.normalized;
     }
 
     private void LeaveSwipeState()
@@ -129,7 +137,5 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
                 _state.ChangeState(PlayerStateEnum.Idle);
             }
         }
-
     }
-
 }

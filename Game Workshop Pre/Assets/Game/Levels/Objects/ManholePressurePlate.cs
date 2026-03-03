@@ -38,7 +38,7 @@ public class ManholePressurePlate : MonoBehaviour
     {
         if (isRollingToCenter)
         {
-            Rigidbody2D trashballRB = _currentTrashball.rigidBody;
+            Rigidbody2D trashballRB = _currentTrashball.Rigidbody;
             Vector2 trashBallPos = (Vector2)trashballRB.transform.position;
             Vector2 manholeCenterPos = (Vector2)this.transform.position;
             Vector2 heading = (manholeCenterPos - trashBallPos);

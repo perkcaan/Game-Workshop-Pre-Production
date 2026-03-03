@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;  
 using JetBrains.Annotations;
 using UnityEngine;
@@ -16,19 +17,22 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     [SerializeField] protected int _size;
     public int Size { get { return _size; } }
     public TrashMaterial trashMaterial;
+    public TrashMaterial TrashMat { get { return trashMaterial; } }
     public int trashMaterialWeight = 1;
+    public int TrashMatWeight { get { return trashMaterialWeight; } }
     private FMOD.Studio.EventInstance _sweepSoundInstance;
 
     [SerializeField] protected int _pointValue;
     private bool _pointsConsumed = false;
-    public static Action<int> SendScore;
-
     protected Room _parentRoom;
     public Rigidbody2D _rigidBody;
     protected SpriteRenderer _spriteRenderer;
     private float soundCooldown = 1f;
-
     protected bool _isDestroyed = false;
+    protected bool _isAbsorbed = false;
+    protected Tween _shakeTween;
+    [SerializeField] float _onFailAbsorbShakeForce = 0.5f;
+    protected float _shakeSpeed = 0.125f;
 
     protected virtual void Awake()
     {
@@ -60,69 +64,123 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         }
 
         GivePoints();
-        _rigidBody.simulated = false;
         gameObject.SetActive(false);
-        trashBall.AbsorbTrash(this);
-        trashBall.GetComponent<Rigidbody2D>().velocity = _rigidBody.velocity;
+        trashBall.AbsorbObject(this);
+        trashBall.Rigidbody.velocity = _rigidBody.velocity;
     }
 
-    public virtual void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
-    {   
-        if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled && _rigidBody.simulated))
+    // IAbsorbable
+    public virtual bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
+    {
+        if (_isDestroyed) return false;
+        
+
+        Vector2 direction = transform.position - trashBall.transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        if (forcedAbsorb || (Size <= trashBall.Size && isActiveAndEnabled && _rigidBody.simulated && !_isAbsorbed))
         {
             GivePoints();
             _rigidBody.simulated = false;
-            trashBall.AbsorbTrash(this);
-        }
-        if (!forcedAbsorb)
-        {
-            Vector2 direction = transform.position - trashBall.transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);
+            _isAbsorbed = true;
+            if (forcedAbsorb) return true;
+            
+            Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);    
             if (Size > 4)
+            {
                 ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1.5f);
-            else
+            } else 
+            {
                 ParticleManager.Instance.Play("TrashAbsorbed", transform.position, particleRotation, null, null, 1f);
+            }
+            
+            PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
+            
+            return true;
         }
+        if (isActiveAndEnabled && _rigidBody.simulated && !_isAbsorbed) // reason it failed was because of low trashball size
+        {
+            if (_shakeTween != null && _shakeTween.IsActive()) _shakeTween.Complete();
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_spriteRenderer.transform.DOLocalMove(direction.normalized * _onFailAbsorbShakeForce, _shakeSpeed));
+            sequence.Append(_spriteRenderer.transform.DOLocalMove(-direction.normalized * _onFailAbsorbShakeForce / 4, _shakeSpeed));
+            sequence.Append(_spriteRenderer.transform.DOLocalMove(Vector3.zero, _shakeSpeed));
+            sequence.SetLink(_spriteRenderer.gameObject); 
+            _shakeTween = sequence;            
+        }
+
+        return false;
     }
 
-    public void OnTrashBallExplode(TrashBall trashBall)
+    public void OnTrashBallRelease(TrashBall trashBall, Vector2 unitVectorAngle)
     {
         gameObject.SetActive(true);
+
+        List<Collider2D> colliders = new List<Collider2D>();
+        _rigidBody.GetAttachedColliders(colliders);
+        foreach (Collider2D collider in colliders)
+        {
+            Physics2D.IgnoreCollision(collider, trashBall.Collider, true);
+            Physics2D.IgnoreCollision(collider, trashBall.MagnetCollider, true);
+        }
+        
+        transform.position = trashBall.transform.position;
+
+        
         transform.localScale = Vector3.zero;
         transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
 
+        StartCoroutine(ExplodeOutOfBall(trashBall, unitVectorAngle));
+    }
+
+    private IEnumerator ExplodeOutOfBall(TrashBall trashBall, Vector2 unitVectorAngle)
+    {
+        int size = trashBall.Size; //store size early for safety
+
+        // Wait a frame to ensure collision is ignored, then explode out of the ball
+        yield return new WaitForEndOfFrame();
         _rigidBody.simulated = true;
-        transform.position = trashBall.transform.position;
+        // This is a sloppy way of doing it... but it should properly keep magnitude the same as before while letting ball control the angle
+        float explosionForce = (float)(Math.Sqrt(size) * _explosionMultiplier);
+        float randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce)).magnitude;
+        _rigidBody.velocity = randomForce * unitVectorAngle;
 
-        float explosionForce = (float)(Math.Sqrt(trashBall.Size) * _explosionMultiplier);
-        Vector2 randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce));
-        _rigidBody.velocity = randomForce;
+        yield return new WaitForSeconds(0.3f);
+        _isAbsorbed = false;
+        if (trashBall != null && trashBall.isActiveAndEnabled)
+        {
+            List<Collider2D> colliders = new List<Collider2D>();
+            _rigidBody.GetAttachedColliders(colliders);
+            foreach (Collider2D collider in colliders) {
+                Physics2D.IgnoreCollision(collider, trashBall.Collider, false);
+                Physics2D.IgnoreCollision(collider, trashBall.MagnetCollider, false);
+            }
+        }
+
     }
 
-    public void PrepareIgnite(HeatMechanic heat)
-    {
-        foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
-        _rigidBody.velocity = Vector2.zero;
-        _rigidBody.simulated = false;
-    }
-    
-    public void OnIgnite(HeatMechanic heat)
-    {
-        if (_isDestroyed) return;
-        _isDestroyed = true;
-
-        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
-        
-        Destroy(gameObject);
-    }
-
-    public void OnTrashBallIgnite()
+    public void OnTrashBallDestroy()
     {
         if (_isDestroyed) return;
         _isDestroyed = true;
 
         if (_parentRoom != null) _parentRoom.ObjectCleaned(this);
+        Destroy(gameObject);
+    }
+
+    public void PrepareIgnite(HeatMechanic heat)
+    {
+        if (_isDestroyed) return;
+        _isDestroyed = true;
+
+        foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
+        _rigidBody.velocity = Vector2.zero;
+        _rigidBody.simulated = false;
+        if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
+    }
+    
+    public void OnIgnite(HeatMechanic heat)
+    {
         Destroy(gameObject);
     }
 
@@ -135,7 +193,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     {
         if (!_pointsConsumed)
         {
-            SendScore?.Invoke(_pointValue);
+            ScoreBehavior.SendScore?.Invoke(_pointValue);
             StartCoroutine(Sound());
             _pointsConsumed = true;
         }

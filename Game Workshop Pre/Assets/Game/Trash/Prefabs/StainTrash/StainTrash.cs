@@ -18,10 +18,11 @@ public class StainTrash : Trash, ISweepable
             Destroy(gameObject);
         }
     }
-    public override void OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
+    public override bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        SendScore?.Invoke(_pointValue);
+        ScoreBehavior.SendScore?.Invoke(_pointValue);
         Destroy(gameObject);
+        return false;
     }
 
 }
