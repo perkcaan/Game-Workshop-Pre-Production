@@ -83,7 +83,7 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
 
     private void HandleRotation()
     {
-        Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(_ctx.MouseInput);
         Vector2 direction = mouseWorldPoint - (Vector2)_ctx.Player.transform.position;
         direction.Normalize();
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

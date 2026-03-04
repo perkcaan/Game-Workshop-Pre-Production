@@ -82,9 +82,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""MouseDeltaInput"",
+                    ""name"": ""ControllerAimInput"",
                     ""type"": ""Value"",
-                    ""id"": ""80df9cb6-de67-4daa-8513-7fd9f313c3d0"",
+                    ""id"": ""77e92c7f-7476-42ab-855e-4497f027aca3"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": ""StickDeadzone(min=0.01,max=0.01)"",
                     ""interactions"": """",
@@ -222,8 +222,30 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""faa085cc-147e-4b2c-ac89-5e6067175a13"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""afcbd910-5aa2-472a-a823-e22d63203cb1"",
                     ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SweepInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9818e213-78e5-41dd-a8ea-f010a39e7840"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -255,6 +277,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""1b6770df-161c-4e2e-80f0-b09e98dcc704"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwipeInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""165c05fa-be5c-422f-a750-94bfce61eeed"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
@@ -266,19 +299,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""860a2e37-c5fd-4650-8063-a08a51ba89dc"",
-                    ""path"": ""<Mouse>/delta"",
+                    ""id"": ""b6e423a5-4d0a-4660-85c7-15eee2030539"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MouseDeltaInput"",
+                    ""action"": ""DashInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b6e423a5-4d0a-4660-85c7-15eee2030539"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""id"": ""6fb830fd-5d7e-4e84-8529-55b4bbddda2d"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -299,8 +332,63 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""5fc1db03-e33b-4f83-8bef-9dfb89753e13"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EscapeTrashBallInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1fec7c77-0448-4c86-845d-93e86be57a55"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EscapeTrashBallInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d4655bb-2d60-4667-92f5-0de9a304d4a4"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EscapeTrashBallInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""122b20a6-f5d0-4d36-bca3-e398fb80e57c"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EscapeTrashBallInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""81ee45fe-4397-4fd1-ad2a-6456ace2a858"",
                     ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractionInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""51990bf9-4093-4423-a83b-9671e0bc1647"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -318,6 +406,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""HookInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6af02e2-9711-4685-9729-6327b35107cf"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HookInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""824cad68-63d4-414a-9e3f-a3fcf1e4eeec"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ControllerAimInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -332,7 +442,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Default_DashInput = m_Default.FindAction("DashInput", throwIfNotFound: true);
         m_Default_EscapeTrashBallInput = m_Default.FindAction("EscapeTrashBallInput", throwIfNotFound: true);
         m_Default_MouseMoveInput = m_Default.FindAction("MouseMoveInput", throwIfNotFound: true);
-        m_Default_MouseDeltaInput = m_Default.FindAction("MouseDeltaInput", throwIfNotFound: true);
+        m_Default_ControllerAimInput = m_Default.FindAction("ControllerAimInput", throwIfNotFound: true);
         m_Default_InteractionInput = m_Default.FindAction("InteractionInput", throwIfNotFound: true);
         m_Default_HookInput = m_Default.FindAction("HookInput", throwIfNotFound: true);
     }
@@ -402,7 +512,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_DashInput;
     private readonly InputAction m_Default_EscapeTrashBallInput;
     private readonly InputAction m_Default_MouseMoveInput;
-    private readonly InputAction m_Default_MouseDeltaInput;
+    private readonly InputAction m_Default_ControllerAimInput;
     private readonly InputAction m_Default_InteractionInput;
     private readonly InputAction m_Default_HookInput;
     public struct DefaultActions
@@ -415,7 +525,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @DashInput => m_Wrapper.m_Default_DashInput;
         public InputAction @EscapeTrashBallInput => m_Wrapper.m_Default_EscapeTrashBallInput;
         public InputAction @MouseMoveInput => m_Wrapper.m_Default_MouseMoveInput;
-        public InputAction @MouseDeltaInput => m_Wrapper.m_Default_MouseDeltaInput;
+        public InputAction @ControllerAimInput => m_Wrapper.m_Default_ControllerAimInput;
         public InputAction @InteractionInput => m_Wrapper.m_Default_InteractionInput;
         public InputAction @HookInput => m_Wrapper.m_Default_HookInput;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
@@ -445,9 +555,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseMoveInput.started += instance.OnMouseMoveInput;
             @MouseMoveInput.performed += instance.OnMouseMoveInput;
             @MouseMoveInput.canceled += instance.OnMouseMoveInput;
-            @MouseDeltaInput.started += instance.OnMouseDeltaInput;
-            @MouseDeltaInput.performed += instance.OnMouseDeltaInput;
-            @MouseDeltaInput.canceled += instance.OnMouseDeltaInput;
+            @ControllerAimInput.started += instance.OnControllerAimInput;
+            @ControllerAimInput.performed += instance.OnControllerAimInput;
+            @ControllerAimInput.canceled += instance.OnControllerAimInput;
             @InteractionInput.started += instance.OnInteractionInput;
             @InteractionInput.performed += instance.OnInteractionInput;
             @InteractionInput.canceled += instance.OnInteractionInput;
@@ -476,9 +586,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseMoveInput.started -= instance.OnMouseMoveInput;
             @MouseMoveInput.performed -= instance.OnMouseMoveInput;
             @MouseMoveInput.canceled -= instance.OnMouseMoveInput;
-            @MouseDeltaInput.started -= instance.OnMouseDeltaInput;
-            @MouseDeltaInput.performed -= instance.OnMouseDeltaInput;
-            @MouseDeltaInput.canceled -= instance.OnMouseDeltaInput;
+            @ControllerAimInput.started -= instance.OnControllerAimInput;
+            @ControllerAimInput.performed -= instance.OnControllerAimInput;
+            @ControllerAimInput.canceled -= instance.OnControllerAimInput;
             @InteractionInput.started -= instance.OnInteractionInput;
             @InteractionInput.performed -= instance.OnInteractionInput;
             @InteractionInput.canceled -= instance.OnInteractionInput;
@@ -510,7 +620,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnDashInput(InputAction.CallbackContext context);
         void OnEscapeTrashBallInput(InputAction.CallbackContext context);
         void OnMouseMoveInput(InputAction.CallbackContext context);
-        void OnMouseDeltaInput(InputAction.CallbackContext context);
+        void OnControllerAimInput(InputAction.CallbackContext context);
         void OnInteractionInput(InputAction.CallbackContext context);
         void OnHookInput(InputAction.CallbackContext context);
     }
