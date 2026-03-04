@@ -238,8 +238,12 @@ MonoBehaviour:
   _maxHealth: 0
   _health: 0
   _vacuumForce: 1.25
-  _minimumVacuumForce: 0.25
-  _sizeSweepMultiplier: 1.1
+  _minimumVacuumForce: 1
+  _sizeSweepMultiplier: 1
+  _pokeForceMultiplier: 1
+  _wallLayers:
+    serializedVersion: 2
+    m_Bits: 0
   _primaryTrashMaterial: {fileID: 0}
   _secondaryTrashMaterial: {fileID: 0}
   _baseMaterial: {fileID: 11400000, guid: 6fb7000f493002749ba7cdd0bb70878d, type: 2}
@@ -247,6 +251,7 @@ MonoBehaviour:
   _dominantThreshold: 0.85
   _primaryThreshold: 0.5
   _secondaryThreshold: 0.15
+  _ballQuad: {fileID: 0}
   _ballTransform: {fileID: 3475106608188846289}
   _label: {fileID: 6113613676011926388}
 --- !u!114 &2415871829025244457
