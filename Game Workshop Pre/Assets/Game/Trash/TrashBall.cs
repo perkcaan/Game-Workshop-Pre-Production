@@ -109,7 +109,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     private void Start()
     {
         RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, gameObject, Rigidbody);
-        AudioManager.Instance.Play("TrashBall", transform.position);
+        AudioManager.Instance.PlayOnInstance(this.gameObject, "TrashBall");
         _label.Show();
     }
     
@@ -133,9 +133,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         }
         
         // Sound
-        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", Rigidbody.velocity.magnitude * 10, "Global");
-        FMOD.ATTRIBUTES_3D attributes = RuntimeUtils.To3DAttributes(gameObject, Rigidbody);
-        _sweepSoundInstance.set3DAttributes(attributes);
+        AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM", this.Rigidbody.velocity.magnitude * 10);
+        //AudioManager.Instance.ModifyGlobalParameter("RPM", this.Rigidbody.velocity.magnitude * 10);
+
 
         // 3D Ball rotation
         Vector3 rotationAxis = new Vector3(Rigidbody.velocity.y, -Rigidbody.velocity.x, 0);
@@ -183,7 +183,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
             isPlayer = true;
         }
 
-        ScoreBehavior.SendScore?.Invoke(0);
+        //ScoreBehavior.SendScore?.Invoke(0);
 
         AbsorbedObjects.Add(absorbable);
         if (Rigidbody.simulated && !isPlayer)
@@ -207,6 +207,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
                 return;
             }
         }
+        
         _trashMaterialCounts.Add(absorbable.TrashMat);
         _trashMaterialSize.Add(absorbable.Size * absorbable.TrashMatWeight);
         UpdateMaterial();
@@ -242,14 +243,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         
         _isBeingDestroyed = true;
         AbsorbedObjects.Clear();
-        ScoreBehavior.SendScore?.Invoke(Size);
+        //ScoreBehavior.SendScore?.Invoke(Size);
     }
 
     // Removes the trash ball entirely
     public void Delete()
     {
-        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", 0f, "Global");
-        AudioManager.Instance.Stop("TrashBall");
+        AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM2", 0f);
+        AudioManager.Instance.Stop(this.gameObject,"TrashBall");
         Destroy(gameObject);
     }
 
@@ -339,9 +340,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
             trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallRelease(this, UnityEngine.Random.onUnitSphere);
         }
-        AudioManager.Instance.ModifyParameter("TrashBall", "RPM", 0f, "Global");
-        AudioManager.Instance.Stop("TrashBall");
-        AudioManager.Instance.Stop("Decay");
+        AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM2", 0f);
+        AudioManager.Instance.Stop(this.gameObject, "TrashBall");
+        AudioManager.Instance.Stop(this.gameObject, "Decay");
         Destroy(gameObject);
     }
 
@@ -357,7 +358,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
         _size = newSize;
         _label.UpdateSizeLabel(_size);
-
+        DistrictManager.Instance.FocusedRoom?.NewTrashBallSize(_size);
         // Formula for size -> scale
         // scale = CubeRoot(size) * multiplier
         float scale = _scaleMultiplier * Mathf.Pow(Size, 1f / 3f);
@@ -485,10 +486,12 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         // Update trash material on audio
         if (_primaryTrashMaterial == null)
         {
-            AudioManager.Instance.ModifyParameter("TrashBall", "Generic", highestPercent, "Global");
+            //AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", "Generic", highestPercent);
+            AudioManager.Instance.ModifyGlobalParameter("Generic", highestPercent);
             return;
         }
-        AudioManager.Instance.ModifyParameter("TrashBall", _primaryTrashMaterial.name, highestPercent, "Global");
+        //AudioManager.Instance.ModifyParameter(gameObject, "TrashBall", _primaryTrashMaterial.name, highestPercent);
+        AudioManager.Instance.ModifyGlobalParameter(_primaryTrashMaterial.name, highestPercent);
 
         // Update label color
         _label.SetColor(_primaryTrashMaterial.color);

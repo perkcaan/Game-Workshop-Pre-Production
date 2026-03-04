@@ -12,7 +12,7 @@ public class Lava : MonoBehaviour
     private float _delayTimer = 0f;
 
     private ShaderManager _shaderManager;
-   
+
     private void OnTriggerStay2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out HeatMechanic heat))

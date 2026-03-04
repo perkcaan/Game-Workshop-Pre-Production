@@ -1,10 +1,13 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
@@ -15,7 +18,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     [SerializeField] private Tilemap _roomTilemap;
     private List<Room> _rooms = new List<Room>();
-
+    [SerializeField] TextMeshProUGUI _coinText;
     // Rooms the player is in
     private List<Room> _focusedRooms = new List<Room>(); // focused rooms is a list since the player could be in multiple touching rooms.
     public Room FocusedRoom { get { return _focusedRooms.Count > 0 ? _focusedRooms[0] : null; } }
@@ -25,13 +28,14 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     // Rooms currently loaded
     private HashSet<Room> _loadedRooms = new HashSet<Room>();
-
+    private int coinsEarned;
 
     [ContextMenu("Generate Rooms")]
     private void GenerateRooms()
     {
         RoomPolygonGenerator.GeneratePolygonColliders(transform, _roomTilemap);
     }
+
 
     public float GetCleanCompletion()
     {
@@ -44,6 +48,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
             if (room.IsRoomCleaned)
             {
                 completeRooms++;
+
             }
         }
 
@@ -55,6 +60,9 @@ public class DistrictManager : StaticInstance<DistrictManager>
         if (_focusedRooms.Contains(room)) return;
         _focusedRooms.Add(room);
         if (_roomsNeedingSafeExit.Contains(room)) _roomsNeedingSafeExit.Remove(room);
+        room.TriggerRoomClose();
+
+        
         foreach (Room needyRoom in _roomsNeedingSafeExit)
         {
             needyRoom.SafeExit();
@@ -62,6 +70,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         _roomsNeedingSafeExit.Clear();
         UpdateLoadedRooms();
     }
+
     public void PlayerExitRoom(Room room)
     {
         if (!_focusedRooms.Contains(room)) return;
@@ -80,6 +89,40 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private void Start()
     {
         _rooms = new List<Room>(FindObjectsOfType<Room>());
+        if (PlayerPrefs.HasKey("Coins"))
+            coinsEarned = PlayerPrefs.GetInt("Coins");
+        else
+            coinsEarned = 0;
+    }
+
+    public void AwardCoins(int amount)
+    {
+        
+        int coinsToAward = amount;
+        //coinsToAward += amount;
+        //int awardedCoins = coinsToAward + amount;
+        coinsEarned += coinsToAward;
+        
+        PlayerPrefs.SetInt("Coins", coinsEarned);
+        PlayerPrefs.Save();
+        PopupLabel.CreateCoinLabel(Color.white, coinsEarned);
+        
+
+        
+
+
+
+    }
+
+    public void RemoveCoins(int amount)
+    {
+        int coinsToAward = amount;
+        
+        coinsEarned -= coinsToAward;
+        
+        PlayerPrefs.SetInt("Coins", coinsEarned);
+        PlayerPrefs.Save();
+        PopupLabel.CreateCoinLabel(Color.white, coinsEarned);
     }
 
     private void UpdateLoadedRooms()

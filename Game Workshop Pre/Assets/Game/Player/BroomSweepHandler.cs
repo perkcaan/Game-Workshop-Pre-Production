@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -14,6 +15,7 @@ public class BroomSweepHandler : MonoBehaviour
     private PlayerMovementController _parent;
     private Collider2D _hitbox;
     private PlayerContext _ctx;
+    private FMOD.Studio.EventInstance _sweepSoundInstance;
     private BroomPokebox _pokebox;
     private Broomhead _broomhead;
     private Transform _sweepSingularity;
@@ -42,6 +44,9 @@ public class BroomSweepHandler : MonoBehaviour
         }
         _hitbox = GetComponent<Collider2D>();
         _hitbox.enabled = false;
+        _sweepSoundInstance = RuntimeManager.CreateInstance("event:/Player/Sweep/Sweep");
+
+
 
         _pokebox = GetComponentInChildren<BroomPokebox>();
         _pokebox.Initialize(this);
@@ -62,9 +67,13 @@ public class BroomSweepHandler : MonoBehaviour
         _hitbox.enabled = true;
         _broomhead.Active = true;
         if(_hitbox.enabled)
-            AudioManager.Instance.Play("Sweep", transform.position);
+            _sweepSoundInstance.start();
+        else
+        {
+            _sweepSoundInstance.release();
+        }
 
-        UpdateHitbox(rotation, sweepForce);
+            UpdateHitbox(rotation, sweepForce);
     }
 
     public void UpdateHitbox(float rotation, float sweepForce)
@@ -82,8 +91,11 @@ public class BroomSweepHandler : MonoBehaviour
     public void EndSweep()
     {
         _hitbox.enabled = false;
+        _sweepSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //AudioManager.Instance.Stop(gameObject,"Sweep");
+        
          _broomhead.Active = false;
-        AudioManager.Instance.Stop("Sweep");
+       
     }
 
 

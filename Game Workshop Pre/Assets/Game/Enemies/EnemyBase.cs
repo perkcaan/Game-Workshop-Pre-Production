@@ -225,7 +225,9 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             if (forcedAbsorb) return true;
             PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
             _ballSquirmTimer = _trashBallSquirmTime;
+            AudioManager.Instance.PlayOnInstance(gameObject, "enemyPickup");
             return true;
+            
         }
         return false;
     }
@@ -304,5 +306,10 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void SetRoom(Room room)
     {
         _parentRoom = room;
+    }
+
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    {
+        throw new NotImplementedException();
     }
 }

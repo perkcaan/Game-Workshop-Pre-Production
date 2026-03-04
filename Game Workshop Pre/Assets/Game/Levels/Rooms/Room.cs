@@ -24,6 +24,9 @@ public class Room : MonoBehaviour
     private int _roomCurrentTrashAmount = 0; // Current amount of trash in the room
     private int _roomTotalTrashCount = 0; // Starting amount of trash / Max trash allowed in room
 
+    public int MaxTrashBallSize { get { return _maxTrashBallSize; } }
+    private int _maxTrashBallSize;
+    public int coinsAwarded;
     public float totalMinSizeToAbsorb;
 
     public float Cleanliness
@@ -67,6 +70,13 @@ public class Room : MonoBehaviour
         { 
             OnDrawerOpen();
         }
+        _maxTrashBallSize = 0;
+    }
+
+    public void NewTrashBallSize(int size)
+    {
+        if(size > _maxTrashBallSize) _maxTrashBallSize = size;
+        
     }
 
     public void ActivateRoom()
@@ -100,8 +110,16 @@ public class Room : MonoBehaviour
     {
         if (_isRoomCleaned || _isRoomClosed) return;
         _isRoomClosed = true;
+
+        if (IsTrashRoom && !IsRoomCleaned)
+        {
+            PlayerMovementController player = FindObjectOfType<PlayerMovementController>();
+            AudioManager.Instance.Play("gateUp", player.transform);
+        }
+
         foreach (Gate gate in _connectedGates)
         {
+            
             gate.Close(this);
         }
     }
@@ -112,6 +130,8 @@ public class Room : MonoBehaviour
         if (!_isRoomClosed) return;
 
         _isRoomClosed = false;
+
+        
         foreach (Gate gate in _connectedGates)
         {
             gate.Open(this);
@@ -138,6 +158,7 @@ public class Room : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out PlayerMovementController player))
         {
             if (DistrictManager.Instance != null) DistrictManager.Instance.PlayerEnterRoom(this);
+            
         }
 
         if (collision.gameObject.TryGetComponent(out HeatMechanic heatable))
@@ -211,15 +232,29 @@ public class Room : MonoBehaviour
         _roomCurrentTrashAmount = amountToClean;
         if (amountToClean <= 0) {
             _isRoomCleaned = true;
+            
             OnRoomClean();
         }
     }
 
     private void OnRoomClean()
     {
+        TrashBall trash = FindObjectOfType<TrashBall>();
+        if (coinsAwarded > 0)
+            PopupLabel.CreateImageLabel(trash.transform.position, UnityEngine.Color.white);
         if (_openGatesOnClean)
         {
+            if (IsTrashRoom)
+            {
+                DistrictManager.Instance.AwardCoins(coinsAwarded);
+                PlayerMovementController player = FindObjectOfType<PlayerMovementController>();
+                
+                AudioManager.Instance.Play("gateDown", player.transform);
+                
+            }
             _isRoomClosed = false;
+
+
             foreach (Gate gate in _connectedGates) gate.Open(this);
         }
     }

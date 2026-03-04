@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Reflection.Emit;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using Color = UnityEngine.Color;
 
 public class PopupLabel : MonoBehaviour
 {
 
     [SerializeField] private TMP_Text _text;
+    [SerializeField] private TextMeshProUGUI _coinText;
+    [SerializeField] private SpriteRenderer ImageLabel;
     [SerializeField] private float _minScaleSize = 1.2f;
     [SerializeField] private float _maxScaleSize = 3f;
     [SerializeField] private int _sizeOfMaxScale = 40;
@@ -36,6 +40,39 @@ public class PopupLabel : MonoBehaviour
         newLabel.Setup(position, color, size);
     }
 
+    public static void CreateCoinLabel(Color color, int coins)
+    {
+        
+        PopupLabel newLabel = null;
+        PopupLabelPooler plp = PopupLabelPooler.Instance;
+        if (plp == null)
+        {
+            Debug.LogWarning("Add a PopupLabelPooler prefab to the scene.");
+            return;
+        }
+        newLabel = plp.GetCoinLabel();
+
+        newLabel.CoinSetup(color, coins);
+
+
+    }
+    public static void CreateImageLabel(Vector3 position, Color color)
+    {
+        
+        PopupLabel newLabel = null;
+        PopupLabelPooler plp = PopupLabelPooler.Instance;
+        if (plp == null)
+        {
+            Debug.LogWarning("Add a PopupLabelPooler prefab to the scene.");
+            return;
+        }
+        newLabel = plp.GetImageLabel();
+
+        newLabel.ImageSetup(position, color);
+
+
+    }
+
     public void Setup(Vector2 position, Color color, int size)
     {
 
@@ -55,12 +92,54 @@ public class PopupLabel : MonoBehaviour
         PlayPlusAnimation(labelScale);
     }
 
-    private void PlayPlusAnimation(float labelScale)
-    {   
+    public void CoinSetup(Color color, int coins)
+    {
+        coins = PlayerPrefs.GetInt("Coins");
+        string labelText = $"Coins: {coins}";
+        float labelScale = 1;
+        string text = labelText;
+
+        Canvas parent = FindFirstObjectByType<Canvas>();
+        if (parent != null)
+        {
+            transform.SetParent(parent.transform, false);
+        }
+
+
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        if (rectTransform == null)
+            rectTransform = gameObject.AddComponent<RectTransform>();
+
         
+
+
+        rectTransform.anchoredPosition = new Vector2(-950f, 354.3f);
+
+        gameObject.name = "Coin Label: " + labelText;
+        _coinText.text = text;
+        _coinText.color = color;
+        _coinText.alpha = 1f;
+
+        PlayPlusAnimation(labelScale);
+    }
+
+    public void ImageSetup(Vector3 position, Color color)
+    {
+        transform.position = position;
+        transform.rotation = Quaternion.identity;
+
+        //ImageLabel.sprite = sprite;
+        ImageLabel.color = color;
+        ImageLabel.DOFade(1f, 0.1f);
+        PlayPlusAnimation(1f);
+    }
+
+
+
+    private void PlayPlusAnimation(float labelScale)
+    {
         if (_sequence != null && _sequence.IsActive())
         {
-            Debug.Log("Have to kill you. Sorry.");
             _sequence.Kill();
         }
 
@@ -80,20 +159,24 @@ public class PopupLabel : MonoBehaviour
         );
 
         // Fade after delay
-        _sequence.Append(
-            _text.DOFade(0f, _fadeAwayDuration)
-            .SetDelay(_fadeAwayDelay)
-            .OnComplete(() => TweenComplete())
-        );
+        TMP_Text targetText = _coinText != null && _coinText.text != "" ? _coinText : _text;
+        if (targetText != null)
+        {
+            _sequence.Append(
+                targetText.DOFade(0f, _fadeAwayDuration)
+                .SetDelay(_fadeAwayDelay));
+        }
 
-        // Float up
-        _sequence.Join(
-            transform.DOMoveY(transform.position.y + _floatUpDistance, Mathf.Min(_floatUpDuration, _fadeAwayDelay + _fadeAwayDelay))
-            .SetEase(Ease.OutQuad)
-        );
+        if (ImageLabel != null && ImageLabel.sprite != null)
+        {
+            _sequence.Join(
+                ImageLabel.DOFade(0f, _fadeAwayDuration)
+                .SetDelay(_fadeAwayDelay));
+        }
 
 
     }
+                
 
     private void TweenComplete()
     {
@@ -103,6 +186,7 @@ public class PopupLabel : MonoBehaviour
             _sequence?.Kill();
             _sequence = null;
             plp.ReturnLabel(this);
+            
         }
     }
 }
