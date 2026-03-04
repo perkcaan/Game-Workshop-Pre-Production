@@ -17,7 +17,7 @@ public class ShaderManager : MonoBehaviour
     [SerializeField] private float _dissolveTime = 0.5f;
     [Tooltip("The width of the 'burn' effect on the dissolve animation.")]
     [SerializeField] private float _dissolveBurnWidth = 0.4f;
-    [Tooltip("The time it takes to sink in lava.")]
+    [Tooltip("Height of 1 means is fully sunken.")]
     [SerializeField] private float _height = 1.0f;
     [Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
     [SerializeField] private Texture _meshTexture;
@@ -63,6 +63,7 @@ public class ShaderManager : MonoBehaviour
         SetFloatProperties("_FlashPhase", _flashPhase);
         SetFloatProperties("_Dissolve", 0f);
         SetFloatProperties("_Height", 0f);
+        inLava = false;
     }
 
     private void Update()
@@ -162,6 +163,7 @@ public class ShaderManager : MonoBehaviour
     //Called on lava script
     public void SinkInLava(Action onDoneSinking = null)
     {
+        Debug.Log("SinkInLava");
         if (_lavaCoroutine != null)
         {
             StopCoroutine(_lavaCoroutine);
@@ -172,6 +174,7 @@ public class ShaderManager : MonoBehaviour
 
     private IEnumerator LavaCoroutine(Action onDoneSinking)
     {
+        Debug.Log("Lava coroutine");
         float time = 0f;
 
         while (time < 3f)
