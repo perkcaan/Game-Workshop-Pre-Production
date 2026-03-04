@@ -21,7 +21,7 @@ public class CloseMeleeEnemy : EnemyBase
             // Enable attack hitbox
             _attackHitbox.UpdateRotation(transform, _facingRotation);
             _attackHitbox.Enable();
-
+            AudioManager.Instance.PlayOnInstance(gameObject, "impAttack");
             // Dash in attacking direction
             float radians = _facingRotation * Mathf.Deg2Rad;
             Vector2 direction = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)).normalized;
