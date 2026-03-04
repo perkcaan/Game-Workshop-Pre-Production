@@ -241,6 +241,9 @@ MonoBehaviour:
   _minimumVacuumForce: 1
   _sizeSweepMultiplier: 1
   _pokeForceMultiplier: 1
+  _wallLayers:
+    serializedVersion: 2
+    m_Bits: 16384
   _primaryTrashMaterial: {fileID: 0}
   _secondaryTrashMaterial: {fileID: 0}
   _baseMaterial: {fileID: 11400000, guid: 6fb7000f493002749ba7cdd0bb70878d, type: 2}
@@ -248,6 +251,7 @@ MonoBehaviour:
   _dominantThreshold: 0.85
   _primaryThreshold: 0.5
   _secondaryThreshold: 0.15
+  _ballQuad: {fileID: 1172804477096604631}
   _ballTransform: {fileID: 3475106608188846289}
   _label: {fileID: 6113613676011926388}
 --- !u!114 &2415871829025244457
@@ -579,7 +583,10 @@ MonoBehaviour:
   _heatFlashRamp: 2
   _dissolveTime: 2
   _dissolveBurnWidth: 0.4
+  _height: 1
   _meshTexture: {fileID: 2800000, guid: 5c9175d51ecf2cc488d21ca71ff76edc, type: 3}
+  sinkSpeed: 0.3
+  maxHeight: 1
 --- !u!210 &7208263676142163432
 SortingGroup:
   m_ObjectHideFlags: 0

@@ -126,7 +126,7 @@ public class HeatMechanic : MonoBehaviour
             _relaxationTimer = Mathf.MoveTowards(_relaxationTimer, 0, Time.deltaTime);
             return;
         }
-
+        
         int roomTemperature = 20; //this should never be applied.
         if (DistrictManager.Instance != null) roomTemperature = DistrictManager.Instance.Temperature;
         if (CurrentRoom != null) roomTemperature = CurrentRoom.Temperature;

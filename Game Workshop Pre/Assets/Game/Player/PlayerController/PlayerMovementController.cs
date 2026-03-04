@@ -61,6 +61,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     [Header("Absorbed Properties")]
     [SerializeField] private float _minTrashSizeToAbsorb;
+    [SerializeField] private float _trashBallSquirmForce = 5f;
     [SerializeField] private int _playerEscapeDamage;
     public int Size { get { return 0; } }
     [SerializeField] private TrashMaterial _trashMaterial;
@@ -276,7 +277,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         if (_ctx.AbsorbedTrashBall != null)
         {
             _ctx.Animator.speed += 0.3f;
-            _ctx.AbsorbedTrashBall.TakeDamage(_playerEscapeDamage);
+            float radians = _ctx.Rotation * Mathf.Deg2Rad;
+            Vector2 angle = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)).normalized;
+            _ctx.AbsorbedTrashBall.TakeDamage(_playerEscapeDamage, _trashBallSquirmForce, angle);
         }
     }
 

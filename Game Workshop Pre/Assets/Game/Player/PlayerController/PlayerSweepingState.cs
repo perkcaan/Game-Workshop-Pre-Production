@@ -111,7 +111,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         // Rotate slower based on speed - Disabled because I didnt like it. -Zach
         float rotationSpeedReduction = 1f; //Mathf.Max(_ctx.MoveSpeed / _ctx.MaxWalkSpeed, 1);
 
-        float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.Props.RotationSpeed / rotationSpeedReduction * Time.deltaTime);
+        float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.Props.SweepRotationSpeed / rotationSpeedReduction * Time.deltaTime);
         _ctx.Rotation = Mathf.DeltaAngle(0f, newAngle);
         
         

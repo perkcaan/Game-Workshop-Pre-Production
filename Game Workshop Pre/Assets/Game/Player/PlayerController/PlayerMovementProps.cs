@@ -20,6 +20,8 @@ public class PlayerMovementProps
     public float SweepMaxSpeedModifier { get { return _sweepMaxSpeedModifier; } }
     [SerializeField] private float _sweepAccelerationModifier;
     public float SweepAccelerationModifier { get { return _sweepAccelerationModifier; } }
+    [SerializeField] private float _sweepRotationSpeed;
+    public float SweepRotationSpeed { get { return _sweepRotationSpeed; } }
     [SerializeField] private bool _willCancelSweepSlide;
     public bool WillCancelSweepSlide { get { return _willCancelSweepSlide; } }
 

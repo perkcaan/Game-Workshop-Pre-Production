@@ -125,7 +125,10 @@ MonoBehaviour:
   _heatFlashRamp: 2
   _dissolveTime: 1
   _dissolveBurnWidth: 0.4
+  _height: 1
   _meshTexture: {fileID: 0}
+  sinkSpeed: 0.3
+  maxHeight: 1
 --- !u!1 &7333509294762523692
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,8 +381,9 @@ MonoBehaviour:
   _minSizeToAbsorb: 6
   _minVelocityToAbsorb: 0.8
   _trashBallEscapeForce: 5
-  _trashBallDamageTime: 20
-  _trashBallSquirmTime: 5
+  _trashBallSquirmTime: 4
+  _trashBallSquirmForce: 6
+  _trashBallSquirmDamage: 8
   _attackDashForce: 15
   _attackProperties:
     _startup: 0.3
