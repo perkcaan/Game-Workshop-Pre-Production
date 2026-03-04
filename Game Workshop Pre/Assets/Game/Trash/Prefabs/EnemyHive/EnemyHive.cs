@@ -11,9 +11,9 @@ public class EnemyHive : TrashPile
     [SerializeField] float _spawnInterval = 5f;
     [SerializeField] private float _maxRandomTimeOffset = 1f;
     [SerializeField] private int _maxAliveEnemies = 4;
-    [SerializeField] private float _spawnRadius = 0.4f;
-    [SerializeField] private float _enemyColliderRadius = 0.3f;
-    [SerializeField] private LayerMask _invalidSpawnLayers = (1 << 12) | (1 << 14); // 12 and 14 are intended to be Lava and Wall;
+    //[SerializeField] private float _spawnRadius = 0.4f;
+    //[SerializeField] private float _enemyColliderRadius = 0.3f;
+    //[SerializeField] private LayerMask _invalidSpawnLayers = (1 << 12) | (1 << 14); // 12 and 14 are intended to be Lava and Wall;
     [SerializeField] Animator animator;
     [SerializeField] Transform enemySpawnPosition;
     private float _currentTime = 0f;

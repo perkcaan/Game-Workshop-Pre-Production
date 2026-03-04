@@ -14,9 +14,6 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     private float _zeroMoveTimer = 0f;
     private float _sweepPokeTimer = 0f;
 
-    //temp
-    private float t_pokeTime = 1f;
-
     public PlayerSweepingState(PlayerContext context, PlayerStateMachine state)
     {
         _ctx = context;
