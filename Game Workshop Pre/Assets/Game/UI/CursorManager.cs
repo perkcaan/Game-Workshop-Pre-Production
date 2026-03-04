@@ -67,7 +67,7 @@ public class CursorManager : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         // Swap to a new cursor when over trash
-        if (collision.gameObject.GetComponent<Trash>())
+        if (collision.gameObject.GetComponent<Trash>() || collision.gameObject.GetComponent<TrashBall>())
         {
             _childSpriteRenderer.sprite = _overTrashSprite;
         }
@@ -76,7 +76,7 @@ public class CursorManager : MonoBehaviour
     void OnTriggerExit2D(Collider2D collision)
     {
         // Swap back to base cursor 
-        if (collision.gameObject.GetComponent<Trash>())
+        if (collision.gameObject.GetComponent<Trash>() || collision.gameObject.GetComponent<TrashBall>())
         {
             _childSpriteRenderer.sprite = _baseSprite;
         }
