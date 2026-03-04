@@ -15,7 +15,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject optionsMenuUI;
     public GameObject quitUI;
     [SerializeField] public Slider[] _pauseSliders;
-    [SerializeField] public TextMeshProUGUI _coinText;
+    //[SerializeField] public TextMeshProUGUI _coinText;
     private FMOD.Studio.EventInstance _music;
 
     void Awake()
@@ -55,7 +55,7 @@ public class PauseMenu : MonoBehaviour
             if (currentOpenMenu == null)
             {
                 // if game is running pause it, else close the current menu
-                _coinText.text = "Coins: " + PlayerPrefs.GetInt("Coins");
+                //_coinText.text = "Coins: " + PlayerPrefs.GetInt("Coins");
                 Pause();
                 
 
