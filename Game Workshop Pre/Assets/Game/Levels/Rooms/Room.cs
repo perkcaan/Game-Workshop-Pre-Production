@@ -240,18 +240,11 @@ public class Room : MonoBehaviour
 
     private void OnRoomClean()
     {
-        TrashBall trash = FindObjectOfType<TrashBall>();
-        if (coinsAwarded > 0)
-            PopupLabel.CreateImageLabel(trash.transform.position, UnityEngine.Color.white);
         if (_openGatesOnClean)
         {
             if (IsTrashRoom)
             {
                 DistrictManager.Instance.AwardCoins(coinsAwarded);
-                PlayerMovementController player = FindObjectOfType<PlayerMovementController>();
-                
-                AudioManager.Instance.Play("gateDown", player.transform);
-                
             }
             _isRoomClosed = false;
 

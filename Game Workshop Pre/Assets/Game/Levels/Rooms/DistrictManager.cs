@@ -116,7 +116,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         
         PlayerPrefs.SetInt("Coins", coinsEarned);
         PlayerPrefs.Save();
-        PopupLabel.CreateCoinLabel(Color.white, coinsEarned);
+        //PopupLabel.CreateCoinLabel(Color.white, coinsEarned); This shouldnt be a popup label
         
 
         
@@ -133,7 +133,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         
         PlayerPrefs.SetInt("Coins", coinsEarned);
         PlayerPrefs.Save();
-        PopupLabel.CreateCoinLabel(Color.white, coinsEarned);
+        //PopupLabel.CreateCoinLabel(Color.white, coinsEarned); This shouldnt be a popup label.
     }
 
     private void UpdateLoadedRooms()

@@ -3,17 +3,10 @@ using UnityEngine;
 
 public class PopupLabelPooler : Singleton<PopupLabelPooler>
 {
-    [SerializeField] private GameObject _popupLabelPrefab; //this probably shouldnt be here to be honest... move to pooler?
-    [SerializeField] private GameObject _coinPopupLabelPrefab;
-    [SerializeField] private GameObject _imagePopupLabelPrefab;
+    [SerializeField] private GameObject _popupLabelPrefab;
     public GameObject PopupLabelPrefab
     {
         get { return _popupLabelPrefab; }
-    }
-
-    private GameObject CoinPopupLabelPrefab
-    {
-        get { return _coinPopupLabelPrefab; }
     }
 
     [SerializeField] private int _maxPopupPoolSize = 8;
@@ -37,40 +30,6 @@ public class PopupLabelPooler : Singleton<PopupLabelPooler>
         return label;
     }
     
-    public PopupLabel GetCoinLabel()
-    {
-        PopupLabel label;
-        if (_popupLabelPool.Count > 0)
-        {
-            label = _popupLabelPool.Dequeue();
-            label.gameObject.SetActive(true);
-        } else
-        {
-            GameObject prefab = CoinPopupLabelPrefab;
-            GameObject labelObject = Instantiate(prefab, transform);
-            label = labelObject.GetComponent<PopupLabel>();   
-        }
-
-        return label;
-    }
-
-    public PopupLabel GetImageLabel()
-    {
-        PopupLabel label;
-        if (_popupLabelPool.Count > 0)
-        {
-            label = _popupLabelPool.Dequeue();
-            label.gameObject.SetActive(true);
-        }
-        else
-        {
-            GameObject prefab = _imagePopupLabelPrefab;
-            GameObject labelObject = Instantiate(prefab, transform);
-            label = labelObject.GetComponent<PopupLabel>();
-        }
-        return label;
-    }
-
     public void ReturnLabel(PopupLabel label)
     {
         if (_popupLabelPool.Count > _maxPopupPoolSize)
