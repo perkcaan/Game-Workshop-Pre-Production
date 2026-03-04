@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Android;
 using System;
 using FMODUnity;
+using UnityEditor.Experimental.GraphView;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
@@ -99,8 +100,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         set { SetWeight(value); }
     }
 
-    private Vector2 _targetStickPos = Vector2.right.normalized;
-
+    //input
+    private bool _isUsingVirtualMouse = false;
+    private Vector2 _virtualMouseVector = Vector2.zero;
+    private float _virtualMouseDistance = 2f;
     //context & state
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
@@ -140,11 +143,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         _state.Update();
         UpdateCooldowns();
-
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            DistrictManager.Instance.AwardCoins(10);
-        }
+        UpdateVirtualMouse();
     }
     private void FixedUpdate()
     {
@@ -223,7 +222,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _ctx.IsSweepPressed = value.isPressed;
         if (!_ctx.IsSweepPressed)
         {
-            _targetStickPos = Vector2.zero;
             return;
         }
     }
@@ -241,18 +239,23 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     private void OnMouseMoveInput(InputValue value)
     {
+        _isUsingVirtualMouse = false;
         _ctx.MouseInput = value.Get<Vector2>();
     }
 
-    private void OnMouseDeltaInput(InputValue value)
+    private void OnControllerAimInput(InputValue value)
     {
-        Vector2 mouseDelta = value.Get<Vector2>();
-        if (mouseDelta.magnitude > 0.5f)
+        _isUsingVirtualMouse = true;
+        Vector2 normalVector = value.Get<Vector2>().normalized;
+        if (normalVector.magnitude < 0.1f)
         {
-            _targetStickPos += mouseDelta;
-            _targetStickPos = _targetStickPos.normalized;
+            float radians = _ctx.Rotation * Mathf.Deg2Rad;
+            _virtualMouseVector = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)).normalized;
+        } else
+        {
+            _virtualMouseVector = normalVector;
         }
-        //_ctx.StickInput = Vector2.Lerp(_ctx.StickInput, _targetStickPos, 1f - Mathf.Exp(-_mouseStickSensitivity * Time.deltaTime)).normalized;
+        UpdateVirtualMouse();
     }
 
     private void OnSwipeInput(InputValue value)
@@ -283,6 +286,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
             _ctx.Animator.speed += 0.3f;
             _ctx.AbsorbedTrashBall.TakeDamage(_playerEscapeDamage);
         }
+    }
+
+    //updates virtual mouse position if in use
+    private void UpdateVirtualMouse()
+    {
+        if (!_isUsingVirtualMouse) return;
+        Vector2 offset = _virtualMouseVector * _virtualMouseDistance; //distance
+        Vector2 worldPos = (Vector2) transform.position + offset;
+        _ctx.MouseInput = Camera.main.WorldToScreenPoint(worldPos);
     }
 
 
