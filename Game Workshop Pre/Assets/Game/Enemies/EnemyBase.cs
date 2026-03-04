@@ -203,7 +203,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void OnIgnite(HeatMechanic heat)
     {
         if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
-        AudioManager.Instance.PlayOnInstance(gameObject,"enemyDeath");
+        AudioManager.Instance.PlayOnInstance(gameObject,"impDeath");
 
         OnDestroy?.Invoke();
         Destroy(gameObject);
