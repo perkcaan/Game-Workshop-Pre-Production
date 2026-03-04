@@ -399,17 +399,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f15b54fd5202f44097d52e2dfee6476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &62009117 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 769397364515410180, guid: bff4066d0c67c8142a67e03e386fea94, type: 3}
-  m_PrefabInstance: {fileID: 62009115}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 99210706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &95707955
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,6 +762,8 @@ MonoBehaviour:
   pauseMenuUI: {fileID: 742806090}
   inventoryMenuUI: {fileID: 2114149599}
   optionsMenuUI: {fileID: 1916079574}
+  quitUI: {fileID: 0}
+  _pauseSliders: []
 --- !u!114 &125038134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85580,6 +85571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseTemperature: 20
   _roomTilemap: {fileID: 805659899}
+  _coinText: {fileID: 0}
 --- !u!4 &1505515713
 Transform:
   m_ObjectHideFlags: 0
@@ -86122,25 +86114,87 @@ MonoBehaviour:
   _sounds:
     _serializedList:
     - Key: Lava
-      Value: {fileID: 0}
+      Value:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
     - Key: Sweep
-      Value: {fileID: 62009117}
+      Value:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
     - Key: Pickup
-      Value: {fileID: -2850386650212370546, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
+      Value:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
     - Key: TrashBall
-      Value: {fileID: -2150688670721289081, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
+      Value:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
     - Key: Steps
-      Value: {fileID: 62009117}
+      Value:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
     - Key: Swipe
-      Value: {fileID: 62009117}
+      Value:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
     - Key: Hit
-      Value: {fileID: 62009117}
+      Value:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
     - Key: dashBack
-      Value: {fileID: 62009117}
+      Value:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
     - Key: Dash
-      Value: {fileID: 62009117}
+      Value:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
     - Key: Heat
-      Value: {fileID: 1575997951}
+      Value:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
+  _buses:
+    _serializedList: []
 --- !u!114 &1575997951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86160,7 +86214,7 @@ MonoBehaviour:
       Data2: 1297398676
       Data3: -1407158339
       Data4: 1186683876
-    Path: event:/Heat Meter
+    Path: event:/Heat System/Heat Meter
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2

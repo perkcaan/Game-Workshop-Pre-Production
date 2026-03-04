@@ -19993,6 +19993,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65796acfbc167a340ad93c024d544c34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  marker: {fileID: 0}
+  _curveSteepness: 1.1
+  _curveOffset: 1
+  _attractionCap: 10
+  _centerAdjustment: 1
 --- !u!1 &601774247
 GameObject:
   m_ObjectHideFlags: 0
@@ -21255,7 +21260,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 80
-      _typelessdata: 000000bf0000003f000000000000003f0000003f00000000000000bf000000bf000000000000003f000000bf000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000000bf0000003f000000000000003f0000003f00000000000000bf000000bf000000000000003f000000bf00000000000000000000803f0000803f0000803f00000000000000000000803f00000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -24771,8 +24776,10 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0
   _swipesIntoTrashBall: 0
+  _pokeForceMultiplier: 1
 --- !u!50 &1464337691
 Rigidbody2D:
   serializedVersion: 4
@@ -25704,8 +25711,10 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _sweepDurationToBecomeBall: 0
   _swipesIntoTrashBall: 0
+  _pokeForceMultiplier: 1
 --- !u!1001 &7591432154208220946
 PrefabInstance:
   m_ObjectHideFlags: 0
