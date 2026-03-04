@@ -17,13 +17,13 @@ public class ShaderManager : MonoBehaviour
     [SerializeField] private float _dissolveTime = 0.5f;
     [Tooltip("The width of the 'burn' effect on the dissolve animation.")]
     [SerializeField] private float _dissolveBurnWidth = 0.4f;
-    [Tooltip("Height of 1 means is fully sunken.")]
-    [SerializeField] private float _height = 1.0f;
+    [Tooltip("Speed something sinks in lava")]
+    [SerializeField] private float sinkSpeed = 0.7f;
     [Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
     [SerializeField] private Texture _meshTexture;
 
-    [SerializeField] private float sinkSpeed = 0.3f;
     [SerializeField] private float maxHeight = 1f;
+    private float _height = 1f;
 
     private float currentHeight = 0f;
     private bool inLava = false;
@@ -64,6 +64,7 @@ public class ShaderManager : MonoBehaviour
         SetFloatProperties("_Dissolve", 0f);
         SetFloatProperties("_Height", 0f);
         inLava = false;
+        sinkComplete = false;
     }
 
     private void Update()
@@ -93,7 +94,7 @@ public class ShaderManager : MonoBehaviour
         if (!value)
         {
             currentHeight = 0f;
-            SetFloatProperties("_height", 0f);
+            SetFloatProperties("_Height", 0f);
         }
     }
 
@@ -185,7 +186,7 @@ public class ShaderManager : MonoBehaviour
             yield return null;
         }
 
-        SetFloatProperties("_height", 1);
+        SetFloatProperties("_height", 1f);
 
         _lavaCoroutine = null;
         onDoneSinking?.Invoke();
