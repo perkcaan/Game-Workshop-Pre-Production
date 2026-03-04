@@ -1,4 +1,5 @@
 using DG.Tweening;
+using FMODUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
     // Rooms the player is in
     private List<Room> _focusedRooms = new List<Room>(); // focused rooms is a list since the player could be in multiple touching rooms.
     public Room FocusedRoom { get { return _focusedRooms.Count > 0 ? _focusedRooms[0] : null; } }
-
+    private FMOD.Studio.EventInstance _music;
     //rooms that need to be safely exited.
     private List<Room> _roomsNeedingSafeExit = new List<Room>();
 
@@ -93,6 +94,16 @@ public class DistrictManager : StaticInstance<DistrictManager>
             coinsEarned = PlayerPrefs.GetInt("Coins");
         else
             coinsEarned = 0;
+
+        _music = RuntimeManager.CreateInstance("event:/Music/1 District/Vertical Adaptive District 1");
+        _music.start();
+    }
+
+    private void Update()
+    {
+        if (_focusedRooms.Count > 0)
+        AudioManager.Instance.ModifyGlobalParameter("Intensity", FocusedRoom.baseIntensity);
+
     }
 
     public void AwardCoins(int amount)

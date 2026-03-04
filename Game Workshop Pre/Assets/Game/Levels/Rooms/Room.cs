@@ -28,6 +28,7 @@ public class Room : MonoBehaviour
     private int _maxTrashBallSize;
     public int coinsAwarded;
     public float totalMinSizeToAbsorb;
+    public float baseIntensity;
 
     public float Cleanliness
     {

@@ -16,7 +16,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject quitUI;
     [SerializeField] public Slider[] _pauseSliders;
     //[SerializeField] public TextMeshProUGUI _coinText;
-    private FMOD.Studio.EventInstance _music;
+    
 
     void Awake()
     {
@@ -44,8 +44,7 @@ public class PauseMenu : MonoBehaviour
         }
         }
 
-        _music = RuntimeManager.CreateInstance("event:/Music/Hellish Sample");
-        _music.start();
+        
 
     }
     void Update()
@@ -88,12 +87,14 @@ public class PauseMenu : MonoBehaviour
                 
             }
         }
+        
+        
     }
 
     public void Resume()
     {
         ChangeMenu(null);
-        _music.setParameterByName("Pause", 0f);
+        
 
         
     }
@@ -135,7 +136,7 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         ChangeMenu(pauseMenuUI);
-        _music.setParameterByName("Pause", 1f);
+        
         PlayerPrefs.SetFloat("MasterVolume", _pauseSliders[0].value);
         PlayerPrefs.SetFloat("SFXVolume", _pauseSliders[1].value);
         PlayerPrefs.SetFloat("MusicVolume", _pauseSliders[2].value);
