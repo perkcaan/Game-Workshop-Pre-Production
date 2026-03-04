@@ -62,6 +62,7 @@ public class ShaderManager : MonoBehaviour
 
         SetFloatProperties("_FlashPhase", _flashPhase);
         SetFloatProperties("_Dissolve", 0f);
+        SetFloatProperties("_Height", 0f);
     }
 
     private void Update()
@@ -159,17 +160,17 @@ public class ShaderManager : MonoBehaviour
     }
 
     //Called on lava script
-    public void SinkInLava(Action onDone = null)
+    public void SinkInLava(Action onDoneSinking = null)
     {
         if (_lavaCoroutine != null)
         {
             StopCoroutine(_lavaCoroutine);
         }
 
-        _lavaCoroutine = StartCoroutine(LavaCoroutine(onDone));
+        _lavaCoroutine = StartCoroutine(LavaCoroutine(onDoneSinking));
     }
 
-    private IEnumerator LavaCoroutine(Action onDone)
+    private IEnumerator LavaCoroutine(Action onDoneSinking)
     {
         float time = 0f;
 
@@ -184,6 +185,6 @@ public class ShaderManager : MonoBehaviour
         SetFloatProperties("_height", 1);
 
         _lavaCoroutine = null;
-        onDone?.Invoke();
+        onDoneSinking?.Invoke();
     }
 }
