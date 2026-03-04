@@ -511,6 +511,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2972167865816116434, guid: 34bb1f7c4c152c64c888b40c9c1b7b69, type: 3}
   m_PrefabInstance: {fileID: 2959660387602024802}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &892417023574408321 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2697748531669218787, guid: 34bb1f7c4c152c64c888b40c9c1b7b69, type: 3}
+  m_PrefabInstance: {fileID: 2959660387602024802}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3236291315584409945
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1467,7 +1472,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6048134768477207756, guid: 828aa16561984c34ab4ca9bc2f44b990, type: 3}
       propertyPath: _size
-      value: 14
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6048134768477207756, guid: 828aa16561984c34ab4ca9bc2f44b990, type: 3}
+      propertyPath: _startingStoredTrash.Array.data[0]
+      value: 
+      objectReference: {fileID: 892417023574408321}
+    - target: {fileID: 6048134768477207756, guid: 828aa16561984c34ab4ca9bc2f44b990, type: 3}
+      propertyPath: _startingStoredTrash.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8193973188548812463, guid: 828aa16561984c34ab4ca9bc2f44b990, type: 3}
       propertyPath: m_LocalPosition.x
