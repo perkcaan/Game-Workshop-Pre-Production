@@ -66,8 +66,8 @@ public class PauseMenu : MonoBehaviour
             {
                 Resume();
                 PlayerPrefs.SetFloat("MasterVolume", _pauseSliders[0].value);
-                PlayerPrefs.SetFloat("SFXVolume", _pauseSliders[1].value);
-                PlayerPrefs.SetFloat("MusicVolume", _pauseSliders[2].value);
+                PlayerPrefs.SetFloat("MusicVolume", _pauseSliders[1].value);
+                PlayerPrefs.SetFloat("SFXVolume", _pauseSliders[2].value);
                 PlayerPrefs.Save();
 
             }
