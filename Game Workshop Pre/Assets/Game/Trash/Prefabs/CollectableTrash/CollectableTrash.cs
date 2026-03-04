@@ -1,19 +1,15 @@
 using UnityEngine;
 using System;
 
-public class CollectableTrash : Trash, ISweepable, ISwipeable
+public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable
 {
     [SerializeField] float _sweepDurationToBecomeBall;
     [SerializeField] bool _swipesIntoTrashBall;
-    private float _sweepTimer;
-    private ShaderManager _shaderManager;
-
+    [SerializeField] float _pokeForceMultiplier = 1f;
     
-    public void Start()
-    {
-        
-        _shaderManager = GetComponentInChildren<ShaderManager>();
-    }
+    private float _sweepTimer;
+
+
     public void OnSweep(Vector2 position, Vector2 direction, float force)
     {
         if (!isActiveAndEnabled) return;
@@ -28,8 +24,11 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable
     {
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
         if (_swipesIntoTrashBall) CreateTrashBall();
-        _shaderManager.SquashnStrech(.5f,.1f);
+    }
 
+    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    {
+         _rigidBody.AddForce(direction * force * _pokeForceMultiplier * _rigidBody.mass, ForceMode2D.Impulse);
     }
 
     void Update()

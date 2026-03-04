@@ -9,12 +9,12 @@ using UnityEngine;
 public class SwipeHandler : MonoBehaviour
 {
 
-// Components
-[SerializeField] private DottedParticleLine _dottedLine;
-FMOD.Studio.EventInstance _swipeSoundInstance;
-private PlayerMovementController _parent;
-private Collider2D _hitbox;
-public bool connecting;
+    // Components
+    [SerializeField] private DottedParticleLine _dottedLine;
+    FMOD.Studio.EventInstance _swipeSoundInstance;
+    private PlayerMovementController _parent;
+    private Collider2D _hitbox;
+    private bool connecting;
 
 
 // Fields

@@ -46,7 +46,6 @@ public class Lava : MonoBehaviour
 
             if (collider.GetComponentInChildren<ShaderManager>() is ShaderManager shaderManager)
             {
-                Debug.Log("Sink!");
                 shaderManager.SetInLava(true);
             }
 

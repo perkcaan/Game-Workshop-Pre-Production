@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters;
 using DG.Tweening;
-using Ink.Parsed;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -146,6 +144,13 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         }
         _currentActionComplete = null;
     }
+
+    public float MinSizeToAbsorb
+    {
+        get { return _minSizeToAbsorb; }
+        set { _minSizeToAbsorb = value; }
+    }
+
 
     // Simple attack is a basic attack template that has startup, an attack, and endlag
     protected IEnumerator SimpleAttack(SimpleAttackProperties properties, 

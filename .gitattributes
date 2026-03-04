@@ -78,3 +78,10 @@ Assets/Plugins/** -diff
 *.cginc         text eol=lf
 *.compute       text eol=lf
 *.hlsl          text eol=lf
+
+*.unity merge=unityyamlmerge
+*.prefab merge=unityyamlmerge
+*.asset merge=unityyamlmerge
+*.meta merge=unityyamlmerge
+*.controller merge=unityyamlmerge
+*.anim merge=unityyamlmerge

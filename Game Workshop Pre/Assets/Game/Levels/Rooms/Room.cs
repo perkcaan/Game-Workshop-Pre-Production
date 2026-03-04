@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using TMPro;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -26,6 +27,8 @@ public class Room : MonoBehaviour
     public int MaxTrashBallSize { get { return _maxTrashBallSize; } }
     private int _maxTrashBallSize;
     public int coinsAwarded;
+    public float totalMinSizeToAbsorb;
+
     public float Cleanliness
     {
         get { return _roomTotalTrashCount == 0 ? 1f : 1f - Mathf.Clamp01((float) _roomCurrentTrashAmount / _roomTotalTrashCount); }
@@ -199,11 +202,22 @@ public class Room : MonoBehaviour
 
     public void ObjectCleaned(ICleanable cleanable)
     {
+
         if (_containedCleanable.Contains(cleanable))
         {
             _containedCleanable.Remove(cleanable);
         }
         UpdateRoomCleanliness();
+
+        totalMinSizeToAbsorb = 0f;
+        for (int i = 0; i < _containedCleanable.Count; i++)
+        {
+            if (_containedCleanable[i] is EnemyBase enemy)
+            {
+                totalMinSizeToAbsorb += enemy.MinSizeToAbsorb;
+            }
+        }
+        
     }
 
     private void UpdateRoomCleanliness()
@@ -244,5 +258,12 @@ public class Room : MonoBehaviour
             foreach (Gate gate in _connectedGates) gate.Open(this);
         }
     }
+
+    public int RoomCurrentTrashAmount
+    {
+        get { return _roomCurrentTrashAmount; }
+        set { _roomCurrentTrashAmount = value; }
+    }
+
 
 }
