@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Collections.AllocatorManager;
 
 public class TrashBallRenderer : MonoBehaviour
 {
     public MeshRenderer QuadRenderer { get; private set; }
     [SerializeField] private MeshRenderer _modelRenderer;
+
     public MeshRenderer ModelRenderer { get { return _modelRenderer; } }
 
     [SerializeField] private int _textureSize = 64;  // fixed RT size
@@ -16,6 +18,7 @@ public class TrashBallRenderer : MonoBehaviour
 
     private void Start()
     {
+
         QuadRenderer = GetComponent<MeshRenderer>();
 
         // Fixed RenderTexture
@@ -28,6 +31,7 @@ public class TrashBallRenderer : MonoBehaviour
         // Assign a copy of the material so it has its own texture
         QuadRenderer.material = new Material(QuadRenderer.material);
         QuadRenderer.material.mainTexture = RenderTexture;
+
 
         TrashBallCamera.Instance.RegisterTrashBall(this);
 

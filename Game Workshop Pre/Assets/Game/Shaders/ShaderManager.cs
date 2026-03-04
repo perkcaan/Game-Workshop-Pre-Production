@@ -50,7 +50,17 @@ public class ShaderManager : MonoBehaviour
         foreach (Renderer renderer in _renderers)
         {
             renderer.GetPropertyBlock(_block);
+
+            Texture currentTex = renderer.sharedMaterial.mainTexture; // or renderer.material.mainTexture
+            if (currentTex != null)
+            {
+                _block.SetTexture("_MainTex", currentTex);
+            }
+
+
             _block.SetFloat(propRef, propVal);
+
+
             renderer.SetPropertyBlock(_block);
         }
     }
