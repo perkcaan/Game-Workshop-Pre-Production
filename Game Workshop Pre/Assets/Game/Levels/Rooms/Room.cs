@@ -114,7 +114,7 @@ public class Room : MonoBehaviour
 
         if (IsTrashRoom && !IsRoomCleaned)
         {
-            PlayerMovementController player = FindObjectOfType<PlayerMovementController>();
+            PlayerMovementController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
             AudioManager.Instance.Play("gateUp", player.transform);
         }
 
@@ -245,10 +245,10 @@ public class Room : MonoBehaviour
             if (IsTrashRoom)
             {
                 DistrictManager.Instance.AwardCoins(coinsAwarded);
+                PlayerMovementController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
+                AudioManager.Instance.Play("gateDown", player.transform);
             }
             _isRoomClosed = false;
-
-
             foreach (Gate gate in _connectedGates) gate.Open(this);
         }
     }

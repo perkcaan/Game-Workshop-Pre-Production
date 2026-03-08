@@ -209,14 +209,14 @@ MonoBehaviour:
           Data3: -74243186
           Data4: -1259412614
         Path: event:/Player/Death
-    - Key: trashPickup
+    - Key: attack
       Value:
         Guid:
           Data1: -694834995
           Data2: 1170253539
           Data3: -1210683998
           Data4: -2041284058
-        Path: event:/Trash/Pickup
+        Path: event:/Enemies/Enemy Attacks
     - Key: gateDown
       Value:
         Guid:
@@ -250,6 +250,14 @@ MonoBehaviour:
           Data4: -1714651333
         Path: event:/Points
     - Key: enemyDeath
+      Value:
+        Guid:
+          Data1: -1218844404
+          Data2: 1121533942
+          Data3: -117245779
+          Data4: -1216900099
+        Path: event:/Enemies/Imp/Death
+    - Key: impDeath
       Value:
         Guid:
           Data1: -1218844404

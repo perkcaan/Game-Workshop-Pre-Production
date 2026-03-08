@@ -6774,14 +6774,6 @@ PrefabInstance:
       value: AudioManager
       objectReference: {fileID: 0}
     - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.size
-      value: 21
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[10].Key
-      value: impAttack
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
       propertyPath: _sounds._serializedList.Array.data[11].Key
       value: trashPickup
       objectReference: {fileID: 0}
@@ -6800,18 +6792,6 @@ PrefabInstance:
     - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
       propertyPath: _sounds._serializedList.Array.data[15].Key
       value: Points
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[16].Key
-      value: miteAttack
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[17].Key
-      value: miteDeath
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[18].Key
-      value: impDeath
       objectReference: {fileID: 0}
     - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
       propertyPath: _sounds._serializedList.Array.data[19].Key
@@ -6854,10 +6834,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3782953471523454873}
     - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[10].Value.Path
-      value: event:/Enemies/Imp/Attack
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
       propertyPath: _sounds._serializedList.Array.data[11].Value.Path
       value: event:/Trash/Pickup
       objectReference: {fileID: 0}
@@ -6876,18 +6852,6 @@ PrefabInstance:
     - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
       propertyPath: _sounds._serializedList.Array.data[15].Value.Path
       value: event:/Points
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[16].Value.Path
-      value: event:/Enemies/Swarm/Attack
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[17].Value.Path
-      value: event:/Enemies/Swarm/Death
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[18].Value.Path
-      value: event:/Enemies/Imp/Death
       objectReference: {fileID: 0}
     - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
       propertyPath: _sounds._serializedList.Array.data[19].Value.Path
@@ -6992,54 +6956,6 @@ PrefabInstance:
     - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
       propertyPath: _sounds._serializedList.Array.data[15].Value.Guid.Data4
       value: -1714651333
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[16].Value.Guid.Data1
-      value: -186817650
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[16].Value.Guid.Data2
-      value: 1191782730
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[16].Value.Guid.Data3
-      value: 1229735076
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[16].Value.Guid.Data4
-      value: -91008914
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[17].Value.Guid.Data1
-      value: -1663914090
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[17].Value.Guid.Data2
-      value: 1312661299
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[17].Value.Guid.Data3
-      value: 94021045
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[17].Value.Guid.Data4
-      value: 1056592246
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[18].Value.Guid.Data1
-      value: -1218844404
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[18].Value.Guid.Data2
-      value: 1121533942
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[18].Value.Guid.Data3
-      value: -117245779
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[18].Value.Guid.Data4
-      value: -1216900099
       objectReference: {fileID: 0}
     - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
       propertyPath: _sounds._serializedList.Array.data[19].Value.Guid.Data1

@@ -15,6 +15,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject optionsMenuUI;
     public GameObject quitUI;
     [SerializeField] public Slider[] _pauseSliders;
+    [SerializeField] public Sprite[] _pauseSprites;
     //[SerializeField] public TextMeshProUGUI _coinText;
     
 
@@ -86,6 +87,21 @@ public class PauseMenu : MonoBehaviour
                 Resume();
                 
             }
+        }
+
+        if(currentOpenMenu == optionsMenuUI)
+        {
+            foreach (Slider slider in _pauseSliders)
+            {
+                if (slider.value <= 0.5f)
+                {
+                    
+                    slider.targetGraphic.GetComponent<Image>().sprite = _pauseSprites[0];
+                }
+                else
+                    slider.targetGraphic.GetComponent<Image>().sprite = _pauseSprites[1];
+                }
+                
         }
         
         
