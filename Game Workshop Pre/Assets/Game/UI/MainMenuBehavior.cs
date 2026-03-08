@@ -22,6 +22,8 @@ public class MainMenuBehavior : MonoBehaviour
         musicInstance = RuntimeManager.CreateInstance("event:/Music/Title Music");
 
         musicInstance.start();
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
 
     }
     public void OnPlayButtonClicked()
