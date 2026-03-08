@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using TMPro;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -57,6 +56,9 @@ public class Room : MonoBehaviour
     // Gates tied to this room
     [SerializeField] private List<Gate> _connectedGates;
     [SerializeField] private bool _openGatesOnClean = true; 
+
+    // Event triggers
+    [SerializeField] private EventTrigger _roomCleanEvents;
 
     // Room State
     private bool _isRoomCleaned = false;
@@ -251,6 +253,7 @@ public class Room : MonoBehaviour
 
             foreach (Gate gate in _connectedGates) gate.Open(this);
         }
+        _roomCleanEvents.Trigger();
     }
 
     public int RoomCurrentTrashAmount

@@ -62,37 +62,38 @@ public void Play(string sCode, Transform position)
 
 public void PlayInstance(string sCode)
 {
-    EventInstance newInstance = RuntimeManager.CreateInstance(_sounds[sCode].Path);
+    if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
+        return;
+
+    EventInstance newInstance = RuntimeManager.CreateInstance(eventRef);
     newInstance.start();
     _instances.Add(newInstance);
-
 }
 
 public void ReleaseInstance(string sCode)
 {
-    if(_instances.Count > 0)
+    if (_instances.Count == 0)
+        return;
+
+    if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
+        return;
+
+    for (int i = _instances.Count - 1; i >= 0; i--)
     {
-        foreach (EventInstance instance in _instances)
+        EventInstance instance = _instances[i];
+
+        if (instance.getDescription(out EventDescription description) != FMOD.RESULT.OK)
+            continue;
+
+        if (description.getID(out FMOD.GUID guid) != FMOD.RESULT.OK)
+            continue;
+
+        if (guid.Equals(eventRef.Guid))
         {
-
-            if(_sounds.TryGetValue(sCode, out EventReference eventRef))
-            {
-                if (instance.getDescription(out EventDescription description) == FMOD.RESULT.OK)
-                {
-                    if (description.getPath(out string path) == FMOD.RESULT.OK)
-                    {
-                        if (path.Equals(eventRef.Path))
-                        {
-                            //instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                            instance.release();
-                            _instances.Remove(instance);
-                            return;
-                        }
-                    }
-                }
-
-
-            }
+            //instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            instance.release();
+            _instances.RemoveAt(i);
+            return;
         }
     }
 }

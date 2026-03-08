@@ -9,12 +9,6 @@ using FMOD.Studio;
 
 public class MainMenuBehavior : MonoBehaviour
 {
-
-
-    [SerializeField] Button playButton;
-    [SerializeField] Button settingsButton;
-    [SerializeField] Button creditsButton;
-    [SerializeField] Button exitButton;
     [SerializeField] GameObject settingsMenu;
     private EventInstance musicInstance;
 
@@ -35,9 +29,8 @@ public class MainMenuBehavior : MonoBehaviour
         if (settingsMenuIsOpen)
             return;
 
-        Debug.Log("Play Clicked");
         musicInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        SceneManager.LoadScene("District0");
+        SceneManager.LoadScene(1);
     }
 
     public void OnSettingsButtonClicked()
@@ -47,7 +40,6 @@ public class MainMenuBehavior : MonoBehaviour
         else
             settingsMenuIsOpen = true;
 
-            Debug.Log("Settings Clicked");
         settingsMenu.SetActive(true);
     }
 
@@ -56,7 +48,6 @@ public class MainMenuBehavior : MonoBehaviour
         if (settingsMenuIsOpen)
             return;
 
-        Debug.Log("Credits Clicked");
     }
 
     public void OnExitButtonClicked()
@@ -64,7 +55,6 @@ public class MainMenuBehavior : MonoBehaviour
         if (settingsMenuIsOpen)
             return;
 
-        Debug.Log("Exit Button Clicked");
         if (Application.isPlaying)
         {
             Application.Quit();
