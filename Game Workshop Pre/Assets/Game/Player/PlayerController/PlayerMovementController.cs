@@ -149,7 +149,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         UpdateMovement();
         //_heatSound.setParameterByName("Heat", _playerHeat.Heat / 10);
-        AudioManager.Instance.ModifyParameter(FindObjectOfType<AudioManager>().gameObject,"Heat", "Heat", _playerHeat.Heat / 10);
+        AudioManager.Instance.ModifyParameter(gameObject,"Heat", "Heat", _playerHeat.Heat / 10);
 
         
     }

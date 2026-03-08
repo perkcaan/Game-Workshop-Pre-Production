@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5435313862435259657}
   - component: {fileID: 5344860170965898405}
   - component: {fileID: 7147949041992339754}
-  - component: {fileID: 7826394069858104762}
   - component: {fileID: 3582240135918648881}
   m_Layer: 0
   m_Name: AudioManager
@@ -73,37 +72,6 @@ MonoBehaviour:
       Data3: -1113645673
       Data4: 476402738
     Path: event:/LavaEnvironment
-  Event: 
-  EventPlayTrigger: 1
-  EventStopTrigger: 2
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
---- !u!114 &7826394069858104762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 583753773282418510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 1515016055
-      Data2: 1297398676
-      Data3: -1407158339
-      Data4: 1186683876
-    Path: event:/Heat System/Heat Meter
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
