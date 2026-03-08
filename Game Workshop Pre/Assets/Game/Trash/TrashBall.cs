@@ -134,7 +134,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         
         // Sound
         AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM", this.Rigidbody.velocity.magnitude * 10);
-        //AudioManager.Instance.ModifyGlobalParameter("RPM", this.Rigidbody.velocity.magnitude * 10);
+        AudioManager.Instance.ModifyGlobalParameter("RPM2", this.Rigidbody.velocity.magnitude * 10);
+
 
 
         // 3D Ball rotation
@@ -565,11 +566,13 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         {
             ActionOnMaterials((material, amount) => material.whenBallHitsWall(this, amount));
             
+
             if (Rigidbody.velocity.magnitude > 5f)
             {
                 Vector2 collisionNormal = collision.GetContact(0).normal;
                 float angle = Mathf.Atan2(collisionNormal.y, collisionNormal.x) * Mathf.Rad2Deg;
                 Quaternion particleRotation = Quaternion.Euler(0f, 0f, angle-45);
+                
                 if (Size > 10) {
                     ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: 0.4f);
                 } else
@@ -578,6 +581,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
                 }
             }
         }
+        
     }
 
     public void OnAbsorbTrigger(Collider2D collider)
@@ -590,6 +594,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
             if (absorbableObject.OnAbsorbedByTrashBall(this, Rigidbody.velocity, Size, false))
             {
                 AbsorbObject(absorbableObject);
+                AudioManager.Instance.Play("trashPickup", transform);
             }
             return;
         }
