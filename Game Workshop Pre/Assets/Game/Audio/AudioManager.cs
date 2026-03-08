@@ -63,39 +63,13 @@ public void Play(string sCode, Transform position)
 public void PlayInstance(string sCode)
 {
     EventInstance newInstance = RuntimeManager.CreateInstance(_sounds[sCode].Path);
-    newInstance.start();
+        newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+        newInstance.start();
     _instances.Add(newInstance);
 
 }
 
-public void ReleaseInstance(string sCode)
-{
-    if(_instances.Count > 0)
-    {
-        foreach (EventInstance instance in _instances)
-        {
 
-            if(_sounds.TryGetValue(sCode, out EventReference eventRef))
-            {
-                if (instance.getDescription(out EventDescription description) == FMOD.RESULT.OK)
-                {
-                    if (description.getPath(out string path) == FMOD.RESULT.OK)
-                    {
-                        if (path.Equals(eventRef.Path))
-                        {
-                            //instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                            instance.release();
-                            _instances.Remove(instance);
-                            return;
-                        }
-                    }
-                }
-
-
-            }
-        }
-    }
-}
 
 public void Stop(GameObject obj, string sCode)
 {
