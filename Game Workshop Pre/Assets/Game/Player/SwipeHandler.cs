@@ -151,8 +151,7 @@ public void HideLine()
 public void EndSwipe()
 {
         _hitbox.enabled = false;
-        AudioManager.Instance.ReleaseInstance("Swipe");
-        AudioManager.Instance.ReleaseInstance("SwipeMiss");
+        
 
         connecting = false;
 }
