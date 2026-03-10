@@ -105,7 +105,13 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         //if (_isDestroyed) return;
         //_isDestroyed = true;
         _rigidBody.simulated = false;
-        _parentRoom.ObjectCleaned(this);
+        if (_startingStoredTrash.Count > 0)
+        {
+            _parentRoom.ObjectReplaced(this);
+        } else
+        {
+            _parentRoom.ObjectCleaned(this);
+        }
 
         if (_shakeTween != null && _shakeTween.IsActive()) _shakeTween.Kill();
         transform.DOScale(Vector3.zero, 0.2f)

@@ -223,6 +223,16 @@ public class Room : MonoBehaviour
         
     }
 
+    public void ObjectReplaced(ICleanable cleanable)
+    {
+        if (_containedCleanable.Contains(cleanable))
+        {
+            _containedCleanable.Remove(cleanable);
+        }
+        // Does NOT update the RoomCleanliness.
+        // This should be used by TrashPiles to stealthily remove the pile before the trash is released.
+    }
+
     private void UpdateRoomCleanliness()
     {
         if (_isRoomCleaned) return; // don't need to update cleanliness if room is already clean.
