@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class ShaderManager : MonoBehaviour
 {
@@ -43,6 +44,14 @@ public class ShaderManager : MonoBehaviour
     private void Start()
     {
         _block = new MaterialPropertyBlock();
+    }
+
+    private void OnValidate()
+    {
+        if ((Vector2) transform.localPosition != Vector2.zero)
+        {
+            Debug.LogWarning($"{transform.parent.name}'s sprite is not centered properly. Please fix in Editor");
+        }    
     }
 
     private void SetFloatProperties(string propRef, float propVal)

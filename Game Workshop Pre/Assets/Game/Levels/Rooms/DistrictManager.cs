@@ -94,6 +94,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         else
             coinsEarned = 0;
 
+        //_music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _music = RuntimeManager.CreateInstance("event:/Music/1 District/Vertical Adaptive District 1");
         _music.start();
     }
