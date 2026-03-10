@@ -56,15 +56,19 @@ MonoBehaviour:
     _enableBehaviourDebug: 0
   _actions: []
   _moveSpeed: 13
+  _shouldFlipSprite: 0
+  _facingRotation: 270
   _size: 8
+  _trashMaterial: {fileID: 0}
+  _trashMaterialWeight: 1
   _minSizeToAbsorb: 100
   _minVelocityToAbsorb: 100
-  _facingRotation: 270
+  _trashBallEscapeForce: 1
+  _trashBallSquirmTime: 5
+  _trashBallSquirmForce: 5
+  _trashBallSquirmDamage: 5
   _attackDelay: 1
   _attackSpeed: 6
-  _attackList:
-  - {fileID: 0}
-  - {fileID: 0}
   FishLaunch: {fileID: 0}
   _parentRoom: {fileID: 0}
   references:
@@ -203,7 +207,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
