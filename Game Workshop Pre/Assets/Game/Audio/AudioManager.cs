@@ -62,11 +62,13 @@ public void Play(string sCode, Transform position)
 
 public void PlayInstance(string sCode)
 {
-    EventInstance newInstance = RuntimeManager.CreateInstance(_sounds[sCode].Path);
-        newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
-        newInstance.start();
-    _instances.Add(newInstance);
+    if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
+        return;
 
+    EventInstance newInstance = RuntimeManager.CreateInstance(eventRef);
+    newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+    newInstance.start();
+    _instances.Add(newInstance);
 }
 
 

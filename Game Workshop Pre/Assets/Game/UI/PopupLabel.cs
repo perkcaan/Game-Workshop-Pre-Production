@@ -158,6 +158,7 @@ public class PopupLabel : MonoBehaviour
             .SetEase(Ease.OutQuad)
         );
     }
+    
     private void TweenComplete()
     {
         PopupLabelPooler plp = PopupLabelPooler.Instance;
