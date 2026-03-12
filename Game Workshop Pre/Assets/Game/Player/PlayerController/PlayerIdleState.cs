@@ -44,7 +44,7 @@ public class PlayerIdleState : BaseState<PlayerStateEnum>
     private void HandleMovement()
     {
         Vector2 input = _ctx.MovementInput;
-        Vector2 velocity = _ctx.Rigidbody.velocity; 
+        Vector2 velocity = _ctx.Rigidbody.linearVelocity; 
         
         if (input.sqrMagnitude > 0.01f)
         {

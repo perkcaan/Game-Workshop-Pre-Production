@@ -69,7 +69,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         GivePoints();
         gameObject.SetActive(false);
         trashBall.AbsorbObject(this);
-        trashBall.Rigidbody.velocity = _rigidBody.velocity;
+        trashBall.Rigidbody.linearVelocity = _rigidBody.linearVelocity;
     }
 
     // IAbsorbable
@@ -141,7 +141,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         // This is a sloppy way of doing it... but it should properly keep magnitude the same as before while letting ball control the angle
         float explosionForce = (float)(Math.Sqrt(size) * _explosionMultiplier);
         float randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce)).magnitude;
-        _rigidBody.velocity = randomForce * unitVectorAngle;
+        _rigidBody.linearVelocity = randomForce * unitVectorAngle;
 
         yield return new WaitForSeconds(0.3f);
         _isAbsorbed = false;
@@ -172,7 +172,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         _isDestroyed = true;
 
         foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
-        _rigidBody.velocity = Vector2.zero;
+        _rigidBody.linearVelocity = Vector2.zero;
         _rigidBody.simulated = false;
         if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
     }

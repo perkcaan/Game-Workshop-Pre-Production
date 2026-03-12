@@ -1,15 +1,9 @@
 using DG.Tweening;
 using FMODUnity;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class DistrictManager : StaticInstance<DistrictManager>
@@ -19,6 +13,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     [SerializeField] private Tilemap _roomTilemap;
     private List<Room> _rooms = new List<Room>();
+    public List<Room> AllRooms { get { return new List<Room>(_rooms); } }
     [SerializeField] TextMeshProUGUI _coinText;
     // Rooms the player is in
     private List<Room> _focusedRooms = new List<Room>(); // focused rooms is a list since the player could be in multiple touching rooms.
@@ -87,7 +82,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     private void Start()
     {
-        _rooms = new List<Room>(FindObjectsOfType<Room>());
+        _rooms = new List<Room>(FindObjectsByType<Room>(FindObjectsSortMode.InstanceID));
         _coinText.alpha = 0f;
         if (PlayerPrefs.HasKey("Coins"))
             coinsEarned = PlayerPrefs.GetInt("Coins");

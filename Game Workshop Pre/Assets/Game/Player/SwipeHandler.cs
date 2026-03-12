@@ -93,9 +93,9 @@ private void OnTriggerEnter2D(Collider2D other)
         _swipeMeter = GameObject.Find("SwipeMeter")?.GetComponent<SwipeMeter>();
     }
 
-public void Start()
-{
-        _audioManager = FindObjectOfType<AudioManager>();
+    public void Start()
+    {
+        _audioManager = AudioManager.Instance;
     }
 
 

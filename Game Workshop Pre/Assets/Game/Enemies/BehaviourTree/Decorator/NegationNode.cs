@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 // A negation node is a decorator node that negates the output of what it decorates.
 // So Success becomes Failure and Failure becomes Success.
-[BehaviourNode(0, "Decorator")]
+[BehaviourNode(0, "Decorator"), Serializable]
 public class NegationNode : DecoratorNode
 {
     public override BTNodeState Evaluate()

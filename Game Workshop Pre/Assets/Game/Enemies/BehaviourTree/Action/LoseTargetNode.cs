@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 // Waits for a bit then resets target and targetPosition. Return success when finished waiting.
 // Currently, this is basically the exact same as the wait node . Might change later.
-[BehaviourNode(5, "Actions")]
+[BehaviourNode(5, "Actions"), Serializable]
 public class LoseTargetNode : BehaviourTreeNode
 {
     [SerializeField] private float _loseTargetConfusionTime = 2f;

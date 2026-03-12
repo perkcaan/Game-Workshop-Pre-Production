@@ -302,7 +302,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     // master movement handler using variables modified by state.
     private void UpdateMovement()
     {
-        Vector2 velocityDelta = _ctx.FrameVelocity - _ctx.Rigidbody.velocity;
+        Vector2 velocityDelta = _ctx.FrameVelocity - _ctx.Rigidbody.linearVelocity;
         Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta, _ctx.FrameVelocity.magnitude);
         _ctx.Rigidbody.AddForce(clampedForce, ForceMode2D.Force);
 
@@ -359,7 +359,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         {
             _ctx.AbsorbedTrashBall = trashBall;
             if (_ctx.IsDashing) {
-                Vector2 impulse = _ctx.Rigidbody.velocity * _ctx.Rigidbody.mass;
+                Vector2 impulse = _ctx.Rigidbody.linearVelocity * _ctx.Rigidbody.mass;
                 trashBall.Rigidbody.AddForce(impulse, ForceMode2D.Impulse);
             }
             _state.ChangeState(PlayerStateEnum.Absorbed);

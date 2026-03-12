@@ -71,8 +71,8 @@ public class TrashCubeObject : MonoBehaviour, IHeatable, ISweepable, ISwipeable
 
     public void Update()
     {
-        _particleTimer -= Time.deltaTime * rigidBody.velocity.magnitude / 10f;
-        if (_particleTimer <= 0 && rigidBody.velocity.magnitude > 0.5f)
+        _particleTimer -= Time.deltaTime * rigidBody.linearVelocity.magnitude / 10f;
+        if (_particleTimer <= 0 && rigidBody.linearVelocity.magnitude > 0.5f)
         {
             _particleTimer = 0.1f;
             ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, force: 2f);

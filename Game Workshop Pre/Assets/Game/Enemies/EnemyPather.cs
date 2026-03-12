@@ -79,7 +79,7 @@ public class EnemyPather : MonoBehaviour
         Vector2 frameVelocity = targetDirection * _enemy.MoveSpeed;
         float facingAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
 
-        Vector2 velocityDelta = frameVelocity - rigidbody.velocity;
+        Vector2 velocityDelta = frameVelocity - rigidbody.linearVelocity;
         Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta, frameVelocity.magnitude);
         rigidbody.AddForce(clampedForce, ForceMode2D.Force);
 

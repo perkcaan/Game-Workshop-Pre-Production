@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 
 
-[BehaviourNode(0, "Service")]
+[BehaviourNode(0, "Service"), Serializable]
 // Service nodes are nodes that GATHER information and should be ran concurrently with other nodes. (Use a Parallel Node) 
 // Having them run like an action node isn't recommended.
 public class SpotTargetNode : ServiceNode

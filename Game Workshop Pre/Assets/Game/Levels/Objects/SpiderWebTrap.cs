@@ -58,7 +58,7 @@ public class SpiderWebTrap : MonoBehaviour
             float slowPercentPerSecond = _trashBallSpeedReduction;
             float dampenFactor = Mathf.Clamp01(1f - slowPercentPerSecond * Time.fixedDeltaTime);
 
-            tb.Rigidbody.velocity *= dampenFactor;
+            tb.Rigidbody.linearVelocity *= dampenFactor;
         }
     }
 

@@ -263,7 +263,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         // This is a sloppy way of doing it... but it should properly keep magnitude the same as before while letting ball control the angle
         float explosionForce = (float)(Math.Sqrt(size) * _trashBallEscapeForce);
         float randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce)).magnitude;
-        Rigidbody.velocity = randomForce * unitVectorAngle;
+        Rigidbody.linearVelocity = randomForce * unitVectorAngle;
 
         yield return new WaitForSeconds(0.3f);
         _isAbsorbed = false;

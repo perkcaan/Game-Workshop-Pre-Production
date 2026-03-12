@@ -22,7 +22,7 @@ public class TargetObject : MonoBehaviour
         if (collision.GetComponent<TrashBall>() == true)
         {
             if (collision.GetComponent<TrashBall>().Size >= requiredSize 
-                && Vector3.Magnitude(collision.gameObject.GetComponent<Rigidbody2D>().velocity) >= requiredVelocity)
+                && Vector3.Magnitude(collision.gameObject.GetComponent<Rigidbody2D>().linearVelocity) >= requiredVelocity)
             {
                 Destroy(gameObject);
                 BreakEvent?.Invoke(); // Call associated event

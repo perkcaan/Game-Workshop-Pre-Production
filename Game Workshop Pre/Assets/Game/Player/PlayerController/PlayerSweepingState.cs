@@ -87,7 +87,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
             {
                 _ctx.MoveSpeed = 0f;
                 // Cancels sliding with an opposing force
-                Vector2 velocity = _ctx.Rigidbody.velocity;
+                Vector2 velocity = _ctx.Rigidbody.linearVelocity;
                 if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxSweepWalkSpeed) && _ctx.Props.WillCancelSweepSlide)
                 {
                     Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxSweepWalkSpeed;

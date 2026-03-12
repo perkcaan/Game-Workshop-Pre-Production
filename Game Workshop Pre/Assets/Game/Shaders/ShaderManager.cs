@@ -19,12 +19,12 @@ public class ShaderManager : MonoBehaviour
     [Tooltip("The width of the 'burn' effect on the dissolve animation.")]
     [SerializeField] private float _dissolveBurnWidth = 0.4f;
     [Tooltip("The time it takes to sink in lava.")]
-    [SerializeField] private float _height = 1.0f;
-    [Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
+    //[SerializeField] private float _height = 1.0f;
+    //[Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
     [SerializeField] private Texture _meshTexture;
 
     [SerializeField] private float sinkSpeed = 0.3f;
-    [SerializeField] private float maxHeight = 1f;
+    //[SerializeField] private float maxHeight = 1f;
 
     private float currentHeight = 0f;
     private bool inLava = false;
@@ -50,7 +50,7 @@ public class ShaderManager : MonoBehaviour
     {
         if ((Vector2) transform.localPosition != Vector2.zero)
         {
-            Debug.LogWarning($"{transform.parent.name}'s sprite is not centered properly. Please fix in Editor");
+            Debug.LogWarning($"{transform.parent.name}'s sprite is not centered properly. Please fix in Editor. Position: {transform.parent.position}");
         }    
     }
 
