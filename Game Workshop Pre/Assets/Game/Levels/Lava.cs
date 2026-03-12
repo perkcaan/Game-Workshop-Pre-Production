@@ -8,11 +8,11 @@ public class Lava : MonoBehaviour
     [SerializeField] private float _heatPerSecondWhenGrounded = 10f;
     [SerializeField] private float _maxHeatWhenGrounded = 70f;
     [SerializeField] private float _delayBeforeHeatingWhenGrounded = 1f;
-    [SerializeField] private float _delayBeforeSinking = 1f;
+    //[SerializeField] private float _delayBeforeSinking = 1f;
     private float _delayTimer = 0f;
 
     private ShaderManager _shaderManager;
-   
+
     private void OnTriggerStay2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out HeatMechanic heat))
@@ -46,7 +46,6 @@ public class Lava : MonoBehaviour
 
             if (collider.GetComponentInChildren<ShaderManager>() is ShaderManager shaderManager)
             {
-                Debug.Log("Sink!");
                 shaderManager.SetInLava(true);
             }
 

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Drawing;
 using System;
 
-public class LooseTrash : Trash, ISweepable, ISwipeable
+public class LooseTrash : Trash, ISweepable, ISwipeable, IPokeable
 {
     [SerializeField] bool _hasImpactParticle = false;
     [SerializeField] float _sweepDurationToBecomeBall;
@@ -10,9 +10,11 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
     [SerializeField] float _playerEnterTripForce;
     [SerializeField] float _playerExitKnockback;
     [SerializeField] float _playerExitTripForce;
+    [SerializeField] float _pokeForceMultiplier = 1f;
     [SerializeField] float _randomDirectionRange;
     [SerializeField] float maximumVelocity = 2f;
     [SerializeField] bool _isSwipable;
+
     private float _sweepTimer;
 
     public void OnSweep(Vector2 position, Vector2 direction, float force)
@@ -36,6 +38,12 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
         ParticleManager.Instance.Play("swipe", transform.position, particleRotation, trashMaterial.color, transform);
     }
 
+    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    {
+        if (!isActiveAndEnabled) return;
+         _rigidBody.AddForce(direction * force * _pokeForceMultiplier * _rigidBody.mass, ForceMode2D.Impulse);
+    }
+
     void Update()
     {
         if (_sweepTimer >= 0) _sweepTimer -= Time.deltaTime / 2;
@@ -52,7 +60,7 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
             Quaternion randomRotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-_randomDirectionRange, _randomDirectionRange));
             Vector3 direction = randomRotation * (transform.position - player.transform.position).normalized;
-            float velocityMultiplier = Math.Min(1 + playerRb.velocity.magnitude/3, maximumVelocity);
+            float velocityMultiplier = Math.Min(1 + playerRb.linearVelocity.magnitude/3, maximumVelocity);
 
             _rigidBody.AddForce(direction * _playerEnterKnockback * velocityMultiplier, ForceMode2D.Impulse);
             playerRb.AddForce(-direction * _playerEnterTripForce * velocityMultiplier, ForceMode2D.Impulse);
@@ -65,7 +73,7 @@ public class LooseTrash : Trash, ISweepable, ISwipeable
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
             Quaternion randomRotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-_randomDirectionRange, _randomDirectionRange));
             Vector3 direction = randomRotation * (transform.position - player.transform.position).normalized;
-            float velocityMultiplier = Math.Min(1 + playerRb.velocity.magnitude/3, maximumVelocity);
+            float velocityMultiplier = Math.Min(1 + playerRb.linearVelocity.magnitude/3, maximumVelocity);
 
             _rigidBody.AddForce(direction * _playerExitKnockback * velocityMultiplier, ForceMode2D.Impulse);
             playerRb.AddForce(-direction * _playerExitTripForce * velocityMultiplier, ForceMode2D.Impulse);

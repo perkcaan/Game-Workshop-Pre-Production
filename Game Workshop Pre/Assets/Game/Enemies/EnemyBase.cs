@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters;
 using DG.Tweening;
-using Ink.Parsed;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -49,8 +47,9 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     [SerializeField] protected float _minSizeToAbsorb;
     [SerializeField] protected float _minVelocityToAbsorb;
     [SerializeField] private float _trashBallEscapeForce = 1f;
-    [SerializeField] private float _trashBallDamageTime = 20f;
     [SerializeField] private float _trashBallSquirmTime = 5f;
+    [SerializeField] private float _trashBallSquirmForce = 5f;
+    [SerializeField] private int _trashBallSquirmDamage = 5;
 
     // Components
     protected Animator _animator;
@@ -73,7 +72,6 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     private bool _isDying = false;
     private bool _isAbsorbed = false;
     // Timers
-    private float _ballDamageTimer = 0;
     private float _ballSquirmTimer = 0;
 
     // external methods (use in specific enemies!)
@@ -147,6 +145,13 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         _currentActionComplete = null;
     }
 
+    public float MinSizeToAbsorb
+    {
+        get { return _minSizeToAbsorb; }
+        set { _minSizeToAbsorb = value; }
+    }
+
+
     // Simple attack is a basic attack template that has startup, an attack, and endlag
     protected IEnumerator SimpleAttack(SimpleAttackProperties properties, 
         Action attackStart = null, Action attack = null, Action attackEnd = null)
@@ -198,7 +203,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void OnIgnite(HeatMechanic heat)
     {
         if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
-        AudioManager.Instance.PlayOnInstance(gameObject,"enemyDeath");
+        AudioManager.Instance.PlayOnInstance(gameObject,"impDeath");
 
         OnDestroy?.Invoke();
         Destroy(gameObject);
@@ -219,9 +224,10 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
             if (forcedAbsorb) return true;
             PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
-            _ballDamageTimer = _trashBallDamageTime;
             _ballSquirmTimer = _trashBallSquirmTime;
+            AudioManager.Instance.PlayOnInstance(gameObject, "enemyPickup");
             return true;
+            
         }
         return false;
     }
@@ -240,7 +246,6 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
         transform.position = trashBall.transform.position;
 
-        
         transform.localScale = Vector3.zero;
         transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
 
@@ -258,7 +263,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         // This is a sloppy way of doing it... but it should properly keep magnitude the same as before while letting ball control the angle
         float explosionForce = (float)(Math.Sqrt(size) * _trashBallEscapeForce);
         float randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce)).magnitude;
-        Rigidbody.velocity = randomForce * unitVectorAngle;
+        Rigidbody.linearVelocity = randomForce * unitVectorAngle;
 
         yield return new WaitForSeconds(0.3f);
         _isAbsorbed = false;
@@ -285,16 +290,13 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     // Update method for trashball
     public void TrashBallUpdate(TrashBall trashBall)
     {
-        if (_ballDamageTimer <= 0)
-        {
-            //TODO: DAMAGE TRASH BALL
-            return;
-        }
-        _ballDamageTimer -= Time.deltaTime;
 
         if (_ballSquirmTimer <= 0)
         {
-            //TODO: SQUIRM TIMER
+            float angle = UnityEngine.Random.Range(0f, 2f * Mathf.PI);
+            Vector2 randomDir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized;
+
+            trashBall.TakeDamage(_trashBallSquirmDamage, _trashBallSquirmForce, randomDir);
             _ballSquirmTimer += _trashBallSquirmTime;
         }
         _ballSquirmTimer -= Time.deltaTime;
@@ -304,5 +306,10 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public void SetRoom(Room room)
     {
         _parentRoom = room;
+    }
+
+    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    {
+        throw new NotImplementedException();
     }
 }

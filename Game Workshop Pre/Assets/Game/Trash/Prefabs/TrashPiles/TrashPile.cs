@@ -7,7 +7,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
 {
     [SerializeField] int _health;
     [SerializeField] int _trashSpreadRange;
-    [SerializeField] float _onDamagedShakeForce;
+    [SerializeField] float _swipeForceShakeMultiplier = 0.5f;
     [SerializeField] float _onExplodeForce;
     [SerializeField] float _sweepDurationToTakeDamage;
     [SerializeField] List<GameObject> _startingStoredTrash;
@@ -46,7 +46,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
 
     public void OnSweep(Vector2 position, Vector2 direction, float force)
     {
-        if (_isDestroyed) return;
+        //if (_isDestroyed) return;
         if (!isActiveAndEnabled) return;
         _sweepTimer += Time.deltaTime * 2;
         if (_sweepTimer > _sweepDurationToTakeDamage)
@@ -59,11 +59,12 @@ public class TrashPile : Trash, ISweepable, ISwipeable
 
     public void OnSwipe(Vector2 direction, float force, Collider2D collider)
     {
-        if (_isDestroyed) return;
-        TakeDamage(3, direction, force);
+        //if (_isDestroyed) return;
+        TakeDamage(3, direction, force * _swipeForceShakeMultiplier);
         if(this != null && trashMaterial != null)
             ParticleManager.Instance.Play("swipe", transform.position, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), this.trashMaterial.color, transform);
     }
+
 
     public override bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
@@ -74,14 +75,14 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         }
         else
         {
-            TakeDamage(3, ballVelocity.normalized, ballVelocity.magnitude);
+            TakeDamage(ballSize, ballVelocity.normalized, ballVelocity.magnitude);
         }
         return false;
     }
 
     public void TakeDamage(int damage, Vector2 direction, float force)
     {
-        if (_isDestroyed) return;
+        //if (_isDestroyed) return;
         _health -= damage;
         if (_health <= 0)
         {
@@ -89,22 +90,22 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         }
         else
         {
-            if (_shakeTween != null && _shakeTween.IsActive()) _shakeTween.Complete();
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(_spriteRenderer.transform.DOLocalMove(direction.normalized * _onDamagedShakeForce * damage, _shakeSpeed));
-            sequence.Append(_spriteRenderer.transform.DOLocalMove(-direction.normalized * _onDamagedShakeForce * damage / 4, _shakeSpeed));
-            sequence.Append(_spriteRenderer.transform.DOLocalMove(Vector3.zero, _shakeSpeed));
-            sequence.SetLink(_spriteRenderer.gameObject); 
-            _shakeTween = sequence;
+            PlayFailImpactAnimation(direction, force);
         }
     }
 
     private void ReleaseTrash(Vector2 direction, float force)
     {
-        if (_isDestroyed) return;
-        _isDestroyed = true;
+        //if (_isDestroyed) return;
+        //_isDestroyed = true;
         _rigidBody.simulated = false;
-        _parentRoom.ObjectCleaned(this);
+        if (_startingStoredTrash.Count > 0)
+        {
+            _parentRoom.ObjectReplaced(this);
+        } else
+        {
+            _parentRoom.ObjectCleaned(this);
+        }
 
         if (_shakeTween != null && _shakeTween.IsActive()) _shakeTween.Kill();
         transform.DOScale(Vector3.zero, 0.2f)

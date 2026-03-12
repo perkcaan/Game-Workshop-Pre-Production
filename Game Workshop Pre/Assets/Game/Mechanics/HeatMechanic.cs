@@ -126,15 +126,22 @@ public class HeatMechanic : MonoBehaviour
             _relaxationTimer = Mathf.MoveTowards(_relaxationTimer, 0, Time.deltaTime);
             return;
         }
-
+        
         int roomTemperature = 20; //this should never be applied.
-        if (DistrictManager.Instance != null) roomTemperature = DistrictManager.Instance.Temperature;
-        if (CurrentRoom != null) roomTemperature = CurrentRoom.Temperature;
+        if (DistrictManager.Instance != null) {
+            roomTemperature = DistrictManager.Instance.Temperature;
+        }
 
-        if (_heat != roomTemperature && _heat > roomTemperature)
+        if (CurrentRoom != null) {
+            roomTemperature = CurrentRoom.Temperature;
+        }
+
+        if (_heat != roomTemperature)
         {
             _heat = Mathf.MoveTowards(_heat, roomTemperature, _heatRelaxationRate * Time.deltaTime);
-            coolingOff = true;
+            if (_heat > roomTemperature) {
+                coolingOff = true;
+            }
         }
         else
         {

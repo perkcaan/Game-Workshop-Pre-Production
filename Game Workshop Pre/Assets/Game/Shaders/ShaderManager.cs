@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class ShaderManager : MonoBehaviour
 {
@@ -18,12 +19,12 @@ public class ShaderManager : MonoBehaviour
     [Tooltip("The width of the 'burn' effect on the dissolve animation.")]
     [SerializeField] private float _dissolveBurnWidth = 0.4f;
     [Tooltip("The time it takes to sink in lava.")]
-    [SerializeField] private float _height = 1.0f;
-    [Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
+    //[SerializeField] private float _height = 1.0f;
+    //[Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
     [SerializeField] private Texture _meshTexture;
 
     [SerializeField] private float sinkSpeed = 0.3f;
-    [SerializeField] private float maxHeight = 1f;
+    //[SerializeField] private float maxHeight = 1f;
 
     private float currentHeight = 0f;
     private bool inLava = false;
@@ -45,6 +46,14 @@ public class ShaderManager : MonoBehaviour
         _block = new MaterialPropertyBlock();
     }
 
+    private void OnValidate()
+    {
+        if ((Vector2) transform.localPosition != Vector2.zero)
+        {
+            Debug.LogWarning($"{transform.parent.name}'s sprite is not centered properly. Please fix in Editor. Position: {transform.parent.position}");
+        }    
+    }
+
     private void SetFloatProperties(string propRef, float propVal)
     {
         foreach (Renderer renderer in _renderers)
@@ -62,6 +71,7 @@ public class ShaderManager : MonoBehaviour
 
         SetFloatProperties("_FlashPhase", _flashPhase);
         SetFloatProperties("_Dissolve", 0f);
+        SetFloatProperties("_Height", 0f);
     }
 
     private void Update()
@@ -132,6 +142,14 @@ public class ShaderManager : MonoBehaviour
         _dissolveCoroutine = StartCoroutine(DissolveCoroutine(onDone));
     }
 
+    public void SquashnStrech(float value, float duration)
+    {
+        transform.DOKill();
+        // Keep both the value and the duration under 1 ideally, Any more than one on the value leads to no movement
+        // Lower duration for snappier effect
+        transform.DOScaleY(value, duration).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutSine);
+    }
+
 
 
     private IEnumerator DissolveCoroutine(Action onDone)
@@ -159,17 +177,17 @@ public class ShaderManager : MonoBehaviour
     }
 
     //Called on lava script
-    public void SinkInLava(Action onDone = null)
+    public void SinkInLava(Action onDoneSinking = null)
     {
         if (_lavaCoroutine != null)
         {
             StopCoroutine(_lavaCoroutine);
         }
 
-        _lavaCoroutine = StartCoroutine(LavaCoroutine(onDone));
+        _lavaCoroutine = StartCoroutine(LavaCoroutine(onDoneSinking));
     }
 
-    private IEnumerator LavaCoroutine(Action onDone)
+    private IEnumerator LavaCoroutine(Action onDoneSinking)
     {
         float time = 0f;
 
@@ -184,6 +202,6 @@ public class ShaderManager : MonoBehaviour
         SetFloatProperties("_height", 1);
 
         _lavaCoroutine = null;
-        onDone?.Invoke();
+        onDoneSinking?.Invoke();
     }
 }

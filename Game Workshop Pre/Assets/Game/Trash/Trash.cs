@@ -27,15 +27,18 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     protected Room _parentRoom;
     public Rigidbody2D _rigidBody;
     protected SpriteRenderer _spriteRenderer;
+    private CircleCollider2D _collider;
+    public float SizeRadius { get { return _collider.radius; } }
+
     private float soundCooldown = 1f;
     protected bool _isDestroyed = false;
     protected bool _isAbsorbed = false;
     protected Tween _shakeTween;
-    [SerializeField] float _onFailAbsorbShakeForce = 0.5f;
     protected float _shakeSpeed = 0.125f;
 
     protected virtual void Awake()
     {
+        _collider = GetComponent<CircleCollider2D>();
         _rigidBody = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (_pointValue <= 0) _pointValue = 1;
@@ -66,7 +69,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         GivePoints();
         gameObject.SetActive(false);
         trashBall.AbsorbObject(this);
-        trashBall.Rigidbody.velocity = _rigidBody.velocity;
+        trashBall.Rigidbody.linearVelocity = _rigidBody.linearVelocity;
     }
 
     // IAbsorbable
@@ -96,17 +99,12 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
             
             PopupLabel.CreatePlusLabel(transform.position, TrashMat.color, Size);
             
+
             return true;
         }
         if (isActiveAndEnabled && _rigidBody.simulated && !_isAbsorbed) // reason it failed was because of low trashball size
         {
-            if (_shakeTween != null && _shakeTween.IsActive()) _shakeTween.Complete();
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(_spriteRenderer.transform.DOLocalMove(direction.normalized * _onFailAbsorbShakeForce, _shakeSpeed));
-            sequence.Append(_spriteRenderer.transform.DOLocalMove(-direction.normalized * _onFailAbsorbShakeForce / 4, _shakeSpeed));
-            sequence.Append(_spriteRenderer.transform.DOLocalMove(Vector3.zero, _shakeSpeed));
-            sequence.SetLink(_spriteRenderer.gameObject); 
-            _shakeTween = sequence;            
+            PlayFailImpactAnimation(direction, ballVelocity.magnitude);
         }
 
         return false;
@@ -143,7 +141,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         // This is a sloppy way of doing it... but it should properly keep magnitude the same as before while letting ball control the angle
         float explosionForce = (float)(Math.Sqrt(size) * _explosionMultiplier);
         float randomForce = new Vector2(UnityEngine.Random.Range(-explosionForce, explosionForce), UnityEngine.Random.Range(-explosionForce, explosionForce)).magnitude;
-        _rigidBody.velocity = randomForce * unitVectorAngle;
+        _rigidBody.linearVelocity = randomForce * unitVectorAngle;
 
         yield return new WaitForSeconds(0.3f);
         _isAbsorbed = false;
@@ -174,7 +172,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         _isDestroyed = true;
 
         foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
-        _rigidBody.velocity = Vector2.zero;
+        _rigidBody.linearVelocity = Vector2.zero;
         _rigidBody.simulated = false;
         if(_parentRoom != null) _parentRoom.ObjectCleaned(this);
     }
@@ -206,5 +204,31 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         //AudioManager.Instance.Play("Points", transform.position);
         yield return new WaitForSeconds(soundCooldown);
         soundCooldown = 1f;
+    }
+
+    // Plays an tween animation when failed to absorb
+    protected void PlayFailImpactAnimation(Vector2 direction, float incomingVelocity)
+    {
+        if (_shakeTween != null && _shakeTween.IsActive())
+            _shakeTween.Kill();
+
+        Transform sprite = _spriteRenderer.transform;
+
+        float velocity = incomingVelocity;
+
+        // Shake parameters scaled with velocity
+        float strength = Mathf.Clamp(velocity * 0.05f, 0.1f, 0.5f); // max shake distance
+        int vibrato = Mathf.Clamp((int)(velocity * 2f), 6, 15);    // number of shakes
+        float randomness = 90f;                                     // angle randomness
+        float duration = Mathf.Clamp(0.2f + velocity * 0.03f, 0.15f, 0.35f);
+
+        _shakeTween = sprite.DOShakePosition(
+            duration: duration,
+            strength: strength,
+            vibrato: vibrato,
+            randomness: randomness,
+            snapping: false,
+            fadeOut: true
+        ).SetLink(_spriteRenderer.gameObject);
     }
 }

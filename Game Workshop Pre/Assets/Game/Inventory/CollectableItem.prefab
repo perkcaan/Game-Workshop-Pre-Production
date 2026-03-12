@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1998719949
-  m_SortingLayer: 4
+  m_SortingLayer: -1
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 044abb9592477104da1bafc61c9e7f40, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 4368632782994826078}
   - component: {fileID: 4147823147249353212}
   - component: {fileID: 1903359685155296524}
-  - component: {fileID: 144323674301179832}
+  - component: {fileID: 2564194849070672375}
   m_Layer: 0
   m_Name: CollectableItem
   m_TagString: Untagged
@@ -159,7 +159,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1998719949
-  m_SortingLayer: 4
+  m_SortingLayer: -1
   m_SortingOrder: 2
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -207,7 +207,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &144323674301179832
+--- !u!114 &2564194849070672375
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -216,14 +216,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3335730811686970057}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67018c1bb6a8a9e43ba738e838e62330, type: 3}
+  m_Script: {fileID: 11500000, guid: e200214120fd80d43bc924055285e45d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
-  linkedGates: []
-  sparkleRotationSpeed: 6
-  largeSparkle: {fileID: 8189836803848133816}
-  smallSparkle: {fileID: 8629211341095715167}
+  item: {fileID: 11400000, guid: 8164f03e2a361d84997e575f88c2109a, type: 2}
+  sparkleRotationSpeed: 3
+  largeSparkle: {fileID: 4368632782994826078}
+  smallSparkle: {fileID: 4368632782994826078}
 --- !u!1 &5633066126859437168
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +294,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1998719949
-  m_SortingLayer: 4
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 72537d1e4e5a5f4439e4cc71c63bb04d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.60784316}

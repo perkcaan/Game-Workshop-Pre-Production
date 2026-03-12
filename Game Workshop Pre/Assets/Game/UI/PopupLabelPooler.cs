@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class PopupLabelPooler : Singleton<PopupLabelPooler>
 {
-    [SerializeField] private GameObject _popupLabelPrefab; //this probably shouldnt be here to be honest... move to pooler?
+    [SerializeField] private GameObject _popupLabelPrefab;
     public GameObject PopupLabelPrefab
     {
         get { return _popupLabelPrefab; }
     }
+
     [SerializeField] private int _maxPopupPoolSize = 8;
     
     private Queue<PopupLabel> _popupLabelPool = new Queue<PopupLabel>();
@@ -28,7 +29,7 @@ public class PopupLabelPooler : Singleton<PopupLabelPooler>
 
         return label;
     }
-
+    
     public void ReturnLabel(PopupLabel label)
     {
         if (_popupLabelPool.Count > _maxPopupPoolSize)
