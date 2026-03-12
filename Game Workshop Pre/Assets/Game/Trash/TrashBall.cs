@@ -165,7 +165,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     
     private void FixedUpdate()
     {
-        Collider.radius = _ballTransform.localScale.x * 0.5f;
+        Collider.radius = _ballTransform.localScale.x * 0.4f;
     }
 
     #endregion
@@ -193,7 +193,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         }
         _ballQuad.DOKill();
         _ballQuad.localPosition = Vector2.zero;
-        _ballQuad.DOShakePosition(0.2f, 0.1f, 14, 90f, false, true).SetRelative(false);
+        _ballQuad.DOShakePosition(0.2f, 0.1f, 14, 90f, false, true)
+        .SetRelative(false)
+        .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         ActionOnMaterials((material, amount) => material.whenAbsorbTrash(this, amount));
 
         Size += absorbable.Size;
@@ -330,7 +332,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     }
 
     // Removes all Trash Ball objects remaining
-    private void ExplodeTrashBall()
+    public void ExplodeTrashBall()
     {
         if (_isBeingDestroyed) return;
         _isBeingDestroyed = true;
@@ -420,7 +422,12 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         absorbSequence.SetLink(absorbedObject);
         absorbSequence.Join(absorbedObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
         absorbSequence.Join(absorbedObject.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
-        absorbSequence.OnKill(() => absorbedObject?.SetActive(false));
+        absorbSequence.OnKill(() => {
+            if (absorbedObject && absorbedObject.activeSelf)
+            {
+                absorbedObject.SetActive(false);
+            }
+        });
     }
 
     private void UpdateMaterial()
@@ -561,6 +568,13 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (_isBeingDestroyed) return;
+
+        
+        if (collision.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
+        {
+            OnAbsorbTrigger(collision.collider);
+        }
+
 
         if ((_wallLayers.value & (1 << collision.gameObject.layer)) != 0) // Layer 14 is supposed to be Wall
         {

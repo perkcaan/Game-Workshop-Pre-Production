@@ -68,7 +68,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public TrashMaterial TrashMat { get { return _trashMaterial; } }
     [SerializeField] private int _trashMaterialWeight;
     public int TrashMatWeight { get { return _trashMaterialWeight; } }
-    [SerializeField] protected float _minVelocityToAbsorb;
 
     [Header("Swipe Visual Line")]
     [SerializeField] private float _swipeVisualLineDistance = 10f;
@@ -356,11 +355,20 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
     public bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
-        if (forcedAbsorb || (ballVelocity.magnitude > _minVelocityToAbsorb && trashBall.Size >= _minTrashSizeToAbsorb))
+        if (forcedAbsorb || (trashBall.Size >= _minTrashSizeToAbsorb && _ctx.IsDashing )) //TODO: Add a vulnerable state?
         {
             _ctx.AbsorbedTrashBall = trashBall;
+            if (_ctx.IsDashing) {
+                Vector2 impulse = _ctx.Rigidbody.velocity * _ctx.Rigidbody.mass;
+                trashBall.Rigidbody.AddForce(impulse, ForceMode2D.Impulse);
+            }
             _state.ChangeState(PlayerStateEnum.Absorbed);
             return true;
+        }
+
+        if (trashBall.Size < _minTrashSizeToAbsorb && _ctx.IsDashing)
+        {
+            trashBall.ExplodeTrashBall();
         }
         return false;
     }

@@ -94,7 +94,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
@@ -117,6 +117,7 @@ MonoBehaviour:
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 0}
+  _onFailAbsorbShakeForce: 0.5
   _health: 1
   _trashSpreadRange: 15
   _onDamagedShakeForce: 0.05
@@ -246,4 +247,7 @@ MonoBehaviour:
   _heatFlashRamp: 2
   _dissolveTime: 1
   _dissolveBurnWidth: 0.4
+  _height: 1
   _meshTexture: {fileID: 0}
+  sinkSpeed: 0.3
+  maxHeight: 1
