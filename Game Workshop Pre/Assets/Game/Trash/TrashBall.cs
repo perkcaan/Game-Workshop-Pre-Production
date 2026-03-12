@@ -167,7 +167,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     {
         Collider.radius = _ballTransform.localScale.x * 0.4f;
     }
-
     #endregion
 
     #region Public methods
@@ -343,6 +342,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
             trashMono.gameObject.SetActive(true);
             absorbable.OnTrashBallRelease(this, UnityEngine.Random.onUnitSphere);
         }
+        AbsorbedObjects.Clear();
         AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM2", 0f);
         AudioManager.Instance.Stop(this.gameObject, "TrashBall");
         AudioManager.Instance.Stop(this.gameObject, "Decay");
@@ -423,7 +423,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         absorbSequence.Join(absorbedObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
         absorbSequence.Join(absorbedObject.transform.DOMove(transform.position, 0.3f).SetEase(Ease.InQuad));
         absorbSequence.OnKill(() => {
-            if (absorbedObject && absorbedObject.activeSelf)
+            if (absorbedObject && absorbedObject.activeSelf && AbsorbedObjects.Contains(absorbedObject.GetComponent<IAbsorbable>()))
             {
                 absorbedObject.SetActive(false);
             }
