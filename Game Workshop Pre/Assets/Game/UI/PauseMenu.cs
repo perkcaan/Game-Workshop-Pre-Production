@@ -16,8 +16,9 @@ public class PauseMenu : MonoBehaviour
     public GameObject quitUI;
     [SerializeField] public Slider[] _pauseSliders;
     [SerializeField] public Sprite[] _pauseSprites;
+    private FMOD.Studio.EventInstance _music;
     //[SerializeField] public TextMeshProUGUI _coinText;
-    
+
 
     void Awake()
     {
@@ -44,8 +45,11 @@ public class PauseMenu : MonoBehaviour
             _pauseSliders[2].value = 1;
         }
         }
-
         
+        _music = RuntimeManager.CreateInstance("event:/Music/1 District/Vertical Adaptive District 1");
+        _music.start();
+
+
 
     }
     void Update()
@@ -139,6 +143,7 @@ public class PauseMenu : MonoBehaviour
             return;
         }
         DOTween.KillAll();
+        _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         SceneManager.LoadScene(sceneIndex);
     }
 
