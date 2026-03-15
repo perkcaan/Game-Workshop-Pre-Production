@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using UnityEngine;
+using System;
+using AYellowpaper.SerializedCollections;
 
 
 // Handles the player's sweep ability
@@ -25,7 +27,14 @@ public class BroomSweepHandler : MonoBehaviour
     [SerializeField] float _curveSteepness = 1.1f;
     [SerializeField] float _curveOffset = 1f;
     [SerializeField] float _attractionCap = 10f;
+    [SerializeField] private float _jitterDistance = 0.2f;
     [SerializeField, Range(0,1)] float _centerAdjustment = 1f;
+    [SerializeField] private bool _logAttraction = true;
+    [Header("Spring Mode")]
+    [SerializeField] private bool _doSpringMode = false;
+    [SerializeField] private float _springStrength = 120f;
+    [SerializeField] private float _dampingForce = 12f;
+    [SerializeField] private float _springAttractionCap = 40f;
 
     // Fields
     private float _rotation = 0f;
@@ -98,10 +107,14 @@ public class BroomSweepHandler : MonoBehaviour
        
     }
 
-
     // Collision trigger
     private void OnTriggerStay2D(Collider2D collider)
     {
+        if (_doSpringMode)
+        {
+            SpringMode(collider);
+            return;
+        }
         Vector2 directionOut = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation)).normalized;
 
         ISweepable sweepableObject = collider.gameObject.GetComponent<ISweepable>();
@@ -111,13 +124,50 @@ public class BroomSweepHandler : MonoBehaviour
         Vector2 trueSingularity = (Vector2) _sweepSingularity.position + (directionOut * sweepableObject.SizeRadius * _centerAdjustment); 
         marker.transform.position = trueSingularity;
         float dist = Vector2.Distance(trueSingularity, collider.transform.position);
+
+        if (dist < _jitterDistance) return;
+
         float rawAttractionForce = Mathf.Pow(_curveSteepness, dist - _curveOffset);
         float attractionForce = Mathf.Clamp(rawAttractionForce, 0 ,_attractionCap);
+        if (_logAttraction) Debug.Log($"Attraction: {attractionForce}");
+
 
         Vector2 direction = (trueSingularity - (Vector2) collider.transform.position).normalized;
 
         sweepableObject.OnSweep(transform.position, direction.normalized, attractionForce);
-        
+    }
+
+    private void SpringMode(Collider2D collider)
+    {
+        Vector2 directionOut = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation)).normalized;
+
+        ISweepable sweepableObject = collider.gameObject.GetComponent<ISweepable>();
+        if (sweepableObject == null) return;
+
+        Vector2 trueSingularity = (Vector2)_sweepSingularity.position + (directionOut * sweepableObject.SizeRadius * _centerAdjustment);
+        marker.transform.position = trueSingularity;
+
+        Vector2 toTarget = trueSingularity - (Vector2)collider.transform.position;
+
+        float dist = toTarget.magnitude;
+        Vector2 direction = toTarget.normalized;
+
+        Rigidbody2D rb = collider.attachedRigidbody;
+
+        float towardSpeed = 0f;
+        if (rb != null)
+        {
+            towardSpeed = Vector2.Dot(rb.linearVelocity, direction);
+        }
+
+        float springForce = dist * _springStrength;
+        float dampingForce = towardSpeed * _dampingForce;
+
+        float attractionForce = Mathf.Clamp(springForce - dampingForce, 0f, _springAttractionCap);
+
+        if (_logAttraction) Debug.Log($"Attraction: {attractionForce}");
+
+        sweepableObject.OnSweep(transform.position, direction, attractionForce);
     }
 
     // Sweep Poke
