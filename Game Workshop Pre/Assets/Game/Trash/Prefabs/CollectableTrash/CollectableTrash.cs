@@ -6,6 +6,7 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable
     [SerializeField] float _sweepDurationToBecomeBall;
     [SerializeField] bool _swipesIntoTrashBall;
     [SerializeField] float _pokeForceMultiplier = 1f;
+    [SerializeField] float _swipeForceMultiplier = 1f;
     
     private float _sweepTimer;
 
@@ -22,7 +23,7 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable
     }
     public void OnSwipe(Vector2 direction, float force, Collider2D collision)
     {
-        _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
+        _rigidBody.AddForce(direction * force * _swipeForceMultiplier, ForceMode2D.Impulse);
         if (_swipesIntoTrashBall) CreateTrashBall();
     }
 

@@ -21,7 +21,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float SweepForce { get { return _sweepForce; } }
     [SerializeField][Range(0f, 2f)] private float _sweepForceMovementScaler = 0.1f;
     public float SweepForceMovementScaler { get { return _sweepForceMovementScaler; } }
-
+    [SerializeField] private bool _shouldSweepBeforePoke = false;
+    public bool ShouldSweepBeforePoke { get { return _shouldSweepBeforePoke; } }
     [Header("Sweep Poke Properties")]
     [SerializeField] private float _sweepAllowPokeTime = 0.1f;
     public float SweepAllowPokeTime { get { return _sweepAllowPokeTime; } }

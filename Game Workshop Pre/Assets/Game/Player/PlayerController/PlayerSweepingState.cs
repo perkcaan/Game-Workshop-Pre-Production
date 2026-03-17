@@ -31,7 +31,9 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
 
         _sweepPokeTimer = 0;
         float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
-        _ctx.SweepHandler.BeginSweep(_ctx.Rotation, sweepForce);
+        if (_ctx.Player.ShouldSweepBeforePoke) {
+             _ctx.SweepHandler.BeginSweep(_ctx.Rotation, sweepForce);
+        }
     }
 
     public override void Update()
@@ -50,6 +52,10 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         if (_sweepPokeTimer < _ctx.Player.SweepAllowPokeTime)
         {
             _sweepPokeTimer += Time.deltaTime;
+            if (_sweepPokeTimer >= _ctx.Player.SweepAllowPokeTime && !_ctx.Player.ShouldSweepBeforePoke)
+            {
+                _ctx.SweepHandler.BeginSweep(_ctx.Rotation, sweepForce);
+            } 
         }
         TryChangeState();
     }
