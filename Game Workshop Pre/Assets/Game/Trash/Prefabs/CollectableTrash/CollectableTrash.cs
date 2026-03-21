@@ -7,7 +7,7 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable
     [SerializeField] bool _swipesIntoTrashBall;
     [SerializeField] float _pokeForceMultiplier = 1f;
     [SerializeField] float _swipeForceMultiplier = 1f;
-    
+    public GameObject HitParent { get { return gameObject; } }
     private float _sweepTimer;
 
 

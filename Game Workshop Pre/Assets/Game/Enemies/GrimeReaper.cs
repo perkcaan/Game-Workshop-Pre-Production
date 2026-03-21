@@ -25,10 +25,15 @@ public class GrimeReaper : EnemyBase
         
     }
 
-    public new void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    protected override void ForceDisableHitboxes()
     {
-        Debug.LogWarning("Can't absorb Grime Reaper!");
+
     }
+
+    // public new void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    // {
+    //     Debug.LogWarning("Can't absorb Grime Reaper!");
+    // }
 
     public void Attack()
     {

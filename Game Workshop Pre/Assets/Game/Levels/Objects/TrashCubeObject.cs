@@ -8,6 +8,7 @@ public class TrashCubeObject : MonoBehaviour, IHeatable, ISweepable, ISwipeable
 {
     public List<IAbsorbable> absorbedObjects = new List<IAbsorbable>();
     public Rigidbody2D rigidBody;
+    public GameObject HitParent { get { return gameObject; } }
     public float trashPlatformDuration;
     public int maxNumberOfTrashPlatforms;
     [SerializeField] TrashPlatform _trashPlatformPrefab;

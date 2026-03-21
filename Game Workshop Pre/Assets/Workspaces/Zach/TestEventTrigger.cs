@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class TestEventTrigger : MonoBehaviour, ISwipeable
 {
+    public GameObject HitParent { get { return gameObject; } }
     [SerializeField] private EventTrigger _events;
+    
     public void OnSwipe(Vector2 direction, float force, Collider2D collision)
     {
         //Triggers all actions on the event with what was serialized

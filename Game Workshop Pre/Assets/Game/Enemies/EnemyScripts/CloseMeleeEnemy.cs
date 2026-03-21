@@ -40,4 +40,9 @@ public class CloseMeleeEnemy : EnemyBase
     protected override void OnStart() { }
 
     protected override void OnUpdate() { }
+    protected override void ForceDisableHitboxes()
+    {
+        _attackHitbox.Disable();
+    }
+
 }

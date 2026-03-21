@@ -91,16 +91,16 @@ public class PauseMenu : MonoBehaviour
 
         if(currentOpenMenu == optionsMenuUI)
         {
-            foreach (Slider slider in _pauseSliders)
-            {
-                if (slider.value <= 0.5f)
-                {
+            // foreach (Slider slider in _pauseSliders)
+            // {
+            //     if (slider.value <= 0.5f)
+            //     {
                     
-                    slider.targetGraphic.GetComponent<Image>().sprite = _pauseSprites[0];
-                }
-                else
-                    slider.targetGraphic.GetComponent<Image>().sprite = _pauseSprites[1];
-                }
+            //         slider.targetGraphic.GetComponent<Image>().sprite = _pauseSprites[0];
+            //     }
+            //     else
+            //         slider.targetGraphic.GetComponent<Image>().sprite = _pauseSprites[1];
+            //     }
                 
         }
         
@@ -157,6 +157,11 @@ public class PauseMenu : MonoBehaviour
         PlayerPrefs.SetFloat("SFXVolume", _pauseSliders[1].value);
         PlayerPrefs.SetFloat("MusicVolume", _pauseSliders[2].value);
         PlayerPrefs.Save();
+    }
+
+    public void SettingsTrashBallLabels(bool enabled)
+    {
+        GameManager.Instance.UseTrashballLabels = enabled;
     }
 
     void ChangeMenu(GameObject newMenu)

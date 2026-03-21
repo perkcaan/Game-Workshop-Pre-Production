@@ -13,6 +13,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     [SerializeField] List<GameObject> _startingStoredTrash;
     [SerializeField] Color color;
     private float _sweepTimer;
+    public GameObject HitParent { get { return gameObject; } }
 
     protected override void Awake()
     {

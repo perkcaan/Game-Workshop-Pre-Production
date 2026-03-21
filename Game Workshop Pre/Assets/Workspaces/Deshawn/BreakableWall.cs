@@ -15,6 +15,8 @@ public class BreakableWall : MonoBehaviour,ISwipeable
     [SerializeField] float _onDamagedShakeForce;
     private float _shakeSpeed = 0.110f;
     private SpriteRenderer _sprite;
+    public GameObject HitParent { get { return gameObject; } }
+    
     // Start is called before the first frame update
     void Start()
     {

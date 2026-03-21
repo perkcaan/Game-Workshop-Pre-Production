@@ -16,6 +16,7 @@ public class LooseTrash : Trash, ISweepable, ISwipeable, IPokeable
     [SerializeField] bool _isSwipable;
 
     private float _sweepTimer;
+    public GameObject HitParent { get { return gameObject; } }
 
     public void OnSweep(Vector2 position, Vector2 direction, float force)
     {

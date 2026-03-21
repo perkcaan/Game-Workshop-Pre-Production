@@ -100,6 +100,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         set { SetWeight(value); }
     }
 
+    //ITargetable
+    public TargetType TargetType { get { return TargetType.Player; } }
+
     //input
     private bool _isUsingVirtualMouse = false;
     private Vector2 _virtualMouseVector = Vector2.zero;
@@ -108,20 +111,24 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
     private HeatMechanic _playerHeat;
+    public GameObject HitParent { get { return gameObject; } }
 
     #endregion
 
     // Methods
     private void Awake()
     {
-        _ctx = new PlayerContext(this, _movementProps);
-        _ctx.Rigidbody = GetComponent<Rigidbody2D>();
-        _ctx.Animator = GetComponentInChildren<Animator>();
-        _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
-        _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
-        _ctx.HookHandler = GetComponentInChildren<HookHandler>();
-        _ctx.Collider = GetComponent<Collider2D>();
-        _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
+        _ctx = new PlayerContext(this, _movementProps)
+        {
+            Rigidbody = GetComponent<Rigidbody2D>(),
+            Animator = GetComponentInChildren<Animator>(),
+            SwipeHandler = GetComponentInChildren<SwipeHandler>(),
+            SweepHandler = GetComponentInChildren<BroomSweepHandler>(),
+            HookHandler = GetComponentInChildren<HookHandler>(),
+            Collider = GetComponent<Collider2D>(),
+            Rotation = Mathf.DeltaAngle(0f, _startAngle)
+        };
+        _ctx.SwipeHandler.Initialize(this);
         _playerHeat = GetComponent<HeatMechanic>();
         _state = new PlayerStateMachine(_ctx);
         //_heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat System/Heat Meter");
@@ -398,13 +405,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
 
         Death();
         heat.Reset();
-    }
-
-    // ITargetable
-
-    public TargetType GetTargetType()
-    {
-        return TargetType.Player;
     }
 
     // Gizmo to display the dash cooldowns

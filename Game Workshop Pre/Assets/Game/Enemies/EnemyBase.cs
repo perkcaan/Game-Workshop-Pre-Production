@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters;
+using AYellowpaper.SerializedCollections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable, ICleanable
+public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable, ICleanable, ISwipeable, ISweepable, IPokeable
 {
     [Header("Enemy")]
     [SerializeField] private BehaviourTree _behaviour;
@@ -45,11 +46,27 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     public int TrashMatWeight { get { return _trashMaterialWeight; } }
 
     [SerializeField] protected float _minSizeToAbsorb;
+    public float MinSizeToAbsorb
+    {
+        get { return _minSizeToAbsorb; }
+        set { _minSizeToAbsorb = value; }
+    }
     [SerializeField] protected float _minVelocityToAbsorb;
     [SerializeField] private float _trashBallEscapeForce = 1f;
     [SerializeField] private float _trashBallSquirmTime = 5f;
     [SerializeField] private float _trashBallSquirmForce = 5f;
     [SerializeField] private int _trashBallSquirmDamage = 5;
+    [Header("Stun Properties")]
+    [SerializeField] private float _stunTime = 2f;
+    public float StunTime { get { return _stunTime; } }
+
+    [Header("Pinball Properties")]
+    [SerializeField] private float _pinballTime = 5f;
+    public float PinballTime { get { return _pinballTime; } }
+    [SerializeField] private PhysicsMaterial2D _pinballMaterial;
+    public PhysicsMaterial2D PinballMaterial { get { return _pinballMaterial; } }
+
+    public TargetType TargetType { get { return TargetType.Enemy; } } //ITargetable
 
     // Components
     protected Animator _animator;
@@ -57,11 +74,19 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     private SpriteRenderer _renderer;
     private Rigidbody2D _rigidbody;
     public Rigidbody2D Rigidbody { get { return _rigidbody; } }
-    private Collider2D _collider;
-    public Collider2D Collider { get { return _collider; } }
+    private CircleCollider2D _collider;
+    public CircleCollider2D Collider { get { return _collider; } }
+    public float SizeRadius { get { return Collider.radius; } }
+    private List<EnemySubCollider> _subcolliders;
+    public GameObject HitParent { get { return gameObject; } }
     
     private EnemyPather _pather;
     public EnemyPather Pather { get { return _pather; } }
+
+    
+
+
+    protected EnemyStateMachine _state;
 
     private Room _parentRoom;
 
@@ -70,13 +95,14 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
     // Fields
     private bool _isDying = false;
-    private bool _isAbsorbed = false;
+
     // Timers
     private float _ballSquirmTimer = 0;
 
     // external methods (use in specific enemies!)
     protected abstract void OnStart();
     protected abstract void OnUpdate();
+    protected abstract void ForceDisableHitboxes();
 
     //internal methods
     private void OnValidate()
@@ -88,10 +114,16 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _collider = GetComponent<Collider2D>();
+        _collider = GetComponent<CircleCollider2D>();
         _animator = GetComponentInChildren<Animator>();
         _renderer = GetComponentInChildren<SpriteRenderer>();
         _pather = GetComponent<EnemyPather>();
+        _state = new EnemyStateMachine(this);
+        _subcolliders = new List<EnemySubCollider>(GetComponentsInChildren<EnemySubCollider>());
+        foreach (EnemySubCollider subcollider in _subcolliders)
+        {
+            subcollider.Initialize(this);
+        }
         if (_behaviour != null) _behaviour.Initialize(this);
         OnStart();
     }
@@ -99,7 +131,9 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     private void Update()
     {
         if (_isDying) return;
-        if (_isAbsorbed) return;
+
+        _state.Update();
+        if (!_state.HasBehaviour) return;
 
         if (_behaviour != null)
         {
@@ -143,14 +177,16 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             _currentAction = null;
         }
         _currentActionComplete = null;
+        ForceDisableHitboxes();
     }
 
-    public float MinSizeToAbsorb
+    // Cancels all behaviour. Includes coroutines, pathing, actions
+    public void CancelBehaviour()
     {
-        get { return _minSizeToAbsorb; }
-        set { _minSizeToAbsorb = value; }
+        _pather.Stop();
+        CancelAction();
+        StopAllCoroutines();
     }
-
 
     // Simple attack is a basic attack template that has startup, an attack, and endlag
     protected IEnumerator SimpleAttack(SimpleAttackProperties properties, 
@@ -177,26 +213,17 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         _renderer.flipX = !faceRight;
     }
 
-
     private void OnDrawGizmos()
     {
         //cant figure out a good way to debug draw them
         if (_behaviour != null) _behaviour.DrawDebug();
     }
 
-    public TargetType GetTargetType()
-    {
-        return TargetType.Enemy;
-    }
-
-
     // IHeatable
     public void PrepareIgnite(HeatMechanic heat)
     {
         _isDying = true;
-        _pather.Stop();
-        CancelAction();
-        StopAllCoroutines();
+        CancelBehaviour();
     }
 
 
@@ -211,15 +238,12 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
 
     // IAbsorbable
-
     public bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
         if (_isDying) return false;
-        if (forcedAbsorb || (ballSize >= _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled && !_isAbsorbed))
+        if (forcedAbsorb || (ballSize >= _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled && _rigidbody.simulated))
         {
-            CancelAction();
-            StopAllCoroutines();
-            _isAbsorbed = true;
+            _state.ChangeState(EnemyStateEnum.Absorbed);
             _rigidbody.simulated = false;
 
             if (forcedAbsorb) return true;
@@ -266,7 +290,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         Rigidbody.linearVelocity = randomForce * unitVectorAngle;
 
         yield return new WaitForSeconds(0.3f);
-        _isAbsorbed = false;
+        _state.ChangeState(EnemyStateEnum.Default);
         if (trashBall != null && trashBall.isActiveAndEnabled)
         {
             List<Collider2D> colliders = new List<Collider2D>();
@@ -308,8 +332,29 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         _parentRoom = room;
     }
 
-    public void OnAbsorbedByTrashBall(TrashBall trashBall, float ballVelocity, int ballSize, bool forcedAbsorb)
+    // ISwipeable
+    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
     {
-        throw new NotImplementedException();
+        //if swipe is processed as vulnerable
+        _state.ChangeState(EnemyStateEnum.Pinball);
+
+        //pinball affects swipe more
+        Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
+    }
+
+    // IPokeable
+    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    {
+        //pinball affects poke more
+        Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
+    }    
+
+    // ISweepable
+    public void OnSweep(Vector2 position, Vector2 direction, float force)
+    {
+        //if sweep is processed as pinball
+        Vector2 springForce = direction * force;
+        Vector2 dampingForce = -Rigidbody.linearVelocity * 4f;
+        Rigidbody.AddForce(springForce + dampingForce, ForceMode2D.Force);
     }
 }
