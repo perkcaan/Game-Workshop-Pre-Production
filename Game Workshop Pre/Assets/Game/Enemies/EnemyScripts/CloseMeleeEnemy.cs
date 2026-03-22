@@ -7,6 +7,7 @@ public class CloseMeleeEnemy : EnemyBase
     [SerializeField] private float _attackDashForce = 20f;
     [SerializeField] private SimpleAttackProperties _attackProperties;
     [SerializeField] private HeatAttackHitbox _attackHitbox;
+    
 
     public IEnumerator MeleeAttack(Action<bool> onComplete)
     {
@@ -20,7 +21,7 @@ public class CloseMeleeEnemy : EnemyBase
             // Enable attack hitbox
             _attackHitbox.UpdateRotation(transform, _facingRotation);
             _attackHitbox.Enable();
-
+            AudioManager.Instance.PlayOnInstance(gameObject, "attack");
             // Dash in attacking direction
             float radians = _facingRotation * Mathf.Deg2Rad;
             Vector2 direction = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)).normalized;
@@ -39,4 +40,9 @@ public class CloseMeleeEnemy : EnemyBase
     protected override void OnStart() { }
 
     protected override void OnUpdate() { }
+    protected override void ForceDisableHitboxes()
+    {
+        _attackHitbox.Disable();
+    }
+
 }

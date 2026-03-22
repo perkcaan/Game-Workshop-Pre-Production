@@ -27,6 +27,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
     public override void EnterState()
     {
         _ctx.Animator.SetBool("HoldingSwipe", true);
+        _ctx.CanHook = false;
         _ctx.CanSwipe = false;
         _ctx.CanDash = false;
         _hasSwipeBeenActivated = false;
@@ -43,7 +44,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
         }
         else
         {
-            Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(_ctx.MouseInput);
             Vector2 direction = mouseWorldPoint - (Vector2)_ctx.Player.transform.position;
             direction.Normalize();
             float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -110,7 +111,7 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
             {
                 _ctx.MoveSpeed = 0f;
                 // Cancels sliding with an opposing force
-                Vector2 velocity = _ctx.Rigidbody.velocity;
+                Vector2 velocity = _ctx.Rigidbody.linearVelocity;
                 if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxSwipeWalkSpeed) && _ctx.Props.WillCancelSwipeSlide)
                 {
                     Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxSwipeWalkSpeed;
@@ -136,7 +137,5 @@ public class PlayerSwipingState : BaseState<PlayerStateEnum>
                 _state.ChangeState(PlayerStateEnum.Idle);
             }
         }
-
     }
-
 }

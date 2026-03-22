@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-[BehaviourNode(0, "Decorator/Conditions")]
+[BehaviourNode(0, "Decorator/Conditions"), Serializable]
 // Returns the success or failure based on a debug boolean value. Use for testing Behaviour Tree logic.
 public class DebugConditionalNode : ConditionalNode
 {

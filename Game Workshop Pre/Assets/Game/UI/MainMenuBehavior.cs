@@ -4,26 +4,35 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using FMODUnity;
+using FMOD.Studio;
 
 public class MainMenuBehavior : MonoBehaviour
 {
-
-
-    [SerializeField] Button playButton;
-    [SerializeField] Button settingsButton;
-    [SerializeField] Button creditsButton;
-    [SerializeField] Button exitButton;
     [SerializeField] GameObject settingsMenu;
+    private EventInstance musicInstance;
+
 
     private bool settingsMenuIsOpen;
 
+
+    public void Start()
+    {
+        RuntimeManager.GetBus("bus:/").stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        musicInstance = RuntimeManager.CreateInstance("event:/Music/Title Music");
+
+        musicInstance.start();
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+    }
     public void OnPlayButtonClicked()
     {
         if (settingsMenuIsOpen)
             return;
 
-        Debug.Log("Play Clicked");
-        SceneManager.LoadScene("District0");
+        musicInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        SceneManager.LoadScene(1);
     }
 
     public void OnSettingsButtonClicked()
@@ -33,7 +42,6 @@ public class MainMenuBehavior : MonoBehaviour
         else
             settingsMenuIsOpen = true;
 
-            Debug.Log("Settings Clicked");
         settingsMenu.SetActive(true);
     }
 
@@ -42,7 +50,6 @@ public class MainMenuBehavior : MonoBehaviour
         if (settingsMenuIsOpen)
             return;
 
-        Debug.Log("Credits Clicked");
     }
 
     public void OnExitButtonClicked()
@@ -50,7 +57,6 @@ public class MainMenuBehavior : MonoBehaviour
         if (settingsMenuIsOpen)
             return;
 
-        Debug.Log("Exit Button Clicked");
         if (Application.isPlaying)
         {
             Application.Quit();

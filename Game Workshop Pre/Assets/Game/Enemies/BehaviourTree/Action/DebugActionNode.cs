@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
 // Returns NodeState and prints text. Use for testing behaviour tree logic.
-[BehaviourNode(0, "Actions")]
+[BehaviourNode(0, "Actions"), Serializable]
 public class DebugActionNode : BehaviourTreeNode
 {
     // Fields
