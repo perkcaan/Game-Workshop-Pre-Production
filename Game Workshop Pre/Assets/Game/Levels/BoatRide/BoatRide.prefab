@@ -144,18 +144,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 3217146970467283490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d92c5f50689a52748b3a56e3116c1231, type: 3}
+  m_Script: {fileID: 11500000, guid: e63dcf612eee25646aa1454b9de3c722, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  rockAmount: 0.1
-  rockSpeed: 0.5
+  moveSpeed: 5
+  rockAmount: 0.25
+  rockSpeed: 1.5
   endPoint: {fileID: 8626739995198962032}
-  _playerDepositY: 3
+  _playerDepositY: 2
   _grabSpeed: 1
   playerJumpHeight: 1
   arrow: {fileID: 219612740165771574}
-  arrowWaveHeight: 0.1
+  arrowWaveHeight: 1
   arrowWaveSpeed: 1
 --- !u!114 &6265420854262508003
 MonoBehaviour:

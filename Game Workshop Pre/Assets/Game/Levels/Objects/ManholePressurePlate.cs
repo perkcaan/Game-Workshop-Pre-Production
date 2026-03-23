@@ -43,7 +43,7 @@ public class ManholePressurePlate : MonoBehaviour
             Vector2 manholeCenterPos = (Vector2)this.transform.position;
             Vector2 heading = (manholeCenterPos - trashBallPos);
             float distance = Vector2.Distance(manholeCenterPos, trashBallPos);
-            trashballRB.velocity = (((heading * fallInConstant * distance) / maxRollDistance));
+            trashballRB.linearVelocity = (((heading * fallInConstant * distance) / maxRollDistance));
 
             if (Mathf.Abs(distance) < 0.05f) {
                 trashballRB.MovePosition(manholeCenterPos);

@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-[BehaviourNode(2, "_Deprecated")]
+[BehaviourNode(2, "_Deprecated"), Serializable]
 public class SimpleWalkNode : BehaviourTreeNode
 {
     // Fields

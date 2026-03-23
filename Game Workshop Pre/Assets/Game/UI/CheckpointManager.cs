@@ -23,6 +23,8 @@ public class CheckpointManager : StaticInstance<CheckpointManager>
 
     private void AutoSetActiveCheckpoint() // Automatically sets the active checkpoint
     {
+        if (checkpoints.Count < 1) return;
+
         if (!respawnChoice && (activeCheckpoint != checkpoints[checkpoints.Count - 1]))
         {
             activeCheckpoint = checkpoints[checkpoints.Count - 1];

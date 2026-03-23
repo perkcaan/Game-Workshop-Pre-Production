@@ -27,6 +27,9 @@ public class PlayerContext
     public bool CanSwipe { get; set; } = true;
     public float SwipeCooldownTimer { get; set; } = 0f;
 
+    //sweep poke
+    public float PokeCooldownTimer { get; set; } = 0f; 
+
     //throwing hook
     public bool CanHook { get; set; } = true;
     public float HookCooldownTimer { get; set; } = 0f;
