@@ -74,6 +74,8 @@ public class TrashRadarManager : MonoBehaviour
 
     void Start()
     {
+        if (dm == null)
+            dm = GameObject.Find("DistrictManager").GetComponent<DistrictManager>();
         StartCoroutine(StartProxyTimer());
     }
 
@@ -116,7 +118,8 @@ public class TrashRadarManager : MonoBehaviour
         Vector2 targetDirection;
         float rotationDirection;
 
-        if (dm.FocusedRoom == null || dm.FocusedRoom.IsRoomCleaned)
+        bool gateSequenceValid = (gateSequence.Length <= 0) ? false : true;
+        if (gateSequenceValid && (dm.FocusedRoom == null || dm.FocusedRoom.IsRoomCleaned))
         {
             targetDirection = (Vector2)(gateSequence[_gateNumber].position - transform.position);
             rotationDirection = (Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg) - 90f;
