@@ -188,7 +188,7 @@ public class BroomSweepHandler : MonoBehaviour
     }
 
     // 
-    public void OnPokeHit(Collider2D collider)
+    public void OnPokeTrigger(Collider2D collider)
     {
         Vector2 direction = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
 

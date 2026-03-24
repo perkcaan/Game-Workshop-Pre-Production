@@ -24,7 +24,7 @@ public class BroomPokebox : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        _handler.OnPokeHit(collider);
+        _handler.OnPokeTrigger(collider);
     }
 
 

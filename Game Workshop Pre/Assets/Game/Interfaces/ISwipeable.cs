@@ -5,6 +5,5 @@ using UnityEngine;
 public interface ISwipeable
 {
     public void OnSwipe(Vector2 direction, float force, Collider2D collider);
-
     public GameObject HitParent { get; }
 }

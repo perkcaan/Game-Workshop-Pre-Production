@@ -189,7 +189,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &7717461760388640528
 MonoBehaviour:
@@ -221,8 +221,21 @@ MonoBehaviour:
   _trashBallSquirmTime: 5
   _trashBallSquirmForce: 4
   _trashBallSquirmDamage: 3
-  _pinballTime: 5
-  _pinballMaterial: {fileID: 6200000, guid: 279c7b1ec8d67014883b7f233cda58a5, type: 2}
+  _stunTime: 2
+  _pinballProps:
+    _time: 5
+    _material: {fileID: 6200000, guid: 279c7b1ec8d67014883b7f233cda58a5, type: 2}
+    _swipeMultiplier: 1
+    _pokeMultiplier: 1
+  _interactProps:
+    _canSweepBase: 0
+    _isBaseVulnerableToSwipe: 1
+    _swipeBaseMultiplier: 1
+    _swipeVulnerableMultiplier: 0.3
+    _isBaseVulnerableToPoke: 1
+    _pokeBaseMultiplier: 1
+    _pokeVulnerableMultiplier: 2
+    _canAbsorbBase: 1
   _attackDashForce: 3
   _attackProperties:
     _startup: 0.5
@@ -310,7 +323,7 @@ MonoBehaviour:
     - rid: 5922415422538776576
       type: {class: RandomWanderNode, ns: , asm: Assembly-CSharp}
       data:
-        DisplayName: Node
+        DisplayName: Wander Target
         Children: []
         _wanderRadius: 3.5
         _arriveWaitTime: 2.5

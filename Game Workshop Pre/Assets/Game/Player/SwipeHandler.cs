@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 // Handles the player's swipe ability
@@ -18,8 +19,10 @@ public class SwipeHandler : MonoBehaviour
 
     // Fields
     private float _rotation = 0f;
+    private float targetAngle;
 
     // Methods
+
     private void Awake()
     {
         _hitbox = GetComponent<BoxCollider2D>();
@@ -42,7 +45,7 @@ public class SwipeHandler : MonoBehaviour
     {
         _hitbox.enabled = true;
         UpdateHitbox(rotation);
-        Vector2 direction = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
+        Vector2 swipeDirection = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
         bool wasSomethingHit = false;
 
         // Get collider bounds
@@ -109,8 +112,12 @@ public class SwipeHandler : MonoBehaviour
                 continue;
             }
 
+            Vector2 direction = (collider.transform.position - _parent.transform.position).normalized;
+            Debug.Log($"Angle: {swipeDirection - direction}");
+            // Add angle fall off later...
+            //From 0>90 lerp 1>0.6
+            // Including both directions
             swipeable.OnSwipe(direction, swipeForce, collider);
-
             //TODO: Add support for shields blocking the swipe
             //if swipe is blocked-> 
             //break here and play a sound and do knockback or whatever

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters;
 using AYellowpaper.SerializedCollections;
 using DG.Tweening;
+using FMOD;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -56,15 +57,14 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     [SerializeField] private float _trashBallSquirmTime = 5f;
     [SerializeField] private float _trashBallSquirmForce = 5f;
     [SerializeField] private int _trashBallSquirmDamage = 5;
-    [Header("Stun Properties")]
+    [Header("Stunned Properties")]
     [SerializeField] private float _stunTime = 2f;
     public float StunTime { get { return _stunTime; } }
-
     [Header("Pinball Properties")]
-    [SerializeField] private float _pinballTime = 5f;
-    public float PinballTime { get { return _pinballTime; } }
-    [SerializeField] private PhysicsMaterial2D _pinballMaterial;
-    public PhysicsMaterial2D PinballMaterial { get { return _pinballMaterial; } }
+    [SerializeField] EnemyPinballProperties _pinballProps;
+    public EnemyPinballProperties PinballProps { get { return _pinballProps; } }
+    [Header("Interaction Properties")]
+    [SerializeField] EnemyInteractionProperties _interactProps;
 
     public TargetType TargetType { get { return TargetType.Enemy; } } //ITargetable
 
@@ -82,10 +82,6 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     
     private EnemyPather _pather;
     public EnemyPather Pather { get { return _pather; } }
-
-    
-
-
     protected EnemyStateMachine _state;
 
     private Room _parentRoom;
@@ -238,10 +234,20 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
 
 
     // IAbsorbable
+    protected virtual void ModifyAbsorb(ref EnemyAbsorbData data) { }
     public bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
         if (_isDying) return false;
-        if (forcedAbsorb || (ballSize >= _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled && _rigidbody.simulated))
+        
+        EnemyAbsorbData data = new EnemyAbsorbData()
+        {
+            CanAbsorb = _interactProps.CanAbsorbBase
+        };
+
+        ModifyAbsorb(ref data); // Enemy type modifies sweep data
+        _state.ModifyAbsorb(ref data); // State modifies sweep data
+
+        if (forcedAbsorb || (data.CanAbsorb && ballSize >= _minSizeToAbsorb && ballVelocity.magnitude > _minVelocityToAbsorb && isActiveAndEnabled && _rigidbody.simulated))
         {
             _state.ChangeState(EnemyStateEnum.Absorbed);
             _rigidbody.simulated = false;
@@ -253,7 +259,24 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             return true;
             
         }
+
+        // Could do bouncing or any fail reactions here
         return false;
+    }
+
+    // Update method for when inside trashball
+    public void TrashBallUpdate(TrashBall trashBall)
+    {
+
+        if (_ballSquirmTimer <= 0)
+        {
+            float angle = UnityEngine.Random.Range(0f, 2f * Mathf.PI);
+            Vector2 randomDir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized;
+
+            trashBall.TakeDamage(_trashBallSquirmDamage, _trashBallSquirmForce, randomDir);
+            _ballSquirmTimer += _trashBallSquirmTime;
+        }
+        _ballSquirmTimer -= Time.deltaTime;
     }
 
     public void OnTrashBallRelease(TrashBall trashBall, Vector2 unitVectorAngle)
@@ -311,50 +334,81 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         Destroy(gameObject);
     }
 
-    // Update method for trashball
-    public void TrashBallUpdate(TrashBall trashBall)
-    {
-
-        if (_ballSquirmTimer <= 0)
-        {
-            float angle = UnityEngine.Random.Range(0f, 2f * Mathf.PI);
-            Vector2 randomDir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized;
-
-            trashBall.TakeDamage(_trashBallSquirmDamage, _trashBallSquirmForce, randomDir);
-            _ballSquirmTimer += _trashBallSquirmTime;
-        }
-        _ballSquirmTimer -= Time.deltaTime;
-    }
-
     // ICleanable
     public void SetRoom(Room room)
     {
         _parentRoom = room;
     }
 
-    // ISwipeable
-    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
-    {
-        //if swipe is processed as vulnerable
-        _state.ChangeState(EnemyStateEnum.Pinball);
-
-        //pinball affects swipe more
-        Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
-    }
-
-    // IPokeable
-    public void OnPoke(Vector2 direction, float force, Collider2D collider)
-    {
-        //pinball affects poke more
-        Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
-    }    
-
     // ISweepable
+    protected virtual void ModifySweep(ref EnemySweepData data) { }
+
     public void OnSweep(Vector2 position, Vector2 direction, float force)
     {
-        //if sweep is processed as pinball
+        EnemySweepData data = new EnemySweepData()
+        {
+            CanSweep = _interactProps.CanSweepBase 
+        };
+
+        ModifySweep(ref data); // Enemy type modifies sweep data
+        _state.ModifySweep(ref data); // State modifies sweep data
+
+        //If can't sweep, do nothing
+        if (!data.CanSweep) return;
+
         Vector2 springForce = direction * force;
         Vector2 dampingForce = -Rigidbody.linearVelocity * 4f;
         Rigidbody.AddForce(springForce + dampingForce, ForceMode2D.Force);
     }
+
+    // ISwipeable
+    protected virtual void ModifySwipe(ref EnemySwipeData data) { }
+
+    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
+    {
+        EnemySwipeData data = new EnemySwipeData
+        {
+            IsVulnerable = _interactProps.IsBaseVulnerableToSwipe,
+            SwipeMultiplier = _interactProps.SwipeBaseMultiplier
+        };
+
+        ModifySwipe(ref data); // Enemy type modifies swipe data
+        _state.ModifySwipe(ref data); // State modifies swipe data
+
+        //If swipe is processed as vulnerable, become Pinball
+        if (data.IsVulnerable)
+        {
+            data.SwipeMultiplier *= _interactProps.SwipeVulnerableMultiplier;
+            _state.ChangeState(EnemyStateEnum.Pinball);
+        }
+        
+        //Add swipe knockback
+        Rigidbody.AddForce(direction * force * data.SwipeMultiplier, ForceMode2D.Impulse);
+    }
+
+
+    // IPokeable
+    protected virtual void ModifyPoke(ref EnemyPokeData data) { }
+
+    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    {
+        EnemyPokeData data = new EnemyPokeData()
+        {
+            IsVulnerable = _interactProps.IsBaseVulnerableToPoke,
+            PokeMultiplier = _interactProps.PokeBaseMultiplier
+        };
+
+        ModifyPoke(ref data); // Enemy type modifies poke data
+        _state.ModifyPoke(ref data); // State modifies poke data
+
+        //If poke is processed as vulnerable, become Pinball
+        if (data.IsVulnerable)
+        {
+            data.PokeMultiplier *= _interactProps.PokeVulnerableMultiplier;
+            _state.ChangeState(EnemyStateEnum.Pinball);
+        }
+        
+        //Add poke knockback
+        Rigidbody.AddForce(direction * force * data.PokeMultiplier, ForceMode2D.Impulse);
+    }    
 }
