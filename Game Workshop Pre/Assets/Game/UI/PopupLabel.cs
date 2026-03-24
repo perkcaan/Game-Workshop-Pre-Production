@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Reflection.Emit;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using Color = UnityEngine.Color;
 
 public class PopupLabel : MonoBehaviour
 {
 
     [SerializeField] private TMP_Text _text;
+    [SerializeField] private SpriteRenderer _imageLabel;
     [SerializeField] private float _minScaleSize = 1.2f;
     [SerializeField] private float _maxScaleSize = 3f;
     [SerializeField] private int _sizeOfMaxScale = 40;
+    [SerializeField] private int _coinsOfMaxScale = 40;
     [SerializeField] private float _scaleUpTime = 0.2f;
     [SerializeField] private float _scaleDownSize = 0.8f;
     [SerializeField] private float _scaleDownTime = 0.3f;
@@ -33,12 +37,24 @@ public class PopupLabel : MonoBehaviour
             return;
         }
         newLabel = plp.GetLabel();
-        newLabel.Setup(position, color, size);
+        newLabel.PlusSetup(position, color, size);
     }
 
-    public void Setup(Vector2 position, Color color, int size)
-    {
+    public static void CreateCoinLabel(Vector2 position, Color color, int coins)
+    {   
+        PopupLabel newLabel = null;
+        PopupLabelPooler plp = PopupLabelPooler.Instance;
+        if (plp == null)
+        {
+            Debug.LogWarning("Add a PopupLabelPooler prefab to the scene.");
+            return;
+        }
+        newLabel = plp.GetLabel();
+        newLabel.CoinSetup(position, color, coins);
+    }
 
+    public void PlusSetup(Vector2 position, Color color, int size)
+    {
         string labelText = "+" + size;
         float labelScale = _minScaleSize + (size - 1f) / (_sizeOfMaxScale - 1f) * (_maxScaleSize - _minScaleSize);
         labelScale = Mathf.Clamp(labelScale, _minScaleSize, _maxScaleSize);
@@ -51,8 +67,58 @@ public class PopupLabel : MonoBehaviour
         transform.localScale = Vector3.one;
         _text.alpha = 1f;
         Vector3 offset = Random.insideUnitCircle * _randomOffsetDistance;
+        _imageLabel.enabled = false;
         transform.position += offset;
         PlayPlusAnimation(labelScale);
+    }
+
+    public void CoinSetup(Vector2 position, Color color, int coins)
+    {
+
+        string labelText = $"{coins}";
+        float labelScale = _minScaleSize + (coins - 1f) / (_coinsOfMaxScale - 1f) * (_maxScaleSize - _minScaleSize);
+        labelScale = Mathf.Clamp(labelScale, _minScaleSize, _maxScaleSize);
+
+        gameObject.name = "Coin Label: " + labelText;
+        transform.position = position;
+        string text = labelText;
+        _text.text = text;
+        _text.color = color;
+        transform.localScale = Vector3.one;
+        _text.alpha = 1f;
+        Vector3 offset = Random.insideUnitCircle * _randomOffsetDistance;
+        _imageLabel.enabled = true;
+        transform.position += offset;
+        UpdateImagePosition();
+        PlayPlusAnimation(labelScale);
+    }
+
+    private void UpdateImagePosition()
+    {
+       _text.ForceMeshUpdate();
+
+        TMP_TextInfo info = _text.textInfo;
+        if (info.lineCount == 0)
+            return;
+
+        TMP_LineInfo line = info.lineInfo[info.lineCount - 1];
+
+        float rightEdge = line.lineExtents.max.x;
+
+        float midY = (line.lineExtents.min.y + line.lineExtents.max.y) * 0.5f;
+
+        float spacing = 1f / 16;
+
+        // Get sprite half width in local units
+        float halfWidth = _imageLabel.sprite.bounds.extents.x;
+
+        Vector3 localPos = new Vector3(
+            rightEdge + halfWidth - spacing,
+            midY,
+            0f
+        );
+
+        _imageLabel.transform.localPosition = localPos;
     }
 
     private void PlayPlusAnimation(float labelScale)
@@ -91,10 +157,8 @@ public class PopupLabel : MonoBehaviour
             transform.DOMoveY(transform.position.y + _floatUpDistance, Mathf.Min(_floatUpDuration, _fadeAwayDelay + _fadeAwayDelay))
             .SetEase(Ease.OutQuad)
         );
-
-
     }
-
+    
     private void TweenComplete()
     {
         PopupLabelPooler plp = PopupLabelPooler.Instance;
@@ -103,6 +167,7 @@ public class PopupLabel : MonoBehaviour
             _sequence?.Kill();
             _sequence = null;
             plp.ReturnLabel(this);
+            
         }
     }
 }

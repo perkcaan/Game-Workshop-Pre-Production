@@ -14,8 +14,8 @@ public class DebugController : MonoBehaviour
     private bool cheatsEnabled = false;
     void Start()
     {
-        vcam = FindObjectOfType<CinemachineVirtualCamera>();
-        pauseMenu = FindObjectOfType<PauseMenu>();
+        vcam = FindAnyObjectByType<CinemachineVirtualCamera>();
+        pauseMenu = FindAnyObjectByType<PauseMenu>();
         if (vcam == null) return;
         confiner = vcam.GetComponent<CinemachineConfiner2D>();
         transposer = vcam.GetCinemachineComponent<CinemachineFramingTransposer>();

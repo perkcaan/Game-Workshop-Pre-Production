@@ -14,6 +14,7 @@ public class Gate : MonoBehaviour
         _collider = GetComponent<Collider2D>();
         _spriteRenderer.enabled = false;
         _collider.enabled = false;
+        
     }
 
     public void Open(Room room)
@@ -32,6 +33,7 @@ public class Gate : MonoBehaviour
     public void Close(Room room)
     {
         if (!_roomsClosingGate.Contains(room)) _roomsClosingGate.Add(room);
+        
         if (_isGateDown) return; //already closed
         _spriteRenderer.enabled = true;
         _collider.enabled = true;

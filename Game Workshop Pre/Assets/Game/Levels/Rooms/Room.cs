@@ -22,6 +22,13 @@ public class Room : MonoBehaviour
     private List<ICleanable> _containedCleanable = new List<ICleanable>();
     private int _roomCurrentTrashAmount = 0; // Current amount of trash in the room
     private int _roomTotalTrashCount = 0; // Starting amount of trash / Max trash allowed in room
+
+    public int MaxTrashBallSize { get { return _maxTrashBallSize; } }
+    private int _maxTrashBallSize;
+    public int coinsAwarded;
+    public float totalMinSizeToAbsorb;
+    public float baseIntensity;
+
     public float Cleanliness
     {
         get { return _roomTotalTrashCount == 0 ? 1f : 1f - Mathf.Clamp01((float) _roomCurrentTrashAmount / _roomTotalTrashCount); }
@@ -50,6 +57,9 @@ public class Room : MonoBehaviour
     [SerializeField] private List<Gate> _connectedGates;
     [SerializeField] private bool _openGatesOnClean = true; 
 
+    // Event triggers
+    [SerializeField] private EventTrigger _roomCleanEvents;
+
     // Room State
     private bool _isRoomCleaned = false;
     public bool IsRoomCleaned { get { return _isRoomCleaned; } }
@@ -63,6 +73,13 @@ public class Room : MonoBehaviour
         { 
             OnDrawerOpen();
         }
+        _maxTrashBallSize = 0;
+    }
+
+    public void NewTrashBallSize(int size)
+    {
+        if(size > _maxTrashBallSize) _maxTrashBallSize = size;
+        
     }
 
     public void ActivateRoom()
@@ -96,8 +113,16 @@ public class Room : MonoBehaviour
     {
         if (_isRoomCleaned || _isRoomClosed) return;
         _isRoomClosed = true;
+
+        if (IsTrashRoom && !IsRoomCleaned)
+        {
+            PlayerMovementController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
+            AudioManager.Instance.Play("gateUp", player.transform);
+        }
+
         foreach (Gate gate in _connectedGates)
         {
+            
             gate.Close(this);
         }
     }
@@ -108,6 +133,8 @@ public class Room : MonoBehaviour
         if (!_isRoomClosed) return;
 
         _isRoomClosed = false;
+
+        
         foreach (Gate gate in _connectedGates)
         {
             gate.Open(this);
@@ -134,6 +161,7 @@ public class Room : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out PlayerMovementController player))
         {
             if (DistrictManager.Instance != null) DistrictManager.Instance.PlayerEnterRoom(this);
+            
         }
 
         if (collision.gameObject.TryGetComponent(out HeatMechanic heatable))
@@ -177,11 +205,32 @@ public class Room : MonoBehaviour
 
     public void ObjectCleaned(ICleanable cleanable)
     {
+
         if (_containedCleanable.Contains(cleanable))
         {
             _containedCleanable.Remove(cleanable);
         }
         UpdateRoomCleanliness();
+
+        totalMinSizeToAbsorb = 0f;
+        for (int i = 0; i < _containedCleanable.Count; i++)
+        {
+            if (_containedCleanable[i] is EnemyBase enemy)
+            {
+                totalMinSizeToAbsorb += enemy.MinSizeToAbsorb;
+            }
+        }
+        
+    }
+
+    public void ObjectReplaced(ICleanable cleanable)
+    {
+        if (_containedCleanable.Contains(cleanable))
+        {
+            _containedCleanable.Remove(cleanable);
+        }
+        // Does NOT update the RoomCleanliness.
+        // This should be used by TrashPiles to stealthily remove the pile before the trash is released.
     }
 
     private void UpdateRoomCleanliness()
@@ -196,6 +245,7 @@ public class Room : MonoBehaviour
         _roomCurrentTrashAmount = amountToClean;
         if (amountToClean <= 0) {
             _isRoomCleaned = true;
+            
             OnRoomClean();
         }
     }
@@ -204,9 +254,23 @@ public class Room : MonoBehaviour
     {
         if (_openGatesOnClean)
         {
+            if (IsTrashRoom)
+            {
+                DistrictManager.Instance.AwardCoins(coinsAwarded);
+                PlayerMovementController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
+                AudioManager.Instance.Play("gateDown", player.transform);
+            }
             _isRoomClosed = false;
             foreach (Gate gate in _connectedGates) gate.Open(this);
         }
+        _roomCleanEvents.Trigger();
     }
+
+    public int RoomCurrentTrashAmount
+    {
+        get { return _roomCurrentTrashAmount; }
+        set { _roomCurrentTrashAmount = value; }
+    }
+
 
 }

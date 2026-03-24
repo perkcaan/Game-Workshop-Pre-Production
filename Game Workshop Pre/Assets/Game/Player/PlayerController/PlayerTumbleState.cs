@@ -51,7 +51,7 @@ public class PlayerTumbleState : BaseState<PlayerStateEnum>
     private void TryChangeState()
     {
         float velocityThreshold = 0.1f;
-        if (_ctx.Rigidbody.velocity.magnitude <= velocityThreshold)
+        if (_ctx.Rigidbody.linearVelocity.magnitude <= velocityThreshold)
         {
             _state.ChangeState(PlayerStateEnum.Idle);
         }

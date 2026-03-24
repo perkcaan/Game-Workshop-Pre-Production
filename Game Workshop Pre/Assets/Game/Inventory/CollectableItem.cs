@@ -15,6 +15,7 @@ public class CollectableItem : MonoBehaviour
     [SerializeField] Transform largeSparkle;
     [SerializeField] Transform smallSparkle;
 
+    public bool shopItem;
     private bool isCollected;
 
     void Awake()
@@ -24,15 +25,20 @@ public class CollectableItem : MonoBehaviour
 
     void Update()
     {
-        smallSparkle.Rotate(0, 0, 3 * sparkleRotationSpeed * Time.deltaTime);
-        largeSparkle.Rotate(0, 0, sparkleRotationSpeed * Time.deltaTime);
+        if (smallSparkle != null && largeSparkle != null)
+        {
+            smallSparkle.Rotate(0, 0, 3 * sparkleRotationSpeed * Time.deltaTime);
+            largeSparkle.Rotate(0, 0, sparkleRotationSpeed * Time.deltaTime);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (isCollected) return;
+        if (shopItem) return;
         if (other.TryGetComponent(out PlayerMovementController player))
         {
+
             isCollected = true;
             Sequence sequence = DOTween.Sequence();
             ParticleManager.Instance.Play("StarWave", transform.position);

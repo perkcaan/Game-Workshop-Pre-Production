@@ -1,10 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
 
-
-[BehaviourNode(6, "Actions")]
+[BehaviourNode(6, "Actions"), Serializable]
 public class RandomWanderNode : BehaviourTreeNode
 {
     // Fields
@@ -22,10 +22,12 @@ public class RandomWanderNode : BehaviourTreeNode
     protected override void Initialize() {
         _homePosition = Self.transform.position;
         _hasArrived = true;
+        
     }
 
     public override BTNodeState Evaluate()
     {
+        
         _isActive = true;
         if (_hasArrived) {
             _waitTimer -= Time.deltaTime;
@@ -46,7 +48,7 @@ public class RandomWanderNode : BehaviourTreeNode
         while (tries < 10)
         {
             tries++;
-            Vector2 randomOffset = Random.insideUnitCircle * _wanderRadius;
+            Vector2 randomOffset = UnityEngine.Random.insideUnitCircle * _wanderRadius;
             Vector2 attemptedPoint = _homePosition + randomOffset;
             if (Physics2D.OverlapCircle(attemptedPoint, _arrivalProximity, _invalidLayers) != null) {
                 continue;

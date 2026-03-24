@@ -18,7 +18,7 @@ public class ObjectPainterWindow : EditorWindow
     {
         if (grid == null)
         {
-            grid = FindObjectOfType<Grid>();
+            grid = FindAnyObjectByType<Grid>();
         }
 
         GUILayout.Label("Object Painter", EditorStyles.boldLabel);
