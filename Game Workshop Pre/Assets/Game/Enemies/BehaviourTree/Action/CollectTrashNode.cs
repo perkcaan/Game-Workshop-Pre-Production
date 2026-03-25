@@ -38,14 +38,12 @@ public class CollectTrashNode : BehaviourTreeNode
 
     public void StartCollectingTrash()
     {
-        Self.Pather.GoToPoint(trashPos, 0.5f, ArrivedAtTrash);
+        Self.Pather.GoToPoint(trashPos, atTrashDistance, ArrivedAtTrash);
         
     }
     public void ArrivedAtTrash()
     {
         atTrash = true;
-        Blackboard.Set<ITargetable>("target", null);
-        Blackboard.Set<Vector2?>("targetPosition", null);
         Self.Pather.Stop();
         
         

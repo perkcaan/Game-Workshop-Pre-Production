@@ -136,7 +136,25 @@ MonoBehaviour:
   _trashBallSquirmTime: 5
   _trashBallSquirmForce: 5
   _trashBallSquirmDamage: 1
+  _stunTime: 2
+  _pinballProps:
+    _time: 5
+    _material: {fileID: 0}
+    _swipeMultiplier: 1
+    _pokeMultiplier: 1
+  _interactProps:
+    _canSweepBase: 0
+    _isBaseVulnerableToSwipe: 0
+    _swipeBaseMultiplier: 1
+    _swipeVulnerableMultiplier: 0.3
+    _swipeBaseKnockbackMultiplier: 0
+    _isBaseVulnerableToPoke: 0
+    _pokeBaseMultiplier: 1
+    _pokeVulnerableMultiplier: 2
+    _pokeBaseKnockbackMultiplier: 1
+    _canAbsorbBase: 0
   _collectedTrash: []
+  collectionRadius: 1
   references:
     version: 2
     RefIds:
@@ -155,7 +173,7 @@ MonoBehaviour:
       data:
         DisplayName: CheckTrash
         Children: []
-        _searchDistance: 4
+        _searchDistance: 5
         _fieldOfViewAngle: 180
         _typeToTarget: 2
         _targetMask:
@@ -170,41 +188,74 @@ MonoBehaviour:
         DisplayName: Selector
         Children:
         - rid: 4441827409589174399
-        - rid: 4441827409589174403
+        - rid: 6752447835841757266
+        - rid: 6752447835841757268
         - rid: -2
     - rid: 4441827409589174399
       type: {class: StatefulSequenceNode, ns: , asm: Assembly-CSharp}
       data:
-        DisplayName: Node
+        DisplayName: Stateful Sequence
         Children:
         - rid: 4441827409589174400
         - rid: 4441827409589174401
-        - rid: 4441827409589174402
+        - rid: 6752447835841757263
+        - rid: 6752447835841757264
+        - rid: 6752447835841757265
         - rid: -2
     - rid: 4441827409589174400
       type: {class: CollectTrashNode, ns: , asm: Assembly-CSharp}
       data:
         DisplayName: Collect
         Children: []
-        atTrashDistance: 0.5
+        atTrashDistance: 1
     - rid: 4441827409589174401
       type: {class: DoActionNode, ns: , asm: Assembly-CSharp}
       data:
-        DisplayName: Node
+        DisplayName: Collection
         Children: []
         _indexOfAction: 0
         _actionStarted: 0
         _endState: 0
-    - rid: 4441827409589174402
+    - rid: 6752447835841757263
       type: {class: LoseTargetNode, ns: , asm: Assembly-CSharp}
       data:
-        DisplayName: Node
+        DisplayName: Lose Target
         Children: []
         _loseTargetConfusionTime: 2
-    - rid: 4441827409589174403
+    - rid: 6752447835841757264
       type: {class: RandomWanderNode, ns: , asm: Assembly-CSharp}
       data:
         DisplayName: Node
+        Children: []
+        _wanderRadius: 10
+        _arriveWaitTime: 4
+        _arrivalProximity: 0.1
+        _invalidLayers:
+          serializedVersion: 2
+          m_Bits: 20480
+    - rid: 6752447835841757265
+      type: {class: CollectTrashNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Inner Collect
+        Children: []
+        atTrashDistance: 1
+    - rid: 6752447835841757266
+      type: {class: IsTargetFoundNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Target?
+        Children:
+        - rid: 6752447835841757267
+        _hasKnownLocationMode: 1
+    - rid: 6752447835841757267
+      type: {class: LoseTargetNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Lose It
+        Children: []
+        _loseTargetConfusionTime: 2
+    - rid: 6752447835841757268
+      type: {class: RandomWanderNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Wander
         Children: []
         _wanderRadius: 5
         _arriveWaitTime: 4
@@ -524,6 +575,50 @@ MonoBehaviour:
   _dissolveBurnWidth: 0.4
   _meshTexture: {fileID: 0}
   sinkSpeed: 0.3
+--- !u!1 &6215572426945204776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2682456541482241594}
+  - component: {fileID: 1427936437949048317}
+  m_Layer: 0
+  m_Name: EnemyBroomhead
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2682456541482241594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6215572426945204776}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1532883214331055735}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1427936437949048317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6215572426945204776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71d5b6e676e20641a81b20fb7dfecc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Broomhead
 --- !u!1 &6282450015211856237
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,10 +628,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1532883214331055735}
-  - component: {fileID: 6530756860297738291}
-  - component: {fileID: 7974523882848663468}
+  - component: {fileID: 2815613167187145910}
+  - component: {fileID: 2658435331562120279}
   m_Layer: 0
-  m_Name: AttackHitbox
+  m_Name: SweepHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -554,11 +649,13 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5128834819515130404}
+  - {fileID: 2682456541482241594}
   m_Father: {fileID: 7331644319445660340}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &6530756860297738291
-BoxCollider2D:
+--- !u!70 &2815613167187145910
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -570,10 +667,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -591,19 +688,10 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.8, y: 0.8}
-  m_EdgeRadius: 0
---- !u!114 &7974523882848663468
+  m_Offset: {x: 0.63, y: 0}
+  m_Size: {x: 0.5, y: 1}
+  m_Direction: 0
+--- !u!114 &2658435331562120279
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -612,8 +700,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 6282450015211856237}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6be3710b2e3775f4595826c5ae417e66, type: 3}
+  m_Script: {fileID: 11500000, guid: e9407cfd3f886e243b0db65c68567444, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  _heatApplied: 5
-  _knockbackApplied: 3
+  m_EditorClassIdentifier: '::'
+  _sweepSingularity: {fileID: 5128834819515130404}
+  _curveSteepness: 1.1
+  _curveOffset: 1
+  _attractionCap: 10
+  _jitterDistance: 0.2
+  _centerAdjustment: 1
+  _sweepForce: 0
+--- !u!1 &8779397323420204120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5128834819515130404}
+  m_Layer: 0
+  m_Name: SweepSingularity
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5128834819515130404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8779397323420204120}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1532883214331055735}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
