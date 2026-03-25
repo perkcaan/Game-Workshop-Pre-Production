@@ -7,12 +7,15 @@ public class TrailTrashMaterial : TrashMaterial
 {
     public TrashBallTrail trailPrefab;
     public float _sizeMultiplier;
-
+    public bool _burningRequired;
     public override void whenBallRolls(TrashBall trashBall, TrashMaterialAmount amount)
     {
-        Debug.Log("paper");
-        TrashBallTrail fire = Instantiate(trailPrefab);
-        fire.gameObject.transform.position = trashBall.transform.position;
-        fire.gameObject.transform.localScale = Vector2.one * Mathf.Pow(trashBall.Size, 1f / 3f) * _sizeMultiplier;
+        if (_burningRequired)
+        {
+            if (!trashBall.isBurning) return;
+        }
+        TrashBallTrail trail = Instantiate(trailPrefab);
+        trail.gameObject.transform.position = trashBall.transform.position;
+        trail.gameObject.transform.localScale = Vector2.one * Mathf.Pow(trashBall.Size, 1f / 3f) * _sizeMultiplier;
     }
 }

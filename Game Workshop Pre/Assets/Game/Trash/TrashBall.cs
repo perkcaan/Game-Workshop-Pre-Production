@@ -60,7 +60,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     private bool _isBeingDestroyed = false;
     private bool _isDecaying = false;
     private float _decayTimer = 0f;
-
+    public bool isBurning = false;
     // material stats
     private float _maxHealthMultiplier = 1f;
     private float _decayMultiplier = 0f;
@@ -673,6 +673,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     //IHeatable
     public void PrepareIgnite(HeatMechanic heat)
     {
+        isBurning = true;
         _label.Hide();
         PrepareDelete();
     }
@@ -680,7 +681,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     public void OnIgnite(HeatMechanic heat)
     {
         ActionOnMaterials((material, amount) => material.whenBallIgnite(this, amount));
-
         Delete(); // Deletes the trash object
     }
 

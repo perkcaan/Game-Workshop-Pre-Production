@@ -67,7 +67,7 @@ TextureImporter:
   swizzle: 50462976
   cookieLightType: 0
   platformSettings:
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -80,7 +80,7 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -93,7 +93,7 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -106,7 +106,7 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -119,8 +119,8 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Windows Store Apps
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -136,216 +136,249 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player_Absorbed (2)_0
+      name: LevelObjects_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 22
-        width: 22
-        height: 22
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bdc1968696ce86b42b9c631863327dac
-      internalID: 992065130
+      spriteID: 3df34c4cc1ea49346b238edd219089df
+      internalID: -1264368681
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Absorbed (2)_1
+      name: LevelObjects_1
       rect:
         serializedVersion: 2
-        x: 22
-        y: 22
-        width: 22
-        height: 22
+        x: 16
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52e280f68c3d7874585d1c45a81c437f
-      internalID: -657826854
+      spriteID: e1238560a6b951d4a8da35c0db3080fb
+      internalID: -1851557821
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Absorbed (2)_2
+      name: LevelObjects_2
       rect:
         serializedVersion: 2
-        x: 44
-        y: 22
-        width: 22
-        height: 22
+        x: 32
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94e5194c2022db849a7dba4f1a286843
-      internalID: 1815927259
+      spriteID: 0744228bf1e7a5f42a878445d98d4a8c
+      internalID: 26715600
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Absorbed (2)_3
+      name: LevelObjects_3
       rect:
         serializedVersion: 2
-        x: 66
-        y: 22
-        width: 22
-        height: 22
+        x: 48
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 11737143b85ffa34797b3a3064f95286
-      internalID: 796996211
+      spriteID: 621ac5dd019531b449f7e8ec79e0c16f
+      internalID: -229061027
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Absorbed (2)_4
+      name: LevelObjects_4
       rect:
         serializedVersion: 2
-        x: 88
-        y: 22
-        width: 22
-        height: 22
+        x: 64
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ad2463e99d3b8d540998b18f1b880c12
-      internalID: 1221398498
+      spriteID: f2c35b35562f16842b726550ecd13a59
+      internalID: 119738242
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Absorbed (2)_5
+      name: LevelObjects_5
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 22
-        height: 22
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fa97e1e9a20af0645823d8a96c9c6763
-      internalID: 2051465782
+      spriteID: 365be0dc275d5104ebdb6d44be94751d
+      internalID: -518694808
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Absorbed (2)_6
+      name: LevelObjects_6
       rect:
         serializedVersion: 2
-        x: 22
-        y: 0
-        width: 22
-        height: 22
+        x: 16
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: beda99986e2bb794d96682ffe6cc38e2
-      internalID: -190656346
+      spriteID: 7a9983b1f616a084e96dba64a3323e3e
+      internalID: 317770344
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Absorbed (2)_7
+      name: LevelObjects_7
       rect:
         serializedVersion: 2
-        x: 44
-        y: 0
-        width: 22
-        height: 22
+        x: 32
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7247faa33d67eda41bd91cd6178ca125
-      internalID: 2082931476
+      spriteID: b8f62a018230cc84f87a18aa3b2869f6
+      internalID: -267538089
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Absorbed (2)_8
+      name: LevelObjects_8
       rect:
         serializedVersion: 2
-        x: 66
-        y: 0
-        width: 22
-        height: 22
+        x: 48
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2c091b4139c08ed4e9998206430813da
-      internalID: 630776091
+      spriteID: e10b8a44e50098a40bd0b71fdff05af1
+      internalID: 195165013
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Absorbed (2)_9
+      name: LevelObjects_9
       rect:
         serializedVersion: 2
-        x: 88
-        y: 0
-        width: 22
-        height: 22
+        x: 64
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6a067de25a9b91c4ca907627af1c5505
-      internalID: -371041923
+      spriteID: 812d64f2e3f1e324d829bcfd88e15ae1
+      internalID: 1605837807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelObjects_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61e239955c73d2c46b2bfae298805eb6
+      internalID: 1261525788
       vertices: []
       indices: 
       edges: []
       weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
@@ -355,17 +388,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Player_Absorbed (2)_0: 992065130
-      Player_Absorbed (2)_1: -657826854
-      Player_Absorbed (2)_2: 1815927259
-      Player_Absorbed (2)_3: 796996211
-      Player_Absorbed (2)_4: 1221398498
-      Player_Absorbed (2)_5: 2051465782
-      Player_Absorbed (2)_6: -190656346
-      Player_Absorbed (2)_7: 2082931476
-      Player_Absorbed (2)_8: 630776091
-      Player_Absorbed (2)_9: -371041923
+      LevelObjects_0: -1264368681
+      LevelObjects_1: -1851557821
+      LevelObjects_10: 1261525788
+      LevelObjects_2: 26715600
+      LevelObjects_3: -229061027
+      LevelObjects_4: 119738242
+      LevelObjects_5: -518694808
+      LevelObjects_6: 317770344
+      LevelObjects_7: -267538089
+      LevelObjects_8: 195165013
+      LevelObjects_9: 1605837807
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
