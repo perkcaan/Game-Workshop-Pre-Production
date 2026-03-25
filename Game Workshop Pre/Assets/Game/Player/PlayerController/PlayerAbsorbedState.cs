@@ -34,13 +34,6 @@ public class PlayerAbsorbedState : BaseState<PlayerStateEnum>
         {
             _state.ChangeState(PlayerStateEnum.Idle);
             return;
-        }
-        Vector2 input = _ctx.MovementInput;
-
-        if (input.sqrMagnitude > 0.01f)
-        {
-            float newAngle = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg;
-            _ctx.Rotation = Mathf.DeltaAngle(0f, newAngle);
         } 
         Transform trashBallTranform = _ctx.AbsorbedTrashBall.transform;
         _ctx.Player.transform.position = new Vector3(trashBallTranform.position.x, trashBallTranform.position.y, _ctx.Player.transform.position.z);

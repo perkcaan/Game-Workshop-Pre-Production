@@ -1,3 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor.Rendering;
+using UnityEngine;
+
 // A decorator node is a node that has some control or effect on its singular child
 public abstract class DecoratorNode : BehaviourTreeNode
 {

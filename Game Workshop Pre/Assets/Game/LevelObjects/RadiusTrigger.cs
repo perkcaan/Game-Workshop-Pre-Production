@@ -1,59 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
+using UnityEngine.Animations;
 using DG.Tweening;
+using Unity.AI.Navigation;
 
 public class RadiusTrigger : MonoBehaviour
 {
-    private PlayerControls controls;
+    PlayerControls controls;
     private DumpsterObject parentComponent;
     private bool playerInVicinity = false;
 
-    private void Awake()
+    void Awake()
     {
         controls = new PlayerControls();
-        parentComponent = GetComponentInParent<DumpsterObject>();
+        parentComponent = transform.parent.GetComponent<DumpsterObject>();
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         controls.Enable();
-        // Optional: Listen to the input action event directly
-        controls.Default.InteractionInput.performed += OnInteractPerformed;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
-        // Unsubscribe from the event to prevent memory leaks
-        controls.Default.InteractionInput.performed -= OnInteractPerformed;
         controls.Disable();
     }
 
-    private void OnInteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    void Update()
     {
-        // Only interact if player is in vicinity and dumpster isn't already opened
-        if (playerInVicinity && !parentComponent.GetIsOpened())
+        // If the player is in the vicinity, pressing 'E' will open the Dumpster
+        if (playerInVicinity && controls.Default.InteractionInput.WasPerformedThisFrame())
         {
-            Debug.Log("Dumpster opened via Input Event!");
-            parentComponent.OnInteract();
+            if (!parentComponent.isOpened)
+            {
+                parentComponent.isOpened = true;
+                parentComponent.DumpsterOpened();
+                parentComponent.transform.DOShakePosition(0.2f, 0.2f);
+            }
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent<PlayerMovementController>(out _))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             playerInVicinity = true;
-            Debug.Log("Player entered vicinity");
+            parentComponent.InPlayerVicinity();
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             playerInVicinity = false;
-            Debug.Log("Player exited vicinity");
         }
     }
 }

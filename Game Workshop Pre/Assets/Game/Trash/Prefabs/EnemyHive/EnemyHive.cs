@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class EnemyHive : TrashPile
 {
@@ -11,17 +10,14 @@ public class EnemyHive : TrashPile
     [SerializeField] float _spawnInterval = 5f;
     [SerializeField] private float _maxRandomTimeOffset = 1f;
     [SerializeField] private int _maxAliveEnemies = 4;
-    //[SerializeField] private float _spawnRadius = 0.4f;
-    //[SerializeField] private float _enemyColliderRadius = 0.3f;
-    //[SerializeField] private LayerMask _invalidSpawnLayers = (1 << 12) | (1 << 14); // 12 and 14 are intended to be Lava and Wall;
-    [SerializeField] Animator animator;
-    [SerializeField] Transform enemySpawnPosition;
+    [SerializeField] private float _spawnRadius = 0.4f;
+    [SerializeField] private float _enemyColliderRadius = 0.3f;
+    [SerializeField] private LayerMask _invalidSpawnLayers = (1 << 12) | (1 << 14); // 12 and 14 are intended to be Lava and Wall;
     private float _currentTime = 0f;
     private int _currentAliveEnemies = 0;
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
         _currentTime += Random.Range(0,_maxRandomTimeOffset);
     }
 
@@ -31,22 +27,19 @@ public class EnemyHive : TrashPile
         if (_currentTime >= _spawnInterval)
         {
             _currentTime = 0f;
-            if (_canSpawn && isActiveAndEnabled && _enemyPrefab.Size <= _parentRoom.FreeTrashAmount && _currentAliveEnemies < _maxAliveEnemies)
-            {
-                animator.SetTrigger("SpawnEnemy");
-            }
+            if (_canSpawn &&
+            isActiveAndEnabled &&
+            _enemyPrefab.Size <= _parentRoom.FreeTrashAmount &&
+            _currentAliveEnemies < _maxAliveEnemies) SpawnEnemy();
         }
     }
 
-    public void SpawnEnemy() //DO NOT RENAME IT IS CALLED BY THE ANIMATOR
+    private void SpawnEnemy()
     {
-        if (_canSpawn && isActiveAndEnabled && _enemyPrefab.Size <= _parentRoom.FreeTrashAmount && _currentAliveEnemies < _maxAliveEnemies)
-        {
-            EnemyBase newEnemy = Instantiate(_enemyPrefab, enemySpawnPosition.position, Quaternion.identity);
-            _parentRoom.AddCleanableToRoom(newEnemy);
-            _currentAliveEnemies++;
-            newEnemy.OnDestroy += OnEnemyDestroy;
-        }
+        EnemyBase newEnemy = Instantiate(_enemyPrefab, PickNewPoint(), Quaternion.identity);
+        _parentRoom.AddCleanableToRoom(newEnemy);
+        _currentAliveEnemies++;
+        newEnemy.OnDestroy += OnEnemyDestroy;
     }
 
 
@@ -55,7 +48,6 @@ public class EnemyHive : TrashPile
         _currentAliveEnemies--;
     }
 
-    /*
     private Vector2 PickNewPoint()
     {
         // chooses random point within a radius from the start position. Try up to 10 times.
@@ -74,6 +66,5 @@ public class EnemyHive : TrashPile
         Debug.LogWarning("EnemyHive: " + name + "repeatedly failed to spawn an enemy. Make sure they have room to spawn.");
         return transform.position;
     }
-    */
 
 }

@@ -15,7 +15,7 @@ public class AStarManager : MonoBehaviour
     {
         List<Node> openList = new List<Node>();
 
-        foreach (Node n in FindObjectsByType<Node>(FindObjectsSortMode.None))
+        foreach (Node n in FindObjectsOfType<Node>())
         {
             n.gCostScore = float.MaxValue;
         }

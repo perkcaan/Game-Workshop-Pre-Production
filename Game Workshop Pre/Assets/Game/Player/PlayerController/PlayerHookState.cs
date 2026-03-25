@@ -37,7 +37,7 @@ public class PlayerHookState : BaseState<PlayerStateEnum>
 
         if (!_hasHookBeenThrown)
         {
-            Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(_ctx.MouseInput);
+            Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = mouseWorldPoint - (Vector2)_ctx.Player.transform.position;
             direction.Normalize();
             float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -95,7 +95,7 @@ public class PlayerHookState : BaseState<PlayerStateEnum>
             {
                 _ctx.MoveSpeed = 0f;
                 // Cancels sliding with an opposing force
-                Vector2 velocity = _ctx.Rigidbody.linearVelocity;
+                Vector2 velocity = _ctx.Rigidbody.velocity;
                 if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxHookWalkSpeed) && _ctx.Props.WillCancelSwipeSlide)
                 {
                     Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxHookWalkSpeed;

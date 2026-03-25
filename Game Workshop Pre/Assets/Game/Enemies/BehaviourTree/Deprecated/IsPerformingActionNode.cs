@@ -1,9 +1,9 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[BehaviourNode(1, "_Deprecated"), Serializable]
+[BehaviourNode(1, "_Deprecated")]
 public class IsPerformingActionNode : BehaviourTreeNode
 {
     protected override void CheckRequiredComponents() { }

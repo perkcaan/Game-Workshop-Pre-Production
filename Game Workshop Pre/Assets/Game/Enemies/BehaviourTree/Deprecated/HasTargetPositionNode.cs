@@ -1,8 +1,9 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[BehaviourNode(0, "_Deprecated"), Serializable]
+[BehaviourNode(0, "_Deprecated")]
 public class HasLastKnownPositionNode : BehaviourTreeNode
 {
     protected override void CheckRequiredComponents() { }

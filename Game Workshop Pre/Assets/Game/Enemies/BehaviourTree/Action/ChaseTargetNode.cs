@@ -1,8 +1,7 @@
-using System;
 using UnityEngine;
 
 // Chases target until close enough
-[BehaviourNode(2, "Actions"), Serializable]
+[BehaviourNode(2, "Actions")]
 public class ChaseTargetNode : BehaviourTreeNode
 {
     // Fields

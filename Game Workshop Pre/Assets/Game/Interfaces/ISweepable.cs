@@ -6,6 +6,4 @@ public interface ISweepable
 {
     public void OnSweep(Vector2 position, Vector2 direction, float force);
 
-    public float SizeRadius { get; }
-
 }

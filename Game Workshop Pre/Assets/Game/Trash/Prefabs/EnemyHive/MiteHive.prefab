@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6354066783832532845}
   - component: {fileID: 5461586578027443556}
   - component: {fileID: 8946989357901373069}
-  - component: {fileID: 2334465974462169790}
   m_Layer: 7
   m_Name: MiteHive
   m_TagString: Untagged
@@ -30,12 +29,11 @@ Transform:
   m_GameObject: {fileID: 2679773746870176696}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.0822601, y: -3.0141497, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8134571367304722472}
-  - {fileID: 760920162623502301}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &4914213580402624643
@@ -72,7 +70,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.05}
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 0.6
 --- !u!50 &6354066783832532845
 Rigidbody2D:
   serializedVersion: 4
@@ -114,12 +112,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trashBallPrefab: {fileID: 5196095918412875384, guid: 2b215fe107e361a41bb7c6fabe0cb6f1, type: 3}
   _explosionMultiplier: 1
-  _size: 6
+  _size: 102
   trashMaterial: {fileID: 11400000, guid: dd963f5861bb9344da6b0d92692fad6c, type: 2}
   trashMaterialWeight: 1
   _pointValue: 0
   _rigidBody: {fileID: 6354066783832532845}
-  _onFailAbsorbShakeForce: 0.5
   _health: 6
   _trashSpreadRange: 70
   _onDamagedShakeForce: 0.05
@@ -129,15 +126,18 @@ MonoBehaviour:
   - {fileID: 2697748531669218787, guid: 7d766929238d57c4a94dbd4d217bbc16, type: 3}
   - {fileID: 2697748531669218787, guid: 0e15226f3c3b98f458d5943762332e60, type: 3}
   - {fileID: 2697748531669218787, guid: 0e15226f3c3b98f458d5943762332e60, type: 3}
-  - {fileID: 3142780765432232938, guid: 4f74b9432db85fd4893584795f5f1cf0, type: 3}
+  - {fileID: 3142780765432232938, guid: 27a48716c33d82c47a05186014e6a75a, type: 3}
   color: {r: 0.27450982, g: 0.2627451, b: 0.3529412, a: 1}
-  _enemyPrefab: {fileID: 7717461760388640528, guid: 4f74b9432db85fd4893584795f5f1cf0, type: 3}
+  _enemyPrefab: {fileID: 7717461760388640528, guid: 27a48716c33d82c47a05186014e6a75a, type: 3}
   _canSpawn: 1
   _spawnInterval: 5
   _maxRandomTimeOffset: 1
   _maxAliveEnemies: 4
-  animator: {fileID: 2334465974462169790}
-  enemySpawnPosition: {fileID: 760920162623502301}
+  _spawnRadius: 0.4
+  _enemyColliderRadius: 0.3
+  _invalidSpawnLayers:
+    serializedVersion: 2
+    m_Bits: 20480
 --- !u!114 &8946989357901373069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,58 +157,6 @@ MonoBehaviour:
   _warningThreshold: 60
   _ignitionThreshold: 80
   _ignitionTime: 0.5
---- !u!95 &2334465974462169790
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2679773746870176696}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7e66e7739097c174bb1218d8faf7d53f, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!1 &6308172353626572522
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 760920162623502301}
-  m_Layer: 7
-  m_Name: EnemySpawnPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &760920162623502301
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6308172353626572522}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1, y: -1.3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5263997269226848036}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7354993208740151337
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,7 +231,7 @@ SpriteRenderer:
   m_SortingLayerID: -280654717
   m_SortingLayer: -2
   m_SortingOrder: 1
-  m_Sprite: {fileID: -67253638, guid: 2dd006f73c2f9df4c822427e0a4efd7f, type: 3}
+  m_Sprite: {fileID: 680502890, guid: 6c77e5cb9acd8064db4d58ffd7a880e8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -312,7 +260,4 @@ MonoBehaviour:
   _heatFlashRamp: 2
   _dissolveTime: 1
   _dissolveBurnWidth: 0.4
-  _height: 1
   _meshTexture: {fileID: 0}
-  sinkSpeed: 0.3
-  maxHeight: 1

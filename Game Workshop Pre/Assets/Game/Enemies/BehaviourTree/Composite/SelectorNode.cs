@@ -1,8 +1,8 @@
-using System;
+
 
 // A selector node is a composite note that runs its children in order until one succeeds and 
 // it will lock (not continue) on Running, meaning children MUST return Failure in order to continue. 
-[BehaviourNode(0, "Composite"), Serializable]
+[BehaviourNode(0, "Composite")]
 public class SelectorNode : CompositeNode
 {
     public override BTNodeState Evaluate()

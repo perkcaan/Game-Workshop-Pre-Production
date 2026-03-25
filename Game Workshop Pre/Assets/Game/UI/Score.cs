@@ -16,7 +16,7 @@ public class Score : MonoBehaviour // Make singleton****
     private void Start()
     {
         // Find all Rooms in scene and add them to rooms list
-        rooms = DistrictManager.Instance.AllRooms;
+        rooms = new List<Room>(FindObjectsOfType<Room>());
     }
 
     void Update()

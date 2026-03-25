@@ -1,11 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 // Waits some amount of time, then returns Success
-[BehaviourNode(4, "Actions"), Serializable]
+[BehaviourNode(4, "Actions")]
 public class WaitNode : BehaviourTreeNode
 {
     // Fields

@@ -15,6 +15,6 @@ public class GroundedMechanic : MonoBehaviour
             _isGrounded = value;
         }
     }
+
+
 }
-
-

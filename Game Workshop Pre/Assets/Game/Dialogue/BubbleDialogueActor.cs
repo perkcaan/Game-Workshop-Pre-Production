@@ -26,8 +26,7 @@ public class BubbleDialogueActor : MonoBehaviour
     {
         _inkJSON = newAsset;
     }
-
-    [EventAction]
+    
     public void StartDialogue() {
         if (_dialogue == null) CreateDialogue();
     }

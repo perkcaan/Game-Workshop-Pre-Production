@@ -8,15 +8,12 @@ public class TrashCubeObject : MonoBehaviour, IHeatable, ISweepable, ISwipeable
 {
     public List<IAbsorbable> absorbedObjects = new List<IAbsorbable>();
     public Rigidbody2D rigidBody;
-    public GameObject HitParent { get { return gameObject; } }
     public float trashPlatformDuration;
     public int maxNumberOfTrashPlatforms;
     [SerializeField] TrashPlatform _trashPlatformPrefab;
     private List<Vector2Int> _trashPlatformLocations = new List<Vector2Int>();
     private int _size = 1;
     private float _particleTimer = 0f;
-
-    public float SizeRadius { get { return _size/2f; } } //????
 
     [Header("OnSweep Properties")]
     [SerializeField] float _vacuumForce;
@@ -72,8 +69,8 @@ public class TrashCubeObject : MonoBehaviour, IHeatable, ISweepable, ISwipeable
 
     public void Update()
     {
-        _particleTimer -= Time.deltaTime * rigidBody.linearVelocity.magnitude / 10f;
-        if (_particleTimer <= 0 && rigidBody.linearVelocity.magnitude > 0.5f)
+        _particleTimer -= Time.deltaTime * rigidBody.velocity.magnitude / 10f;
+        if (_particleTimer <= 0 && rigidBody.velocity.magnitude > 0.5f)
         {
             _particleTimer = 0.1f;
             ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, force: 2f);

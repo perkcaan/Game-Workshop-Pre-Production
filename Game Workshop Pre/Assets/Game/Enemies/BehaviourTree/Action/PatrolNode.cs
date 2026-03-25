@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +5,7 @@ using UnityEngine;
 // Patrol with no AI pathfinding.
 // Returns Running most of the time. 
 // Returns Success once when arrived at a patrol point.
-[BehaviourNode(1, "Actions"), Serializable]
+[BehaviourNode(1, "Actions")]
 public class PatrolNode : BehaviourTreeNode
 {
     // Fields

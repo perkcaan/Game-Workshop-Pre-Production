@@ -18,7 +18,6 @@ public abstract class BaseStateMachine<StateEnum> where StateEnum : Enum
 
     public void ChangeState(StateEnum state)
     {
-        if (_states[state] == _currentState) return;
         _currentState.ExitState();
         _currentState = _states[state];
         _currentState.EnterState();

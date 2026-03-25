@@ -16,7 +16,7 @@ public class BoostPad : MonoBehaviour
             Rigidbody2D rb = trashBall.Rigidbody;
 
             //relative velocity in boost pad's local space
-            Vector2 localVelocity = transform.InverseTransformDirection(rb.linearVelocity);
+            Vector2 localVelocity = transform.InverseTransformDirection(rb.velocity);
             //is ball coming from correct direction
             if (Vector2.Dot(localVelocity.normalized, entryDirection.normalized) > 0.5f)
             {
@@ -30,14 +30,14 @@ public class BoostPad : MonoBehaviour
 
     public void Boost(Rigidbody2D rigidbody)
     {
-        float currentSpeed = rigidbody.linearVelocity.magnitude;
+        float currentSpeed = rigidbody.velocity.magnitude;
 
         if (currentSpeed < _maxBoostSpeed)
         {
-            rigidbody.linearVelocity *= _boostAmount;
+            rigidbody.velocity *= _boostAmount;
         } else
         {
-            rigidbody.linearVelocity = rigidbody.linearVelocity.normalized * _maxBoostSpeed;
+            rigidbody.velocity = rigidbody.velocity.normalized * _maxBoostSpeed;
         }
 
     }

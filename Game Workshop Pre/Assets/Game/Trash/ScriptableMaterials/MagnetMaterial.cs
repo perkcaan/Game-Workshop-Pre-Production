@@ -13,6 +13,6 @@ public class MagnetTrashMaterial : TrashMaterial
     public override void whenBallRolls(TrashBall trashBall, TrashMaterialAmount amount)
     {
         float maxMagnetRadius = 3 / ((float)amount + 1);
-        trashBall.MagnetCollider.radius = Mathf.Clamp((trashBall.Rigidbody.linearVelocity.magnitude - 2) / 2, 0.55f, maxMagnetRadius);
+        trashBall.MagnetCollider.radius = Mathf.Clamp((trashBall.Rigidbody.velocity.magnitude - 2) / 2, 0.55f, maxMagnetRadius);
     }
 }

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1129497172741933403}
   - component: {fileID: 3414219151420266476}
   - component: {fileID: 8089971424730450151}
+  - component: {fileID: 6065337628966492142}
   m_Layer: 10
   m_Name: AOEEnemy
   m_TagString: Untagged
@@ -40,7 +41,6 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8439839871277052274
 SpriteRenderer:
-  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -56,11 +56,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,11 +77,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_MaskInteraction: 0
   m_Sprite: {fileID: -897289331, guid: d3c5255e780c1854d935e2ce20c0899c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -96,10 +89,11 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &2314436212564445080
 Animator:
-  serializedVersion: 7
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -113,7 +107,6 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -127,7 +120,6 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2818788536910037753}
   m_Enabled: 0
-  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -151,13 +143,13 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
   m_Radius: 0.7
 --- !u!50 &1129497172741933403
 Rigidbody2D:
-  serializedVersion: 5
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -168,8 +160,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 5
-  m_AngularDamping: 0.1
+  m_LinearDrag: 5
+  m_AngularDrag: 0.1
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -195,12 +187,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _heat: 0
-  coolingOff: 0
   _heatRelaxationRate: 1
   _timeBeforeRelax: 3
   _warningThreshold: 40
   _ignitionThreshold: 60
   _ignitionTime: 0.2
+  _maxFlashFrequency: 7
+  mainTexture: {fileID: 0}
 --- !u!114 &8089971424730450151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +207,119 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isGrounded: 0
+--- !u!114 &6065337628966492142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2818788536910037753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52a988b677466c4fb55f9d1a6ba14c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _behaviour:
+    rid: 6826167704574492673
+  _enableBehaviourDebug: 0
+  _actionMethods:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6065337628966492142}
+        m_TargetAssemblyTypeName: AOEEnemy, Assembly-CSharp
+        m_MethodName: PerformAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _moveSpeed: 10
+  _size: 3
+  _minSizeToAbsorb: 6
+  _minVelocityToAbsorb: 1
+  _attackDuration: 10
+  _attackCooldown: 1
+  _heatArea: {fileID: 768740341997448797}
+  references:
+    version: 2
+    RefIds:
+    - rid: 6826167704574492673
+      type: {class: ParallelSequenceNode, ns: , asm: Assembly-CSharp}
+      data:
+        children:
+        - rid: 6826167704574492674
+        - rid: 6826167704574492675
+    - rid: 6826167704574492674
+      type: {class: SelectorNode, ns: , asm: Assembly-CSharp}
+      data:
+        children:
+        - rid: 6826167704574492677
+        - rid: 6826167704574492681
+        - rid: 6826167704574492682
+    - rid: 6826167704574492675
+      type: {class: SpotTargetNode, ns: , asm: Assembly-CSharp}
+      data:
+        _searchDistance: 4
+        _fieldOfViewAngle: 90
+        _typeToTarget: 0
+        _targetMask:
+          serializedVersion: 2
+          m_Bits: 1536
+        _obstacleMask:
+          serializedVersion: 2
+          m_Bits: 0
+    - rid: 6826167704574492677
+      type: {class: SequenceNode, ns: , asm: Assembly-CSharp}
+      data:
+        children:
+        - rid: 6826167704574492684
+        - rid: 6826167704574492685
+        - rid: 6826167704574492686
+    - rid: 6826167704574492681
+      type: {class: SequenceNode, ns: , asm: Assembly-CSharp}
+      data:
+        children:
+        - rid: 6826167704574492687
+        - rid: 6826167704574492688
+        - rid: 6826167704574492689
+        - rid: 6826167704574492690
+    - rid: 6826167704574492682
+      type: {class: SimplePatrolNode, ns: , asm: Assembly-CSharp}
+      data:
+        _patrolPoints:
+        - {x: -1.5, y: -3.5}
+        - {x: 6, y: -3.5}
+        _reversePatrolInsteadOfWrap: 0
+        _arrivalProximity: 0.2
+    - rid: 6826167704574492684
+      type: {class: IsTargetFoundNode, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6826167704574492685
+      type: {class: ChaseTargetNode, ns: , asm: Assembly-CSharp}
+      data:
+        _arrivedAtTargetDistance: 1
+    - rid: 6826167704574492686
+      type: {class: DoActionNode, ns: , asm: Assembly-CSharp}
+      data:
+        _indexOfAction: 0
+    - rid: 6826167704574492687
+      type: {class: HasLastKnownPositionNode, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6826167704574492688
+      type: {class: ChaseTargetNode, ns: , asm: Assembly-CSharp}
+      data:
+        _arrivedAtTargetDistance: 0.5
+    - rid: 6826167704574492689
+      type: {class: WaitNode, ns: , asm: Assembly-CSharp}
+      data:
+        _waitTime: 1
+    - rid: 6826167704574492690
+      type: {class: ResetTargetNode, ns: , asm: Assembly-CSharp}
+      data: 
 --- !u!1 &8869124315284407207
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,7 +356,6 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7198541985831501739
 SpriteRenderer:
-  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -266,11 +371,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -292,11 +392,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.4509804}
   m_FlipX: 0
@@ -306,6 +404,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!58 &1191421805588528628
 CircleCollider2D:
@@ -315,7 +414,6 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8869124315284407207}
   m_Enabled: 0
-  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -339,9 +437,9 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
   m_Radius: 0.5
 --- !u!114 &768740341997448797
 MonoBehaviour:

@@ -1,11 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Ink.Parsed;
 using UnityEngine;
 
-[BehaviourNode(3, "Actions"), Serializable]
+[BehaviourNode(3, "Actions")]
 // Performs an action of a given index.
 // Do not let this node lose control when it is running.
 public class DoActionNode : BehaviourTreeNode

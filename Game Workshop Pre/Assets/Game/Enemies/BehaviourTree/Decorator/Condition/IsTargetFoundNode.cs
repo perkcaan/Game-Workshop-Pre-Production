@@ -1,7 +1,8 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[BehaviourNode(1, "Decorator/Conditions"), Serializable]
+[BehaviourNode(1, "Decorator/Conditions")]
 public class IsTargetFoundNode : ConditionalNode
 {
     [SerializeField] private bool _hasKnownLocationMode = false; 
