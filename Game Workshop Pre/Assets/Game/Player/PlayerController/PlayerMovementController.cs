@@ -21,7 +21,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float SweepForce { get { return _sweepForce; } }
     [SerializeField][Range(0f, 2f)] private float _sweepForceMovementScaler = 0.1f;
     public float SweepForceMovementScaler { get { return _sweepForceMovementScaler; } }
-
+    [SerializeField] private bool _shouldSweepBeforePoke = false;
+    public bool ShouldSweepBeforePoke { get { return _shouldSweepBeforePoke; } }
     [Header("Sweep Poke Properties")]
     [SerializeField] private float _sweepAllowPokeTime = 0.1f;
     public float SweepAllowPokeTime { get { return _sweepAllowPokeTime; } }
@@ -32,6 +33,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float PokeDuration { get { return _pokeDuration; } }
     [SerializeField] private float _pokeCooldown = 1f;
     public float PokeCooldown { get { return _pokeCooldown; } }
+    [SerializeField] private float _pokeKnockbackMultiplier = 1f;
+    public float PokeKnockbackMultiplier { get { return _pokeKnockbackMultiplier; } }
     
     [Header("Swipe Properties")]
     [SerializeField] private float _baseSwipeForce = 5f;
@@ -40,6 +43,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float FullChargeSwipeForce { get { return _fullChargeSwipeForce; } }
     [SerializeField][Range(0f, 2f)] private float _swipeForceMovementScaler = 0.1f;
     public float SwipeForceMovementScaler { get { return _swipeForceMovementScaler; } }
+    [SerializeField] private float _swipeFalloffReduction = 0.4f;
+    public float SwipeFalloffReduction { get { return _swipeFalloffReduction; } }
     [SerializeField] private float _swipeTimeUntilHold = 1f;
     public float SwipeTimeUntilHold { get { return _swipeTimeUntilHold; } }
     [SerializeField] private float _swipeHoldChargeTime = 5f;
@@ -48,6 +53,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public float SwipeDuration { get { return _swipeDuration; } }
     [SerializeField] private float _swipeCooldown = 1f;
     public float SwipeCooldown { get { return _swipeCooldown; } }
+    [SerializeField] private float _swipeKnockbackMultiplier = 1f;
+    public float SwipeKnockbackMultiplier { get { return _swipeKnockbackMultiplier; } }
 
     [Header("Hook Properties")]
     [SerializeField] private float _hookPullForce = 5f;
@@ -99,6 +106,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         set { SetWeight(value); }
     }
 
+    //ITargetable
+    public TargetType TargetType { get { return TargetType.Player; } }
+
     //input
     private bool _isUsingVirtualMouse = false;
     private Vector2 _virtualMouseVector = Vector2.zero;
@@ -107,20 +117,25 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
     private HeatMechanic _playerHeat;
+    public GameObject HitParent { get { return gameObject; } }
 
     #endregion
 
     // Methods
     private void Awake()
     {
-        _ctx = new PlayerContext(this, _movementProps);
-        _ctx.Rigidbody = GetComponent<Rigidbody2D>();
-        _ctx.Animator = GetComponentInChildren<Animator>();
-        _ctx.SwipeHandler = GetComponentInChildren<SwipeHandler>();
-        _ctx.SweepHandler = GetComponentInChildren<BroomSweepHandler>();
-        _ctx.HookHandler = GetComponentInChildren<HookHandler>();
-        _ctx.Collider = GetComponent<Collider2D>();
-        _ctx.Rotation = Mathf.DeltaAngle(0f, _startAngle);
+        _ctx = new PlayerContext(this, _movementProps)
+        {
+            Rigidbody = GetComponent<Rigidbody2D>(),
+            Animator = GetComponentInChildren<Animator>(),
+            SwipeHandler = GetComponentInChildren<SwipeHandler>(),
+            SweepHandler = GetComponentInChildren<BroomSweepHandler>(),
+            HookHandler = GetComponentInChildren<HookHandler>(),
+            Collider = GetComponent<Collider2D>(),
+            Rotation = Mathf.DeltaAngle(0f, _startAngle)
+        };
+        _ctx.SwipeHandler.Initialize(this, _ctx);
+        _ctx.SweepHandler.Initialize(this, _ctx);
         _playerHeat = GetComponent<HeatMechanic>();
         _state = new PlayerStateMachine(_ctx);
         //_heatSound = FMODUnity.RuntimeManager.CreateInstance("event:/Heat System/Heat Meter");
@@ -345,11 +360,12 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     }
 
     // Being swiped puts you into tumble state
-    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collider, ref float knockbackMultiplier)
     {
         if (force >= _movementProps.EnterTumbleThreshold) _state.ChangeState(PlayerStateEnum.Tumble);
         _ctx.Rigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
+
 
     // IAbsorbable
 
@@ -399,13 +415,6 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         heat.Reset();
     }
 
-    // ITargetable
-
-    public TargetType GetTargetType()
-    {
-        return TargetType.Player;
-    }
-
     // Gizmo to display the dash cooldowns
     private void DrawDashCooldownGizmo()
     {
@@ -447,4 +456,5 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     {
         SetWeight(_weight - slowAmount);
     }
+
 }

@@ -81,6 +81,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     public Rigidbody2D Rigidbody { get; private set; }
     public CircleCollider2D Collider { get; private set; }
     public float SizeRadius { get { return Collider.radius; } }
+    public GameObject HitParent { get { return gameObject; } }
     [SerializeField] private Transform _ballQuad; // Reference to the transform of the Ball Quad 
     [SerializeField] private Transform _ballTransform; // Reference to the transform of the Ball Mesh
     public CircleCollider2D AbsorbCollider { get; private set; }
@@ -689,7 +690,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     }
 
     //ISwipeable
-    public void OnSwipe(Vector2 direction, float force, Collider2D collision)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collision, ref float knockbackMultiplier)
     {
         if (_isBeingDestroyed) return;
 
@@ -712,7 +713,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
     //IPokeable
 
-    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    public void OnPoke(Vector2 direction, float force, Collider2D collider, ref float knockbackMultiplier)
     {
         if (_isBeingDestroyed) return;
         _decayTimer = _timeUntilDecay;

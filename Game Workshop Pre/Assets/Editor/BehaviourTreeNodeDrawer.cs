@@ -92,6 +92,45 @@ public class BehaviourTreeNodeDrawer : PropertyDrawer
                             Rect fieldRect = new Rect(position.x + LeftPadding, y, position.width - LeftPadding, height);
                             EditorGUI.PropertyField(fieldRect, fieldProp, true);
                             y += height + RowSpacing;
+
+                            // PatrolNode-specific scene editing controls
+                            if (node is PatrolNode && fieldProp.name == "_patrolPoints")
+                            {
+                                bool isEditing = PatrolNodeSceneEditor.IsEditing(fieldProp);
+
+                                Color oldColor = GUI.backgroundColor;
+                                if (isEditing)
+                                {
+                                    GUI.backgroundColor = Color.green;
+                                }
+
+                                Rect editRect = new Rect(position.x + LeftPadding, y, position.width - LeftPadding, EditorGUIUtility.singleLineHeight);
+                                if (GUI.Button(editRect, isEditing ? "Stop Editing Patrol Points" : "Edit Patrol Points In Scene"))
+                                {
+                                    if (isEditing)
+                                    {
+                                        PatrolNodeSceneEditor.StopEditing();
+                                    }
+                                    else
+                                    {
+                                        PatrolNodeSceneEditor.StartEditing(fieldProp);
+                                    }
+                                }
+
+                                GUI.backgroundColor = oldColor;
+                                y += EditorGUIUtility.singleLineHeight + RowSpacing;
+
+                                Rect clearRect = new Rect(position.x + LeftPadding, y, position.width - LeftPadding, EditorGUIUtility.singleLineHeight);
+                                if (GUI.Button(clearRect, "Clear Patrol Points"))
+                                {
+                                    fieldProp.serializedObject.Update();
+                                    fieldProp.ClearArray();
+                                    fieldProp.serializedObject.ApplyModifiedProperties();
+                                    SceneView.RepaintAll();
+                                }
+
+                                y += EditorGUIUtility.singleLineHeight + RowSpacing;
+                            }
                         }
                     }
                 }
@@ -110,7 +149,8 @@ public class BehaviourTreeNodeDrawer : PropertyDrawer
         // Get signature
         int currentSignature = ComputeTreeSignature(rootNode);
 
-        if (cache.TryGetValue(ownerKey, out CachedTree existingTree) && existingTree.signature == currentSignature) {
+        if (cache.TryGetValue(ownerKey, out CachedTree existingTree) && existingTree.signature == currentSignature)
+        {
             return;//is valid
         }
 
@@ -179,7 +219,8 @@ public class BehaviourTreeNodeDrawer : PropertyDrawer
             }
 
             SerializedProperty childProp = childrenProp.GetArrayElementAtIndex(i);
-            if (childProp != null) {
+            if (childProp != null)
+            {
                 FlattenNodeProperties(childProp, outPaths);
             }
         }
@@ -202,7 +243,7 @@ public class BehaviourTreeNodeDrawer : PropertyDrawer
             // Skip Editor-only fields
             if (propName.EndsWith("Children") || propName.EndsWith("DisplayName"))
             {
-                continue;   
+                continue;
             }
 
             fields.Add(iter.Copy());
@@ -221,7 +262,7 @@ public class BehaviourTreeNodeDrawer : PropertyDrawer
     public override float GetPropertyHeight(SerializedProperty property, GUIContent labellabel)
     {
         // Behaviour + Edit Behaviour Tree button
-        float height = EditorGUIUtility.singleLineHeight + RowSpacing; 
+        float height = EditorGUIUtility.singleLineHeight + RowSpacing;
 
         BehaviourTreeNode rootNode = property.managedReferenceValue as BehaviourTreeNode;
         if (rootNode == null) return height;
@@ -256,6 +297,13 @@ public class BehaviourTreeNodeDrawer : PropertyDrawer
                 foreach (SerializedProperty field in fields)
                 {
                     height += EditorGUI.GetPropertyHeight(field, true) + RowSpacing;
+
+                    // Extra buttons for PatrolNode patrol point editing
+                    if (node is PatrolNode && field.name == "_patrolPoints")
+                    {
+                        height += EditorGUIUtility.singleLineHeight + RowSpacing;
+                        height += EditorGUIUtility.singleLineHeight + RowSpacing;
+                    }
                 }
             }
         }

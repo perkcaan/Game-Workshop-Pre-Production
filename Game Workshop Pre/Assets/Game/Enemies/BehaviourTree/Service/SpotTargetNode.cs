@@ -46,7 +46,7 @@ public class SpotTargetNode : ServiceNode
         Collider2D[] targetsInRange = Physics2D.OverlapCircleAll(Self.transform.position, _searchDistance, _targetMask);
         foreach (Collider2D potentialTargetCollider in targetsInRange)
         {
-            if (potentialTargetCollider.TryGetComponent(out ITargetable potentialTarget) && potentialTarget.GetTargetType() == _typeToTarget)
+            if (potentialTargetCollider.TryGetComponent(out ITargetable potentialTarget) && potentialTarget.TargetType == _typeToTarget)
             {
                 Vector2 targetPos = TargetPos(potentialTarget);
 

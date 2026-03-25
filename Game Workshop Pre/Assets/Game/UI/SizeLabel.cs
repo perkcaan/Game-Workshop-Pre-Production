@@ -7,6 +7,8 @@ public class SizeLabel : MonoBehaviour
 {
     [SerializeField] private TMP_Text _text;
     private bool _startVisible;
+    private bool _shown = true;
+    private bool _enabled = true;
 
     private void Awake()
     {
@@ -26,11 +28,42 @@ public class SizeLabel : MonoBehaviour
 
     public void Hide()
     {
-        _text.enabled = false;
+        _shown = false;
+        UpdateVisibility();
     }
 
     public void Show()
     {
-        _text.enabled = true;
+        _shown = true;
+        UpdateVisibility();
     }
+
+    private void UpdateVisibility()
+    {
+        _text.enabled = _shown && _enabled;
+    }
+
+    //Settings
+    private void OnEnable()
+    {
+        if (GameManager.Instance == null) return;
+        GameManager.Instance.SettingsChanged += OnSettingsChanged;
+        OnSettingsChanged();
+    }
+
+    private void OnDisable()
+    {
+        if (GameManager.Instance == null) return;
+        GameManager.Instance.SettingsChanged -= OnSettingsChanged;
+    }
+    
+    private void OnSettingsChanged()
+    {
+        if (GameManager.Instance == null) return;
+        _enabled = GameManager.Instance.UseTrashballLabels;
+        UpdateVisibility();
+    }
+
+
+
 }

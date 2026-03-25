@@ -45,4 +45,9 @@ public class WebSwarmEnemy : EnemyBase
         _isSpawningWeb = false;
     }
 
+    protected override void ForceCancelAction()
+    {
+        //unneeded
+    }
+
 }
