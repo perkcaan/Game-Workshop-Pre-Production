@@ -5,6 +5,7 @@ using System;
 using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
+using UnityEngine.UIElements;
 
 // Primary script for TrashBall gameobject. Acts as a container for IAbsorbable (primarily Trash).
 public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeatable
@@ -73,6 +74,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
     // particles
     private float _particleTimer = 0f;
+    private Vector2 _lastRolledLocation;
 
     // sound
     private EventInstance _sweepSoundInstance;
@@ -119,7 +121,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         if (_isBeingDestroyed) return;
 
         // Material
-        ActionOnMaterials((material, amount) => material.whenBallRolls(this, amount));
+        ActionOnMaterials((material, amount) => material.whenBallUpdates(this, amount));
+        Vector2 distanceVector = (Vector2)transform.position - _lastRolledLocation;
+        if (distanceVector.magnitude >= Mathf.Pow(Size, 1f / 3f) * _scaleMultiplier)
+        {
+            _lastRolledLocation = transform.position;
+            ActionOnMaterials((material, amount) => material.whenBallRolls(this, amount));
+        }
+
         foreach (IAbsorbable absorbable in AbsorbedObjects)
         {
             absorbable.TrashBallUpdate(this);

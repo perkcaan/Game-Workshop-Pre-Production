@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a94c40b80d7567343822cc79f783c34e, type: 3}
+  m_Name: PaperTrail
+  m_EditorClassIdentifier: Assembly-CSharp::TrailTrashMaterial
+  color: {r: 0.81960785, g: 1, b: 1, a: 1}
+  bounciness: 0
+  mass: -0.25
+  drag: 0
+  maxHealthMultiplier: 0
+  decayMultiplier: 0
+  damageMultiplier: 0.75
+  swipeForceMultiplier: 0
+  trailPrefab: {fileID: 7067795271112685607, guid: 81949f8d1b524a14dba898019661af8e, type: 3}
+  _sizeMultiplier: 1

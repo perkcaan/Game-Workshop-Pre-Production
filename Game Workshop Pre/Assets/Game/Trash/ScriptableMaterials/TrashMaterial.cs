@@ -18,6 +18,7 @@ public class TrashMaterial : ScriptableObject
 
 
     public virtual void materialEnd(TrashBall trashBall) { }
+    public virtual void whenBallUpdates(TrashBall trashBall, TrashMaterialAmount amount) { }
     public virtual void whenBallRolls(TrashBall trashBall, TrashMaterialAmount amount) { }
     public virtual void whenBallSwiped(TrashBall trashBall, TrashMaterialAmount amount) { }
     public virtual void whenBallHitsWall(TrashBall trashBall, TrashMaterialAmount amount) { }
