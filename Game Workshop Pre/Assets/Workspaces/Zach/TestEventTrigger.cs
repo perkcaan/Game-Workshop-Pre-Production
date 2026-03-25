@@ -7,7 +7,7 @@ public class TestEventTrigger : MonoBehaviour, ISwipeable
     public GameObject HitParent { get { return gameObject; } }
     [SerializeField] private EventTrigger _events;
     
-    public void OnSwipe(Vector2 direction, float force, Collider2D collision)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collision, ref float knockbackMultiplier)
     {
         //Triggers all actions on the event with what was serialized
         _events.Trigger();

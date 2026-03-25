@@ -11,12 +11,14 @@ public struct EnemySwipeData
 {
     public bool IsVulnerable { get; set; }
     public float SwipeMultiplier { get; set; }
+    public float KnockbackMultiplier { get; set; }
 }
 
 public struct EnemyPokeData
 {
     public bool IsVulnerable { get; set; }
     public float PokeMultiplier { get; set; }
+    public float KnockbackMultiplier { get; set; }
 }
 
 public struct EnemyAbsorbData
@@ -38,6 +40,8 @@ public class EnemyInteractionProperties
     public float SwipeBaseMultiplier { get { return _swipeBaseMultiplier; }}
     [SerializeField] private float _swipeVulnerableMultiplier = 0.3f;
     public float SwipeVulnerableMultiplier { get { return _swipeVulnerableMultiplier; }}
+    [SerializeField] private float _swipeBaseKnockbackMultiplier = 0f;
+    public float SwipeBaseKnockbackMultiplier { get { return _swipeBaseKnockbackMultiplier; }}
 
     [Header("Poke")]
     [SerializeField] private bool _isBaseVulnerableToPoke = false;
@@ -46,6 +50,8 @@ public class EnemyInteractionProperties
     public float PokeBaseMultiplier { get { return _pokeBaseMultiplier; }}
     [SerializeField] private float _pokeVulnerableMultiplier = 2f;
     public float PokeVulnerableMultiplier { get { return _pokeVulnerableMultiplier; }}
+    [SerializeField] private float _pokeBaseKnockbackMultiplier = 1f;
+    public float PokeBaseKnockbackMultiplier { get { return _pokeBaseKnockbackMultiplier; }}
 
 
     [Header("Absorb")]

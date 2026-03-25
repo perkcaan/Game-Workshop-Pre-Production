@@ -98,7 +98,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     // external methods (use in specific enemies!)
     protected abstract void OnStart();
     protected abstract void OnUpdate();
-    protected abstract void ForceDisableHitboxes();
+    protected abstract void ForceCancelAction();
 
     //internal methods
     private void OnValidate()
@@ -173,7 +173,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             _currentAction = null;
         }
         _currentActionComplete = null;
-        ForceDisableHitboxes();
+        ForceCancelAction();
     }
 
     // Cancels all behaviour. Includes coroutines, pathing, actions
@@ -364,12 +364,13 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     // ISwipeable
     protected virtual void ModifySwipe(ref EnemySwipeData data) { }
 
-    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collider, ref float knockbackMultiplier)
     {
         EnemySwipeData data = new EnemySwipeData
         {
             IsVulnerable = _interactProps.IsBaseVulnerableToSwipe,
-            SwipeMultiplier = _interactProps.SwipeBaseMultiplier
+            SwipeMultiplier = _interactProps.SwipeBaseMultiplier,
+            KnockbackMultiplier = _interactProps.SwipeBaseKnockbackMultiplier
         };
 
         ModifySwipe(ref data); // Enemy type modifies swipe data
@@ -382,20 +383,22 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             _state.ChangeState(EnemyStateEnum.Pinball);
         }
         
-        //Add swipe knockback
+        //Add swipe force
         Rigidbody.AddForce(direction * force * data.SwipeMultiplier, ForceMode2D.Impulse);
+        knockbackMultiplier = data.KnockbackMultiplier;
     }
 
 
     // IPokeable
     protected virtual void ModifyPoke(ref EnemyPokeData data) { }
 
-    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    public void OnPoke(Vector2 direction, float force, Collider2D collider, ref float knockbackMultiplier)
     {
         EnemyPokeData data = new EnemyPokeData()
         {
             IsVulnerable = _interactProps.IsBaseVulnerableToPoke,
-            PokeMultiplier = _interactProps.PokeBaseMultiplier
+            PokeMultiplier = _interactProps.PokeBaseMultiplier,
+            KnockbackMultiplier = _interactProps.PokeBaseKnockbackMultiplier
         };
 
         ModifyPoke(ref data); // Enemy type modifies poke data
@@ -408,7 +411,8 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
             _state.ChangeState(EnemyStateEnum.Pinball);
         }
         
-        //Add poke knockback
+        //Add poke force
         Rigidbody.AddForce(direction * force * data.PokeMultiplier, ForceMode2D.Impulse);
+        knockbackMultiplier = data.KnockbackMultiplier;
     }    
 }

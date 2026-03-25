@@ -50,7 +50,8 @@ public class HeatAttackHitbox : MonoBehaviour
             float rotationRad = _rotation * Mathf.Deg2Rad;
             Vector2 direction = new Vector2(Mathf.Cos(rotationRad), Mathf.Sin(rotationRad)).normalized;
 
-            swipeable.OnSwipe(direction, _knockbackApplied, collider);
+            float knockbackMultiplier = 0f;
+            swipeable.OnSwipe(direction, _knockbackApplied, collider, ref knockbackMultiplier);
             Vector3 contactPoint = collider.ClosestPoint(transform.position);
             if (collider.gameObject.TryGetComponent(out PlayerMovementController player))
             {

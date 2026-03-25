@@ -172,12 +172,14 @@ public class EnemyPinballState : EnemyState
     {
         data.IsVulnerable = false;
         data.SwipeMultiplier *= _self.PinballProps.SwipeMultiplier;
+        data.KnockbackMultiplier = 0f;
     }
 
     public override void ModifyPoke(ref EnemyPokeData data)
     {
         data.IsVulnerable = false;
         data.PokeMultiplier *= _self.PinballProps.PokeMultiplier;
+        data.KnockbackMultiplier = 0f;
     }
 
     public override void ModifySweep(ref EnemySweepData data)

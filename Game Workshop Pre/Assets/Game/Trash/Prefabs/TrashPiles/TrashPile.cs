@@ -58,7 +58,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     }
 
 
-    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collider, ref float knockbackMultiplier)
     {
         //if (_isDestroyed) return;
         TakeDamage(3, direction, force * _swipeForceShakeMultiplier);
