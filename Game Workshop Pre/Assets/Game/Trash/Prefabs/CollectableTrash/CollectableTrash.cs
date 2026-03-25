@@ -21,13 +21,13 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable
             CreateTrashBall();
         }
     }
-    public void OnSwipe(Vector2 direction, float force, Collider2D collision)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collision, ref float knockbackMultiplier)
     {
         _rigidBody.AddForce(direction * force * _swipeForceMultiplier, ForceMode2D.Impulse);
         if (_swipesIntoTrashBall) CreateTrashBall();
     }
 
-    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    public void OnPoke(Vector2 direction, float force, Collider2D collider, ref float knockbackMultiplier)
     {
          _rigidBody.AddForce(direction * force * _pokeForceMultiplier * _rigidBody.mass, ForceMode2D.Impulse);
     }

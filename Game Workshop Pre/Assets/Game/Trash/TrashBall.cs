@@ -690,7 +690,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     }
 
     //ISwipeable
-    public void OnSwipe(Vector2 direction, float force, Collider2D collision)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collision, ref float knockbackMultiplier)
     {
         if (_isBeingDestroyed) return;
 
@@ -713,7 +713,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
     //IPokeable
 
-    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    public void OnPoke(Vector2 direction, float force, Collider2D collider, ref float knockbackMultiplier)
     {
         if (_isBeingDestroyed) return;
         _decayTimer = _timeUntilDecay;
