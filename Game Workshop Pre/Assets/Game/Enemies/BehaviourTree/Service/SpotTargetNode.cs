@@ -35,6 +35,7 @@ public class SpotTargetNode : ServiceNode
             {
                 Blackboard.Set<ITargetable>("target", _currentTarget);
                 Blackboard.Set<Vector2?>("targetPosition", targetPos);
+                
             }
         }
         return;

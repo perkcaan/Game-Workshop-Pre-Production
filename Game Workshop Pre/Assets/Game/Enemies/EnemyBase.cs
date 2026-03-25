@@ -94,6 +94,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         _pather = GetComponent<EnemyPather>();
         if (_behaviour != null) _behaviour.Initialize(this);
         OnStart();
+        
     }
 
     private void Update()

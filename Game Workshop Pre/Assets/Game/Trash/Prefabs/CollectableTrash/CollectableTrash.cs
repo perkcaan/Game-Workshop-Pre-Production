@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable
+public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable,ITargetable
 {
     [SerializeField] float _sweepDurationToBecomeBall;
     [SerializeField] bool _swipesIntoTrashBall;
@@ -35,5 +35,9 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable
     {
         if (_sweepTimer >= 0) _sweepTimer -= Time.deltaTime / 2;
     }
-    
+
+    public TargetType GetTargetType()
+    {
+        return TargetType.Trash;
+    }
 }
