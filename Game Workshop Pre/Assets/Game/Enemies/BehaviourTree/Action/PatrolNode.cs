@@ -9,7 +9,7 @@ using UnityEngine;
 public class PatrolNode : BehaviourTreeNode
 {
     // Fields
-    [SerializeField] private List<Vector2> _patrolPoints;
+    [SerializeField] private List<Vector2> _patrolPoints = new();
     [SerializeField] private bool _reversePatrolInsteadOfWrap;
     [SerializeField] private float _arrivalProximity = 0.2f;
     private int _patrolIndex = 0;

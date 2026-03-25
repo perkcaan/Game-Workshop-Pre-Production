@@ -21,7 +21,7 @@ public class TrashRadarManager : MonoBehaviour
 
     protected Heap heap;
 
-     [SerializeField] DistrictManager dm;
+    [SerializeField] DistrictManager dm;
     [SerializeField] Transform[] gateSequence;
 
     [SerializeField] GameObject radarPointer;
@@ -74,6 +74,8 @@ public class TrashRadarManager : MonoBehaviour
 
     void Start()
     {
+        if (dm == null)
+            dm = GameObject.Find("DistrictManager").GetComponent<DistrictManager>();
         StartCoroutine(StartProxyTimer());
     }
 
@@ -96,6 +98,7 @@ public class TrashRadarManager : MonoBehaviour
         heap.Heapify();
         _gateNumber = Mathf.Clamp(_gateNumber, 0, gateSequence.Length -1);
 
+
         ClosestCleanable = heap.Head.NodeObject;
         if (ClosestCleanable == null)
             return;
@@ -115,7 +118,8 @@ public class TrashRadarManager : MonoBehaviour
         Vector2 targetDirection;
         float rotationDirection;
 
-        if (dm.FocusedRoom == null || dm.FocusedRoom.IsRoomCleaned)
+        bool gateSequenceValid = (gateSequence.Length <= 0) ? false : true;
+        if (gateSequenceValid && (dm.FocusedRoom == null || dm.FocusedRoom.IsRoomCleaned))
         {
             targetDirection = (Vector2)(gateSequence[_gateNumber].position - transform.position);
             rotationDirection = (Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg) - 90f;
@@ -127,7 +131,6 @@ public class TrashRadarManager : MonoBehaviour
             rotationDirection = (Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg) - 90f;
             transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationDirection);
         }
-
     }
 
     void AddNewCleanables()
@@ -188,6 +191,8 @@ public class TrashRadarManager : MonoBehaviour
         while (true)
         {
             GameObject[] array = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+            if (array.Length != _maintainerCount)
+                AddNewCleanables();
             _maintainerCount = array.Length;
             yield return new WaitForSeconds(0.05f);
         }
@@ -279,7 +284,7 @@ public class TrashRadarManager : MonoBehaviour
 
         _proximityList.Remove(other.gameObject);
 
-        if (_proximityList.Count  == 0)
+        if (_proximityList.Count  == 0 && !_adding)
         {
             _inProximity = false;
             StartCoroutine(StartProxyTimer());

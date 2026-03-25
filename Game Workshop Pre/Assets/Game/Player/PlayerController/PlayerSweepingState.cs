@@ -12,6 +12,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     // Fields
     //movement
     private float _zeroMoveTimer = 0f;
+    private float _sweepPokeTimer = 0f;
 
     public PlayerSweepingState(PlayerContext context, PlayerStateMachine state)
     {
@@ -27,8 +28,12 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         _ctx.CanHook = true;
         _ctx.CanSwipe = true;
         _ctx.CanDash = true;
+
+        _sweepPokeTimer = 0;
         float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
-        _ctx.SweepHandler.BeginSweep(_ctx.Rotation, sweepForce);
+        if (_ctx.Player.ShouldSweepBeforePoke) {
+             _ctx.SweepHandler.BeginSweep(_ctx.Rotation, sweepForce);
+        }
     }
 
     public override void Update()
@@ -42,13 +47,23 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         HandleMovement();
         HandleRotation();
         float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
-        _ctx.SweepHandler.UpdateHitbox(_ctx.Rotation, sweepForce);
+        _ctx.SweepHandler.UpdateHitbox(_ctx.Rotation);
+
+        if (_sweepPokeTimer < _ctx.Player.SweepAllowPokeTime)
+        {
+            _sweepPokeTimer += Time.deltaTime;
+            if (_sweepPokeTimer >= _ctx.Player.SweepAllowPokeTime && !_ctx.Player.ShouldSweepBeforePoke)
+            {
+                _ctx.SweepHandler.BeginSweep(_ctx.Rotation, sweepForce);
+            } 
+        }
         TryChangeState();
     }
 
     public override void ExitState()
     {
         _ctx.SweepHandler.EndSweep();
+        //AudioManager.Instance.Stop(_ctx.SweepHandler.gameObject, "Sweep");
         _ctx.Animator.SetBool("Sweeping", false);
     }
     
@@ -78,7 +93,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
             {
                 _ctx.MoveSpeed = 0f;
                 // Cancels sliding with an opposing force
-                Vector2 velocity = _ctx.Rigidbody.velocity;
+                Vector2 velocity = _ctx.Rigidbody.linearVelocity;
                 if ((velocity.magnitude > 0.5f) && (velocity.magnitude < _ctx.MaxSweepWalkSpeed) && _ctx.Props.WillCancelSweepSlide)
                 {
                     Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxSweepWalkSpeed;
@@ -93,14 +108,14 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
 
     private void HandleRotation()
     {
-        Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(_ctx.MouseInput);
         Vector2 direction = mouseWorldPoint - (Vector2)_ctx.Player.transform.position;
         direction.Normalize();
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         // Rotate slower based on speed - Disabled because I didnt like it. -Zach
         float rotationSpeedReduction = 1f; //Mathf.Max(_ctx.MoveSpeed / _ctx.MaxWalkSpeed, 1);
 
-        float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.Props.RotationSpeed / rotationSpeedReduction * Time.deltaTime);
+        float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.Props.SweepRotationSpeed / rotationSpeedReduction * Time.deltaTime);
         _ctx.Rotation = Mathf.DeltaAngle(0f, newAngle);
         
         
@@ -109,7 +124,15 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
     //state
     private void TryChangeState()
     {
-        if (!_ctx.IsSweepPressed) _state.ChangeState(PlayerStateEnum.Idle);
+        if (!_ctx.IsSweepPressed) {
+            if (_sweepPokeTimer < _ctx.Player.SweepAllowPokeTime && _ctx.Player.canPoke && _ctx.PokeCooldownTimer <= 0f)
+            {
+                _state.ChangeState(PlayerStateEnum.SweepPoke);
+            } else
+            {
+                _state.ChangeState(PlayerStateEnum.Idle);
+            }
+        }
     }
 
     private void DrawRotationGizmo()
