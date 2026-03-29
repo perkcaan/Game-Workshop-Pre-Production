@@ -38,6 +38,7 @@ public class ChaseTargetNode : BehaviourTreeNode
 
     private void ChaseTarget()
     {
+        Debug.Log("Moving to point");
         Self.Pather.GoToPoint(_storedTargetPos, _arrivedAtTargetDistance, ArrivedAtTarget);
     }
 
