@@ -60,12 +60,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     private bool _isDecaying = false;
     private float _decayTimer = 0f;
     public bool isBurning = false;
+    public bool isSwiped = false;
     // material stats
     private float _maxHealthMultiplier = 1f;
     private float _decayMultiplier = 0f;
     private float _damageMultiplier = 0f;
     private float _swipeForceMultiplier = 0f;
-    private float _burningHeatPerSecond = 0;
+    private float _burningHeatPerSecond = 0f;
+    private float _heatTransferPrecent = 0f;
     // absorbed container data
     public List<IAbsorbable> AbsorbedObjects { get; private set; } = new List<IAbsorbable>();
     private List<TrashMaterial> _trashMaterialCounts = new List<TrashMaterial>();
@@ -124,7 +126,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         {
             heatMechanic.ModifyHeat(_burningHeatPerSecond * Time.fixedDeltaTime);
         }
-
         // Material
         ActionOnMaterials((material, amount) => material.whenBallUpdates(this, amount));
         Vector2 distanceVector = (Vector2)transform.position - _lastRolledLocation;
@@ -145,14 +146,12 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         {
             _particleTimer = 0.1f;
             ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f));
-            if (isBurning) ParticleManager.Instance.Play("TrashFireTrail", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f));
+            if (isBurning) ParticleManager.Instance.Play("TrashBurning", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f), parent: gameObject.transform);
         }
         
         // Sound
         AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM", this.Rigidbody.linearVelocity.magnitude * 10);
         AudioManager.Instance.ModifyGlobalParameter("RPM2", this.Rigidbody.linearVelocity.magnitude * 10);
-
-
 
         // 3D Ball rotation
         Vector3 rotationAxis = new Vector3(Rigidbody.linearVelocity.y, -Rigidbody.linearVelocity.x, 0);
@@ -164,6 +163,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         // Health Decay
         if (Rigidbody.linearVelocity.magnitude < 1)
         {
+            isSwiped = false;
             _decayTimer -= Time.deltaTime * _defaultDecayMultiplier * _decayMultiplier;
             if (_decayTimer <= 0)
             {
@@ -246,7 +246,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
                 ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: 1f);
             } else
             {
-                ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: 0.5f);
+                ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: 0.5f, parent: gameObject.transform);
             }
         }
     }
@@ -272,6 +272,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         Destroy(gameObject);
     }
 
+    public void SetOnFire()
+    {
+        if (_burningHeatPerSecond > 1f) isBurning = true;
+    }
 
     #endregion
 
@@ -544,7 +548,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         _maxHealthMultiplier += material.maxHealthMultiplier * percentOf;
         _decayMultiplier += material.decayMultiplier * percentOf;
         _damageMultiplier += material.damageMultiplier * percentOf;
-        _burningHeatPerSecond = material.burningHeatPerSecondMultiplier * percentOf;
+        _burningHeatPerSecond += material.burningHeatPerSecondMultiplier * percentOf;
         _swipeForceMultiplier += material.swipeForceMultiplier * percentOf;
         UpdateMaxHealthMultiplier();
     }
@@ -587,12 +591,15 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     {
         if (_isBeingDestroyed) return;
 
-        
-        if (collision.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
+        if (collision.gameObject.TryGetComponent(out IAbsorbable absorbableObject)) OnAbsorbTrigger(collision.collider);
+        if (collision.gameObject.TryGetComponent(out HeatMechanic heatableObjects))
         {
-            OnAbsorbTrigger(collision.collider);
+            if (heatableObjects.Heat < heatMechanic.Heat)
+            {
+                float heatTransfer = (heatMechanic.Heat - heatableObjects.Heat) * _heatTransferPrecent;
+                heatableObjects.ModifyHeat(heatTransfer);
+            }
         }
-
 
         if ((_wallLayers.value & (1 << collision.gameObject.layer)) != 0) // Layer 14 is supposed to be Wall
         {
@@ -711,6 +718,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     {
         if (_isBeingDestroyed) return;
 
+        isSwiped = true;
         ActionOnMaterials((material, amount) => material.whenBallSwiped(this, amount));
 
         _decayTimer = _timeUntilDecay;

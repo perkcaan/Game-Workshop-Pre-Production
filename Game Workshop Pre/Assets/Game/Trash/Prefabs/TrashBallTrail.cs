@@ -8,6 +8,7 @@ public class TrashBallTrail : MonoBehaviour
     void Start()
     {
         timer = 0;
+        ParticleManager.Instance.Play("FireCircle", transform.position, force: 0.5f);
     }
 
     void Update()

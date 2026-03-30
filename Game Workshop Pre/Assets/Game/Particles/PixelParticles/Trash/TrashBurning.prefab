@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -33617757251474752}
   - component: {fileID: 6361279073500391103}
   m_Layer: 0
-  m_Name: TrashFireTrail
+  m_Name: TrashBurning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,7 +107,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -4866,8 +4866,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 1721764203
-  m_SortingLayer: -4
+  m_SortingLayerID: -10392991
+  m_SortingLayer: 1
   m_SortingOrder: 2
   m_MaskInteraction: 0
   m_RenderMode: 0

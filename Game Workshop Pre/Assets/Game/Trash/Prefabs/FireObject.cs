@@ -8,7 +8,7 @@ public class FireObject : MonoBehaviour
     {
         if (collider.gameObject.TryGetComponent(out TrashBall trashBall))
         {
-            trashBall.isBurning = true;
+            trashBall.SetOnFire();
         }
     }
 
