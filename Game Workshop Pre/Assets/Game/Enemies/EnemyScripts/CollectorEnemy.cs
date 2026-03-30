@@ -22,17 +22,16 @@ public class CollectorEnemy : EnemyBase
 
     protected override void OnUpdate()
     {
-        sweepHandler.UpdateHitbox(Animator.GetFloat("Rotation"));
+        sweepHandler.UpdateHitbox(FacingRotation);
     }
    
 
     public void Collect(CollectableTrash trash)
     {
         //trash.gameObject.SetActive(false);
-        //_collectedTrash.Add(trash);
-        //float rotation = Animator.GetFloat("Rotation");
+        
         sweepHandler.BeginSweep(rotation,2f);
-        //trash.NullType();
+        trash.NullType();
 
     }
 
@@ -60,6 +59,7 @@ public class CollectorEnemy : EnemyBase
             {
                 Debug.Log("Collecting");
                 //detectedTrash.transform.parent = transform;
+               
                 Collect(detectedTrash);
                 
             }

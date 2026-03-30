@@ -50,7 +50,7 @@ public class EnemySweepHandler : MonoBehaviour
         Vector2 offset = new Vector2(Mathf.Cos(orientation), Mathf.Sin(orientation));
 
         // Set the sweep box position and rotation relative to the player and their rotation
-        transform.position = transform.parent.transform.position + new Vector3(0, -0.25f, 0f) + ((Vector3)offset * 0.5f);
+        transform.position = transform.parent.transform.position;
         transform.rotation = Quaternion.Euler(0, 0, rotation + 90f);
     }
 
