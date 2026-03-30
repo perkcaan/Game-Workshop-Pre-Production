@@ -24,6 +24,7 @@ public class EnemySweepHandler : MonoBehaviour
         _hitbox = GetComponent<Collider2D>();
         _hitbox.enabled = false;
         _sweepSingularity = GetComponentInChildren<SweepSingularity>().transform;
+        _broomhead = GetComponentInChildren<Broomhead>();
 
     }
 
@@ -35,11 +36,12 @@ public class EnemySweepHandler : MonoBehaviour
 
     public void BeginSweep(float rotation, float sweepForce)
     {
+        
         _hitbox.enabled = true;
         _broomhead.Active = true;
-
         _sweepForce = sweepForce;
         UpdateHitbox(rotation);
+
     }
 
     public void UpdateHitbox(float rotation)

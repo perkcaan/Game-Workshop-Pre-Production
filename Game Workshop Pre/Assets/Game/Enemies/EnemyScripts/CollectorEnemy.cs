@@ -10,17 +10,19 @@ public class CollectorEnemy : EnemyBase
 {
     [SerializeField] private List<CollectableTrash> _collectedTrash;
     public float collectionRadius;
-    EnemySweepHandler sweepHandler;
+    [SerializeField] EnemySweepHandler sweepHandler;
+    Animator Animator;
+    float rotation;
 
-    
+
     protected override void OnStart()
     {
-        sweepHandler = new EnemySweepHandler();
+        Animator = GetComponentInChildren<Animator>();
     }
 
     protected override void OnUpdate()
     {
-        
+        sweepHandler.UpdateHitbox(Animator.GetFloat("Rotation"));
     }
    
 
@@ -28,7 +30,21 @@ public class CollectorEnemy : EnemyBase
     {
         //trash.gameObject.SetActive(false);
         //_collectedTrash.Add(trash);
-        //sweepHandler.BeginSweep();
+        //float rotation = Animator.GetFloat("Rotation");
+        sweepHandler.BeginSweep(rotation,2f);
+        //trash.NullType();
+
+    }
+
+    public void EmptyTrash()
+    {
+        foreach (CollectableTrash trash in _collectedTrash)
+        {
+            trash.gameObject.SetActive(true);
+            trash.transform.parent = null;
+            trash.OnTrashBallRelease(null, Vector2.zero);
+        }
+        _collectedTrash.Clear();
     }
 
     public IEnumerator Collection(Action<bool> onComplete)
@@ -43,8 +59,9 @@ public class CollectorEnemy : EnemyBase
             if (detectedTrash != null)
             {
                 Debug.Log("Collecting");
-                detectedTrash.transform.parent = transform;
+                //detectedTrash.transform.parent = transform;
                 Collect(detectedTrash);
+                
             }
         }
         onComplete?.Invoke(true);

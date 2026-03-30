@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable,ITargetable
+public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable, ITargetable
 {
     [SerializeField] float _sweepDurationToBecomeBall;
     [SerializeField] bool _swipesIntoTrashBall;
@@ -9,7 +9,14 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable,ITarget
     [SerializeField] float _swipeForceMultiplier = 1f;
     public GameObject HitParent { get { return gameObject; } }
 
-    public TargetType TargetType => TargetType.Trash;
+    public TargetType _targetType = TargetType.Trash;
+
+
+    public TargetType TargetType
+    {
+        get => _targetType;
+        set => _targetType = value;
+    }
 
     private float _sweepTimer;
 
@@ -42,6 +49,15 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable,ITarget
 
     public TargetType GetTargetType()
     {
+        
         return TargetType.Trash;
     }
+
+    public void NullType()
+    {
+        _targetType = TargetType.Null;
+        
+    }
+
+    
 }

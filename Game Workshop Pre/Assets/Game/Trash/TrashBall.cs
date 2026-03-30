@@ -7,7 +7,7 @@ using FMODUnity;
 using System.Collections;
 
 // Primary script for TrashBall gameobject. Acts as a container for IAbsorbable (primarily Trash).
-public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeatable
+public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeatable,ITargetable
 {
     #region Fields/Properties
 
@@ -86,6 +86,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     [SerializeField] private Transform _ballTransform; // Reference to the transform of the Ball Mesh
     public CircleCollider2D AbsorbCollider { get; private set; }
     public CircleCollider2D MagnetCollider { get; private set; }
+
+    public TargetType _targetType = TargetType.Trash;
+    public TargetType TargetType
+    {
+        get => _targetType;
+        set => _targetType = value;
+    }
+
     [SerializeField] private SizeLabel _label;
 
     #endregion

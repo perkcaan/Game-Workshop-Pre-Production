@@ -66,7 +66,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     [Header("Interaction Properties")]
     [SerializeField] EnemyInteractionProperties _interactProps;
 
-    public TargetType TargetType { get { return TargetType.Enemy; } } //ITargetable
+    //public TargetType TargetType { get { return TargetType.Enemy; } } //ITargetable
 
     // Components
     protected Animator _animator;
@@ -82,6 +82,15 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     
     private EnemyPather _pather;
     public EnemyPather Pather { get { return _pather; } }
+
+    [SerializeField] private TargetType _targetType = TargetType.Enemy;
+
+    public TargetType TargetType
+    {
+        get => _targetType;
+        set => _targetType = value;
+    }
+
     protected EnemyStateMachine _state;
 
     private Room _parentRoom;

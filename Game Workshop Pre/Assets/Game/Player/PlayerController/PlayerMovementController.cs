@@ -107,7 +107,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     }
 
     //ITargetable
-    public TargetType TargetType { get { return TargetType.Player; } }
+    //public TargetType TargetType { get { return TargetType.Player; } }
 
     //input
     private bool _isUsingVirtualMouse = false;
@@ -118,6 +118,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private PlayerStateMachine _state;
     private HeatMechanic _playerHeat;
     public GameObject HitParent { get { return gameObject; } }
+
+    [SerializeField] private TargetType _targetType = TargetType.Player;
+
+    public TargetType TargetType
+    {
+        get => _targetType;
+        set => _targetType = value;
+    }
+    
 
     #endregion
 
