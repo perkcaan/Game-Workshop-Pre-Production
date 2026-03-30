@@ -15,7 +15,7 @@ public class TrashMaterial : ScriptableObject
     public float decayMultiplier;
     public float damageMultiplier;
     public float swipeForceMultiplier;
-
+    public float burningHeatPerSecondMultiplier;
 
     public virtual void materialEnd(TrashBall trashBall) { }
     public virtual void whenBallUpdates(TrashBall trashBall, TrashMaterialAmount amount) { }

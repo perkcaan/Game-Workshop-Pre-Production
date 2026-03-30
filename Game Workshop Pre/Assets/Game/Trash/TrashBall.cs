@@ -53,7 +53,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     [SerializeField] float _primaryThreshold = 0.5f;
     [SerializeField] float _secondaryThreshold = 0.15f;
 
-
     // state of trashball
     private static int _nextID = 0; // universal count for trash ball IDs
     private int _trashID; //individual identifier for this trash ball
@@ -66,7 +65,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     private float _decayMultiplier = 0f;
     private float _damageMultiplier = 0f;
     private float _swipeForceMultiplier = 0f;
-
+    private float _burningHeatPerSecond = 0;
     // absorbed container data
     public List<IAbsorbable> AbsorbedObjects { get; private set; } = new List<IAbsorbable>();
     private List<TrashMaterial> _trashMaterialCounts = new List<TrashMaterial>();
@@ -89,7 +88,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     public CircleCollider2D AbsorbCollider { get; private set; }
     public CircleCollider2D MagnetCollider { get; private set; }
     [SerializeField] private SizeLabel _label;
-
+    private HeatMechanic heatMechanic;
     #endregion
 
     #region Unity methods
@@ -97,6 +96,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     {
         Rigidbody = GetComponent<Rigidbody2D>();
         Collider = GetComponent<CircleCollider2D>();
+        heatMechanic = GetComponent<HeatMechanic>();
         AbsorbCollider = GetComponentInChildren<TrashBallAbsorb>().GetComponent<CircleCollider2D>();
         MagnetCollider = GetComponentInChildren<TrashBallMagnet>().GetComponent<CircleCollider2D>();
 
@@ -120,6 +120,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     {
         if (_isBeingDestroyed) return;
 
+        if (isBurning)
+        {
+            heatMechanic.ModifyHeat(_burningHeatPerSecond * Time.fixedDeltaTime);
+        }
+
         // Material
         ActionOnMaterials((material, amount) => material.whenBallUpdates(this, amount));
         Vector2 distanceVector = (Vector2)transform.position - _lastRolledLocation;
@@ -140,6 +145,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         {
             _particleTimer = 0.1f;
             ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f));
+            if (isBurning) ParticleManager.Instance.Play("TrashFireTrail", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f));
         }
         
         // Sound
@@ -524,6 +530,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         _maxHealthMultiplier = _baseMaterial.maxHealthMultiplier;
         _decayMultiplier = _baseMaterial.decayMultiplier;
         _damageMultiplier = _baseMaterial.damageMultiplier;
+        _burningHeatPerSecond = _baseMaterial.burningHeatPerSecondMultiplier;
         _swipeForceMultiplier = _baseMaterial.swipeForceMultiplier;
     }
 
@@ -537,6 +544,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         _maxHealthMultiplier += material.maxHealthMultiplier * percentOf;
         _decayMultiplier += material.decayMultiplier * percentOf;
         _damageMultiplier += material.damageMultiplier * percentOf;
+        _burningHeatPerSecond = material.burningHeatPerSecondMultiplier * percentOf;
         _swipeForceMultiplier += material.swipeForceMultiplier * percentOf;
         UpdateMaxHealthMultiplier();
     }

@@ -3,6 +3,7 @@ using UnityEngine;
 public class TrashBallTrail : MonoBehaviour
 {
     [SerializeField] float lifeSpan;
+    [SerializeField] float _heatPerSecond;
     float timer;
     void Start()
     {
@@ -15,6 +16,14 @@ public class TrashBallTrail : MonoBehaviour
         if (timer > lifeSpan)
         {
             Destroy(gameObject);
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D collider)
+    {
+        if (collider.TryGetComponent(out HeatMechanic heat))
+        {
+            heat.ModifyHeat(_heatPerSecond * Time.fixedDeltaTime);
         }
     }
 }
