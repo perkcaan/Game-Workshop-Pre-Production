@@ -24,9 +24,10 @@ public class ShaderManager : MonoBehaviour
     //[Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
     [SerializeField] private Texture _meshTexture;
 
-    [SerializeField] private float sinkSpeed = 0.3f;
+    [SerializeField] private float sinkSpeed = 0.7f;
     [SerializeField] private float vulnerableFlashSpeed = 20f;
-    //[SerializeField] private float maxHeight = 1f;
+    [SerializeField] private float maxHeight = 1f;
+    private float _height = 1f;
 
     private float currentHeight = 0f;
     private bool inLava = false;
@@ -74,6 +75,9 @@ public class ShaderManager : MonoBehaviour
         _flashPhase = 0f;
         _vulnerableFlashPhase = 0f;
         _isVulnerable = false;
+        inLava = false;
+        currentHeight = 0f;
+        sinkComplete = false;
 
         SetFloatProperties("_FlashPhase", _flashPhase);
         SetFloatProperties("_Dissolve", 0f);
@@ -116,7 +120,7 @@ public class ShaderManager : MonoBehaviour
         if (!value)
         {
             currentHeight = 0f;
-            SetFloatProperties("_height", 0f);
+            SetFloatProperties("_Height", 0f);
         }
     }
 
@@ -209,12 +213,12 @@ public class ShaderManager : MonoBehaviour
         while (time < 3f)
         {
             float height = time;
-            SetFloatProperties("_height", height);
+            SetFloatProperties("_Height", height);
             time += Time.deltaTime;
             yield return null;
         }
 
-        SetFloatProperties("_height", 1);
+        SetFloatProperties("_Height", 1f);
 
         _lavaCoroutine = null;
         onDoneSinking?.Invoke();
@@ -222,7 +226,6 @@ public class ShaderManager : MonoBehaviour
 
     void VulnerableFlash()
     {
-        Debug.Log("Flashing");
         _vulnerableFlashPhase += Time.deltaTime * vulnerableFlashSpeed;
         SetFloatProperties("_VulnerableFlashPhase", _vulnerableFlashPhase);
     }
