@@ -63,11 +63,13 @@ Material:
     - _Height: 0
     - _HighHeatThreshold: 1
     - _IsDissolving: 1
+    - _IsVulnerable: 0
     - _LowHeatThreshold: 0.3
     - _MaxFlashFrequency: 2
     - _MedHeatThreshold: 0.9
     - _MinTint: 0.65
     - _PixelCount: 16
+    - _VulnerableFlashPhase: 0
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveColor: {r: 8, g: 2.596286, b: 0, a: 1}
@@ -78,5 +80,6 @@ Material:
     - _LowHeatColor: {r: 0.71199995, g: 0, b: 0.07030531, a: 0.4}
     - _Med: {r: 1, g: 0, b: 0, a: 0}
     - _MedHeatColor: {r: 1, g: 0.38333338, b: 0, a: 0.6}
+    - _VulnerableColor: {r: 0.051105477, g: 0.122512676, b: 0.95597476, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

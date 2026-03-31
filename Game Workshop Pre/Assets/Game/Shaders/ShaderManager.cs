@@ -18,12 +18,14 @@ public class ShaderManager : MonoBehaviour
     [SerializeField] private float _dissolveTime = 0.5f;
     [Tooltip("The width of the 'burn' effect on the dissolve animation.")]
     [SerializeField] private float _dissolveBurnWidth = 0.4f;
-    [Tooltip("The time it takes to sink in lava.")]
+    [Tooltip("Is the object vulnerable")]
+    [SerializeField] private bool _isVulnerable = false;
     //[SerializeField] private float _height = 1.0f;
     //[Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
     [SerializeField] private Texture _meshTexture;
 
     [SerializeField] private float sinkSpeed = 0.3f;
+    [SerializeField] private float vulnerableFlashSpeed = 20f;
     //[SerializeField] private float maxHeight = 1f;
 
     private float currentHeight = 0f;
@@ -34,6 +36,8 @@ public class ShaderManager : MonoBehaviour
     private MaterialPropertyBlock _block;
     private Coroutine _dissolveCoroutine;
     private Coroutine _lavaCoroutine;
+
+    private float _vulnerableFlashPhase = 0f;
 
     private void Awake()
     {
@@ -68,28 +72,39 @@ public class ShaderManager : MonoBehaviour
     public void Reset()
     {
         _flashPhase = 0f;
+        _vulnerableFlashPhase = 0f;
+        _isVulnerable = false;
 
         SetFloatProperties("_FlashPhase", _flashPhase);
         SetFloatProperties("_Dissolve", 0f);
         SetFloatProperties("_Height", 0f);
+        SetFloatProperties("_VulnerableFlashPhase", _vulnerableFlashPhase);
+
     }
 
     private void Update()
     {
+        if (_isVulnerable)
+        {
+            SetFloatProperties("_IsVulnerable", 1f);
+            Debug.Log(_isVulnerable);
+            VulnerableFlash();
+        }
+        else SetFloatProperties("_IsVulnerable", 0f);
+
+        //Lava Logic
         if (!inLava || sinkComplete) return;
 
         currentHeight += sinkSpeed * Time.deltaTime;
         currentHeight = Mathf.Clamp01(currentHeight);
-
-
 
         if (currentHeight >= 1f)
         {
             currentHeight = 0f;
             sinkComplete = true;
         }
-
         SetFloatProperties("_Height", currentHeight);
+
     }
 
     public void SetInLava(bool value)
@@ -203,5 +218,12 @@ public class ShaderManager : MonoBehaviour
 
         _lavaCoroutine = null;
         onDoneSinking?.Invoke();
+    }
+
+    void VulnerableFlash()
+    {
+        Debug.Log("Flashing");
+        _vulnerableFlashPhase += Time.deltaTime * vulnerableFlashSpeed;
+        SetFloatProperties("_VulnerableFlashPhase", _vulnerableFlashPhase);
     }
 }
