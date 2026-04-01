@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CollectorEnemy : EnemyBase
 {
@@ -31,7 +32,11 @@ public class CollectorEnemy : EnemyBase
         //trash.gameObject.SetActive(false);
         
         sweepHandler.BeginSweep(rotation,2f);
-        trash.NullType();
+        _collectedTrash.Add(trash);
+        
+        _behaviour.Blackboard.Remove("targetPosition");
+        _behaviour.Blackboard.Remove("target");
+        
 
     }
 
@@ -41,7 +46,7 @@ public class CollectorEnemy : EnemyBase
         {
             trash.gameObject.SetActive(true);
             trash.transform.parent = null;
-            trash.OnTrashBallRelease(null, Vector2.zero);
+            
         }
         _collectedTrash.Clear();
     }
@@ -69,7 +74,8 @@ public class CollectorEnemy : EnemyBase
 
     protected override void ForceCancelAction()
     {
-        throw new NotImplementedException();
+        sweepHandler.EndSweep();
+        EmptyTrash();
     }
 
     //public void OnTriggerEnter2D(Collider2D collision)

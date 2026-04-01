@@ -11,7 +11,7 @@ using UnityEngine.Events;
 public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable, ICleanable, ISwipeable, ISweepable, IPokeable
 {
     [Header("Enemy")]
-    [SerializeField] private BehaviourTree _behaviour;
+    [SerializeField] protected BehaviourTree _behaviour;
     [SerializeField] private List<EnemyActionReference> _actions;
     private Coroutine _currentAction;
     private Action<bool> _currentActionComplete;

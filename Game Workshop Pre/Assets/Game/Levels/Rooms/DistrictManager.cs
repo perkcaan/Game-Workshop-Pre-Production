@@ -83,7 +83,8 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private void Start()
     {
         _rooms = new List<Room>(FindObjectsByType<Room>(FindObjectsSortMode.InstanceID));
-        _coinText.alpha = 0f;
+        if(_coinText != null)
+            _coinText.alpha = 0f;
         if (PlayerPrefs.HasKey("Coins"))
             coinsEarned = PlayerPrefs.GetInt("Coins");
         else

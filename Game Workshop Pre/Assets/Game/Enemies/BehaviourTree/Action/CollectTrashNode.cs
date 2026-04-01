@@ -7,7 +7,7 @@ using UnityEngine;
 public class CollectTrashNode : BehaviourTreeNode
 {
     [SerializeField]private Vector2 trashPos = Vector2.zero;
-    private bool atTrash = false;
+    [SerializeField] private bool atTrash = false;
     [SerializeField] private float atTrashDistance = 0.5f;
     
     
@@ -40,7 +40,9 @@ public class CollectTrashNode : BehaviourTreeNode
     public void StartCollectingTrash()
     {
         
-            Self.Pather.GoToPoint(trashPos, atTrashDistance, ArrivedAtTrash);
+        Self.Pather.GoToPoint(trashPos, atTrashDistance, ArrivedAtTrash);
+        
+
        
         
         
@@ -49,17 +51,20 @@ public class CollectTrashNode : BehaviourTreeNode
     {
         atTrash = true;
         Self.Pather.Stop();
-        Reset();
         
+        trashPos = Vector2.zero;
         
-        
+
+
+
+
     }
 
     protected override void Reset()
     {
         atTrash = false;
-        trashPos = Vector2.zero;
         
+
     }
 
     protected override void DrawDebug()
