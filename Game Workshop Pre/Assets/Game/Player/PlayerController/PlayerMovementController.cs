@@ -158,6 +158,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         Cursor.lockState = CursorLockMode.Confined;
         AudioManager.Instance.PlayInstance("Heat");
         //_heatSound.start();
+        AudioManager.Instance.Play("music",transform);
         _playerHeat = GetComponent<HeatMechanic>();
         
     }

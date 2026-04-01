@@ -12,13 +12,13 @@ public class CollectorEnemy : EnemyBase
     [SerializeField] private List<CollectableTrash> _collectedTrash;
     public float collectionRadius;
     [SerializeField] EnemySweepHandler sweepHandler;
-    Animator Animator;
+    
     float rotation;
 
 
     protected override void OnStart()
     {
-        Animator = GetComponentInChildren<Animator>();
+        
     }
 
     protected override void OnUpdate()
