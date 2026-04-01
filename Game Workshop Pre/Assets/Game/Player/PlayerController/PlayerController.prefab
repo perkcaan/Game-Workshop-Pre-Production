@@ -1303,6 +1303,7 @@ MonoBehaviour:
   _pokeForce: 12
   _pokeDuration: 0.1
   _pokeCooldown: 0
+  _pokeKnockbackMultiplier: 1
   _baseSwipeForce: 10
   _fullChargeSwipeForce: 60
   _swipeForceMovementScaler: 0.1
@@ -1311,6 +1312,7 @@ MonoBehaviour:
   _swipeHoldChargeTime: 3
   _swipeDuration: 0.34
   _swipeCooldown: 1
+  _swipeKnockbackMultiplier: 1
   _hookPullForce: 10
   _hookThrowMovementScaler: 0.1
   _hookDuration: 0.5
@@ -1327,6 +1329,7 @@ MonoBehaviour:
   canSwipe: 1
   canDash: 1
   canHook: 1
+  _targetType: 0
 --- !u!114 &8808070966336400160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7055,30 +7058,6 @@ PrefabInstance:
       value: AudioManager
       objectReference: {fileID: 0}
     - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[11].Key
-      value: trashPickup
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[12].Key
-      value: gateDown
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[13].Key
-      value: gateUp
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[14].Key
-      value: enemyPickup
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[15].Key
-      value: Points
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[19].Key
-      value: Heat
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
       propertyPath: _sounds._serializedList.Array.data[20].Key
       value: Lava
       objectReference: {fileID: 0}
@@ -7115,144 +7094,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3782953471523454873}
     - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[11].Value.Path
-      value: event:/Trash/Pickup
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[12].Value.Path
-      value: event:/Gate_Down
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[13].Value.Path
-      value: event:/Gate_Up
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[14].Value.Path
-      value: event:/Trash/Pickup Enemies
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[15].Value.Path
-      value: event:/Points
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[19].Value.Path
-      value: event:/Heat System/Heat Meter
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
       propertyPath: _sounds._serializedList.Array.data[20].Value.Path
       value: event:/LavaEnvironment
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[10].Value.Guid.Data1
-      value: -2074322134
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[10].Value.Guid.Data2
-      value: 1231014565
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[10].Value.Guid.Data3
-      value: 585045692
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[10].Value.Guid.Data4
-      value: -573988649
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[11].Value.Guid.Data1
-      value: -694834995
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[11].Value.Guid.Data2
-      value: 1170253539
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[11].Value.Guid.Data3
-      value: -1210683998
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[11].Value.Guid.Data4
-      value: -2041284058
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[12].Value.Guid.Data1
-      value: 255738095
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[12].Value.Guid.Data2
-      value: 1120853624
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[12].Value.Guid.Data3
-      value: 1725492103
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[12].Value.Guid.Data4
-      value: -412020637
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[13].Value.Guid.Data1
-      value: 45391139
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[13].Value.Guid.Data2
-      value: 1137682788
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[13].Value.Guid.Data3
-      value: -481112642
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[13].Value.Guid.Data4
-      value: 701164783
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[14].Value.Guid.Data1
-      value: 1962508302
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[14].Value.Guid.Data2
-      value: 1189414935
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[14].Value.Guid.Data3
-      value: 403715714
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[14].Value.Guid.Data4
-      value: -794661141
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[15].Value.Guid.Data1
-      value: 780674560
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[15].Value.Guid.Data2
-      value: 1200775962
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[15].Value.Guid.Data3
-      value: 1928587417
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[15].Value.Guid.Data4
-      value: -1714651333
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[19].Value.Guid.Data1
-      value: 1515016055
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[19].Value.Guid.Data2
-      value: 1297398676
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[19].Value.Guid.Data3
-      value: -1407158339
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
-      propertyPath: _sounds._serializedList.Array.data[19].Value.Guid.Data4
-      value: 1186683876
       objectReference: {fileID: 0}
     - target: {fileID: 3582240135918648881, guid: 584bcf4e6108aa740aaf1d50b8ccb6de, type: 3}
       propertyPath: _sounds._serializedList.Array.data[20].Value.Guid.Data1
@@ -7341,11 +7184,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1517802845986372830, guid: 729d3b9be6f569144932f8a39e8f4314, type: 3}
-      propertyPath: pointerSprite.Array.data[0]
+      propertyPath: 'pointerSprite.Array.data[0]'
       value: 
       objectReference: {fileID: 1836039239174994139}
     - target: {fileID: 1517802845986372830, guid: 729d3b9be6f569144932f8a39e8f4314, type: 3}
-      propertyPath: pointerSprite.Array.data[1]
+      propertyPath: 'pointerSprite.Array.data[1]'
       value: 
       objectReference: {fileID: 4180602690349671110}
     - target: {fileID: 4084843887868302802, guid: 729d3b9be6f569144932f8a39e8f4314, type: 3}

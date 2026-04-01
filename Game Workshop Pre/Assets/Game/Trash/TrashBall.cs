@@ -128,8 +128,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
         // Material
         ActionOnMaterials((material, amount) => material.whenBallRolls(this, amount));
-        foreach (IAbsorbable absorbable in AbsorbedObjects)
+        foreach (IAbsorbable absorbable in AbsorbedObjects.ToArray())
         {
+            if (absorbable == null) continue;
             absorbable.TrashBallUpdate(this);
         }
 

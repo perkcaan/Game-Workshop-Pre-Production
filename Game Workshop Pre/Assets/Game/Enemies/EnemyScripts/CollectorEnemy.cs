@@ -44,6 +44,7 @@ public class CollectorEnemy : EnemyBase
     {
         foreach (CollectableTrash trash in _collectedTrash)
         {
+            if (trash == null) return;
             trash.gameObject.SetActive(true);
             trash.transform.parent = null;
             
