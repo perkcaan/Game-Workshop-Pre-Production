@@ -75,6 +75,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
     // particles
     private float _particleTimer = 0f;
+    private float _fireParticleTimer = 0f;
     private Vector2 _lastRolledLocation;
 
     // sound
@@ -145,10 +146,16 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         if (_particleTimer <= 0 && Rigidbody.linearVelocity.magnitude > 0.5f)    
         {
             _particleTimer = 0.1f;
-            ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f));
+            ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f)); 
+        }
+
+        _fireParticleTimer -= Time.deltaTime;
+        if (_fireParticleTimer <= 0)    
+        {
+            _fireParticleTimer = 0.15f;
             if (isBurning) ParticleManager.Instance.Play("TrashBurning", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f), parent: gameObject.transform);
         }
-        
+
         // Sound
         AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM", this.Rigidbody.linearVelocity.magnitude * 10);
         AudioManager.Instance.ModifyGlobalParameter("RPM2", this.Rigidbody.linearVelocity.magnitude * 10);
@@ -274,7 +281,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
     public void SetOnFire()
     {
-        if (_burningHeatPerSecond > 1f) isBurning = true;
+        if (_burningHeatPerSecond > 1f && !isBurning) {
+            isBurning = true;
+            ParticleManager.Instance.Play("SmokeBlast", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f)/3f, parent: gameObject.transform);
+        }
     }
 
     #endregion
