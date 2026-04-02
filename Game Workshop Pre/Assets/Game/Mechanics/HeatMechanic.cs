@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class HeatMechanic : MonoBehaviour
+public class HeatMechanic : MonoBehaviour, ISaveable
 {
 
     //Constants 
@@ -177,6 +177,22 @@ public class HeatMechanic : MonoBehaviour
                     _debugIgnited = true;
                 });
             }
+        }
+    }
+
+
+    //The Place to add data that is desired to be saved
+    public void AddSavableData() 
+    {
+        if (gameObject.GetComponent<PlayerMovementController>() != null)
+        {
+            string idString = "HeatMechanic"; 
+            List<object> saveableList = new List<object>();
+
+            saveableList.Add(Heat);
+            saveableList.Add(coolingOff);
+
+            ISaveable.saveableData.Add(idString, saveableList);
         }
     }
 

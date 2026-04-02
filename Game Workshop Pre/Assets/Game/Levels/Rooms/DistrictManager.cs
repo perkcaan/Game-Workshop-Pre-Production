@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class DistrictManager : StaticInstance<DistrictManager>
+public class DistrictManager : StaticInstance<DistrictManager>, ISaveable
 {
     [SerializeField, Range(HeatMechanic.LOWEST_HEAT_VALUE, HeatMechanic.HIGHEST_HEAT_VALUE)] private int _baseTemperature;
     public int Temperature { get { return _baseTemperature; } }
@@ -171,6 +171,14 @@ public class DistrictManager : StaticInstance<DistrictManager>
         
     }
 
+    //The Place to add data that is desired to be saved
+    public void AddSavableData() 
+    {
+        string idString = "DistrictManagerData";
+        List<object> saveableList = new List<object>();
+
+        ISaveable.saveableData.Add(idString, saveableList);
+    }
     
 
 }

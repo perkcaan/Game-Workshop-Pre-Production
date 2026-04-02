@@ -3,9 +3,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Android;
 using System;
+using System.Collections.Generic;
 using FMODUnity;
 
-public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
+public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable, ISaveable
 {
 
     #region header
@@ -455,6 +456,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public void RemoveWebSlow(float slowAmount)
     {
         SetWeight(_weight - slowAmount);
+    }
+
+    //The Place to add data that is desired to be saved
+    public void AddSavableData() 
+    {
+        string idString = "PlayerData";
+        List<object> saveableList = new List<object>();
+
+        ISaveable.saveableData.Add(idString, saveableList);
     }
 
 }

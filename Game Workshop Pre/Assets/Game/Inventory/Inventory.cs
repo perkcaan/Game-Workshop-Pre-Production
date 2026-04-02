@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, ISaveable
 {
     public static Inventory Instance;
     [SerializeField] PlayerMovementController player;
@@ -87,6 +87,15 @@ public class Inventory : MonoBehaviour
         item.UnequipItem();
         return true;
         */
+    }
+
+    //The Place to add data that is desired to be saved
+    public void AddSavableData() 
+    {
+        string idString = "InventoryData";
+        List<object> saveableList = new List<object>();
+
+        ISaveable.saveableData.Add(idString, saveableList);
     }
 
 }
