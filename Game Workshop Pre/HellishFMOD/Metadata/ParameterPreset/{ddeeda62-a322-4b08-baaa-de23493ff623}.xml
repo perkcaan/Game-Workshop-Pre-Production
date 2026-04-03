@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{ddeeda62-a322-4b08-baaa-de23493ff623}">
+		<property name="name">
+			<value>Section Control</value>
+		</property>
+		<relationship name="folder">
+			<destination>{d2d00e70-f7e4-46c7-ac85-3c2406e406df}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{d9db291f-90e6-4fc3-9e0a-1bdd1194167f}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{d9db291f-90e6-4fc3-9e0a-1bdd1194167f}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>4</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>New Area</value>
+			<value>Value B</value>
+			<value>Value C</value>
+			<value>Value A</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
