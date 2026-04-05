@@ -277,7 +277,7 @@ MonoBehaviour:
         DisplayName: Selector
         Children:
         - rid: 3352830270144774220
-        - rid: 3352830270144774221
+        - rid: 3352830563977789517
         - rid: 3352830270144774224
         - rid: -2
     - rid: 3352830270144774220
@@ -287,25 +287,6 @@ MonoBehaviour:
         Children:
         - rid: 3352830270144774225
         _hasKnownLocationMode: 0
-    - rid: 3352830270144774221
-      type: {class: SequenceNode, ns: , asm: Assembly-CSharp}
-      data:
-        DisplayName: Sequence
-        Children:
-        - rid: 3352830270144774222
-        - rid: 3352830270144774223
-        - rid: -2
-    - rid: 3352830270144774222
-      type: {class: HasLastKnownPositionNode, ns: , asm: Assembly-CSharp}
-      data:
-        DisplayName: Has Last Known Position
-        Children: []
-    - rid: 3352830270144774223
-      type: {class: ChaseTargetNode, ns: , asm: Assembly-CSharp}
-      data:
-        DisplayName: Chase Target
-        Children: []
-        _arrivedAtTargetDistance: 1
     - rid: 3352830270144774224
       type: {class: RandomWanderNode, ns: , asm: Assembly-CSharp}
       data:
@@ -326,6 +307,26 @@ MonoBehaviour:
         _projectileLifetime: 3
         _fireInterval: 1
         _projectilePrefab: {fileID: 2116717220429116675, guid: 4ad34a591d49b4bce852ba65e3182852, type: 3}
+    - rid: 3352830563977789517
+      type: {class: StatefulSequenceNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Node
+        Children:
+        - rid: 3352830563977789518
+        - rid: 3352830563977789519
+        - rid: -2
+    - rid: 3352830563977789518
+      type: {class: ChaseTargetNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Chase Target
+        Children: []
+        _arrivedAtTargetDistance: 1
+    - rid: 3352830563977789519
+      type: {class: LoseTargetNode, ns: , asm: Assembly-CSharp}
+      data:
+        DisplayName: Lose Target
+        Children: []
+        _loseTargetConfusionTime: 2
 --- !u!114 &945610582753545755
 MonoBehaviour:
   m_ObjectHideFlags: 0
