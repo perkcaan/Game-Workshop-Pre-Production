@@ -21,7 +21,7 @@ public class ShaderManager : MonoBehaviour
     [Tooltip("Is the object vulnerable")]
     [SerializeField] private bool _isVulnerable = false;
     [Tooltip("Length of time for the damage flash")]
-    [SerializeField] private float _damageTime = 0.5f;
+    [SerializeField] private float _damageTime = 0.25f;
     [Tooltip("Is object taking damage")]
     [SerializeField] private bool _isDamaged = false;
     //[SerializeField] private float _height = 1.0f;
