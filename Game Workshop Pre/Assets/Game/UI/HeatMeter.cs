@@ -6,6 +6,7 @@ public class HeatMeter : MonoBehaviour
     [SerializeField] private HeatMechanic _targetHeatMechanic;
     [SerializeField] private Image _fillImage;
     [SerializeField] private Image _outline;
+    [SerializeField] private float _heatFillMultiplier = 1.075f;
 
     [Header("Colors")]
     [SerializeField] private Gradient _heatGradient;
@@ -84,7 +85,7 @@ public class HeatMeter : MonoBehaviour
         _fillFlashIntensity = Mathf.MoveTowards(_fillFlashIntensity, 0f, Time.deltaTime * _flashSpeed);
         Color baseFillColor = _heatGradient.Evaluate(heatProgress);
         _fillImage.color = Color.Lerp(baseFillColor, _flashColor, _fillFlashIntensity);
-        _fillImage.fillAmount = heatProgress * 1.05f;
+        _fillImage.fillAmount = heatProgress * _heatFillMultiplier;
 
         HandleShake(heatChange, heatProgress);
 
