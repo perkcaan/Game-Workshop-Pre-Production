@@ -96,7 +96,11 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private void Update()
     {
         if (_focusedRooms.Count > 0)
-        AudioManager.Instance.ModifyGlobalParameter("Intensity", FocusedRoom.baseIntensity);
+        {
+            AudioManager.Instance.ModifyGlobalParameter("Intensity", FocusedRoom.baseIntensity);
+            AudioManager.Instance.ModifyParameter(gameObject, "music", "Section Control", FocusedRoom.musicSection);
+        }
+
 
     }
 
