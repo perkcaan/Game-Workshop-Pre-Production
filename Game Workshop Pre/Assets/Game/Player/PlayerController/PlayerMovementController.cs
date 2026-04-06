@@ -107,7 +107,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     }
 
     //ITargetable
-    public TargetType TargetType { get { return TargetType.Player; } }
+    //public TargetType TargetType { get { return TargetType.Player; } }
 
     //input
     private bool _isUsingVirtualMouse = false;
@@ -118,6 +118,15 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private PlayerStateMachine _state;
     private HeatMechanic _playerHeat;
     public GameObject HitParent { get { return gameObject; } }
+
+    [SerializeField] private TargetType _targetType = TargetType.Player;
+
+    public TargetType TargetType
+    {
+        get => _targetType;
+        set => _targetType = value;
+    }
+    
 
     #endregion
 
@@ -149,6 +158,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         Cursor.lockState = CursorLockMode.Confined;
         AudioManager.Instance.PlayInstance("Heat");
         //_heatSound.start();
+        AudioManager.Instance.Play("music",transform);
         _playerHeat = GetComponent<HeatMechanic>();
         
     }

@@ -433,6 +433,9 @@
 		<property name="timelockedOffset">
 			<value>33.104423744158936</value>
 		</property>
+		<relationship name="fadeInCurve">
+			<destination>{647e3a77-9b2a-4790-8612-a649ae9d67be}</destination>
+		</relationship>
 		<relationship name="audioFile">
 			<destination>{9846b6f1-56c6-4c9a-b565-c48bcde1d5be}</destination>
 		</relationship>
@@ -771,6 +774,17 @@
 			<destination>{49b1e3e8-2b3e-49b3-8db9-2ebfc4b274a3}</destination>
 		</relationship>
 	</object>
+	<object class="FadeCurve" id="{647e3a77-9b2a-4790-8612-a649ae9d67be}">
+		<relationship name="startPoint">
+			<destination>{4691e705-d68b-4d28-8275-c304d88456a8}</destination>
+		</relationship>
+		<relationship name="endPoint">
+			<destination>{d62210bf-407e-419e-b5b8-f6e0005fbc8a}</destination>
+		</relationship>
+		<relationship name="relatedModule">
+			<destination>{0d188216-b1fa-4d72-b1fd-b10ddee4d2ab}</destination>
+		</relationship>
+	</object>
 	<object class="Automator" id="{a513ec26-2790-463c-96e6-3042c54d2606}">
 		<property name="nameOfPropertyBeingAutomated">
 			<value>volume</value>
@@ -892,6 +906,25 @@
 			<value>0</value>
 		</property>
 	</object>
+	<object class="AutomationPoint" id="{4691e705-d68b-4d28-8275-c304d88456a8}">
+		<property name="position">
+			<value>167.58620833333333</value>
+		</property>
+		<property name="value">
+			<value>0</value>
+		</property>
+		<property name="curveShape">
+			<value>-0.2547189</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{d62210bf-407e-419e-b5b8-f6e0005fbc8a}">
+		<property name="position">
+			<value>171.98500000000001</value>
+		</property>
+		<property name="value">
+			<value>1</value>
+		</property>
+	</object>
 	<object class="AutomationCurve" id="{38cbd924-e512-4e75-9742-188c4dea5047}">
 		<relationship name="parameter">
 			<destination>{04927622-8413-4ad5-952e-0e824e595ff5}</destination>
@@ -974,7 +1007,7 @@
 			<value>63</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>0</value>
 		</property>
 		<property name="curveShape">
 			<value>0.324850768</value>
@@ -985,7 +1018,7 @@
 			<value>65</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>10</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{674abfd3-52d9-40ea-8fde-07ea38f262b3}">

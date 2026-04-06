@@ -177,14 +177,30 @@ MonoBehaviour:
           Data3: -74243186
           Data4: -1259412614
         Path: event:/Player/Death
+    - Key: music
+      Value:
+        Guid:
+          Data1: -2072716389
+          Data2: 1204770590
+          Data3: -1744730491
+          Data4: 92282367
+        Path: event:/Music/1 District/Vertical Adaptive District 1
     - Key: attack
+      Value:
+        Guid:
+          Data1: -2074322134
+          Data2: 1231014565
+          Data3: 585045692
+          Data4: -573988649
+        Path: event:/Enemies/Enemy Attacks
+    - Key: trashPickup
       Value:
         Guid:
           Data1: -694834995
           Data2: 1170253539
           Data3: -1210683998
           Data4: -2041284058
-        Path: event:/Enemies/Enemy Attacks
+        Path: event:/Trash/Pickup
     - Key: gateDown
       Value:
         Guid:
@@ -217,14 +233,6 @@ MonoBehaviour:
           Data3: 1928587417
           Data4: -1714651333
         Path: event:/Points
-    - Key: enemyDeath
-      Value:
-        Guid:
-          Data1: -1218844404
-          Data2: 1121533942
-          Data3: -117245779
-          Data4: -1216900099
-        Path: event:/Enemies/Imp/Death
     - Key: impDeath
       Value:
         Guid:

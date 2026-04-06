@@ -8,7 +8,7 @@ using System.Collections;
 using UnityEngine.UIElements;
 
 // Primary script for TrashBall gameobject. Acts as a container for IAbsorbable (primarily Trash).
-public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeatable
+public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeatable,ITargetable
 {
     #region Fields/Properties
 
@@ -90,6 +90,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     [SerializeField] private Transform _ballTransform; // Reference to the transform of the Ball Mesh
     public CircleCollider2D AbsorbCollider { get; private set; }
     public CircleCollider2D MagnetCollider { get; private set; }
+
+    public TargetType _targetType = TargetType.Trash;
+    public TargetType TargetType
+    {
+        get => _targetType;
+        set => _targetType = value;
+    }
+
     [SerializeField] private SizeLabel _label;
     private HeatMechanic heatMechanic;
     #endregion
@@ -136,8 +144,9 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
             ActionOnMaterials((material, amount) => material.whenBallRolls(this, amount));
         }
 
-        foreach (IAbsorbable absorbable in AbsorbedObjects)
+        foreach (IAbsorbable absorbable in AbsorbedObjects.ToArray())
         {
+            if (absorbable == null) continue;
             absorbable.TrashBallUpdate(this);
         }
 
@@ -146,11 +155,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         if (_particleTimer <= 0 && Rigidbody.linearVelocity.magnitude > 0.5f)    
         {
             _particleTimer = 0.1f;
-            ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f)); 
+            ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f));
         }
 
         _fireParticleTimer -= Time.deltaTime;
-        if (_fireParticleTimer <= 0)    
+        if (_fireParticleTimer <= 0)
         {
             _fireParticleTimer = 0.15f;
             if (isBurning) ParticleManager.Instance.Play("TrashBurning", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f), parent: gameObject.transform);
@@ -610,6 +619,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
                 heatableObjects.ModifyHeat(heatTransfer);
             }
         }
+
 
         if ((_wallLayers.value & (1 << collision.gameObject.layer)) != 0) // Layer 14 is supposed to be Wall
         {
