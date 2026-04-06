@@ -20,6 +20,10 @@ public class ShaderManager : MonoBehaviour
     [SerializeField] private float _dissolveBurnWidth = 0.4f;
     [Tooltip("Is the object vulnerable")]
     [SerializeField] private bool _isVulnerable = false;
+    [Tooltip("Length of time for the damage flash")]
+    [SerializeField] private float _damageTime = 0.5f;
+    [Tooltip("Is object taking damage")]
+    [SerializeField] private bool _isDamaged = false;
     //[SerializeField] private float _height = 1.0f;
     //[Tooltip("Texture to use this Shader with mesh. Leave empty if using a SpriteRenderer.")]
     [SerializeField] private Texture _meshTexture;
@@ -27,8 +31,9 @@ public class ShaderManager : MonoBehaviour
     [SerializeField] private float sinkSpeed = 0.7f;
     [SerializeField] private float vulnerableFlashSpeed = 20f;
     [SerializeField] private float maxHeight = 1f;
-    private float _height = 1f;
+    
 
+    private float _height = 1f;
     private float currentHeight = 0f;
     private bool inLava = false;
     private bool sinkComplete = false;
@@ -37,6 +42,7 @@ public class ShaderManager : MonoBehaviour
     private MaterialPropertyBlock _block;
     private Coroutine _dissolveCoroutine;
     private Coroutine _lavaCoroutine;
+    private Coroutine _damageCoroutine;
 
     private float _vulnerableFlashPhase = 0f;
 
@@ -88,6 +94,13 @@ public class ShaderManager : MonoBehaviour
 
     private void Update()
     {
+        //Damage checker
+        if (_isDamaged)
+        {
+            TakeDamage();
+            _isDamaged = false;
+        }
+        //Vulnerability logic
         if (_isVulnerable)
         {
             SetFloatProperties("_IsVulnerable", 1f);
@@ -228,5 +241,25 @@ public class ShaderManager : MonoBehaviour
     {
         _vulnerableFlashPhase += Time.deltaTime * vulnerableFlashSpeed;
         SetFloatProperties("_VulnerableFlashPhase", _vulnerableFlashPhase);
+    }
+
+    public void TakeDamage(Action onDoneDamage = null)
+    {
+        if (_damageCoroutine != null)
+        {
+            StopCoroutine (_damageCoroutine);
+        }
+
+        _damageCoroutine = StartCoroutine(DamageCoroutine(onDoneDamage));
+    }
+
+    private IEnumerator DamageCoroutine(Action onDoneDamage)
+    {
+        SetFloatProperties("_IsDamaged", 1f);
+        yield return new WaitForSeconds(_damageTime);
+        SetFloatProperties("_IsDamaged", 0f);
+
+        _damageCoroutine = null;
+        onDoneDamage?.Invoke();
     }
 }
