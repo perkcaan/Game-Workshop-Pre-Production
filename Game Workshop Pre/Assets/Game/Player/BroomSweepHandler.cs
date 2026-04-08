@@ -49,7 +49,7 @@ public class BroomSweepHandler : MonoBehaviour
     {
         _hitbox = GetComponent<Collider2D>();
         _hitbox.enabled = false;
-        _sweepSoundInstance = RuntimeManager.CreateInstance("event:/Player/Sweep/Sweep");
+        _sweepSoundInstance = RuntimeManager.CreateInstance("event:/SFX/Player/Sweep/Sweep");
 
 
         _pokebox = GetComponentInChildren<BroomPokebox>();
@@ -72,12 +72,12 @@ public class BroomSweepHandler : MonoBehaviour
     {
         _hitbox.enabled = true;
         _broomhead.Active = true;
-        if(_hitbox.enabled)
+        if (_hitbox.enabled)
             _sweepSoundInstance.start();
-        else
-        {
-            _sweepSoundInstance.release();
-        }
+        
+        
+           
+        
         _sweepForce = sweepForce;
         UpdateHitbox(rotation);
     }
@@ -124,7 +124,7 @@ public class BroomSweepHandler : MonoBehaviour
 
         float rawAttractionForce = Mathf.Pow(_curveSteepness, dist - _curveOffset);
         float attractionForce = Mathf.Clamp(rawAttractionForce, 0 ,_attractionCap);
-        if (_logAttraction) Debug.Log($"Attraction: {attractionForce}");
+        //if (_logAttraction) Debug.Log($"Attraction: {attractionForce}");
 
 
         Vector2 direction = (trueSingularity - (Vector2) collider.transform.position).normalized;
