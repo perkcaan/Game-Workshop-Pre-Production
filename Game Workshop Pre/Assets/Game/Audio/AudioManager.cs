@@ -112,6 +112,7 @@ public void ModifyParameter(GameObject obj, string sCode, string param, float va
         {
             emitter.EventInstance.Equals(parent);
             emitter.EventInstance.setParameterByName(param, value);
+            
                 
             return;
         }
@@ -137,6 +138,7 @@ public void PlayOnInstance(GameObject obj, string sCode)
         if (emitter.EventReference.Equals(eventRef))
         {
             emitter.Play();
+            Debug.Log(emitter.EventReference);
            
 
             return;

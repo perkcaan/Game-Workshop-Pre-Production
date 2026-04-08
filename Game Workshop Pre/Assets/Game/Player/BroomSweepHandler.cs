@@ -124,7 +124,7 @@ public class BroomSweepHandler : MonoBehaviour
 
         float rawAttractionForce = Mathf.Pow(_curveSteepness, dist - _curveOffset);
         float attractionForce = Mathf.Clamp(rawAttractionForce, 0 ,_attractionCap);
-        if (_logAttraction) Debug.Log($"Attraction: {attractionForce}");
+        //if (_logAttraction) Debug.Log($"Attraction: {attractionForce}");
 
 
         Vector2 direction = (trueSingularity - (Vector2) collider.transform.position).normalized;
