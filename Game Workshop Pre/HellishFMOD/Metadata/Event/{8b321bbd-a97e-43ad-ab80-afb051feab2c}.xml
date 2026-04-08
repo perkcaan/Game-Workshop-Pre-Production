@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{8b321bbd-a97e-43ad-ab80-afb051feab2c}">
 		<property name="name">
-			<value>TrashLava</value>
+			<value>TrashLava(NeedsFixed)</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -62,6 +62,9 @@
 	<object class="EventAutomatableProperties" id="{51b48e22-1b1b-446c-bc83-06335b829e41}" />
 	<object class="MarkerTrack" id="{9ace4c6b-56e2-4972-81ff-d9f5c28f53cc}" />
 	<object class="GroupTrack" id="{d3994cb5-969f-4960-b191-a68e34080b45}">
+		<relationship name="automationTracks">
+			<destination>{973d01f7-ec61-4e0e-ba12-29bc4f9c6f24}</destination>
+		</relationship>
 		<relationship name="modules">
 			<destination>{52b07995-5b85-4c81-ae70-21ff082b74ab}</destination>
 		</relationship>
@@ -99,6 +102,11 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{88305864-f646-46ef-bd72-965af20db812}" />
+	<object class="AutomationTrack" id="{973d01f7-ec61-4e0e-ba12-29bc4f9c6f24}">
+		<relationship name="automator">
+			<destination>{db0fe37a-c05b-46b8-b5eb-1cb3aecab3a0}</destination>
+		</relationship>
+	</object>
 	<object class="MultiSound" id="{52b07995-5b85-4c81-ae70-21ff082b74ab}">
 		<property name="start">
 			<value>1</value>
@@ -112,6 +120,9 @@
 		<property name="playlistMode">
 			<value>1</value>
 		</property>
+		<relationship name="automators">
+			<destination>{db0fe37a-c05b-46b8-b5eb-1cb3aecab3a0}</destination>
+		</relationship>
 		<relationship name="modulators">
 			<destination>{679a5c3f-7c30-4140-8350-306c03382c81}</destination>
 			<destination>{e8820126-63d3-4672-9b7a-cad537ea2494}</destination>
@@ -147,6 +158,14 @@
 	</object>
 	<object class="MixerBusPanner" id="{daecd452-f410-4a5c-bc4a-28e6558d71a8}" />
 	<object class="MixerBusFader" id="{5efe82dc-31e0-4076-a469-041d66201087}" />
+	<object class="Automator" id="{db0fe37a-c05b-46b8-b5eb-1cb3aecab3a0}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>pitch</value>
+		</property>
+		<relationship name="automationCurves">
+			<destination>{f9630f67-5079-41c7-a2cd-5653103d600e}</destination>
+		</relationship>
+	</object>
 	<object class="RandomizerModulator" id="{679a5c3f-7c30-4140-8350-306c03382c81}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>volume</value>
@@ -197,6 +216,15 @@
 			<value>360</value>
 		</property>
 	</object>
+	<object class="AutomationCurve" id="{f9630f67-5079-41c7-a2cd-5653103d600e}">
+		<relationship name="parameter">
+			<destination>{6ac8d0b7-e452-4b92-af2d-a2eca317aa4b}</destination>
+		</relationship>
+		<relationship name="automationPoints">
+			<destination>{4e133ff1-9ad6-4e3b-b6fc-afb144dd7f2f}</destination>
+			<destination>{c353fa07-6722-4ac9-a56a-ca9819a72f9a}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{4b069314-a141-463a-8e4a-96dafc822300}" />
 	<object class="MultibandEqEffect" id="{5e7f9fc8-81d9-4c1b-a3f2-b221154ac3cc}">
 		<property name="bypass">
@@ -228,6 +256,22 @@
 		</property>
 		<property name="gainC">
 			<value>-19.6551723</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{4e133ff1-9ad6-4e3b-b6fc-afb144dd7f2f}">
+		<property name="position">
+			<value>1</value>
+		</property>
+		<property name="value">
+			<value>0</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{c353fa07-6722-4ac9-a56a-ca9819a72f9a}">
+		<property name="position">
+			<value>9.9756097560975618</value>
+		</property>
+		<property name="value">
+			<value>-12</value>
 		</property>
 	</object>
 </objects>
