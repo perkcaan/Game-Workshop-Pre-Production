@@ -167,7 +167,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
         // Sound
         AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM", this.Rigidbody.linearVelocity.magnitude * 10);
-        AudioManager.Instance.ModifyParameter(gameObject,"wallCollide", "RPM 2",this.Rigidbody.linearVelocity.magnitude * 10);
+        AudioManager.Instance.ModifyGlobalParameter("RPM2", this.Rigidbody.linearVelocity.magnitude * 10);
 
         // 3D Ball rotation
         Vector3 rotationAxis = new Vector3(Rigidbody.linearVelocity.y, -Rigidbody.linearVelocity.x, 0);
@@ -621,12 +621,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         }
 
 
-        //if ((_wallLayers.value & (1 << collision.gameObject.layer)) != 0)
-        if(collision.gameObject.layer == 14)// Layer 14 is supposed to be Wall
+        if ((_wallLayers.value & (1 << collision.gameObject.layer)) != 0) // Layer 14 is supposed to be Wall
         {
             ActionOnMaterials((material, amount) => material.whenBallHitsWall(this, amount));
-            Debug.Log("hit wall");
-            AudioManager.Instance.PlayOnInstance(gameObject,"wallCollide");
+            
 
             if (Rigidbody.linearVelocity.magnitude > 5f)
             {
