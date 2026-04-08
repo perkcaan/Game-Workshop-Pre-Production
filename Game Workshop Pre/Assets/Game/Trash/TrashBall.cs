@@ -5,9 +5,10 @@ using System;
 using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
+using UnityEngine.UIElements;
 
 // Primary script for TrashBall gameobject. Acts as a container for IAbsorbable (primarily Trash).
-public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeatable
+public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeatable,ITargetable
 {
     #region Fields/Properties
 
@@ -52,20 +53,21 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     [SerializeField] float _primaryThreshold = 0.5f;
     [SerializeField] float _secondaryThreshold = 0.15f;
 
-
     // state of trashball
     private static int _nextID = 0; // universal count for trash ball IDs
     private int _trashID; //individual identifier for this trash ball
     private bool _isBeingDestroyed = false;
     private bool _isDecaying = false;
     private float _decayTimer = 0f;
-
+    public bool isBurning = false;
+    public bool isSwiped = false;
     // material stats
     private float _maxHealthMultiplier = 1f;
     private float _decayMultiplier = 0f;
     private float _damageMultiplier = 0f;
     private float _swipeForceMultiplier = 0f;
-
+    private float _burningHeatPerSecond = 0f;
+    private float _heatTransferPrecent = 0f;
     // absorbed container data
     public List<IAbsorbable> AbsorbedObjects { get; private set; } = new List<IAbsorbable>();
     private List<TrashMaterial> _trashMaterialCounts = new List<TrashMaterial>();
@@ -73,6 +75,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
     // particles
     private float _particleTimer = 0f;
+    private float _fireParticleTimer = 0f;
+    private Vector2 _lastRolledLocation;
 
     // sound
     private EventInstance _sweepSoundInstance;
@@ -86,8 +90,16 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     [SerializeField] private Transform _ballTransform; // Reference to the transform of the Ball Mesh
     public CircleCollider2D AbsorbCollider { get; private set; }
     public CircleCollider2D MagnetCollider { get; private set; }
-    [SerializeField] private SizeLabel _label;
 
+    public TargetType _targetType = TargetType.Trash;
+    public TargetType TargetType
+    {
+        get => _targetType;
+        set => _targetType = value;
+    }
+
+    [SerializeField] private SizeLabel _label;
+    private HeatMechanic heatMechanic;
     #endregion
 
     #region Unity methods
@@ -95,6 +107,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     {
         Rigidbody = GetComponent<Rigidbody2D>();
         Collider = GetComponent<CircleCollider2D>();
+        heatMechanic = GetComponent<HeatMechanic>();
         AbsorbCollider = GetComponentInChildren<TrashBallAbsorb>().GetComponent<CircleCollider2D>();
         MagnetCollider = GetComponentInChildren<TrashBallMagnet>().GetComponent<CircleCollider2D>();
 
@@ -118,10 +131,22 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     {
         if (_isBeingDestroyed) return;
 
-        // Material
-        ActionOnMaterials((material, amount) => material.whenBallRolls(this, amount));
-        foreach (IAbsorbable absorbable in AbsorbedObjects)
+        if (isBurning)
         {
+            heatMechanic.ModifyHeat(_burningHeatPerSecond * Time.fixedDeltaTime);
+        }
+        // Material
+        ActionOnMaterials((material, amount) => material.whenBallUpdates(this, amount));
+        Vector2 distanceVector = (Vector2)transform.position - _lastRolledLocation;
+        if (distanceVector.magnitude >= Mathf.Pow(Size, 1f / 3f) * _scaleMultiplier)
+        {
+            _lastRolledLocation = transform.position;
+            ActionOnMaterials((material, amount) => material.whenBallRolls(this, amount));
+        }
+
+        foreach (IAbsorbable absorbable in AbsorbedObjects.ToArray())
+        {
+            if (absorbable == null) continue;
             absorbable.TrashBallUpdate(this);
         }
 
@@ -132,12 +157,17 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
             _particleTimer = 0.1f;
             ParticleManager.Instance.Play("TrashDustTrail", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f));
         }
-        
+
+        _fireParticleTimer -= Time.deltaTime;
+        if (_fireParticleTimer <= 0)
+        {
+            _fireParticleTimer = 0.15f;
+            if (isBurning) ParticleManager.Instance.Play("TrashBurning", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f), parent: gameObject.transform);
+        }
+
         // Sound
         AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM", this.Rigidbody.linearVelocity.magnitude * 10);
         AudioManager.Instance.ModifyGlobalParameter("RPM2", this.Rigidbody.linearVelocity.magnitude * 10);
-
-
 
         // 3D Ball rotation
         Vector3 rotationAxis = new Vector3(Rigidbody.linearVelocity.y, -Rigidbody.linearVelocity.x, 0);
@@ -149,6 +179,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         // Health Decay
         if (Rigidbody.linearVelocity.magnitude < 1)
         {
+            isSwiped = false;
             _decayTimer -= Time.deltaTime * _defaultDecayMultiplier * _decayMultiplier;
             if (_decayTimer <= 0)
             {
@@ -231,7 +262,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
                 ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: 1f);
             } else
             {
-                ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: 0.5f);
+                ParticleManager.Instance.Play("TrashSwiped", transform.position, particleRotation, force: 0.5f, parent: gameObject.transform);
             }
         }
     }
@@ -257,6 +288,13 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         Destroy(gameObject);
     }
 
+    public void SetOnFire()
+    {
+        if (_burningHeatPerSecond > 1f && !isBurning) {
+            isBurning = true;
+            ParticleManager.Instance.Play("SmokeBlast", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f)/3f, parent: gameObject.transform);
+        }
+    }
 
     #endregion
 
@@ -515,6 +553,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         _maxHealthMultiplier = _baseMaterial.maxHealthMultiplier;
         _decayMultiplier = _baseMaterial.decayMultiplier;
         _damageMultiplier = _baseMaterial.damageMultiplier;
+        _burningHeatPerSecond = _baseMaterial.burningHeatPerSecondMultiplier;
         _swipeForceMultiplier = _baseMaterial.swipeForceMultiplier;
     }
 
@@ -528,6 +567,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         _maxHealthMultiplier += material.maxHealthMultiplier * percentOf;
         _decayMultiplier += material.decayMultiplier * percentOf;
         _damageMultiplier += material.damageMultiplier * percentOf;
+        _burningHeatPerSecond += material.burningHeatPerSecondMultiplier * percentOf;
         _swipeForceMultiplier += material.swipeForceMultiplier * percentOf;
         UpdateMaxHealthMultiplier();
     }
@@ -570,10 +610,14 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     {
         if (_isBeingDestroyed) return;
 
-        
-        if (collision.gameObject.TryGetComponent(out IAbsorbable absorbableObject))
+        if (collision.gameObject.TryGetComponent(out IAbsorbable absorbableObject)) OnAbsorbTrigger(collision.collider);
+        if (collision.gameObject.TryGetComponent(out HeatMechanic heatableObjects))
         {
-            OnAbsorbTrigger(collision.collider);
+            if (heatableObjects.Heat < heatMechanic.Heat)
+            {
+                float heatTransfer = (heatMechanic.Heat - heatableObjects.Heat) * _heatTransferPrecent;
+                heatableObjects.ModifyHeat(heatTransfer);
+            }
         }
 
 
@@ -664,6 +708,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     //IHeatable
     public void PrepareIgnite(HeatMechanic heat)
     {
+        isBurning = true;
         _label.Hide();
         PrepareDelete();
     }
@@ -671,7 +716,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     public void OnIgnite(HeatMechanic heat)
     {
         ActionOnMaterials((material, amount) => material.whenBallIgnite(this, amount));
-
         Delete(); // Deletes the trash object
     }
 
@@ -690,10 +734,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     }
 
     //ISwipeable
-    public void OnSwipe(Vector2 direction, float force, Collider2D collision)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collision, ref float knockbackMultiplier)
     {
         if (_isBeingDestroyed) return;
 
+        isSwiped = true;
         ActionOnMaterials((material, amount) => material.whenBallSwiped(this, amount));
 
         _decayTimer = _timeUntilDecay;
@@ -713,7 +758,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
     //IPokeable
 
-    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    public void OnPoke(Vector2 direction, float force, Collider2D collider, ref float knockbackMultiplier)
     {
         if (_isBeingDestroyed) return;
         _decayTimer = _timeUntilDecay;

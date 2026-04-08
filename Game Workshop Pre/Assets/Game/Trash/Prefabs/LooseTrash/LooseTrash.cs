@@ -29,7 +29,7 @@ public class LooseTrash : Trash, ISweepable, ISwipeable, IPokeable
         }
     }
 
-    public void OnSwipe(Vector2 direction, float force, Collider2D collider)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collider, ref float knockbackMultiplier)
     {
         if (!_isSwipable) return;
         _rigidBody.AddForce(direction * force, ForceMode2D.Impulse);
@@ -39,7 +39,7 @@ public class LooseTrash : Trash, ISweepable, ISwipeable, IPokeable
         ParticleManager.Instance.Play("swipe", transform.position, particleRotation, trashMaterial.color, transform);
     }
 
-    public void OnPoke(Vector2 direction, float force, Collider2D collider)
+    public void OnPoke(Vector2 direction, float force, Collider2D collider, ref float knockbackMultiplier)
     {
         if (!isActiveAndEnabled) return;
          _rigidBody.AddForce(direction * force * _pokeForceMultiplier * _rigidBody.mass, ForceMode2D.Impulse);

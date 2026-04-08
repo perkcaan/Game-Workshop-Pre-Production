@@ -473,7 +473,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &1260142991059710110
 MonoBehaviour:
@@ -613,12 +613,27 @@ MonoBehaviour:
   _trashBallSquirmTime: 4
   _trashBallSquirmForce: 6
   _trashBallSquirmDamage: 8
-  _pinballTime: 5
-  _pinballMaterial: {fileID: 6200000, guid: 279c7b1ec8d67014883b7f233cda58a5, type: 2}
+  _stunTime: 2
+  _pinballProps:
+    _time: 5
+    _material: {fileID: 6200000, guid: 279c7b1ec8d67014883b7f233cda58a5, type: 2}
+    _swipeMultiplier: 1
+    _pokeMultiplier: 1
+  _interactProps:
+    _canSweepBase: 0
+    _isBaseVulnerableToSwipe: 0
+    _swipeBaseMultiplier: 1
+    _swipeVulnerableMultiplier: 0.3
+    _swipeBaseKnockbackMultiplier: 0
+    _isBaseVulnerableToPoke: 0
+    _pokeBaseMultiplier: 1
+    _pokeVulnerableMultiplier: 2
+    _pokeBaseKnockbackMultiplier: 1
+    _canAbsorbBase: 0
   _attackDashForce: 15
   _attackProperties:
-    _startup: 0.3
-    _duration: 0.5
+    _startup: 0.5
+    _duration: 0.3
     _endlag: 1
   _attackHitbox: {fileID: 1142854894367535693}
   references:

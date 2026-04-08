@@ -262,8 +262,11 @@ MonoBehaviour:
   _dominantThreshold: 0.85
   _primaryThreshold: 0.5
   _secondaryThreshold: 0.15
+  isBurning: 0
+  isSwiped: 0
   _ballQuad: {fileID: 1172804477096604631}
   _ballTransform: {fileID: 3475106608188846289}
+  _targetType: 2
   _label: {fileID: 6113613676011926388}
 --- !u!114 &2415871829025244457
 MonoBehaviour:
@@ -312,10 +315,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1223607366
-      Data2: 1183037148
-      Data3: 498317973
-      Data4: -1996817163
+      Data1: -1959650371
+      Data2: 1135454590
+      Data3: -1330675541
+      Data4: 749469265
     Path: event:/Trash/TrashBall/TrashBall
   Event: 
   EventPlayTrigger: 1
@@ -343,10 +346,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -694834995
-      Data2: 1170253539
-      Data3: -1210683998
-      Data4: -2041284058
+      Data1: -1034892848
+      Data2: 1294270000
+      Data3: -962041686
+      Data4: -449399956
     Path: event:/Trash/Pickup
   Event: 
   EventPlayTrigger: 1
@@ -374,10 +377,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1959650371
-      Data2: 1135454590
-      Data3: -1330675541
-      Data4: 749469265
+      Data1: 231156671
+      Data2: 1187026607
+      Data3: -1465714260
+      Data4: 994724198
     Path: event:/Trash/TrashLava
   Event: 
   EventPlayTrigger: 0
@@ -405,10 +408,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -2018443288
-      Data2: 1310188587
-      Data3: 1940523429
-      Data4: -1995798451
+      Data1: 2114935274
+      Data2: 1307093174
+      Data3: -1070572912
+      Data4: 506519612
     Path: event:/Trash/TrashBall/Idle_Shake
   Event: 
   EventPlayTrigger: 0
@@ -436,10 +439,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -438726971
-      Data2: 1269228003
-      Data3: 91070855
-      Data4: -898168437
+      Data1: -678532152
+      Data2: 1137512972
+      Data3: -1257688927
+      Data4: 207970708
     Path: event:/Trash/TrashBall/Wall_Collisions
   Event: 
   EventPlayTrigger: 0
@@ -648,10 +651,8 @@ MonoBehaviour:
   _heatFlashRamp: 2
   _dissolveTime: 1
   _dissolveBurnWidth: 0.4
-  _height: 1
   _meshTexture: {fileID: 2800000, guid: 5c9175d51ecf2cc488d21ca71ff76edc, type: 3}
   sinkSpeed: 0.3
-  maxHeight: 1
 --- !u!210 &7208263676142163432
 SortingGroup:
   m_ObjectHideFlags: 0

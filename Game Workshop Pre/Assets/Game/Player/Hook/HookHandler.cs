@@ -122,10 +122,12 @@ public class HookHandler : MonoBehaviour
     {
         if (!_isActive || _isRetracting) return;
 
+        float knockbackMultiplier = 0f;
+
         if (other.TryGetComponent(out PlayerMovementController player)) return;
         if (other.TryGetComponent(out Sticky sticky)) {
             Vector2 directionToPlayer = (_parent.transform.position - _hookHead.position).normalized;
-            _parent.OnSwipe(directionToPlayer, -_pullForce * 2, other);
+            _parent.OnSwipe(directionToPlayer, -_pullForce * 2, other, ref knockbackMultiplier);
             StartRetract();
             return;
         }
@@ -136,7 +138,7 @@ public class HookHandler : MonoBehaviour
 
         if (other.TryGetComponent(out ISwipeable swipeable)) {
             Vector2 directionToPlayer = (_parent.transform.position - _hookHead.position).normalized;
-            swipeable.OnSwipe(directionToPlayer, _pullForce, other);
+            swipeable.OnSwipe(directionToPlayer, _pullForce, other, ref knockbackMultiplier);
         
             // ParticleManager.Instance.Play("HookHit", _hookHead.position);
             StartRetract();

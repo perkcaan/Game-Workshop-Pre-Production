@@ -13,6 +13,7 @@ public class IsTargetFoundNode : ConditionalNode
         {
             if (Blackboard.TryGet("targetPosition", out Vector2? targetPosition))
             {
+                
                 if (targetPosition.HasValue) return true;
             }
         }

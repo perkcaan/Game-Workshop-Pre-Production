@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakableWall : MonoBehaviour,ISwipeable
+public class BreakableWall : MonoBehaviour, ISwipeable
     
 {
     [Tooltip("The ball size necessary to break this wall")]
@@ -43,7 +43,7 @@ public class BreakableWall : MonoBehaviour,ISwipeable
         //}
     }
 
-    public void OnSwipe(Vector2 direction, float force)
+    public void OnSwipe(Vector2 direction, float force, Collider2D collision, ref float knockbackMultiplier)
     {
         TakeDamage(3, direction, force);
         Debug.Log(_health);
@@ -62,8 +62,4 @@ public class BreakableWall : MonoBehaviour,ISwipeable
         
     }
 
-    public void OnSwipe(Vector2 direction, float force, Collider2D collision)
-    {
-        throw new System.NotImplementedException();
-    }
 }

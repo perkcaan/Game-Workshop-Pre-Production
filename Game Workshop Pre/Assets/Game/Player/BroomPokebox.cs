@@ -3,7 +3,8 @@ using UnityEngine.InputSystem.LowLevel;
 
 public class BroomPokebox : MonoBehaviour
 {
-    private Collider2D _collider;
+    private CapsuleCollider2D _collider;
+    public CapsuleCollider2D Collider { get { return _collider; } }
     private BroomSweepHandler _handler;
 
     public bool Active {
@@ -13,7 +14,7 @@ public class BroomPokebox : MonoBehaviour
 
     private void Awake()
     {
-        _collider = GetComponent<Collider2D>();
+        _collider = GetComponent<CapsuleCollider2D>();
         _collider.enabled = false;
     }
 
@@ -24,7 +25,7 @@ public class BroomPokebox : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        _handler.OnPokeHit(collider);
+        _handler.OnPokeTrigger(collider);
     }
 
 

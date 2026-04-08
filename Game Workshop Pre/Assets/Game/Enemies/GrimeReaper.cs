@@ -25,7 +25,7 @@ public class GrimeReaper : EnemyBase
         
     }
 
-    protected override void ForceDisableHitboxes()
+    protected override void ForceCancelAction()
     {
 
     }

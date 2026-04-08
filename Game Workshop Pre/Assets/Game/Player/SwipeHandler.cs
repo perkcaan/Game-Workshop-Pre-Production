@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 // Handles the player's swipe ability
@@ -12,23 +14,27 @@ public class SwipeHandler : MonoBehaviour
     // Components
     [SerializeField] private DottedParticleLine _dottedLine;
     private PlayerMovementController _parent;
+    private PlayerContext _ctx;
     private BoxCollider2D _hitbox;
     [SerializeField] private LayerMask _layers;
     [SerializeField] GameObject _swipeOrigin;
 
     // Fields
     private float _rotation = 0f;
+    private float targetAngle;
 
     // Methods
+
     private void Awake()
     {
         _hitbox = GetComponent<BoxCollider2D>();
         _hitbox.enabled = false;
     }
 
-    public void Initialize(PlayerMovementController player)
+    public void Initialize(PlayerMovementController player, PlayerContext ctx)
     {
         _parent = player;
+        _ctx = ctx;
     }
 
     // Collision trigger
@@ -42,80 +48,45 @@ public class SwipeHandler : MonoBehaviour
     {
         _hitbox.enabled = true;
         UpdateHitbox(rotation);
-        Vector2 direction = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
-        bool wasSomethingHit = false;
+        Vector2 swipeDirection = new Vector2(Mathf.Cos(_rotation), Mathf.Sin(_rotation));
 
         // Get collider bounds
         Vector2 center = (Vector2) _hitbox.transform.TransformPoint(_hitbox.offset);
         Vector2 size = Vector2.Scale(_hitbox.size, _hitbox.transform.lossyScale);
         float angle = _hitbox.transform.eulerAngles.z;
 
-        // Do hit
+        // Do hit and process data
         Collider2D[] hits = Physics2D.OverlapBoxAll(center, size, angle, _layers);
+        List<(Collider2D collider, float distance)> hitColliders = HitProcessor.ProcessHits<ISwipeable>(hits, _swipeOrigin.transform.position);
 
-        // Sort hits by their HitParent
-        Dictionary<GameObject, List<Collider2D>> hitObjects = new();
-        foreach (Collider2D collider in hits)
-        {
-            if (!collider.TryGetComponent(out ISwipeable swipeable)) continue;
-            if (swipeable.HitParent == null)
-            {
-                Debug.LogWarning("Please ensure a valid HitParent for Swipeable object: " + collider.name);
-                continue;
-            }
-
-            if (!hitObjects.TryGetValue(swipeable.HitParent, out List<Collider2D> list))
-            {
-                list = new List<Collider2D>();
-                hitObjects.Add(swipeable.HitParent, list);
-            }
-            list.Add(collider);
-
-            wasSomethingHit = true;
-        }
-
-        // Find best collider on each object.
-        List<(Collider2D collider, float distance)> bestColliders = new();
-        foreach (KeyValuePair<GameObject, List<Collider2D>> kvp in hitObjects)
-        {
-            GameObject gameObject = kvp.Key;
-            List<Collider2D> colliders = kvp.Value;
-            
-            Collider2D bestCollider = colliders[0];
-            float closestDistance = float.MaxValue;
-
-            foreach (Collider2D collider in colliders)
-            {
-                Vector2 origin = _swipeOrigin.transform.position;
-                float dist = Vector2.Distance(origin, collider.ClosestPoint(origin));
-                if (dist < closestDistance)
-                {
-                    bestCollider = collider;
-                    closestDistance = dist;
-                }
-
-            }
-
-            bestColliders.Add((bestCollider, closestDistance));
-        }
-
-        // Sort by distance and Swipe each of them in order
-        bestColliders.Sort((a, b) => a.distance.CompareTo(b.distance));
-        foreach ((Collider2D collider, float distance) entry in bestColliders)
+        bool wasSomethingHit = false;
+        foreach ((Collider2D collider, float distance) entry in hitColliders)
         {
             Collider2D collider = entry.collider;
-            if (!collider.TryGetComponent(out ISwipeable swipeable)) {
-                Debug.LogWarning("Lost a Swipeable object somehow. This code must be faulty");
-                continue;
-            }
+            if (!collider.TryGetComponent(out ISwipeable swipeable)) continue;
 
-            swipeable.OnSwipe(direction, swipeForce, collider);
+            Vector2 hitDirection = (collider.transform.position - _parent.transform.position).normalized;
+
+            //Falloff angle is 0 (dead on) to 90 (hit on the side or behind)
+            float falloffAngle = Mathf.Clamp(Mathf.Abs(Vector2.SignedAngle(swipeDirection, hitDirection)), 0, 90); 
+            float falloffReduction = Mathf.Lerp(0, _parent.SwipeFalloffReduction, falloffAngle / 90f);
+            float hitForce = swipeForce - swipeForce * falloffReduction;
+
+            float knockbackMultiplier = 0f;
+            swipeable.OnSwipe(hitDirection, hitForce, collider, ref knockbackMultiplier);
+            wasSomethingHit = true;
+
+            // Apply resulting knockback (if there is any)
+            if (knockbackMultiplier > 0f)
+            {
+                float knockbackForce =  knockbackMultiplier * _ctx.Rigidbody.mass * hitForce / collider.attachedRigidbody.mass;
+                _ctx.Rigidbody.AddForce(-hitDirection * knockbackForce * _parent.SwipeKnockbackMultiplier, ForceMode2D.Impulse);
+            }
 
             //TODO: Add support for shields blocking the swipe
             //if swipe is blocked-> 
             //break here and play a sound and do knockback or whatever
         }
-
 
         // Play sound effect
         if (wasSomethingHit)

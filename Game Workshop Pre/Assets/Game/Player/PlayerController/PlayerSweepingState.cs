@@ -47,7 +47,7 @@ public class PlayerSweepingState : BaseState<PlayerStateEnum>
         HandleMovement();
         HandleRotation();
         float sweepForce = _ctx.Player.SweepForce + _ctx.MoveSpeed * _ctx.Player.SweepForceMovementScaler;
-        _ctx.SweepHandler.UpdateHitbox(_ctx.Rotation, sweepForce);
+        _ctx.SweepHandler.UpdateHitbox(_ctx.Rotation);
 
         if (_sweepPokeTimer < _ctx.Player.SweepAllowPokeTime)
         {

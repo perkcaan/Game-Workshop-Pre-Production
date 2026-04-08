@@ -83,21 +83,24 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private void Start()
     {
         _rooms = new List<Room>(FindObjectsByType<Room>(FindObjectsSortMode.InstanceID));
-        _coinText.alpha = 0f;
+        if(_coinText != null)
+            _coinText.alpha = 0f;
         if (PlayerPrefs.HasKey("Coins"))
             coinsEarned = PlayerPrefs.GetInt("Coins");
         else
             coinsEarned = 0;
 
-        //_music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        _music = RuntimeManager.CreateInstance("event:/Music/1 District/Vertical Adaptive District 1");
-        _music.start();
+        
     }
 
     private void Update()
     {
         if (_focusedRooms.Count > 0)
-        AudioManager.Instance.ModifyGlobalParameter("Intensity", FocusedRoom.baseIntensity);
+        {
+            AudioManager.Instance.ModifyGlobalParameter("Intensity", FocusedRoom.baseIntensity);
+            AudioManager.Instance.ModifyParameter(gameObject, "music", "Section Control", FocusedRoom.musicSection);
+        }
+
 
     }
 
