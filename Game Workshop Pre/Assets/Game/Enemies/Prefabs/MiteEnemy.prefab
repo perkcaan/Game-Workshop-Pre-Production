@@ -238,6 +238,7 @@ MonoBehaviour:
     _pokeVulnerableMultiplier: 2
     _pokeBaseKnockbackMultiplier: 0.5
     _canAbsorbBase: 1
+  _targetType: 1
   _attackDashForce: 3
   _attackProperties:
     _startup: 0.5
@@ -396,7 +397,7 @@ MonoBehaviour:
       Data2: 1189414935
       Data3: 403715714
       Data4: -794661141
-    Path: event:/Trash/Pickup Enemies
+    Path: event:/SFX/Trash/Pickup Enemies
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -429,7 +430,7 @@ MonoBehaviour:
       Data2: 1312661299
       Data3: 94021045
       Data4: 1056592246
-    Path: event:/Enemies/Mite/Death
+    Path: event:/SFX/Enemies/Mite/Death
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -460,7 +461,7 @@ MonoBehaviour:
       Data2: 1231014565
       Data3: 585045692
       Data4: -573988649
-    Path: event:/Enemies/Enemy Attacks
+    Path: event:/SFX/Enemies/Enemy Attacks
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0

@@ -1437,7 +1437,7 @@ MonoBehaviour:
       Data2: 1120853624
       Data3: 1725492103
       Data4: -412020637
-    Path: event:/Player/Clean Step
+    Path: event:/SFX/Gates/Gate_Down
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -1447,8 +1447,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!114 &7801395180760013742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1468,7 +1468,7 @@ MonoBehaviour:
       Data2: 1097679199
       Data3: 1294576546
       Data4: -2030261532
-    Path: event:/Player/Swipe/Swipe
+    Path: event:/SFX/Player/Swipe/Swipe
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -1499,7 +1499,7 @@ MonoBehaviour:
       Data2: 1245912068
       Data3: 1450169237
       Data4: -995446733
-    Path: event:/Player/Dash
+    Path: event:/SFX/Player/Dash
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -1530,7 +1530,7 @@ MonoBehaviour:
       Data2: 1125884986
       Data3: -1263044203
       Data4: -1394182262
-    Path: event:/Player/Dash Recharge
+    Path: event:/SFX/Player/Dash Recharge
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -1561,7 +1561,7 @@ MonoBehaviour:
       Data2: 1200775962
       Data3: 1928587417
       Data4: -1714651333
-    Path: event:/Points
+    Path: event:/UI/Points
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -1592,7 +1592,7 @@ MonoBehaviour:
       Data2: 1091851715
       Data3: -862384456
       Data4: -1400652604
-    Path: event:/Player/Sweep/Sweep
+    Path: event:/SFX/Player/Sweep/Sweep
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -1623,7 +1623,7 @@ MonoBehaviour:
       Data2: 1232237457
       Data3: -74243186
       Data4: -1259412614
-    Path: event:/Player/Death
+    Path: event:/SFX/Player/Death
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -1654,7 +1654,7 @@ MonoBehaviour:
       Data2: 1297398676
       Data3: -1407158339
       Data4: 1186683876
-    Path: event:/Heat System/Heat Meter
+    Path: event:/SFX/Heat System/Heat Meter
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
