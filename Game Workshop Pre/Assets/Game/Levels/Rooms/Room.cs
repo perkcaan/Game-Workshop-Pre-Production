@@ -277,10 +277,10 @@ public class Room : MonoBehaviour
 
     private IEnumerator RoomClearParticles(PlayerMovementController player)
     {
-        int rings = 10;
-        int bubblesInRing = 8;
+        int rings = 15;
+        int bubblesInRing = 4;
         float radiusStep = 1.0f;
-        float delayBetweenRings = 0.05f;
+        float delayBetweenRings = 0.04f;
         Vector3 playerPosition = player.transform.position;
 
         for (int i = 0; i < rings; i++)
