@@ -7,7 +7,6 @@ public class CleanBar : MonoBehaviour
     [SerializeField] private GameObject _cleanBar;
     [SerializeField] private Image _fillImage;
     [SerializeField] private TMP_Text _cleanText;
-
     private void Start()
     {
         if (_cleanBar == null || _fillImage == null || _cleanText == null)

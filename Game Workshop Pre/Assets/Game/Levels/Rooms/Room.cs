@@ -122,7 +122,6 @@ public class Room : MonoBehaviour
 
         foreach (Gate gate in _connectedGates)
         {
-            
             gate.Close(this);
         }
     }
@@ -259,6 +258,7 @@ public class Room : MonoBehaviour
                 DistrictManager.Instance.AwardCoins(coinsAwarded);
                 PlayerMovementController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
                 AudioManager.Instance.Play("gateDown", player.transform);
+                RoomClearParticles(player);
             }
             _isRoomClosed = false;
             foreach (Gate gate in _connectedGates) gate.Open(this);
@@ -272,5 +272,9 @@ public class Room : MonoBehaviour
         set { _roomCurrentTrashAmount = value; }
     }
 
+    private void RoomClearParticles(PlayerMovementController player)
+    {
+        
+    }
 
 }
