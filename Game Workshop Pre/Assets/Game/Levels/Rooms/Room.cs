@@ -120,7 +120,7 @@ public class Room : MonoBehaviour
         {
             PlayerMovementController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
             AudioManager.Instance.Play("gateUp", player.transform);
-            StartCoroutine(RoomClearParticles(player));
+            //StartCoroutine(RoomClearParticles(player));
         }
 
         foreach (Gate gate in _connectedGates)
