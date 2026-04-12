@@ -8,7 +8,7 @@ using FMOD;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable, ICleanable, ISwipeable, ISweepable, IPokeable
+public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable, ICleanable, ISwipeable, ISweepable, IPokeable, ISaveable
 {
     [Header("Enemy")]
     [SerializeField] private BehaviourTree _behaviour;
@@ -415,4 +415,9 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         Rigidbody.AddForce(direction * force * data.PokeMultiplier, ForceMode2D.Impulse);
         knockbackMultiplier = data.KnockbackMultiplier;
     }    
+
+    public void AddSaveableData()
+    {
+
+    }
 }

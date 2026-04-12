@@ -7,7 +7,7 @@ using FMODUnity;
 using System.Collections;
 
 // Primary script for TrashBall gameobject. Acts as a container for IAbsorbable (primarily Trash).
-public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeatable
+public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeatable, ISaveable
 {
     #region Fields/Properties
 
@@ -257,6 +257,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         Destroy(gameObject);
     }
 
+
+    public void AddSaveableData()
+    {
+
+    }
 
     #endregion
 

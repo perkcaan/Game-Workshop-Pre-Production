@@ -55,6 +55,7 @@ public class DistrictManager : StaticInstance<DistrictManager>, ISaveable
     {
         if (_focusedRooms.Contains(room)) return;
         _focusedRooms.Add(room);
+        room.IsPlayerInRoom = true;
         if (_roomsNeedingSafeExit.Contains(room)) _roomsNeedingSafeExit.Remove(room);
         
         foreach (Room needyRoom in _roomsNeedingSafeExit)
@@ -69,6 +70,7 @@ public class DistrictManager : StaticInstance<DistrictManager>, ISaveable
     {
         if (!_focusedRooms.Contains(room)) return;
         _focusedRooms.Remove(room);
+        room.IsPlayerInRoom = false;
         
         if (_focusedRooms.Count > 0) {
             room.SafeExit();
@@ -172,13 +174,19 @@ public class DistrictManager : StaticInstance<DistrictManager>, ISaveable
     }
 
     //The Place to add data that is desired to be saved
-    public void AddSavableData() 
+    public void AddSaveableData()
     {
-        string idString = "DistrictManagerData";
-        List<object> saveableList = new List<object>();
+        DistrictManagerSaveData saveData = new DistrictManagerSaveData();
 
-        ISaveable.saveableData.Add(idString, saveableList);
+        saveData.coinsEarned = PlayerPrefs.GetInt("Coins", 0);
+
+        foreach (Room room in _rooms)
+        {
+            saveData.rooms.Add(new RoomSaveData(room));
+        }
+
+        SaveContext.Current.districtManagerData = saveData;
     }
-    
+
 
 }

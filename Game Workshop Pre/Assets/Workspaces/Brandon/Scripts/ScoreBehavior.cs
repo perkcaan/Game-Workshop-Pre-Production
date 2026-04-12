@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using DG.Tweening.Core;
 using DG.Tweening;
 
-public class ScoreBehavior : MonoBehaviour
+public class ScoreBehavior : MonoBehaviour, ISaveable
 {
 
     [SerializeField] Image bonusBarImage;
@@ -17,8 +17,8 @@ public class ScoreBehavior : MonoBehaviour
     [SerializeField] TextMeshProUGUI currentScoreText;
     [SerializeField] float bonusBarTimer;
 
-    [SerializeField] int currentScore = 0;
-    [SerializeField] int currentBonus = 0;
+    [SerializeField] public int currentScore = 0;
+    [SerializeField] public int currentBonus = 0;
     [Header("Customize Combo Bar")]
     [SerializeField] Color deadComboColor;
     [SerializeField] Color hotComboColor;
@@ -33,7 +33,7 @@ public class ScoreBehavior : MonoBehaviour
     private readonly string CST = "Score: ";
     private readonly float DEFAULT_BONUS_BAR_TIMER = 15f;
 
-    private float timeLeft;
+    public float timeLeft;
 
     private delegate void ResetBonusEvent();
     private event ResetBonusEvent resetBonus;
@@ -152,6 +152,20 @@ public class ScoreBehavior : MonoBehaviour
         }
 
     }
-    
-    
+
+    public void AddSaveableData()
+    {
+        int comboScore = 0;
+
+        var field = typeof(ScoreBehavior).GetField("thisBonusScore",
+            System.Reflection.BindingFlags.Instance |
+            System.Reflection.BindingFlags.NonPublic);
+
+        if (field != null)
+        {
+            comboScore = (int)field.GetValue(this);
+        }
+
+        SaveContext.Current.scoreData = new ScoreSaveData(this, comboScore);
+    }
 }

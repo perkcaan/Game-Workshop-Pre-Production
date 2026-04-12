@@ -118,6 +118,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
     private HeatMechanic _playerHeat;
+    public HeatMechanic PlayerHeat { get { return _playerHeat; } }
+
     public GameObject HitParent { get { return gameObject; } }
 
     #endregion
@@ -459,12 +461,9 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     }
 
     //The Place to add data that is desired to be saved
-    public void AddSavableData() 
+    public void AddSaveableData()
     {
-        string idString = "PlayerData";
-        List<object> saveableList = new List<object>();
-
-        ISaveable.saveableData.Add(idString, saveableList);
+        SaveContext.Current.playerData = new PlayerSaveData(gameObject, this);
     }
 
 }

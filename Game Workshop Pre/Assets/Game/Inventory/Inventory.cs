@@ -90,12 +90,19 @@ public class Inventory : MonoBehaviour, ISaveable
     }
 
     //The Place to add data that is desired to be saved
-    public void AddSavableData() 
+    public void AddSaveableData()
     {
-        string idString = "InventoryData";
-        List<object> saveableList = new List<object>();
+        InventorySaveData saveData = new InventorySaveData();
 
-        ISaveable.saveableData.Add(idString, saveableList);
+        foreach (Item item in equippedItems)
+        {
+            if (item != null)
+            {
+                saveData.items.Add(new InventoryItemSaveData(item));
+            }
+        }
+
+        SaveContext.Current.inventoryData = saveData;
     }
 
 }

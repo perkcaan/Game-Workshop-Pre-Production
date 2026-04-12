@@ -19,6 +19,11 @@ public class Room : MonoBehaviour
     [SerializeField] private bool _isTrashRoom = true;
     public bool IsTrashRoom { get { return _isTrashRoom; } }
 
+    //Boolean Variable for saving purposes to set focused rooms when loading
+    private bool _isPlayerInRoom = false;
+    public bool IsPlayerInRoom { get { return _isPlayerInRoom; } set { _isPlayerInRoom = value; }  }
+
+
     private List<ICleanable> _containedCleanable = new List<ICleanable>();
     private int _roomCurrentTrashAmount = 0; // Current amount of trash in the room
     private int _roomTotalTrashCount = 0; // Starting amount of trash / Max trash allowed in room
@@ -28,6 +33,7 @@ public class Room : MonoBehaviour
     public int coinsAwarded;
     public float totalMinSizeToAbsorb;
     public float baseIntensity;
+
 
     public float Cleanliness
     {
