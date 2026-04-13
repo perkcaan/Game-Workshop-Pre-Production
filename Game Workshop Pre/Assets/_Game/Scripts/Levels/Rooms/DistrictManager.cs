@@ -89,6 +89,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
             coinsEarned = PlayerPrefs.GetInt("Coins");
         else
             coinsEarned = 0;
+        AudioManager.Instance.PlayOnInstance(gameObject, "music", FocusedRoom.transform);
 
         
     }
@@ -98,7 +99,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         if (_focusedRooms.Count > 0)
         {
             AudioManager.Instance.ModifyGlobalParameter("Intensity", FocusedRoom.baseIntensity);
-            AudioManager.Instance.ModifyParameter(gameObject, "music", "Section Control", FocusedRoom.musicSection);
+            AudioManager.Instance.ModifyParameterByLabel(gameObject, "music", "Section Control", FocusedRoom.musicSection);
         }
 
 
