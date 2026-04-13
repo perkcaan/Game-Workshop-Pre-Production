@@ -24,6 +24,7 @@ public class CleanBar : MonoBehaviour
     // Storing tween references so we can overwrite them if values change mid-animation
     private Tweener _fillTweener;
     private Tweener _outlineTweener;
+    private float bubbleTimer;
 
     private void Start()
     {
@@ -76,6 +77,21 @@ public class CleanBar : MonoBehaviour
             {
                 int percent = Mathf.FloorToInt(_fillImage.fillAmount * 100f);
                 _cleanText.text = $"Objective: {percent}% clean";
+                bubbleTimer += Time.deltaTime;
+                if (change > 0 && bubbleTimer > 0 && _isShowing)
+                {
+                    bubbleTimer -= 0.1f;
+                    float xPos = ((_fillImage.fillAmount - 0.5f) * 4f) + Random.Range(-0.025f, 0.025f);
+                    float yPos = Random.Range(0f, 0.25f);
+
+                    string particleName = "Bubbling";
+                    if (Random.Range(0f, 1f) > 0.5f)
+                    {
+                        particleName = "Bubbling2";
+                    }
+                    Vector2 BubblePosition = new Vector2(transform.position.x + xPos, transform.position.y + yPos);
+                    ParticleManager.Instance.Play(particleName, BubblePosition, parent: transform);
+                }
             });
 
         if (change > 0 && _outline != null)
