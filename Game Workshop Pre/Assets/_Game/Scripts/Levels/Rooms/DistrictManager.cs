@@ -89,7 +89,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
             coinsEarned = PlayerPrefs.GetInt("Coins");
         else
             coinsEarned = 0;
-        AudioManager.Instance.PlayOnInstance(gameObject, "music", FocusedRoom.transform);
+        AudioManager.Instance.PlayOnInstance(gameObject, "music", FindFirstObjectByType<PlayerMovementController>().transform);
 
         
     }

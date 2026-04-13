@@ -135,7 +135,8 @@ public class AudioManager : Singleton<AudioManager>
             {
                 emitter.EventInstance.Equals(parent);
                 emitter.EventInstance.setParameterByNameWithLabel(param, label);
-                Debug.Log(param + ": " + label);
+                
+                
 
 
                 return;
