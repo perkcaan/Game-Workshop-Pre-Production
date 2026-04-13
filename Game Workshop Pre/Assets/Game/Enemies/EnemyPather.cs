@@ -14,7 +14,8 @@ public class EnemyPather : MonoBehaviour
 
     private void Awake()
     {
-        _enemy = GetComponent<EnemyBase>();   
+        _enemy = GetComponent<EnemyBase>();  
+        
     }
 
     private void FixedUpdate()
@@ -78,7 +79,6 @@ public class EnemyPather : MonoBehaviour
         Vector2 targetDirection = (_targetDestination - (Vector2) transform.position).normalized;
         Vector2 frameVelocity = targetDirection * _enemy.MoveSpeed;
         float facingAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
-
         Vector2 velocityDelta = frameVelocity - rigidbody.linearVelocity;
         Vector2 clampedForce = Vector2.ClampMagnitude(velocityDelta, frameVelocity.magnitude);
         rigidbody.AddForce(clampedForce, ForceMode2D.Force);

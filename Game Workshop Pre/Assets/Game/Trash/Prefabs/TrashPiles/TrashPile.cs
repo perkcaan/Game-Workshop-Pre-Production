@@ -12,6 +12,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     [SerializeField] float _sweepDurationToTakeDamage;
     [SerializeField] List<GameObject> _startingStoredTrash;
     [SerializeField] Color color;
+    [SerializeField] bool _dashBreak;
     private float _sweepTimer;
     public GameObject HitParent { get { return gameObject; } }
 
@@ -119,6 +120,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         float angleRadians = Mathf.Atan2(direction.y, direction.x);
         Quaternion rotation = Quaternion.Euler(0f, 0f, (angleRadians * Mathf.Rad2Deg)-45f);
         ParticleManager.Instance.Play("DustBurst", transform.position, rotation, color);
+        ParticleManager.Instance.Play("TrashPileBreak", transform.position, color:color);
 
         foreach (GameObject trash in _startingStoredTrash)
         {

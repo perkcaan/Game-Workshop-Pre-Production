@@ -11,7 +11,7 @@ using UnityEngine.Events;
 public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable, ICleanable, ISwipeable, ISweepable, IPokeable
 {
     [Header("Enemy")]
-    [SerializeField] private BehaviourTree _behaviour;
+    [SerializeField] protected BehaviourTree _behaviour;
     [SerializeField] private List<EnemyActionReference> _actions;
     private Coroutine _currentAction;
     private Action<bool> _currentActionComplete;
@@ -66,7 +66,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     [Header("Interaction Properties")]
     [SerializeField] EnemyInteractionProperties _interactProps;
 
-    public TargetType TargetType { get { return TargetType.Enemy; } } //ITargetable
+    //public TargetType TargetType { get { return TargetType.Enemy; } } //ITargetable
 
     // Components
     protected Animator _animator;
@@ -82,6 +82,15 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
     
     private EnemyPather _pather;
     public EnemyPather Pather { get { return _pather; } }
+
+    [SerializeField] private TargetType _targetType = TargetType.Enemy;
+
+    public TargetType TargetType
+    {
+        get => _targetType;
+        set => _targetType = value;
+    }
+
     protected EnemyStateMachine _state;
 
     private Room _parentRoom;
@@ -122,6 +131,7 @@ public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeat
         }
         if (_behaviour != null) _behaviour.Initialize(this);
         OnStart();
+        
     }
 
     private void Update()

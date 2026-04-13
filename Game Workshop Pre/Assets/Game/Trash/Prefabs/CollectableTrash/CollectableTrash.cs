@@ -1,13 +1,23 @@
 using UnityEngine;
 using System;
 
-public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable
+public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable, ITargetable
 {
     [SerializeField] float _sweepDurationToBecomeBall;
     [SerializeField] bool _swipesIntoTrashBall;
     [SerializeField] float _pokeForceMultiplier = 1f;
     [SerializeField] float _swipeForceMultiplier = 1f;
     public GameObject HitParent { get { return gameObject; } }
+
+    public TargetType _targetType = TargetType.Trash;
+
+
+    public TargetType TargetType
+    {
+        get => _targetType;
+        set => _targetType = value;
+    }
+
     private float _sweepTimer;
 
 
@@ -36,5 +46,18 @@ public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable
     {
         if (_sweepTimer >= 0) _sweepTimer -= Time.deltaTime / 2;
     }
+
+    public TargetType GetTargetType()
+    {
+        
+        return TargetType.Trash;
+    }
+
+    public void NullType()
+    {
+        _targetType = TargetType.Null;
+        
+    }
+
     
 }
