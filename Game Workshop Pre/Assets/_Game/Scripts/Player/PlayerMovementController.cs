@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Android;
 using System;
 using FMODUnity;
+using FMOD.Studio;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
@@ -120,6 +121,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public GameObject HitParent { get { return gameObject; } }
 
     [SerializeField] private TargetType _targetType = TargetType.Player;
+    
 
     public TargetType TargetType
     {
@@ -160,7 +162,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         //_heatSound.start();
         //AudioManager.Instance.Play("music",transform);
         _playerHeat = GetComponent<HeatMechanic>();
-        
+        //AudioManager.Instance.PlayOnInstance(DistrictManager.Instance.gameObject, "music", transform);
+
     }
 
     private void Update()

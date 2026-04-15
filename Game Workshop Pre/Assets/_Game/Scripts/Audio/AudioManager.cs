@@ -57,6 +57,7 @@ public class AudioManager : Singleton<AudioManager>
         }
 
         RuntimeManager.PlayOneShot(eventRef, position.position);
+        
 
     
 
@@ -114,8 +115,9 @@ public class AudioManager : Singleton<AudioManager>
             {
                 emitter.EventInstance.Equals(parent);
                 emitter.EventInstance.setParameterByName(param, value);
-            
                 
+
+
                 return;
             }
         }
@@ -144,49 +146,49 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
     public void PlayOnInstance(GameObject obj, string sCode,Transform location = null)
-{
-    if (obj == null) return;
-
-    if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
     {
-        Debug.LogError($"AudioManager: '{sCode}' not found");
-        return;
-    }
+        if (obj == null) return;
+
+        if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
+        {
+            Debug.LogError($"AudioManager: '{sCode}' not found");
+            return;
+        }
         
 
-    StudioEventEmitter[] emitters = obj.GetComponents<StudioEventEmitter>();
+        StudioEventEmitter[] emitters = obj.GetComponents<StudioEventEmitter>();
 
-        if (location != null)
-        {
-            foreach (StudioEventEmitter emitter in emitters)
+            if (location != null)
             {
-                if (emitter.EventReference.Equals(eventRef))
+                foreach (StudioEventEmitter emitter in emitters)
                 {
-                    RuntimeManager.PlayOneShot(eventRef, location.position);
+                    if (emitter.EventReference.Equals(eventRef))
+                    {
+                        RuntimeManager.PlayOneShot(eventRef, location.position);
+                    }
                 }
             }
-        }
-        else
-        {
-            foreach (StudioEventEmitter emitter in emitters)
+            else
             {
-
-                if (emitter.EventReference.Equals(eventRef))
+                foreach (StudioEventEmitter emitter in emitters)
                 {
-                    emitter.Play();
+
+                    if (emitter.EventReference.Equals(eventRef))
+                    {
+                        emitter.Play();
                    
 
 
-                    return;
-                }
+                        return;
+                    }
 
+                }
             }
-        }
 
    
 
         
-}
+    }
 
     public void ModifyBusVolume(Slider busSlider, string attachedBus)
     {
