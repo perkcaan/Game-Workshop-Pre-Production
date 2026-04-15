@@ -299,6 +299,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         if (_burningHeatPerSecond > 1f && !isBurning) {
             isBurning = true;
             ParticleManager.Instance.Play("SmokeBlast", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f)/3f, parent: gameObject.transform);
+
         }
     }
 

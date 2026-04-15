@@ -76,7 +76,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
         AudioManager.Instance.ModifyGlobalParameter("Intensity", room.baseIntensity);
         //AudioManager.Instance.ModifyParameter(gameObject, "music", "Section Control", room.musicSection);
 
-        Debug.Log(room.name + " entered. Intensity: " + room.baseIntensity + ", Music Section: " + room.musicSection);
+        
         if (_roomsNeedingSafeExit.Contains(room)) _roomsNeedingSafeExit.Remove(room);
         
         foreach (Room needyRoom in _roomsNeedingSafeExit)
