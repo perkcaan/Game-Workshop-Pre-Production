@@ -36,7 +36,7 @@ public class HeatMeter : MonoBehaviour
     {
         if (_targetHeatMechanic == null || _fillImage == null || _outline == null)
         {
-            Debug.LogError("Please set up Heat Meter UI components.");
+            //Debug.LogError("Please set up Heat Meter UI components.");
             enabled = false;
             return;
         }

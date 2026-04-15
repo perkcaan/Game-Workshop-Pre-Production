@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 5206307667288868970}
   - component: {fileID: -5607425741268325690}
   - component: {fileID: -3750880614342898123}
+  - component: {fileID: -7053862891607750427}
   m_Layer: 8
   m_Name: TrashBall
   m_TagString: Untagged
@@ -262,10 +263,11 @@ MonoBehaviour:
   _dominantThreshold: 0.85
   _primaryThreshold: 0.5
   _secondaryThreshold: 0.15
-  _burningHeatPerSecond: 5
   isBurning: 0
+  isSwiped: 0
   _ballQuad: {fileID: 1172804477096604631}
   _ballTransform: {fileID: 3475106608188846289}
+  _targetType: 2
   _label: {fileID: 6113613676011926388}
 --- !u!114 &2415871829025244457
 MonoBehaviour:
@@ -318,7 +320,7 @@ MonoBehaviour:
       Data2: 1183037148
       Data3: 498317973
       Data4: -1996817163
-    Path: event:/Trash/TrashBall/TrashBall
+    Path: event:/SFX/Trash/TrashBall/TrashBall
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
@@ -349,7 +351,7 @@ MonoBehaviour:
       Data2: 1170253539
       Data3: -1210683998
       Data4: -2041284058
-    Path: event:/Trash/Pickup
+    Path: event:/SFX/Trash/Pickup
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 1
@@ -380,7 +382,7 @@ MonoBehaviour:
       Data2: 1135454590
       Data3: -1330675541
       Data4: 749469265
-    Path: event:/Trash/TrashLava
+    Path: event:/SFX/Trash/TrashLava(NeedsFixed)
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -411,7 +413,7 @@ MonoBehaviour:
       Data2: 1310188587
       Data3: 1940523429
       Data4: -1995798451
-    Path: event:/Trash/TrashBall/Idle_Shake
+    Path: event:/SFX/Trash/TrashBall/Idle_Shake
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -442,7 +444,7 @@ MonoBehaviour:
       Data2: 1269228003
       Data3: 91070855
       Data4: -898168437
-    Path: event:/Trash/TrashBall/Wall_Collisions
+    Path: event:/SFX/Trash/TrashBall/Wall_Collisions
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -450,9 +452,38 @@ MonoBehaviour:
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
-  Params:
-  - Name: RPM
-    Value: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &-7053862891607750427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5196095918412875384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 2099481570
+      Data2: 1141887144
+      Data3: -1616692341
+      Data4: 1324081788
+    Path: event:/SFX/Trash/TrashBall/FlamingBall
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20

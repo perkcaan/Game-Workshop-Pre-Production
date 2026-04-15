@@ -28,6 +28,7 @@ public class Room : MonoBehaviour
     public int coinsAwarded;
     public float totalMinSizeToAbsorb;
     public float baseIntensity;
+    public int musicSection;
 
     public float Cleanliness
     {

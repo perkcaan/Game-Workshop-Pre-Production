@@ -7,6 +7,8 @@ using AYellowpaper.SerializedCollections;
 using static UnityEngine.ParticleSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Slider = UnityEngine.UI.Slider;
 
 
 
@@ -14,153 +16,194 @@ public class AudioManager : Singleton<AudioManager>
 {
     
 
-[SerializedDictionary("Sound Code", "FMODEVent")]
-[SerializeField] private AYellowpaper.SerializedCollections.SerializedDictionary<string, EventReference> _sounds;
+    [SerializedDictionary("Sound Code", "FMODEVent")]
+    [SerializeField] private AYellowpaper.SerializedCollections.SerializedDictionary<string, EventReference> _sounds;
 
-[SerializedDictionary("Bus Name", "Bus Path")]
-[SerializeField] private AYellowpaper.SerializedCollections.SerializedDictionary<string, Bus> _buses;
-private EventReference eventRef;
-private EventInstance parent = new EventInstance();
+    [SerializedDictionary("Bus Name", "Bus Path")]
+    [SerializeField] private AYellowpaper.SerializedCollections.SerializedDictionary<string, Bus> _buses;
+    private EventReference eventRef;
+    private EventInstance parent = new EventInstance();
 
-public Bus _masterBus;
-public Bus _sfxBus;
-public Bus _musicBus;
-private List<EventInstance> _instances = new List<EventInstance>();
-
-
+    public Bus _masterBus;
+    public Bus _sfxBus;
+    public Bus _musicBus;
+    private List<EventInstance> _instances = new List<EventInstance>();
 
 
 
 
-public void Start()
-{
-    _masterBus = RuntimeManager.GetBus("bus:/");
-    _musicBus = RuntimeManager.GetBus("bus:/SFX");
-    _sfxBus = RuntimeManager.GetBus("bus:/MUSIC");
 
-    _buses["Master"] = _masterBus;
-    _buses["Music"] = _musicBus;
-    _buses["SFX"] = _sfxBus;
+
+    public void Start()
+    {
+        _masterBus = RuntimeManager.GetBus("bus:/");
+        _musicBus = RuntimeManager.GetBus("bus:/SFX");
+        _sfxBus = RuntimeManager.GetBus("bus:/MUSIC");
+
+        _buses["Master"] = _masterBus;
+        _buses["Music"] = _musicBus;
+        _buses["SFX"] = _sfxBus;
 
         
-}
-public void Play(string sCode, Transform position)
-{
+    }
+    public void Play(string sCode, Transform position)
+    {
     
         
-    if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
-    {
-        Debug.LogError($"AudioManager: '{sCode}' not found");
-        return;
-    }
-
-    RuntimeManager.PlayOneShot(eventRef, position.position);
-
-    
-
-}
-
-public void PlayInstance(string sCode)
-{
-    if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
-        return;
-
-    EventInstance newInstance = RuntimeManager.CreateInstance(eventRef);
-    newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
-    newInstance.start();
-    _instances.Add(newInstance);
-}
-
-
-
-public void Stop(GameObject obj, string sCode)
-{
-    if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
-    {
-        Debug.LogError($"AudioManager: '{sCode}' not found");
-        return;
-    }
-
-    foreach (StudioEventEmitter emitter in obj.GetComponents<StudioEventEmitter>())
-    {
-        if (emitter.EventReference.Equals(eventRef))
+        if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
         {
-            emitter.EventInstance.Equals(parent);
-            emitter.Stop();
-            
+            Debug.LogError($"AudioManager: '{sCode}' not found");
             return;
         }
-    }
-}
 
-public void ModifyGlobalParameter(string param, float value)
-{
-    RuntimeManager.StudioSystem.setParameterByName(param, value);
-}
+        RuntimeManager.PlayOneShot(eventRef, position.position);
+        
 
-public void ModifyParameter(GameObject obj, string sCode, string param, float value)
-{
-    if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
-    {
-        Debug.LogError($"AudioManager: '{sCode}' not found");
-        return;
+    
+
     }
 
-    foreach (StudioEventEmitter emitter in obj.GetComponents<StudioEventEmitter>())
+    public void PlayInstance(string sCode)
     {
-        if (emitter.EventReference.Equals(eventRef))
+        if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
+            return;
+
+        EventInstance newInstance = RuntimeManager.CreateInstance(eventRef);
+        newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+        newInstance.start();
+        _instances.Add(newInstance);
+    }
+
+
+
+    public void Stop(GameObject obj, string sCode)
+    {
+        if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
         {
-            emitter.EventInstance.Equals(parent);
-            emitter.EventInstance.setParameterByName(param, value);
+            Debug.LogError($"AudioManager: '{sCode}' not found");
+            return;
+        }
+
+        foreach (StudioEventEmitter emitter in obj.GetComponents<StudioEventEmitter>())
+        {
+            if (emitter.EventReference.Equals(eventRef))
+            {
+                emitter.EventInstance.Equals(parent);
+                emitter.Stop();
+            
+                return;
+            }
+        }
+    }
+
+    public void ModifyGlobalParameter(string param, float value)
+    {
+        RuntimeManager.StudioSystem.setParameterByName(param, value);
+    }
+
+    public void ModifyParameter(GameObject obj, string sCode, string param, float value)
+    {
+        if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
+        {
+            Debug.LogError($"AudioManager: '{sCode}' not found");
+            return;
+        }
+
+        foreach (StudioEventEmitter emitter in obj.GetComponents<StudioEventEmitter>())
+        {
+            if (emitter.EventReference.Equals(eventRef))
+            {
+                emitter.EventInstance.Equals(parent);
+                emitter.EventInstance.setParameterByName(param, value);
                 
-            return;
+
+
+                return;
+            }
         }
-    }
 }
-public void PlayOnInstance(GameObject obj, string sCode)
-{
-    if (obj == null) return;
 
-    if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
+    public void ModifyParameterByLabel(GameObject obj, string sCode, string param, string label)
     {
-        Debug.LogError($"AudioManager: '{sCode}' not found");
-        return;
-    }
-        
-
-    StudioEventEmitter[] emitters = obj.GetComponents<StudioEventEmitter>();
-
-        
-    foreach (StudioEventEmitter emitter in emitters)
-    {
-            
-        if (emitter.EventReference.Equals(eventRef))
+        if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
         {
-            emitter.Play();
-           
+            Debug.LogError($"AudioManager: '{sCode}' not found");
+            return;
+        }
 
+        foreach (StudioEventEmitter emitter in obj.GetComponents<StudioEventEmitter>())
+        {
+            if (emitter.EventReference.Equals(eventRef))
+            {
+                emitter.EventInstance.Equals(parent);
+                emitter.EventInstance.setParameterByNameWithLabel(param, label);
+                
+                
+
+
+                return;
+            }
+        }
+    }
+    public void PlayOnInstance(GameObject obj, string sCode,Transform location = null)
+    {
+        if (obj == null) return;
+
+        if (!_sounds.TryGetValue(sCode, out EventReference eventRef))
+        {
+            Debug.LogError($"AudioManager: '{sCode}' not found");
             return;
         }
         
-    }
+
+        StudioEventEmitter[] emitters = obj.GetComponents<StudioEventEmitter>();
+
+            if (location != null)
+            {
+                foreach (StudioEventEmitter emitter in emitters)
+                {
+                    if (emitter.EventReference.Equals(eventRef))
+                    {
+                        RuntimeManager.PlayOneShot(eventRef, location.position);
+                    }
+                }
+            }
+            else
+            {
+                foreach (StudioEventEmitter emitter in emitters)
+                {
+
+                    if (emitter.EventReference.Equals(eventRef))
+                    {
+                        emitter.Play();
+                   
+
+
+                        return;
+                    }
+
+                }
+            }
+
+   
 
         
-}
+    }
 
-public void ModifyBusVolume(Slider busSlider, string attachedBus)
-{
-
-    if (_buses.TryGetValue(attachedBus, out Bus currentBus))
+    public void ModifyBusVolume(Slider busSlider, string attachedBus)
     {
-        _buses[attachedBus] = currentBus;
-        currentBus.setVolume(busSlider.value);
+
+        if (_buses.TryGetValue(attachedBus, out Bus currentBus))
+        {
+            _buses[attachedBus] = currentBus;
+            currentBus.setVolume(busSlider.value);
+        }
+        
+        
+        
+        
+
+
     }
-        
-        
-        
-        
-
-
-}
 }
 

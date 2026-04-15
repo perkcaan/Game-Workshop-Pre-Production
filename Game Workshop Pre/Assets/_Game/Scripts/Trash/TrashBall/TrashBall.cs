@@ -61,6 +61,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     private float _decayTimer = 0f;
     public bool isBurning = false;
     public bool isSwiped = false;
+    
     // material stats
     private float _maxHealthMultiplier = 1f;
     private float _decayMultiplier = 0f;
@@ -124,6 +125,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     {
         RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, gameObject, Rigidbody);
         AudioManager.Instance.PlayOnInstance(this.gameObject, "TrashBall");
+        AudioManager.Instance.PlayOnInstance(this.gameObject, "ballHeat");
+
         _label.Show();
     }
     
@@ -167,7 +170,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
         // Sound
         AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM", this.Rigidbody.linearVelocity.magnitude * 10);
-        AudioManager.Instance.ModifyGlobalParameter("RPM2", this.Rigidbody.linearVelocity.magnitude * 10);
+        AudioManager.Instance.ModifyParameter(this.gameObject, "wallCollide", "RPM 2", this.Rigidbody.linearVelocity.magnitude * 10);
+        AudioManager.Instance.ModifyParameter(this.gameObject, "ballHeat", "Heat", this.heatMechanic.Heat/10);
 
         // 3D Ball rotation
         Vector3 rotationAxis = new Vector3(Rigidbody.linearVelocity.y, -Rigidbody.linearVelocity.x, 0);
@@ -285,6 +289,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     {
         AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM2", 0f);
         AudioManager.Instance.Stop(this.gameObject,"TrashBall");
+        AudioManager.Instance.ModifyParameter(this.gameObject, "ballHeat", "Heat", 0f);
+        AudioManager.Instance.Stop(this.gameObject, "ballHeat");
         Destroy(gameObject);
     }
 
@@ -293,6 +299,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         if (_burningHeatPerSecond > 1f && !isBurning) {
             isBurning = true;
             ParticleManager.Instance.Play("SmokeBlast", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f)/3f, parent: gameObject.transform);
+
         }
     }
 
@@ -621,10 +628,12 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         }
 
 
-        if ((_wallLayers.value & (1 << collision.gameObject.layer)) != 0) // Layer 14 is supposed to be Wall
+        //if ((_wallLayers.value & (1 << collision.gameObject.layer)) != 0)
+        if(collision.gameObject.layer == 14)// Layer 14 is supposed to be Wall
         {
             ActionOnMaterials((material, amount) => material.whenBallHitsWall(this, amount));
-            
+            Debug.Log("hit wall");
+            AudioManager.Instance.PlayOnInstance(gameObject,"wallCollide");
 
             if (Rigidbody.linearVelocity.magnitude > 5f)
             {
@@ -716,6 +725,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     public void OnIgnite(HeatMechanic heat)
     {
         ActionOnMaterials((material, amount) => material.whenBallIgnite(this, amount));
+        AudioManager.Instance.PlayOnInstance(this.gameObject, "ballHeat");
         Delete(); // Deletes the trash object
     }
 

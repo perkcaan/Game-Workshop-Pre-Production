@@ -1,4 +1,5 @@
 using DG.Tweening;
+using FMOD.Studio;
 using FMODUnity;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
 {
     [SerializeField, Range(HeatMechanic.LOWEST_HEAT_VALUE, HeatMechanic.HIGHEST_HEAT_VALUE)] private int _baseTemperature;
     public int Temperature { get { return _baseTemperature; } }
+    private EventInstance _musicInstance;
 
     [SerializeField] private Tilemap _roomTilemap;
     private List<Room> _rooms = new List<Room>();
@@ -32,6 +34,20 @@ public class DistrictManager : StaticInstance<DistrictManager>
         RoomPolygonGenerator.GeneratePolygonColliders(transform, _roomTilemap);
     }
 
+    private void Start()
+    {
+        _rooms = new List<Room>(FindObjectsByType<Room>(FindObjectsSortMode.InstanceID));
+        if (_coinText != null)
+            _coinText.alpha = 0f;
+        if (PlayerPrefs.HasKey("Coins"))
+            coinsEarned = PlayerPrefs.GetInt("Coins");
+        else
+            coinsEarned = 0;
+
+        _musicInstance = RuntimeManager.CreateInstance("event:/Music/1 District/District 1 Theme");
+        _musicInstance.start();
+
+    }
 
     public float GetCleanCompletion()
     {
@@ -55,6 +71,12 @@ public class DistrictManager : StaticInstance<DistrictManager>
     {
         if (_focusedRooms.Contains(room)) return;
         _focusedRooms.Add(room);
+        _musicInstance.setParameterByName("Section Control", room.musicSection);
+        
+        AudioManager.Instance.ModifyGlobalParameter("Intensity", room.baseIntensity);
+        //AudioManager.Instance.ModifyParameter(gameObject, "music", "Section Control", room.musicSection);
+
+        
         if (_roomsNeedingSafeExit.Contains(room)) _roomsNeedingSafeExit.Remove(room);
         
         foreach (Room needyRoom in _roomsNeedingSafeExit)
@@ -80,23 +102,12 @@ public class DistrictManager : StaticInstance<DistrictManager>
         UpdateLoadedRooms(); 
     }
 
-    private void Start()
-    {
-        _rooms = new List<Room>(FindObjectsByType<Room>(FindObjectsSortMode.InstanceID));
-        if(_coinText != null)
-            _coinText.alpha = 0f;
-        if (PlayerPrefs.HasKey("Coins"))
-            coinsEarned = PlayerPrefs.GetInt("Coins");
-        else
-            coinsEarned = 0;
-
-        
-    }
+    
 
     private void Update()
     {
-        if (_focusedRooms.Count > 0)
-        AudioManager.Instance.ModifyGlobalParameter("Intensity", FocusedRoom.baseIntensity);
+        
+
 
     }
 
