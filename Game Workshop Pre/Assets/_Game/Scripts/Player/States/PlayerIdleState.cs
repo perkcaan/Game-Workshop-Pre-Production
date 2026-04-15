@@ -1,0 +1,104 @@
+using System.Linq.Expressions;
+using UnityEngine;
+
+public class PlayerIdleState : BaseState<PlayerStateEnum>
+{
+    // Context & State
+    private PlayerContext _ctx;
+    private PlayerStateMachine _state;
+
+    // Fields
+    //movement
+    private float _zeroMoveTimer = 0f;
+    private bool _particlesPlayed = false;
+
+    public PlayerIdleState(PlayerContext context, PlayerStateMachine state)
+    {
+        _ctx = context;
+        _state = state;
+    }
+
+
+    // Methods
+    //state
+    public override void EnterState()
+    {
+        _ctx.CanHook = true;
+        _ctx.CanSwipe = true;
+        _ctx.CanDash = true;
+        _zeroMoveTimer = 0f;
+    }
+
+    public override void Update()
+    {
+        HandleMovement();
+        HandleRotation();
+        TryChangeState();
+    }
+
+    public override void ExitState()
+    {
+    }
+
+    //movement
+    private void HandleMovement()
+    {
+        Vector2 input = _ctx.MovementInput;
+        Vector2 velocity = _ctx.Rigidbody.linearVelocity; 
+        
+        if (input.sqrMagnitude > 0.01f)
+        {
+            if (velocity.magnitude > 1f) _particlesPlayed = false;
+            _zeroMoveTimer = 0f;
+            _ctx.MoveSpeed = Mathf.Lerp(_ctx.MoveSpeed, _ctx.MaxWalkSpeed, _ctx.Acceleration * Time.fixedDeltaTime);
+        }
+        else
+        {
+            if (_zeroMoveTimer < 0.02)
+            {
+                _zeroMoveTimer += Time.deltaTime;
+            } else
+            {
+                _ctx.MoveSpeed = 0f;
+                // Cancels sliding with an opposing force       
+                if ((velocity.magnitude > 0.1f) && (velocity.magnitude < _ctx.MaxWalkSpeed) && _ctx.Props.WillCancelSlide)
+                {
+                    if (!_particlesPlayed)
+                    {
+                        _particlesPlayed = true;
+                        Vector3 direction = velocity.normalized;
+                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                        ParticleManager.Instance.Play("SideStepDust", _ctx.Player.transform.position, Quaternion.Euler(0, 0, angle));
+                    }
+                    Vector2 fullCancelForce = -velocity.normalized * _ctx.MaxWalkSpeed;
+                    _ctx.FrameVelocity = Vector2.ClampMagnitude(fullCancelForce, (-velocity * _ctx.Rigidbody.mass / Time.fixedDeltaTime).magnitude);
+                    return;
+                }
+
+            }
+        }
+
+        _ctx.FrameVelocity = _ctx.MoveSpeed * input.normalized;
+    }
+
+    private void HandleRotation()
+    {
+        Vector2 mouseWorldPoint = Camera.main.ScreenToWorldPoint(_ctx.MouseInput);
+        Vector2 direction = mouseWorldPoint - (Vector2)_ctx.Player.transform.position;
+        direction.Normalize();
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        // Rotate slower based on speed - Disabled because I didnt like it. -Zach
+        float rotationSpeedReduction = 1f; //Mathf.Max(_ctx.MoveSpeed / _ctx.MaxWalkSpeed, 1);
+
+        float newAngle = Mathf.LerpAngle(_ctx.Rotation, targetAngle, _ctx.Props.RotationSpeed / rotationSpeedReduction * Time.deltaTime);
+        _ctx.Rotation = Mathf.DeltaAngle(0f, newAngle);
+    }
+
+
+    //state
+    private void TryChangeState()
+    {
+        if (_ctx.IsSweepPressed) _state.ChangeState(PlayerStateEnum.Sweeping);
+    }
+
+}
