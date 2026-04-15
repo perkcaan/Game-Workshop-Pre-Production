@@ -104,7 +104,7 @@ MonoBehaviour:
           Data2: 1125884986
           Data3: -1263044203
           Data4: -1394182262
-        Path: event:/Player/Dash Recharge
+        Path: event:/SFX/Player/Dash Recharge
     - Key: Dash
       Value:
         Guid:
@@ -112,7 +112,7 @@ MonoBehaviour:
           Data2: 1245912068
           Data3: 1450169237
           Data4: -995446733
-        Path: event:/Player/Dash
+        Path: event:/SFX/Player/Dash
     - Key: wallCollide
       Value:
         Guid:
@@ -120,7 +120,7 @@ MonoBehaviour:
           Data2: 1269228003
           Data3: 91070855
           Data4: -898168437
-        Path: event:/Trash/TrashBall/Wall_Collisions
+        Path: event:/SFX/Trash/TrashBall/Wall_Collisions
     - Key: Decay
       Value:
         Guid:
@@ -128,7 +128,7 @@ MonoBehaviour:
           Data2: 1310188587
           Data3: 1940523429
           Data4: -1995798451
-        Path: event:/Trash/TrashBall/Idle_Shake
+        Path: event:/SFX/Trash/TrashBall/Idle_Shake
     - Key: Sweep
       Value:
         Guid:
@@ -136,7 +136,7 @@ MonoBehaviour:
           Data2: 1091851715
           Data3: -862384456
           Data4: -1400652604
-        Path: event:/Player/Sweep/Sweep
+        Path: event:/SFX/Player/Sweep/Sweep
     - Key: TrashBall
       Value:
         Guid:
@@ -144,7 +144,7 @@ MonoBehaviour:
           Data2: 1183037148
           Data3: 498317973
           Data4: -1996817163
-        Path: event:/Trash/TrashBall/TrashBall
+        Path: event:/SFX/Trash/TrashBall/TrashBall
     - Key: Steps
       Value:
         Guid:
@@ -152,7 +152,7 @@ MonoBehaviour:
           Data2: 1307093174
           Data3: -1070572912
           Data4: 506519612
-        Path: event:/Player/Clean Step
+        Path: event:/SFX/Player/Footsteps/Clean Step
     - Key: SwipeMiss
       Value:
         Guid:
@@ -160,7 +160,7 @@ MonoBehaviour:
           Data2: 1242012186
           Data3: 447816615
           Data4: -1560589920
-        Path: event:/Player/Swipe/SwipeMiss
+        Path: event:/SFX/Player/Swipe/SwipeMiss
     - Key: Swipe
       Value:
         Guid:
@@ -168,7 +168,7 @@ MonoBehaviour:
           Data2: 1097679199
           Data3: 1294576546
           Data4: -2030261532
-        Path: event:/Player/Swipe/Swipe
+        Path: event:/SFX/Player/Swipe/Swipe
     - Key: playerDeath
       Value:
         Guid:
@@ -176,15 +176,23 @@ MonoBehaviour:
           Data2: 1232237457
           Data3: -74243186
           Data4: -1259412614
-        Path: event:/Player/Death
+        Path: event:/SFX/Player/Death
+    - Key: ballHeat
+      Value:
+        Guid:
+          Data1: 2099481570
+          Data2: 1141887144
+          Data3: -1616692341
+          Data4: 1324081788
+        Path: event:/SFX/Trash/TrashBall/FlamingBall
     - Key: music
       Value:
         Guid:
-          Data1: -2072716389
-          Data2: 1204770590
-          Data3: -1744730491
-          Data4: 92282367
-        Path: event:/Music/1 District/Vertical Adaptive District 1
+          Data1: -1420579660
+          Data2: 1075621379
+          Data3: 2043403165
+          Data4: 2072293875
+        Path: event:/Music/1 District/District 1 Theme
     - Key: attack
       Value:
         Guid:
@@ -192,7 +200,7 @@ MonoBehaviour:
           Data2: 1231014565
           Data3: 585045692
           Data4: -573988649
-        Path: event:/Enemies/Enemy Attacks
+        Path: event:/SFX/Enemies/Enemy Attacks
     - Key: trashPickup
       Value:
         Guid:
@@ -200,7 +208,7 @@ MonoBehaviour:
           Data2: 1170253539
           Data3: -1210683998
           Data4: -2041284058
-        Path: event:/Trash/Pickup
+        Path: event:/SFX/Trash/Pickup
     - Key: gateDown
       Value:
         Guid:
@@ -208,7 +216,7 @@ MonoBehaviour:
           Data2: 1120853624
           Data3: 1725492103
           Data4: -412020637
-        Path: event:/Gate_Down
+        Path: event:/SFX/Gates/Gate_Down
     - Key: gateUp
       Value:
         Guid:
@@ -216,7 +224,7 @@ MonoBehaviour:
           Data2: 1137682788
           Data3: -481112642
           Data4: 701164783
-        Path: event:/Gate_Up
+        Path: event:/SFX/Gates/Gate_Up
     - Key: enemyPickup
       Value:
         Guid:
@@ -224,7 +232,7 @@ MonoBehaviour:
           Data2: 1189414935
           Data3: 403715714
           Data4: -794661141
-        Path: event:/Trash/Pickup Enemies
+        Path: event:/SFX/Trash/Pickup Enemies
     - Key: Points
       Value:
         Guid:
@@ -232,7 +240,7 @@ MonoBehaviour:
           Data2: 1200775962
           Data3: 1928587417
           Data4: -1714651333
-        Path: event:/Points
+        Path: event:/UI/Points
     - Key: impDeath
       Value:
         Guid:
@@ -240,7 +248,7 @@ MonoBehaviour:
           Data2: 1121533942
           Data3: -117245779
           Data4: -1216900099
-        Path: event:/Enemies/Imp/Death
+        Path: event:/SFX/Enemies/Imp/Death
     - Key: Heat
       Value:
         Guid:
@@ -248,7 +256,7 @@ MonoBehaviour:
           Data2: 1297398676
           Data3: -1407158339
           Data4: 1186683876
-        Path: event:/Heat System/Heat Meter
+        Path: event:/SFX/Heat System/Heat Meter
     - Key: Lava
       Value:
         Guid:
@@ -256,6 +264,6 @@ MonoBehaviour:
           Data2: 1207415162
           Data3: -1113645673
           Data4: 476402738
-        Path: event:/LavaEnvironment
+        Path: event:/Environmental Ambience/LavaEnvironment
   _buses:
     _serializedList: []
