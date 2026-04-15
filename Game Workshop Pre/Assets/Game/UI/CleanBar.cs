@@ -7,6 +7,7 @@ public class CleanBar : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private RectTransform _cleanBarRect; // Changed to RectTransform for UI sliding
+    [SerializeField] private RectTransform _cleanBarSeperater;
     [SerializeField] private Image _outline;
     [SerializeField] private Image _fillImage;
     [SerializeField] private TMP_Text _cleanText;
@@ -63,6 +64,15 @@ public class CleanBar : MonoBehaviour
         {
             UpdateCleanliness(targetFill);
         }
+
+        if (_fillImage.fillAmount < 0.05f || _fillImage.fillAmount > 0.95f)
+        {
+            _cleanBarSeperater.gameObject.SetActive(false);
+        }
+        else
+        {
+            _cleanBarSeperater.gameObject.SetActive(true);
+        }
     }
 
     private void UpdateCleanliness(float targetFill)
@@ -92,6 +102,8 @@ public class CleanBar : MonoBehaviour
                     Vector2 BubblePosition = new Vector2(transform.position.x + xPos, transform.position.y + yPos);
                     ParticleManager.Instance.Play(particleName, BubblePosition, parent: transform);
                 }
+                float seperater = (percent * 4f) - 200f;
+                _cleanBarSeperater.anchoredPosition = new Vector2(seperater, _cleanBarSeperater.anchoredPosition.y);
             });
 
         if (change > 0 && _outline != null)
