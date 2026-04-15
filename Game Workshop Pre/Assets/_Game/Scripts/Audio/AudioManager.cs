@@ -89,7 +89,8 @@ public class AudioManager : Singleton<AudioManager>
             if (emitter.EventReference.Equals(eventRef))
             {
                 emitter.EventInstance.Equals(parent);
-                emitter.Stop();
+                emitter.EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                //emitter.Stop();
             
                 return;
             }

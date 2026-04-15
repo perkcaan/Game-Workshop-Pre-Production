@@ -278,7 +278,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         {
             absorbable.OnTrashBallDestroy(); // notify absorbed object
         }
-        
+      
         _isBeingDestroyed = true;
         AbsorbedObjects.Clear();
         //ScoreBehavior.SendScore?.Invoke(Size);
