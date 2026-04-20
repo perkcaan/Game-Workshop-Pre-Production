@@ -88,6 +88,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     public CircleCollider2D MagnetCollider { get; private set; }
     [SerializeField] private SizeLabel _label;
 
+    SaveData ISaveable.DataType { get; set; }
+
     #endregion
 
     #region Unity methods
@@ -255,12 +257,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         AudioManager.Instance.ModifyParameter(this.gameObject, "TrashBall", "RPM2", 0f);
         AudioManager.Instance.Stop(this.gameObject,"TrashBall");
         Destroy(gameObject);
-    }
-
-
-    public void AddSaveableData()
-    {
-
     }
 
     #endregion
@@ -725,6 +721,12 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         Rigidbody.AddForce(direction * force * _pokeForceMultiplier, ForceMode2D.Impulse);
     }
     
+
+    //ISaveable
+    public void AddSaveableData()
+    {
+
+    }
     #endregion
 }
 

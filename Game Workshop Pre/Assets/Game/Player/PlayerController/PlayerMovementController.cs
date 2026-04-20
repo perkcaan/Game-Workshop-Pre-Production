@@ -107,6 +107,8 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         set { SetWeight(value); }
     }
 
+    SaveData ISaveable.DataType { get; set; }
+
     //ITargetable
     public TargetType TargetType { get { return TargetType.Player; } }
 
@@ -460,10 +462,17 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         SetWeight(_weight - slowAmount);
     }
 
+    public void AddSaveableData()
+    {
+
+    }
+
+    /* Old System
     //The Place to add data that is desired to be saved
     public void AddSaveableData()
     {
         SaveContext.Current.playerData = new PlayerSaveData(gameObject, this);
     }
+    */
 
 }

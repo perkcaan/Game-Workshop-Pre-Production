@@ -21,10 +21,13 @@ public class DistrictManager : StaticInstance<DistrictManager>, ISaveable
     private FMOD.Studio.EventInstance _music;
     //rooms that need to be safely exited.
     private List<Room> _roomsNeedingSafeExit = new List<Room>();
+    public List<Room> RoomsNeedingSafeExit { get { return _roomsNeedingSafeExit; } }
 
     // Rooms currently loaded
     private HashSet<Room> _loadedRooms = new HashSet<Room>();
     private int coinsEarned;
+
+    SaveData ISaveable.DataType { get; set; }
 
     [ContextMenu("Generate Rooms")]
     private void GenerateRooms()
@@ -173,6 +176,12 @@ public class DistrictManager : StaticInstance<DistrictManager>, ISaveable
         
     }
 
+    public void AddSaveableData()
+    {
+
+    }
+
+    /* Old System
     //The Place to add data that is desired to be saved
     public void AddSaveableData()
     {
@@ -186,7 +195,7 @@ public class DistrictManager : StaticInstance<DistrictManager>, ISaveable
         }
 
         SaveContext.Current.districtManagerData = saveData;
-    }
+    }*/
 
 
 }

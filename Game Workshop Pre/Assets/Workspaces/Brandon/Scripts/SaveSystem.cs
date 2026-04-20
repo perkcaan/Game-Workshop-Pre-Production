@@ -1,3 +1,15 @@
+
+using UnityEngine;
+
+public class SaveSystem : MonoBehaviour
+{
+
+}
+
+
+
+
+/*  Old Save System
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
@@ -524,4 +536,4 @@ public class TrashBallSaveData
     public Vector3 position;
     public int size;
     public float healthPercent;
-}
+}*/

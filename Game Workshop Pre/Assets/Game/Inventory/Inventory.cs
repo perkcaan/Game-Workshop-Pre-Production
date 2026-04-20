@@ -15,6 +15,8 @@ public class Inventory : MonoBehaviour, ISaveable
     [SerializeField] GameObject itemSlotsObject;
     [SerializeField] List<Item> equippedItems = new List<Item>();
     List<ItemSlot> itemSlots = new List<ItemSlot>();
+    
+    SaveData ISaveable.DataType { get; set; }
 
     private void Awake()
     {
@@ -89,6 +91,12 @@ public class Inventory : MonoBehaviour, ISaveable
         */
     }
 
+    public void AddSaveableData()
+    {
+
+    }
+
+    /* Old System
     //The Place to add data that is desired to be saved
     public void AddSaveableData()
     {
@@ -103,6 +111,6 @@ public class Inventory : MonoBehaviour, ISaveable
         }
 
         SaveContext.Current.inventoryData = saveData;
-    }
+    }*/
 
 }

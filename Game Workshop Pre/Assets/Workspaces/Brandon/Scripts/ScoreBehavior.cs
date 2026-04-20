@@ -40,6 +40,8 @@ public class ScoreBehavior : MonoBehaviour, ISaveable
     DataTable bonusTable = new DataTable();
     int thisBonusScore;
 
+    SaveData ISaveable.DataType { get; set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -153,6 +155,14 @@ public class ScoreBehavior : MonoBehaviour, ISaveable
 
     }
 
+
+    public void AddSaveableData()
+    {
+
+    }
+
+
+    /* Old System
     public void AddSaveableData()
     {
         int comboScore = 0;
@@ -167,5 +177,5 @@ public class ScoreBehavior : MonoBehaviour, ISaveable
         }
 
         SaveContext.Current.scoreData = new ScoreSaveData(this, comboScore);
-    }
+    }*/
 }
