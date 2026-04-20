@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,6 +37,7 @@ public class HeatMeter : MonoBehaviour
     private float _fillFlashIntensity;
     private float _eyeFlashIntensity;
 
+    private float _fireEyesTimer;
     private float _outlineHitTimer;
     private float _outlineFadeIntensity;
 
@@ -90,6 +92,13 @@ public class HeatMeter : MonoBehaviour
         {
             _outlineFadeIntensity = Mathf.MoveTowards(_outlineFadeIntensity, 0f, Time.deltaTime * _flashSpeed);
             _outline.color = Color.Lerp(_outlineBaseColor, _flashColor, _outlineFadeIntensity);
+        }
+
+        _fireEyesTimer += Time.deltaTime;
+        if (_fireEyesTimer > 0 && heatProgress >= _shakeHighThreshold)
+        {
+            _fireEyesTimer = -0.4f;
+            ParticleManager.Instance.Play("HeatBarFire", _skullEyes.transform.position, parent: transform);
         }
 
         _fillFlashIntensity = Mathf.MoveTowards(_fillFlashIntensity, 0f, Time.deltaTime * _flashSpeed);

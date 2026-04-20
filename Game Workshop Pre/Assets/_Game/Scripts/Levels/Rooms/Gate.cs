@@ -7,7 +7,7 @@ public class Gate : MonoBehaviour
     private Collider2D _collider;
     private bool _isGateDown = false;
     private List<Room> _roomsClosingGate = new List<Room>();
-
+    private bool isHorizontal;
     private void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -27,6 +27,14 @@ public class Gate : MonoBehaviour
             _spriteRenderer.enabled = false;
             _collider.enabled = false;
             _isGateDown = false;
+            if (isHorizontal)
+            {
+                ParticleManager.Instance.Play("GateOpenH", transform.position);
+            }
+            else
+            {
+                ParticleManager.Instance.Play("GateOpenV", transform.position);
+            }
         }
     }
 
@@ -38,5 +46,6 @@ public class Gate : MonoBehaviour
         _spriteRenderer.enabled = true;
         _collider.enabled = true;
         _isGateDown = true;
+        ParticleManager.Instance.Play("GateOpen", transform.position);
     }
 }
