@@ -11,6 +11,7 @@ public class Room : MonoBehaviour
     // Room Drawer
     public GameObject RoomDrawerPrefab; // This is a prefab of all the room's data. Make sure its a prefab.
     [HideInInspector] public GameObject ActiveRoomDrawer; // This is the instantiated RoomDrawerPrefab at runtime
+
     // Temperature
     [SerializeField, Range(HeatMechanic.LOWEST_HEAT_VALUE, HeatMechanic.HIGHEST_HEAT_VALUE)] private int _baseTemperature;
     public int Temperature { get { return _baseTemperature; } } // Return _baseTemperature + anything that modifies room temperature
@@ -68,7 +69,7 @@ public class Room : MonoBehaviour
 
     // Room State
     private bool _isRoomCleaned = false;
-    public bool IsRoomCleaned { get { return _isRoomCleaned; } }
+    public bool IsRoomCleaned { get { return _isRoomCleaned; } set { _isRoomCleaned = value; } }
     private bool _isDrawerOut = false;
     private bool _isRoomClosed = false;
 

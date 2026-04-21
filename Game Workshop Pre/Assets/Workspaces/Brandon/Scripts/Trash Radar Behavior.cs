@@ -6,9 +6,6 @@ using UnityEngine;
 public class TrashRadar : MonoBehaviour
 {
 
-    void Start()
-    {
-    }
 }
 
    /*private TrashRadar _instance;

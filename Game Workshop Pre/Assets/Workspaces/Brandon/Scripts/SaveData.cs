@@ -1,65 +1,102 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
 public abstract class SaveData
 {
 
-    protected string _name;
+    public  string loadID;
+    public Vector3 position;
+    public Vector3 rotation;
 
-    protected SaveData(string name) 
+    protected SaveData(SaveableObject obj) 
     {
-        _name = name;
+        loadID = obj.loadID;
+        position = obj.gameObjectReference.transform.position;
+        rotation = obj.gameObjectReference.transform.rotation.eulerAngles;
     }
-
 }
 
 
+[System.Serializable]
 public class PlayerData : SaveData
 {
 
-    public Vector3 position;
-    public Vector3 closestCleanablePosition;
     public float heat;
     public bool[] abilities;
-    public string closestICleanable;
+    public bool coolingOff;
 
-
-    public PlayerData(string name, GameObject gameObject, PlayerMovementController pmc, TrashRadarManager radar) : base(name)
+    public PlayerData(SaveableObject obj) : base(obj)
     {
-        position = gameObject.transform.position;
-        closestCleanablePosition = radar.ClosestCleanable.transform.position;
-        closestICleanable = radar.ClosestCleanable.name;
+        PlayerMovementController pmc = obj.gameObjectReference.GetComponent<PlayerMovementController>();
+        HeatMechanic heatMechanic = obj.gameObjectReference.GetComponent<HeatMechanic>();
+
         heat = pmc.PlayerHeat.Heat;
+        coolingOff = pmc.PlayerHeat.coolingOff;
+        abilities = new bool[] { pmc.canSweep, pmc.canSwipe, pmc.canDash, pmc.canPoke, pmc.canHook };
     }
 }
 
-public class InventoryData : SaveData {
 
-    public List<string> itemsData;
-
-    public InventoryData(string name, List<Item> items) : base(name)
-    {
-        foreach (Item item in items)
-        {
-            itemsData.Add(item.displayName);
-        }
-    }
-}
-
+[System.Serializable]
 public class EnemyData : SaveData
 {
-    public string enemyType;
-    public Vector3 position;
-    public List<Vector2> patrolPoints;
+    public float heat;
 
-    public EnemyData(string name, EnemyBase enemy) : base(name)
+    public EnemyData(SaveableObject obj) : base(obj)
     {
-        if (enemy as CloseMeleeEnemy != null){
-            if (enemy.name.Contains("Imp"))
-                enemyType = "Imp";
+        HeatMechanic hm = obj.gameObjectReference.GetComponent<HeatMechanic>();
+    }
+}
+
+[System.Serializable]
+
+public class RoomData : SaveData
+{
+    public bool isTrashRoom;
+    public bool isRoomCleaned;
+    public bool isPlayerInRoom;
+    public float clenliness;
+    public int freeTrashAmount;
+
+
+    public RoomData(SaveableObject obj) : base(obj)
+    {
+        //Needs to create it's a new Load ID
+        string name = obj.gameObjectReference.name;
+        int lastLetterIndex = name.Length - 1;
+        loadID += name[lastLetterIndex];
+
+        Room room = obj.gameObjectReference.GetComponent<Room>();
+        isTrashRoom = room.IsTrashRoom;
+        isRoomCleaned = room.IsRoomCleaned;
+        isPlayerInRoom = room.IsPlayerInRoom;
+        clenliness = room.Cleanliness;
+        freeTrashAmount = room.FreeTrashAmount;
+    }
+}
+
+[System.Serializable]
+
+public class DistrictManagerData : SaveData
+{
+
+    public List<RoomData> rooms;
+    public List<RoomData> focusedRooms;
+    public List<RoomData> roomsNeedingSafeExit;
+    public int temperature;
+    public int coinsEarned;
+    
+    public DistrictManagerData(SaveableObject obj) : base(obj)
+    {
+        DistrictManager dm = obj.gameObjectReference.GetComponent<DistrictManager>();
+        foreach (Room room in dm.AllRooms)
+        {
+            SaveableObject roomSaveableObject = new SaveableObject(room.gameObject);
+            RoomData roomData = new RoomData(roomSaveableObject);
+            if (roomData.isPlayerInRoom == true)
+                focusedRooms.Add(roomData);
         }
     }
 
-
 }
-
