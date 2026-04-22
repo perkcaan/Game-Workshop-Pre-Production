@@ -24,6 +24,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Grime_57e252afa4a54923b746f14af2c5585d_GrimeTex_3567999088_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 94e3015989e279b4fa59ea5c3bed7806, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Grime_f001a820b2174c659c37371d4aa9efc3_GrimeTex_3567999088_Texture2D:
         m_Texture: {fileID: 2800000, guid: 94e3015989e279b4fa59ea5c3bed7806, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -46,9 +50,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Cleanliness: 0
+    - _PixelCount: 16
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    - _step: 0.425
+    m_Colors:
+    - White: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &8341579224050538501
