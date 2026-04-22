@@ -62,7 +62,7 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     public void OnSwipe(Vector2 direction, float force, Collider2D collider, ref float knockbackMultiplier)
     {
         //if (_isDestroyed) return;
-        TakeDamage(3, direction, force * _swipeForceShakeMultiplier);
+        TakeDamage(_health, direction, force * _swipeForceShakeMultiplier);
         if(this != null && trashMaterial != null)
             ParticleManager.Instance.Play("swipe", transform.position, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90f), this.trashMaterial.color, transform);
     }
