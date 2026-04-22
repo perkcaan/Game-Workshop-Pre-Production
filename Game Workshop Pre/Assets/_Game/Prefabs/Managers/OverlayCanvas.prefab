@@ -1240,9 +1240,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b864ccdd8daff2b45869c18c19076ba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cleanBar: {fileID: 7198277226604078507}
+  _cleanBarRect: {fileID: 0}
+  _cleanBarSeperater: {fileID: 0}
+  _outline: {fileID: 0}
   _fillImage: {fileID: 2991581268355147475}
   _cleanText: {fileID: 4982125767701369645}
+  _slideDuration: 0.5
+  _fillDuration: 0.3
+  _outlineFadeDuration: 1
+  _visibleYPos: -50
+  _hiddenYPos: 150
 --- !u!1 &1044054337480348242
 GameObject:
   m_ObjectHideFlags: 0
@@ -1788,9 +1795,11 @@ MonoBehaviour:
   quitUI: {fileID: 1769427080268484419}
   _pauseSliders:
   - {fileID: 3262215493259708897}
-  - {fileID: 8340058314520670023}
   - {fileID: 1077300602406848586}
-  _pauseSprites: []
+  - {fileID: 8340058314520670023}
+  _pauseSprites:
+  - {fileID: -1085192848, guid: 2ba567fed7e739143a9fa38fcdfac092, type: 3}
+  - {fileID: 447878300, guid: 2ba567fed7e739143a9fa38fcdfac092, type: 3}
 --- !u!1 &1356618467309686641
 GameObject:
   m_ObjectHideFlags: 0
@@ -8758,6 +8767,8 @@ MonoBehaviour:
   _targetHeatMechanic: {fileID: 0}
   _fillImage: {fileID: 7262975554780619319}
   _outline: {fileID: 0}
+  _skullEyes: {fileID: 0}
+  _skullJaw: {fileID: 0}
   _heatFillMultiplier: 1.075
   _heatGradient:
     serializedVersion: 2
@@ -8791,7 +8802,10 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _flashColor: {r: 1, g: 1, b: 1, a: 1}
   _outlineBaseColor: {r: 1, g: 1, b: 1, a: 0}
+  _baseEyeColor: {r: 1, g: 1, b: 1, a: 1}
+  _eyeDamageColor: {r: 1, g: 1, b: 1, a: 1}
   _flashSpeed: 5
+  _eyeFlashSpeed: 2
   _hitHoldDuration: 0.5
   _highHeatPulseSpeed: 10
   _shakeIntensity: 5

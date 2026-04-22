@@ -153,6 +153,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
             absorbable.TrashBallUpdate(this);
         }
 
+       
+
         // Particles
         _particleTimer -= Time.deltaTime * Rigidbody.linearVelocity.magnitude / 10f;
         if (_particleTimer <= 0 && Rigidbody.linearVelocity.magnitude > 0.5f)    

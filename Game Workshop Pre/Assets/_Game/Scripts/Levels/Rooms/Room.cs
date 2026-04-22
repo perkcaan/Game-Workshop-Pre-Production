@@ -262,6 +262,7 @@ public class Room : MonoBehaviour
                 DistrictManager.Instance.AwardCoins(coinsAwarded);
                 PlayerMovementController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
                 AudioManager.Instance.Play("gateDown", player.transform);
+                AudioManager.Instance.Play("RoomClear",player.transform);
                 StartCoroutine(RoomClearParticles(player));
             }
             _isRoomClosed = false;
