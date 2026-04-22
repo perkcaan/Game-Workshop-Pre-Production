@@ -66,9 +66,11 @@ public class Room : MonoBehaviour
     public bool IsRoomCleaned { get { return _isRoomCleaned; } }
     private bool _isDrawerOut = false;
     private bool _isRoomClosed = false;
+    private Collider2D _collider;
 
     private void Awake()
     {
+        _collider = GetComponent<Collider2D>();
         _isDrawerOut = ActiveRoomDrawer != null;
         if (_isDrawerOut) 
         { 
@@ -119,11 +121,11 @@ public class Room : MonoBehaviour
         {
             PlayerMovementController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
             AudioManager.Instance.Play("gateUp", player.transform);
+            //StartCoroutine(RoomClearParticles(player));
         }
 
         foreach (Gate gate in _connectedGates)
         {
-            
             gate.Close(this);
         }
     }
@@ -260,6 +262,7 @@ public class Room : MonoBehaviour
                 DistrictManager.Instance.AwardCoins(coinsAwarded);
                 PlayerMovementController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
                 AudioManager.Instance.Play("gateDown", player.transform);
+                StartCoroutine(RoomClearParticles(player));
             }
             _isRoomClosed = false;
             foreach (Gate gate in _connectedGates) gate.Open(this);
@@ -273,5 +276,35 @@ public class Room : MonoBehaviour
         set { _roomCurrentTrashAmount = value; }
     }
 
+    private IEnumerator RoomClearParticles(PlayerMovementController player)
+    {
+        int rings = 15;
+        int bubblesInRing = 4;
+        float radiusStep = 1.0f;
+        float delayBetweenRings = 0.04f;
+        Vector3 playerPosition = player.transform.position;
 
+        for (int i = 0; i < rings; i++)
+        {
+            float currentRadius = (i + 1) * radiusStep;
+
+            for (int j = 0; j < bubblesInRing; j++)
+            {
+                float angle = j * (Mathf.PI * 2 / bubblesInRing);
+                float x = Mathf.Cos(angle) * currentRadius;
+                float y = Mathf.Sin(angle) * currentRadius;
+
+                Vector3 bubblePosition = playerPosition + new Vector3(x, y, 0);
+
+                if (_collider.OverlapPoint(bubblePosition))
+                {
+                    ParticleManager.Instance.Play("RoomClear", bubblePosition);
+                }
+            }
+
+            bubblesInRing += 2 * (i + 1);
+
+            yield return new WaitForSeconds(delayBetweenRings);
+        }
+    }
 }

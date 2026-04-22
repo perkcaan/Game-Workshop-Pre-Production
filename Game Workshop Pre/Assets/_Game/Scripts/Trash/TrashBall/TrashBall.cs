@@ -632,7 +632,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         if(collision.gameObject.layer == 14)// Layer 14 is supposed to be Wall
         {
             ActionOnMaterials((material, amount) => material.whenBallHitsWall(this, amount));
-            Debug.Log("hit wall");
+            //Debug.Log("hit wall");
             AudioManager.Instance.PlayOnInstance(gameObject,"wallCollide");
 
             if (Rigidbody.linearVelocity.magnitude > 5f)
