@@ -28,6 +28,12 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     [SerializeField] float _defaultDecayMultiplier;
     [SerializeField] float _timeUntilDecay = 30f;
     [SerializeField] float _decayTrashDropRate;
+    private bool _pauseDecay = false;
+
+    public void SetDecayPause(bool pause)
+    {
+        _pauseDecay = pause;
+    }
 
     [Header("Ball Structure Properties")]
     [SerializeField, ReadOnly] private float _maxHealth;
@@ -130,6 +136,23 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     private void Update()
     {
         if (_isBeingDestroyed) return;
+
+        if (!_pauseDecay && Rigidbody.linearVelocity.magnitude < 1)
+        {
+            isSwiped = false;
+            _decayTimer -= Time.deltaTime * _defaultDecayMultiplier * _decayMultiplier;
+
+            if (_decayTimer <= 0)
+            {
+                DegradeTrashBall();
+                _decayTimer = _decayTrashDropRate;
+            }
+        }
+        if (_pauseDecay)
+        {
+            SetDecaying(false);
+            return;
+        }
 
         if (isBurning)
         {
