@@ -295,7 +295,6 @@ public class TrashRadarManager : MonoBehaviour
     public static void IncreaseSequenceNumber()
     {
         _gateNumber++;
-        Debug.Log(_gateNumber);
     }
 
 
