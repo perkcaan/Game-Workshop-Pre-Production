@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -73,7 +72,7 @@ public class SwipeHandler : MonoBehaviour
             float hitForce = swipeForce - swipeForce * falloffReduction;
 
             float knockbackMultiplier = 0f;
-            swipeable.OnSwipe(hitDirection, hitForce, collider, ref knockbackMultiplier);
+            swipeable.OnSwipe(swipeDirection, hitForce, collider, ref knockbackMultiplier);
             wasSomethingHit = true;
 
             // Apply resulting knockback (if there is any)
