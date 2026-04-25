@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 using Cinemachine;
+using System;
 
 public class Quake : MonoBehaviour
 {
@@ -10,13 +11,21 @@ public class Quake : MonoBehaviour
     // Spawn Count
     [SerializeField] private int spawnAmount;
 
-    // Bool to check if quake can activate
-    [SerializeField] private bool canQuake;
-
+    // Is quake allowed?
+    [SerializeField] private bool _canQuake;
     public bool CanQuake
     {
-        get { return canQuake; }
-        set { canQuake = value; }
+        get { return _canQuake; }
+        set { _canQuake = value; }
+    }
+
+    // Bool to check if quake can activate
+    [SerializeField] private bool _quakeTrigger;
+
+    public bool QuakeTrigger // Trigger to activate Quake
+    {
+        get { return _quakeTrigger; }
+        set { _quakeTrigger = value; }
     }
 
     // This Room
@@ -41,48 +50,59 @@ public class Quake : MonoBehaviour
         }
 
     }
+    
     void Update()
     {
-
-        if (_room == null)
-            return;
-
-        // See if quake should be enabled
-        if (_room.totalMinSizeToAbsorb >
-            (_room.RoomCurrentTrashAmount - _room.totalMinSizeToAbsorb))
-        {
-            CanQuake = true;
-        }
-
-        // If quake can be enable, execute the remaining logic
-        if (CanQuake)
-        {
-            CanQuake = false;
-
-            ShakeScreen();
-
-            for (int i = 0; i < spawnAmount; i++)
-            {
-                SpawnTrashObject();
-            }
-        }
-
-        // TEST CODE - Uncomment the below code and 
-        // comment out the above code 
-        // to allow Quake at will with zero conditions
-        // aside from manually activating the boolean
-        
-        /*if (_room != null && canQuake)
-        {
-            canQuake = false;
-            ShakeScreen();
-
-            for (int i = 0; i < spawnAmount; i++)
-            {
-                SpawnTrashObject();
+        if (_canQuake) {
+            if (_room == null){
+                Debug.LogWarning("Room Is Null");
+                return;
             }
 
-        }*/
+                Debug.Log(_room.totalMinSizeToAbsorb);
+                Debug.Log(_room.RoomCurrentTrashAmount - _room.totalMinSizeToAbsorb);
+            // See if quake should be enabled
+            if (_room.totalMinSizeToAbsorb >= (_room.RoomCurrentTrashAmount - _room.totalMinSizeToAbsorb))
+            {
+                QuakeTrigger = true;
+
+                Debug.LogWarning("Room Can Quake");
+            }
+            else
+            {
+                Debug.LogWarning("Room Cannot Quake");
+            }
+
+            // If quake can be enable, execute the remaining logic
+            if (QuakeTrigger)
+            {
+                QuakeTrigger = false;
+
+                ShakeScreen();
+
+                for (int i = 0; i < spawnAmount; i++)
+                {
+                    SpawnTrashObject();
+                }
+            }
+
+            // TEST CODE - Uncomment the below code and 
+            // comment out the above code 
+            // to allow Quake at will with zero conditions
+            // aside from manually activating the boolean
+            
+            /*if (_room != null && canQuake)
+            {
+                canQuake = false;
+                ShakeScreen();
+
+                for (int i = 0; i < spawnAmount; i++)
+                {
+                    SpawnTrashObject();
+                }
+
+            }*/
+        }
 
     }
 
@@ -114,7 +134,7 @@ public class Quake : MonoBehaviour
         }
 
         // Pick a random valid trash
-        int randomIndex = Random.Range(0, validTrash.Count);
+        int randomIndex = UnityEngine.Random.Range(0, validTrash.Count);
         Trash trashObjectToSpawn = validTrash[randomIndex];
 
         // Get spawn position
@@ -137,6 +157,7 @@ public class Quake : MonoBehaviour
 
     }
 
+    // Finds free space to spawn trash
     private UnityEngine.Vector3 FindFreePoint(float trashObjectRadius)
     {
         PolygonCollider2D roomBounds = _room.GetComponent<PolygonCollider2D>();
@@ -146,8 +167,8 @@ public class Quake : MonoBehaviour
 
         for (int attempts = 0; attempts < 50; attempts++)
         {
-            float randX = Random.Range(roomBounds.bounds.min.x, roomBounds.bounds.max.x);
-            float randY = Random.Range(roomBounds.bounds.min.y, roomBounds.bounds.max.y);
+            float randX = UnityEngine.Random.Range(roomBounds.bounds.min.x, roomBounds.bounds.max.x);
+            float randY = UnityEngine.Random.Range(roomBounds.bounds.min.y, roomBounds.bounds.max.y);
 
             // Find random point
             UnityEngine.Vector3 randomPoint = new UnityEngine.Vector3(randX, randY, 0f);
