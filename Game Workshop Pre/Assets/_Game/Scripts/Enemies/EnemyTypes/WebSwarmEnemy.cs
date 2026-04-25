@@ -27,22 +27,23 @@ public class WebSwarmEnemy : EnemyBase
     // Spawn Web
     public IEnumerator SpawnWeb(Action<bool> onComplete)
     {
-
-        // Fail if already spawning
         if (_isSpawningWeb)
         {
             onComplete?.Invoke(false);
             yield break;
         }
 
+        _animator.SetTrigger("StartAttack");
+        _animator.SetTrigger("DoAttack");
         _isSpawningWeb = true;
 
         // Spawn web object
-        Instantiate(_webTrapPrefab, transform.position, Quaternion.identity);
-        onComplete?.Invoke(true);
-        
+        yield return new WaitForSeconds(0.5f);
 
+        Instantiate(_webTrapPrefab, transform.position, Quaternion.identity);
+        _animator.SetTrigger("ReturnToIdle");
         _isSpawningWeb = false;
+        onComplete?.Invoke(true);
     }
 
     protected override void ForceCancelAction()

@@ -121,6 +121,8 @@ MonoBehaviour:
   _sweepDurationToBecomeBall: 0
   _swipesIntoTrashBall: 0
   _pokeForceMultiplier: 1
+  _swipeForceMultiplier: 1
+  _targetType: 2
 --- !u!114 &-4503546045497204933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,8 +220,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -280654717
-  m_SortingLayer: -2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -250,7 +252,5 @@ MonoBehaviour:
   _heatFlashRamp: 2
   _dissolveTime: 1
   _dissolveBurnWidth: 0.4
-  _height: 1
   _meshTexture: {fileID: 0}
   sinkSpeed: 0.3
-  maxHeight: 1
