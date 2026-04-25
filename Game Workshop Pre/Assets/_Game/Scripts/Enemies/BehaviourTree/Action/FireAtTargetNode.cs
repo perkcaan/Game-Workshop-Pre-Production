@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[BehaviourNode(8, "Actions")]
+[BehaviourNode(8, "Actions"), Serializable]
 public class FireAtTargetNode : BehaviourTreeNode
 {
     [SerializeField] private float _projectileSpeed = 10f;

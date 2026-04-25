@@ -149,4 +149,9 @@ public class OldSlugEnemy : EnemyBase
         }
         yield break;
     }
+
+    protected override void ForceCancelAction()
+    {
+        //unneeded
+    }
 }

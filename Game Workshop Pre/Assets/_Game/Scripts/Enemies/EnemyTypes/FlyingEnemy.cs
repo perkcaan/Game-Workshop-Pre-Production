@@ -17,5 +17,9 @@ public class FlyingEnemy : EnemyBase
 
     }
 
+    protected override void ForceCancelAction()
+    {
+        //unneeded
+    }
 
 }

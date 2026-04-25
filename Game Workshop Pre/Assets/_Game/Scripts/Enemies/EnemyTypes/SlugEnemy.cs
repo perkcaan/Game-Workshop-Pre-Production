@@ -55,4 +55,9 @@ public class SlugEnemy : EnemyBase
         }
         return false;
     }
+
+    protected override void ForceCancelAction()
+    {
+        //unneeded
+    }
 }
