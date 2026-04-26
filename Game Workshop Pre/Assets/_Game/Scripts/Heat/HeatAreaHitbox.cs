@@ -12,16 +12,6 @@ public class HeatAreaHitbox : MonoBehaviour
         _collider.enabled = false;
     }
 
-    public void Enable()
-    {
-        _collider.enabled = true;
-    }
-
-    public void Disable()
-    {
-        _collider.enabled = false;
-    }
-
     private void OnTriggerStay2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out HeatMechanic heat))
@@ -33,7 +23,10 @@ public class HeatAreaHitbox : MonoBehaviour
             {
                     heat.ModifyHeat(0); // dont cooldown, just stay at max heat
             }
-            
+            if (collider.gameObject.TryGetComponent(out TrashBall trashBall))
+            {
+                trashBall.SetOnFire();
+            }
         }
     }
 
