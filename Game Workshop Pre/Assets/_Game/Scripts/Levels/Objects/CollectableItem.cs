@@ -14,6 +14,7 @@ public class CollectableItem : MonoBehaviour
     [SerializeField] float sparkleRotationSpeed;
     [SerializeField] Transform largeSparkle;
     [SerializeField] Transform smallSparkle;
+    [SerializeField] private EventTrigger _events;
 
     public bool shopItem;
     private bool isCollected;
@@ -38,7 +39,7 @@ public class CollectableItem : MonoBehaviour
         if (shopItem) return;
         if (other.TryGetComponent(out PlayerMovementController player))
         {
-
+            _events.Trigger();
             isCollected = true;
             Sequence sequence = DOTween.Sequence();
             ParticleManager.Instance.Play("StarWave", transform.position);
