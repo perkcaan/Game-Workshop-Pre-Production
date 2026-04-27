@@ -1,6 +1,7 @@
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DanceManager : Singleton<DanceManager>
 {
@@ -8,11 +9,13 @@ public class DanceManager : Singleton<DanceManager>
     [SerializeField] Transform sparkle;
     [SerializeField] RectTransform banner;
     [SerializeField] MiteDancer[] miteDancers;
+    [SerializeField] float timeBeforeGameEnd = 5f;
 
     void Start()
     {
         sparkle.localScale = Vector2.zero;
         banner.gameObject.SetActive(false);
+        BreakItDown();
     }
 
     void Update()
@@ -35,5 +38,14 @@ public class DanceManager : Singleton<DanceManager>
             dancer.gameObject.SetActive(true);
             dancer.Dance();
         }
+
+        StartCoroutine(LoadMainMenuAfterDelay());
+    }
+
+    private IEnumerator LoadMainMenuAfterDelay()
+    {
+        yield return new WaitForSeconds(timeBeforeGameEnd);
+        DOTween.KillAll();
+        SceneManager.LoadScene("MainMenu");
     }
 }

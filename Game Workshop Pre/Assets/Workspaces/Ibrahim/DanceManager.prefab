@@ -55,6 +55,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DanceManager
   player: {fileID: 0}
   sparkle: {fileID: 9030032443085862739}
+  banner: {fileID: 0}
   miteDancers:
   - {fileID: 5159317249100871628}
   - {fileID: 6581359036789010641}
@@ -64,6 +65,7 @@ MonoBehaviour:
   - {fileID: 4193513872711505261}
   - {fileID: 7159464893645422291}
   - {fileID: 7970848461101586967}
+  timeBeforeGameEnd: 5
 --- !u!1 &4213455552109849348
 GameObject:
   m_ObjectHideFlags: 0
@@ -80,7 +82,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9030032443085862739
 Transform:
   m_ObjectHideFlags: 0
@@ -169,7 +171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_LocalPosition.x
@@ -246,7 +248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_LocalPosition.x
@@ -323,7 +325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_LocalPosition.x
@@ -400,7 +402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_LocalPosition.x
@@ -477,7 +479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_LocalPosition.x
@@ -554,7 +556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_LocalPosition.x
@@ -631,7 +633,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_LocalPosition.x
@@ -708,7 +710,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
       propertyPath: m_LocalPosition.x
