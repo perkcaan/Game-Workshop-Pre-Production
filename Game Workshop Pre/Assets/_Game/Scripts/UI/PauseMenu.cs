@@ -49,7 +49,16 @@ public class PauseMenu : MonoBehaviour
         }
 
         _musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        _musicInstance = RuntimeManager.CreateInstance("event:/Music/1 District/District 1 Theme");
+        _musicInstance = RuntimeManager.CreateInstance("event:/Music");
+
+        if (SceneManager.GetActiveScene().name.Equals("District0"))
+        {
+            AudioManager.Instance.ModifyGlobalParameter("Music", 0);
+        }
+        else 
+        {
+            AudioManager.Instance.ModifyGlobalParameter("Music", 1);
+        }
         _musicInstance.start();
 
 
