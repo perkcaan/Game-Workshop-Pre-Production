@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7060364713466080358}
   - component: {fileID: 3815670494282622570}
   - component: {fileID: 5019241496238532953}
+  - component: {fileID: 1330240288355350357}
   m_Layer: 14
   m_Name: HEventGate
   m_TagString: Untagged
@@ -152,8 +153,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98fdaf8aeadbb9143a8528dc7fa1ddb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventGate
-  _isGateDown: 1
+  _isGateUp: 1
   _isHorizontal: 1
+--- !u!50 &1330240288355350357
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6953260788681604520}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &8986261278158939481
 GameObject:
   m_ObjectHideFlags: 0
