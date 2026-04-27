@@ -47,7 +47,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     {
         if (!_rigidBody.simulated) return;
         GameObject trashBallObject = Instantiate(_trashBallPrefab);
-        trashBallObject.transform.position = transform.position;
+        trashBallObject.transform.position = (Vector2)transform.position;
         if (_parentRoom.ActiveRoomDrawer != null)
         {
             trashBallObject.transform.parent = _parentRoom.ActiveRoomDrawer.transform;

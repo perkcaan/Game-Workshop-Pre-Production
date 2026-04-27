@@ -132,7 +132,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         RuntimeManager.AttachInstanceToGameObject(_sweepSoundInstance, gameObject, Rigidbody);
         AudioManager.Instance.PlayOnInstance(this.gameObject, "TrashBall");
         AudioManager.Instance.PlayOnInstance(this.gameObject, "ballHeat");
-
+        
         _label.Show();
     }
     

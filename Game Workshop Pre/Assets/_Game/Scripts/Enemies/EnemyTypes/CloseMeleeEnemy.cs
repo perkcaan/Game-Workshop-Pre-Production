@@ -34,6 +34,8 @@ public class CloseMeleeEnemy : EnemyBase
         {
             _attackHitbox.Disable();
             _isInVulnerableState = true;
+            Vector2 stunPosition = gameObject.transform.position + new Vector3(0, 0.5f, 0);
+            ParticleManager.Instance.Play("EnemyStunned", stunPosition, parent: gameObject.transform);
             _animator.SetTrigger("ReturnToIdle");
         });
         _isInVulnerableState = false;
