@@ -11,7 +11,8 @@ public class BubbleDialogueActor : MonoBehaviour
 {
     [SerializeField] private Vector2 _bubbleOffset;
     [SerializeField] private TextAsset _inkJSON;
-    
+    [SerializeField] private EventTrigger _dialogueEndEvents;
+
     private BubbleDialogue _dialogue;
     private Story _story;
     private bool _isInDialogue = false;
@@ -70,7 +71,7 @@ public class BubbleDialogueActor : MonoBehaviour
                 
             } else
             {
-                
+                _dialogueEndEvents.Trigger();
                 _dialogue.End();
                 _story = null;
                 _dialogue = null;

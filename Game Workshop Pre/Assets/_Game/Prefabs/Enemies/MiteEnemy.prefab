@@ -234,7 +234,7 @@ MonoBehaviour:
     _swipeVulnerableMultiplier: 0.3
     _swipeBaseKnockbackMultiplier: 0
     _isBaseVulnerableToPoke: 1
-    _pokeBaseMultiplier: 1
+    _pokeBaseMultiplier: 0.4
     _pokeVulnerableMultiplier: 2
     _pokeBaseKnockbackMultiplier: 0.5
     _canAbsorbBase: 1
@@ -264,7 +264,7 @@ MonoBehaviour:
         DisplayName: Service - Spot Target
         Children: []
         _searchDistance: 4
-        _fieldOfViewAngle: 180
+        _fieldOfViewAngle: 360
         _typeToTarget: 0
         _targetMask:
           serializedVersion: 2

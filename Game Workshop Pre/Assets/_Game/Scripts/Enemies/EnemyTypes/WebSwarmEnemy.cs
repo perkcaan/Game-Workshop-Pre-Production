@@ -51,4 +51,19 @@ public class WebSwarmEnemy : EnemyBase
         //unneeded
     }
 
+    protected override void ModifySwipe(ref EnemySwipeData data)
+    {
+        data.IsVulnerable = true;
+    }
+
+    protected override void ModifyPoke(ref EnemyPokeData data)
+    {
+        data.IsVulnerable = true;
+    }
+
+    protected override void ModifyAbsorb(ref EnemyAbsorbData data)
+    {
+        data.CanAbsorb = true;
+    }
+
 }

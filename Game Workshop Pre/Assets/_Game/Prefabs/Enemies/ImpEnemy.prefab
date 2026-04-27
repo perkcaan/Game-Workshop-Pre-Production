@@ -656,7 +656,7 @@ MonoBehaviour:
         DisplayName: Service - Spot Target
         Children: []
         _searchDistance: 5
-        _fieldOfViewAngle: 270
+        _fieldOfViewAngle: 360
         _typeToTarget: 0
         _targetMask:
           serializedVersion: 2
@@ -706,10 +706,7 @@ MonoBehaviour:
       data:
         DisplayName: Patrol
         Children: []
-        _patrolPoints:
-        - {x: 1, y: 0}
-        - {x: 0, y: -5}
-        - {x: 3, y: -4}
+        _patrolPoints: []
         _reversePatrolInsteadOfWrap: 0
         _arrivalProximity: 0.2
     - rid: 5922415380020854798

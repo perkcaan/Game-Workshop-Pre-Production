@@ -219,7 +219,7 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         if (_shakeTween != null && _shakeTween.IsActive())
             _shakeTween.Kill();
 
-        if (_spriteRenderer != null) //little debug check
+        if (_spriteRenderer == null) //little debug check
         {
             Debug.LogWarning($"Trash: {name} does not have a valid sprite renderer. What's going on here?");
         }

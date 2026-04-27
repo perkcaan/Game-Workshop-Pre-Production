@@ -198,7 +198,7 @@ public class Room : MonoBehaviour
             } else
             {
                 Debug.LogWarning("Cleanable attempted to be added to an unactive room (" + name + "). This shouldn't happen. Make sure Room Drawers are set up properly.");
-                mb.transform.parent = transform;
+                Destroy(mb);
             }
         }
         _containedCleanable.Add(cleanable);

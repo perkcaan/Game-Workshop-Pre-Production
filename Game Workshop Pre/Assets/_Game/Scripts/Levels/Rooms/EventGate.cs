@@ -5,7 +5,7 @@ public class EventGate : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
     private Collider2D _collider;
-    [SerializeField] private bool _isGateDown = true;
+    [SerializeField] private bool _isGateUp = true;
     [SerializeField] private bool _isHorizontal;
     private void Start()
     {
@@ -13,7 +13,7 @@ public class EventGate : MonoBehaviour
         _collider = GetComponent<Collider2D>();
         _spriteRenderer.enabled = false;
         _collider.enabled = false;
-        if (_isGateDown) Close();
+        if (_isGateUp) Close();
     }
 
     [EventAction]
@@ -21,7 +21,7 @@ public class EventGate : MonoBehaviour
     {
         _spriteRenderer.enabled = false;
         _collider.enabled = false;
-        _isGateDown = false;
+        _isGateUp = false;
         if (_isHorizontal)
         {
             ParticleManager.Instance.Play("GateOpenH", transform.position);
@@ -37,7 +37,7 @@ public class EventGate : MonoBehaviour
     {
         _spriteRenderer.enabled = true;
         _collider.enabled = true;
-        _isGateDown = true;
+        _isGateUp = true;
         if (_isHorizontal)
         {
             ParticleManager.Instance.Play("GateOpenH", transform.position);

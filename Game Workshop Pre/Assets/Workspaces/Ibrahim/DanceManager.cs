@@ -11,7 +11,6 @@ public class DanceManager : Singleton<DanceManager>
     void Start()
     {
         sparkle.localScale = Vector2.zero;
-        BreakItDown();
     }
 
     void Update()
@@ -19,8 +18,10 @@ public class DanceManager : Singleton<DanceManager>
         sparkle.Rotate(0, 0, 90f * Time.deltaTime);
     }
 
+    [EventAction]
     public void BreakItDown()
     {
+        sparkle.gameObject.SetActive(true);
         sparkle.DOScale(Vector3.one, 2).SetEase(Ease.OutBack);
         player.gameObject.transform.DOMove(sparkle.position, 0.5f);
         player.Dance();

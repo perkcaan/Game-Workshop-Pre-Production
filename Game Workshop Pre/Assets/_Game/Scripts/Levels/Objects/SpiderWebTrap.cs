@@ -12,6 +12,8 @@ public class SpiderWebTrap : MonoBehaviour
     // Drag increase for trash ball
     [SerializeField] private float _trashBallSpeedReduction = 5f;
 
+    [SerializeField] private float _timeUntilDecay = 10f;
+    private float _decayTimer = 0;
     // Web Size
     [SerializeField] private float _webScale = 1f;
 
@@ -21,6 +23,16 @@ public class SpiderWebTrap : MonoBehaviour
         if (gameObject.TryGetComponent(out Collider2D _collider))
         {
             _collider.transform.localScale = new UnityEngine.Vector3(_webScale, _webScale, 1f);
+        }
+        _decayTimer = _timeUntilDecay;
+    }
+
+    private void Update()
+    {
+        _decayTimer -= Time.deltaTime;
+        if (_decayTimer <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -35,32 +47,28 @@ public class SpiderWebTrap : MonoBehaviour
         // Trash Ball
         if (collision.TryGetComponent(out TrashBall tb))
         {
-            if (TrashBallHasPaper(tb))
+            if (tb.isBurning)
             {
                 Destroy(gameObject);
             }
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        // Trash Ball
-        if (collision.TryGetComponent(out TrashBall tb))
-        {
-            // Check for paper every frame while inside
-            if (TrashBallHasPaper(tb))
-            {
-                Destroy(gameObject); // If paper is found, destroy web
-                return;
-            }
+    // private void OnTriggerStay2D(Collider2D collision)
+    // {
+    //     // Trash Ball
+    //     if (collision.TryGetComponent(out TrashBall tb))
+    //     {
+    //         // Check for paper every frame while inside
 
-            // Damepning
-            float slowPercentPerSecond = _trashBallSpeedReduction;
-            float dampenFactor = Mathf.Clamp01(1f - slowPercentPerSecond * Time.fixedDeltaTime);
 
-            tb.Rigidbody.linearVelocity *= dampenFactor;
-        }
-    }
+    //         // Damepning
+    //         float slowPercentPerSecond = _trashBallSpeedReduction;
+    //         float dampenFactor = Mathf.Clamp01(1f - slowPercentPerSecond * Time.fixedDeltaTime);
+
+    //         tb.Rigidbody.linearVelocity *= dampenFactor;
+    //     }
+    // }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -69,20 +77,6 @@ public class SpiderWebTrap : MonoBehaviour
         {
             pmc.RemoveWebSlow(_playerSpeedReduction);
         }
-    }
-
-    
-    private bool TrashBallHasPaper(TrashBall tb)
-    {
-        foreach (IAbsorbable absorbable in tb.AbsorbedObjects)
-        {
-            if (absorbable.TrashMat != null && absorbable.TrashMat.name == "Paper")
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
 }
