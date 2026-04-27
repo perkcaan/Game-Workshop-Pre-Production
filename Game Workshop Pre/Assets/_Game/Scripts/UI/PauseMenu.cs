@@ -1,4 +1,5 @@
 using DG.Tweening;
+using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,8 +17,9 @@ public class PauseMenu : MonoBehaviour
     public GameObject quitUI;
     [SerializeField] public Slider[] _pauseSliders;
     [SerializeField] public Sprite[] _pauseSprites;
+    private EventInstance _musicInstance;
     //[SerializeField] public TextMeshProUGUI _coinText;
-    
+
 
     void Awake()
     {
@@ -45,7 +47,11 @@ public class PauseMenu : MonoBehaviour
         }
         }
 
-        
+        _musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        _musicInstance = RuntimeManager.CreateInstance("event:/Music/1 District/District 1 Theme");
+        _musicInstance.start();
+
+
 
     }
     void Update()
@@ -139,6 +145,7 @@ public class PauseMenu : MonoBehaviour
             return;
         }
         DOTween.KillAll();
+        _musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         SceneManager.LoadScene(sceneIndex);
     }
 

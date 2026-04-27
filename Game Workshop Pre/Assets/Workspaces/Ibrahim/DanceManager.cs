@@ -6,11 +6,14 @@ public class DanceManager : Singleton<DanceManager>
 {
     [SerializeField] PlayerMovementController player;
     [SerializeField] Transform sparkle;
+    [SerializeField] RectTransform banner;
     [SerializeField] MiteDancer[] miteDancers;
 
     void Start()
     {
         sparkle.localScale = Vector2.zero;
+        banner.gameObject.SetActive(false);
+        BreakItDown();
     }
 
     void Update()
@@ -22,6 +25,9 @@ public class DanceManager : Singleton<DanceManager>
     public void BreakItDown()
     {
         sparkle.gameObject.SetActive(true);
+        banner.gameObject.SetActive(true);
+        banner.DOAnchorPosY(300f, 1f).SetEase(Ease.OutBack);
+
         sparkle.DOScale(Vector3.one, 2).SetEase(Ease.OutBack);
         player.gameObject.transform.DOMove(sparkle.position, 0.5f);
         player.Dance();
@@ -29,33 +35,6 @@ public class DanceManager : Singleton<DanceManager>
         {
             dancer.gameObject.SetActive(true);
             dancer.Dance();
-        }
-
-        StartCoroutine(RoomClearParticles());
-    }
-
-    private IEnumerator RoomClearParticles()
-    {
-        int rings = 12;
-        int bubblesInRing = 4;
-        float radiusStep = 1.2f;
-        float delayBetweenRings = 0.05f;
-
-        for (int i = 0; i < rings; i++)
-        {
-            float currentRadius = (i + 1) * radiusStep;
-
-            for (int j = 0; j < bubblesInRing; j++)
-            {
-                float angle = j * (Mathf.PI * 2 / bubblesInRing);
-                float x = Mathf.Cos(angle) * currentRadius;
-                float y = Mathf.Sin(angle) * currentRadius;
-
-                Vector3 bubblePosition = sparkle.transform.position + new Vector3(x, y, 0);
-                ParticleManager.Instance.Play("RoomClear", bubblePosition);
-            }
-            bubblesInRing += 2 * (i + 1);
-            yield return new WaitForSeconds(delayBetweenRings);
         }
     }
 }

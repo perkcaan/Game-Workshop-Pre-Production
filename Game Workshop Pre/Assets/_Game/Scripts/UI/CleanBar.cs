@@ -1,12 +1,12 @@
-using TMPro;
+ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening; // Make sure DOTween is included
+using DG.Tweening;
 
 public class CleanBar : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private RectTransform _cleanBarRect; // Changed to RectTransform for UI sliding
+    [SerializeField] private RectTransform _cleanBarRect;
     [SerializeField] private RectTransform _cleanBarSeperater;
     [SerializeField] private Image _outline;
     [SerializeField] private Image _fillImage;
@@ -16,13 +16,12 @@ public class CleanBar : MonoBehaviour
     [SerializeField] private float _slideDuration = 0.5f;
     [SerializeField] private float _fillDuration = 0.3f;
     [SerializeField] private float _outlineFadeDuration = 1f;
-    [SerializeField] private float _visibleYPos = -50f; // Target Y anchored position when on screen
-    [SerializeField] private float _hiddenYPos = 150f;  // Target Y anchored position when off screen
+    [SerializeField] private float _visibleYPos = -50f;
+    [SerializeField] private float _hiddenYPos = 150f;
 
     private float _lastTargetFill = -1f;
     private bool _isShowing = false;
     
-    // Storing tween references so we can overwrite them if values change mid-animation
     private Tweener _fillTweener;
     private Tweener _outlineTweener;
     private float bubbleTimer;
@@ -125,11 +124,12 @@ public class CleanBar : MonoBehaviour
         _outlineTweener = _outline.DOFade(0f, _outlineFadeDuration).SetEase(Ease.InOutQuad);
     }
 
-    private void DisplayCleanBar()
+private void DisplayCleanBar()
     {
         if (_isShowing) return;
         _isShowing = true;
 
+        _cleanBarRect.DOKill();
         _cleanBarRect.gameObject.SetActive(true);
         _fillImage.fillAmount = 0;
         _cleanBarRect.DOAnchorPosY(_visibleYPos, _slideDuration)
@@ -141,6 +141,7 @@ public class CleanBar : MonoBehaviour
         if (!_isShowing) return;
         _isShowing = false;
 
+        _cleanBarRect.DOKill();
         _cleanBarRect.DOAnchorPosY(_hiddenYPos, _slideDuration)
             .SetEase(Ease.InBack)
             .OnComplete(() => _cleanBarRect.gameObject.SetActive(false));
