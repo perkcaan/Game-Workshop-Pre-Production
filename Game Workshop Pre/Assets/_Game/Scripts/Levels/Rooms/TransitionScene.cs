@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class TransitionScene : MonoBehaviour
         // this isnt very safe, make it safer later
         if (collider.TryGetComponent(out PlayerMovementController player))
         {
+            RuntimeManager.GetBus("bus:/").stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
             SceneManager.LoadScene(_sceneName);
         }
     }
