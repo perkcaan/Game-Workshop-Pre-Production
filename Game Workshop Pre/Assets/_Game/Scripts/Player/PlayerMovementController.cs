@@ -119,6 +119,7 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     private PlayerContext _ctx;
     private PlayerStateMachine _state;
     private HeatMechanic _playerHeat;
+  
     public GameObject HitParent { get { return gameObject; } }
 
     [SerializeField] private TargetType _targetType = TargetType.Player;
@@ -160,10 +161,10 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         SetWeight(_weight);
         Cursor.lockState = CursorLockMode.Confined;
         AudioManager.Instance.PlayInstance("Heat");
-        //_heatSound.start();
-        //AudioManager.Instance.Play("music",transform);
+
+        
         _playerHeat = GetComponent<HeatMechanic>();
-        //AudioManager.Instance.PlayOnInstance(DistrictManager.Instance.gameObject, "music", transform);
+        
 
     }
 
