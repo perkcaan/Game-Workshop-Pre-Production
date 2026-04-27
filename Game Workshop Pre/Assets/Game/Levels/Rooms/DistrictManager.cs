@@ -22,6 +22,11 @@ public class DistrictManager : StaticInstance<DistrictManager>
     //rooms that need to be safely exited.
     private List<Room> _roomsNeedingSafeExit = new List<Room>();
 
+    //Shader things
+    [SerializeField] private Tilemap _floorTilemap;
+    public Renderer FloorRenderer = null;
+    public Material FloorMat = null;
+
     // Rooms currently loaded
     private HashSet<Room> _loadedRooms = new HashSet<Room>();
     private int coinsEarned;
@@ -83,7 +88,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private void Start()
     {
         _rooms = new List<Room>(FindObjectsByType<Room>(FindObjectsSortMode.InstanceID));
-        _coinText.alpha = 0f;
+        //_coinText.alpha = 0f;
         if (PlayerPrefs.HasKey("Coins"))
             coinsEarned = PlayerPrefs.GetInt("Coins");
         else
@@ -92,6 +97,12 @@ public class DistrictManager : StaticInstance<DistrictManager>
         //_music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _music = RuntimeManager.CreateInstance("event:/Music/1 District/Vertical Adaptive District 1");
         _music.start();
+
+        //floor shader
+        FloorRenderer = _floorTilemap.GetComponent<TilemapRenderer>();
+        FloorMat = FloorRenderer.material;
+
+        Debug.Log(FloorMat);
     }
 
     private void Update()
