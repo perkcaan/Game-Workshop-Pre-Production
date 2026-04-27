@@ -173,6 +173,11 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
         _state.Update();
         UpdateCooldowns();
         UpdateVirtualMouse();
+
+        if (Time.timeScale == 0)
+        {
+            AudioManager.Instance.ModifyBusVolumeValue(0f, "SFX");
+        }
     }
     private void FixedUpdate()
     {

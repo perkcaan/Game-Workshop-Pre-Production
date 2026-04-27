@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{de72cd0c-494d-4962-b798-6dfdbc5e5197}">
 		<property name="name">
-			<value>New Event</value>
+			<value>Room Clear</value>
 		</property>
 		<property name="outputFormat">
 			<value>5</value>
@@ -33,6 +33,9 @@
 		<relationship name="timeline">
 			<destination>{7b8991ea-8bc7-4c03-aa0e-4f73a93a22f8}</destination>
 		</relationship>
+		<relationship name="banks">
+			<destination>{f1417bbe-be3e-416a-9e1c-307045676c2c}</destination>
+		</relationship>
 	</object>
 	<object class="EventMixer" id="{c28ef02f-9095-4426-8914-eb2ce0271ae6}">
 		<relationship name="masterBus">
@@ -52,7 +55,7 @@
 			<destination>{e96dc328-7205-41af-a6d6-210625acba41}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{c893bc8b-0639-4601-baef-ee39dc787ade}</destination>
+			<destination>{5f6efdcd-529d-447b-b6f1-4fc2387597c3}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{85d87061-bade-4bee-ad50-881f0638abae}" />

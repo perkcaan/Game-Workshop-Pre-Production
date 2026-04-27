@@ -37,8 +37,8 @@ public class AudioManager : Singleton<AudioManager>
     public void Start()
     {
         _masterBus = RuntimeManager.GetBus("bus:/");
-        _musicBus = RuntimeManager.GetBus("bus:/SFX");
-        _sfxBus = RuntimeManager.GetBus("bus:/MUSIC");
+        _musicBus = RuntimeManager.GetBus("bus:/MUSIC");
+        _sfxBus = RuntimeManager.GetBus("bus:/SFX");
 
         _buses["Master"] = _masterBus;
         _buses["Music"] = _musicBus;
@@ -206,5 +206,21 @@ public class AudioManager : Singleton<AudioManager>
 
 
     }
+    public void ModifyBusVolumeValue(float busValue, string attachedBus)
+    {
+
+        if (_buses.TryGetValue(attachedBus, out Bus currentBus))
+        {
+            _buses[attachedBus] = currentBus;
+            currentBus.setVolume(busValue);
+        }
+
+
+
+
+
+
+    }
+
 }
 

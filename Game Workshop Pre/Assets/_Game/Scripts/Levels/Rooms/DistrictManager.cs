@@ -69,9 +69,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
     {
         if (_focusedRooms.Contains(room)) return;
         _focusedRooms.Add(room);
-        _musicInstance.setParameterByName("Section Control", room.musicSection);
         
-        AudioManager.Instance.ModifyGlobalParameter("Intensity", room.baseIntensity);
         //AudioManager.Instance.ModifyParameter(gameObject, "music", "Section Control", room.musicSection);
 
         

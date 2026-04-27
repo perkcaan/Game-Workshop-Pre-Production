@@ -18,6 +18,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] public Slider[] _pauseSliders;
     [SerializeField] public Sprite[] _pauseSprites;
     private EventInstance _musicInstance;
+    private Room _currentRoom;
     //[SerializeField] public TextMeshProUGUI _coinText;
 
 
@@ -56,6 +57,7 @@ public class PauseMenu : MonoBehaviour
     }
     void Update()
     {
+        _currentRoom = DistrictManager.Instance.FocusedRoom;
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (currentOpenMenu == null)
@@ -81,7 +83,12 @@ public class PauseMenu : MonoBehaviour
         AudioManager.Instance.ModifyBusVolume(_pauseSliders[0], "Master");
         AudioManager.Instance.ModifyBusVolume(_pauseSliders[1], "SFX");
         AudioManager.Instance.ModifyBusVolume(_pauseSliders[2], "Music");
+        if (_currentRoom != null)
+        {
+            _musicInstance.setParameterByName("Section Control", _currentRoom.musicSection);
 
+            AudioManager.Instance.ModifyGlobalParameter("Intensity", _currentRoom.baseIntensity);
+        }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
            if (!inventoryMenuUI.activeSelf)
