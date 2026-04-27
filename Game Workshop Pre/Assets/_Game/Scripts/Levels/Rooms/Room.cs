@@ -259,7 +259,7 @@ public class Room : MonoBehaviour
         {
             if (IsTrashRoom && DistrictManager.Instance != null)
             {
-                DistrictManager.Instance.AwardCoins(coinsAwarded);
+                
                 PlayerMovementController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
                 AudioManager.Instance.Play("gateDown", player.transform);
                 AudioManager.Instance.Play("roomClear",player.transform);
