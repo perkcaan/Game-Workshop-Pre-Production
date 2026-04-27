@@ -13,7 +13,6 @@ public class DanceManager : Singleton<DanceManager>
     {
         sparkle.localScale = Vector2.zero;
         banner.gameObject.SetActive(false);
-        BreakItDown();
     }
 
     void Update()
