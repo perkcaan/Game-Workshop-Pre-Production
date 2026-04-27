@@ -20,7 +20,6 @@ public class TransitionScene : MonoBehaviour
         if (collider.TryGetComponent(out PlayerMovementController player))
         {
             RuntimeManager.GetBus("bus:/").stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            AudioManager.Instance.ModifyGlobalParameter("Music", 0);
             SceneManager.LoadScene(_sceneName);
         }
     }
