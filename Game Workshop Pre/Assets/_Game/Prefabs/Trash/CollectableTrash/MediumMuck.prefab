@@ -96,12 +96,20 @@ PrefabInstance:
       propertyPath: _sweepDurationToBecomeBall
       value: 0.7
       objectReference: {fileID: 0}
+    - target: {fileID: 4769181540906768887, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7298980779152083279, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
       propertyPath: m_Mass
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7298980779152083279, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
       propertyPath: m_LinearDrag
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7298980779152083279, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}
+      propertyPath: m_LinearDamping
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8883276804959432784, guid: 291d8e9d4bede0a448534e3576724cb9, type: 3}

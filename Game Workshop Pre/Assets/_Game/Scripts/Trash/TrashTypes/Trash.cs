@@ -76,7 +76,14 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     public virtual bool OnAbsorbedByTrashBall(TrashBall trashBall, Vector2 ballVelocity, int ballSize, bool forcedAbsorb)
     {
         if (_isDestroyed) return false;
-        
+
+        if (_shakeTween != null && _shakeTween.IsActive())
+        {
+            _shakeTween.Kill();
+            _spriteRenderer.transform.localPosition = Vector2.zero;
+        }
+
+
 
         Vector2 direction = transform.position - trashBall.transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -212,6 +219,10 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
         if (_shakeTween != null && _shakeTween.IsActive())
             _shakeTween.Kill();
 
+        if (_spriteRenderer != null) //little debug check
+        {
+            Debug.LogWarning($"Trash: {name} does not have a valid sprite renderer. What's going on here?");
+        }
         Transform sprite = _spriteRenderer.transform;
 
         float velocity = incomingVelocity;

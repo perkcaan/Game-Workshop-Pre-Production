@@ -8,7 +8,7 @@ public class ManholePressurePlate : MonoBehaviour
 
     [SerializeField] int minTrashSizeBound;
     [SerializeField] int maxTrashSizeBound;
-    [SerializeField] UnityEvent onTriggerEvent;
+    [SerializeField] private EventTrigger _events;
     [SerializeField] bool resettable;
     [SerializeField] float cooldownDuration;
     [Tooltip("The Speed at which the trashball rolls into the center of the man hole")]
@@ -28,8 +28,6 @@ public class ManholePressurePlate : MonoBehaviour
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
-        if (onTriggerEvent.GetPersistentEventCount() == 0)
-            onTriggerEvent.AddListener(ReminderTriggerEvent);
         activated = false;
         sr.sprite = _spriteOpen;
     }
@@ -75,11 +73,6 @@ public class ManholePressurePlate : MonoBehaviour
         }
     }
 
-    private void ReminderTriggerEvent()
-    {
-        Debug.Log($"The pressure plate at {transform.position} does not have an assigned trigger method");
-    }
-
     private IEnumerator PlateCoolDown(float cooldown)
     {
         if (!coolingDown)
@@ -105,7 +98,7 @@ public class ManholePressurePlate : MonoBehaviour
         while (isRollingToCenter)
             yield return new WaitForEndOfFrame();
 
-        onTriggerEvent?.Invoke();
+        _events.Trigger();
         if (resettable)
             StartCoroutine(PlateCoolDown(cooldownTimer));
     }

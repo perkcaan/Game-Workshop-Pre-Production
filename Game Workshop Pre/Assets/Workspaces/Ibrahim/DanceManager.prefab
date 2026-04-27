@@ -1,0 +1,773 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1850219690204793476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6414707110363967300}
+  - component: {fileID: 2944268310444263640}
+  m_Layer: 0
+  m_Name: DanceManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6414707110363967300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850219690204793476}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -116.04, y: 67.45, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9030032443085862739}
+  - {fileID: 6133609250133774647}
+  - {fileID: 5319535673993614890}
+  - {fileID: 2294890473009728761}
+  - {fileID: 8811542505684343929}
+  - {fileID: 3354158155498829979}
+  - {fileID: 2933316739151278998}
+  - {fileID: 8204680892466632744}
+  - {fileID: 8942252064543096044}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2944268310444263640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850219690204793476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55312f8a80d7572498f342be912f83e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DanceManager
+  player: {fileID: 0}
+  sparkle: {fileID: 9030032443085862739}
+  miteDancers:
+  - {fileID: 5159317249100871628}
+  - {fileID: 6581359036789010641}
+  - {fileID: 963330617600748034}
+  - {fileID: 7552401985386314370}
+  - {fileID: 4326617545920044640}
+  - {fileID: 4193513872711505261}
+  - {fileID: 7159464893645422291}
+  - {fileID: 7970848461101586967}
+--- !u!1 &4213455552109849348
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9030032443085862739}
+  - component: {fileID: 248964531173378829}
+  m_Layer: 0
+  m_Name: Sparkle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9030032443085862739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4213455552109849348}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6414707110363967300}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &248964531173378829
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4213455552109849348}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 21300000, guid: 72537d1e4e5a5f4439e4cc71c63bb04d, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+--- !u!1001 &221655254626944970
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6414707110363967300}
+    m_Modifications:
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_Name
+      value: MiteDancer
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+--- !u!114 &5159317249100871628 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4939017177535655942, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 221655254626944970}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158dd9cccc2ad0e4b9328c82a3550a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiteDancer
+--- !u!4 &6133609250133774647 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 221655254626944970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2296632232024801495
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6414707110363967300}
+    m_Modifications:
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_Name
+      value: MiteDancer (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+--- !u!4 &5319535673993614890 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 2296632232024801495}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6581359036789010641 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4939017177535655942, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 2296632232024801495}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158dd9cccc2ad0e4b9328c82a3550a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiteDancer
+--- !u!1001 &2869196032716951253
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6414707110363967300}
+    m_Modifications:
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_Name
+      value: MiteDancer (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+--- !u!114 &7159464893645422291 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4939017177535655942, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 2869196032716951253}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158dd9cccc2ad0e4b9328c82a3550a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiteDancer
+--- !u!4 &8204680892466632744 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 2869196032716951253}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3032274423949126161
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6414707110363967300}
+    m_Modifications:
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_Name
+      value: MiteDancer (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+--- !u!114 &7970848461101586967 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4939017177535655942, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 3032274423949126161}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158dd9cccc2ad0e4b9328c82a3550a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiteDancer
+--- !u!4 &8942252064543096044 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 3032274423949126161}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3190075083879565956
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6414707110363967300}
+    m_Modifications:
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_Name
+      value: MiteDancer (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+--- !u!114 &7552401985386314370 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4939017177535655942, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 3190075083879565956}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158dd9cccc2ad0e4b9328c82a3550a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiteDancer
+--- !u!4 &8811542505684343929 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 3190075083879565956}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5320046263453424132
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6414707110363967300}
+    m_Modifications:
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_Name
+      value: MiteDancer (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+--- !u!114 &963330617600748034 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4939017177535655942, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 5320046263453424132}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158dd9cccc2ad0e4b9328c82a3550a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiteDancer
+--- !u!4 &2294890473009728761 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 5320046263453424132}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8683452765258247782
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6414707110363967300}
+    m_Modifications:
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_Name
+      value: MiteDancer (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+--- !u!4 &3354158155498829979 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 8683452765258247782}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4326617545920044640 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4939017177535655942, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 8683452765258247782}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158dd9cccc2ad0e4b9328c82a3550a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiteDancer
+--- !u!1001 &9131245410624791915
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6414707110363967300}
+    m_Modifications:
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_Name
+      value: MiteDancer (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163663323045160955, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+--- !u!4 &2933316739151278998 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6200769879673755389, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 9131245410624791915}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4193513872711505261 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4939017177535655942, guid: 6d8a2c692de52574495c5087b490da22, type: 3}
+  m_PrefabInstance: {fileID: 9131245410624791915}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158dd9cccc2ad0e4b9328c82a3550a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiteDancer

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5742030759014172431}
   - component: {fileID: 4925419287426405865}
   - component: {fileID: 3078398375644279010}
+  - component: {fileID: 3013192589542967890}
   m_Layer: 10
   m_Name: Sprite
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 497722284399447513}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35,6 +36,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4925419287426405865
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -50,6 +52,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -71,10 +78,12 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: -5245062123849499741, guid: c2541329eea0c5c47985d5bf465c3b4f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -83,11 +92,10 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &3078398375644279010
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,17 +103,38 @@ Animator:
   m_GameObject: {fileID: 497722284399447513}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: d3e830cc40c288e4e9ccd945715771a8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3013192589542967890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497722284399447513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c85e5d827c809634ab6ae682e712a21c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShaderManager
+  _renderers:
+  - {fileID: 4925419287426405865}
+  _maxFlashFrequency: 10
+  _heatFlashRamp: 2
+  _dissolveTime: 0.5
+  _dissolveBurnWidth: 0.4
+  _meshTexture: {fileID: 0}
+  sinkSpeed: 0.3
 --- !u!1 &4429249639362461487
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,8 +166,8 @@ Transform:
   m_GameObject: {fileID: 4429249639362461487}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.95, y: 6.16, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5742030759014172431}
@@ -152,6 +181,7 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4429249639362461487}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -175,13 +205,13 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -0.3}
   m_Radius: 0.5
 --- !u!50 &2233736124639589397
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -192,8 +222,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.5
-  m_LinearDrag: 3
-  m_AngularDrag: 0.1
+  m_LinearDamping: 3
+  m_AngularDamping: 0.1
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -225,7 +255,7 @@ MonoBehaviour:
   _actions:
   - _methodName: SpawnWeb
   _moveSpeed: 7
-  _shouldFlipSprite: 0
+  _shouldFlipSprite: 1
   _facingRotation: 270
   _size: 2
   _trashMaterial: {fileID: 11400000, guid: dd963f5861bb9344da6b0d92692fad6c, type: 2}
@@ -236,6 +266,24 @@ MonoBehaviour:
   _trashBallSquirmTime: 5
   _trashBallSquirmForce: 5
   _trashBallSquirmDamage: 5
+  _stunTime: 2
+  _pinballProps:
+    _time: 5
+    _material: {fileID: 0}
+    _swipeMultiplier: 1
+    _pokeMultiplier: 1
+  _interactProps:
+    _canSweepBase: 0
+    _isBaseVulnerableToSwipe: 0
+    _swipeBaseMultiplier: 1
+    _swipeVulnerableMultiplier: 0.3
+    _swipeBaseKnockbackMultiplier: 0
+    _isBaseVulnerableToPoke: 0
+    _pokeBaseMultiplier: 1
+    _pokeVulnerableMultiplier: 2
+    _pokeBaseKnockbackMultiplier: 1
+    _canAbsorbBase: 0
+  _targetType: 1
   _webTrapPrefab: {fileID: -5003721622143461699, guid: 6713595dacc4c4c1e9abcdc14cadb828, type: 3}
   _playerLayer:
     serializedVersion: 2
@@ -282,7 +330,7 @@ MonoBehaviour:
         Children: []
         _wanderRadius: 3
         _arriveWaitTime: 1.5
-        _arrivalProximity: 0.1
+        _arrivalProximity: 0.3
         _invalidLayers:
           serializedVersion: 2
           m_Bits: 20480
@@ -308,7 +356,7 @@ MonoBehaviour:
         Children: []
         _wanderRadius: 3
         _arriveWaitTime: 4
-        _arrivalProximity: 0.1
+        _arrivalProximity: 0.3
         _invalidLayers:
           serializedVersion: 2
           m_Bits: 20480
