@@ -114,12 +114,18 @@
 		</relationship>
 	</object>
 	<object class="MultiSound" id="{58ea6fb6-31b5-4fe0-a3c3-026c124a8420}">
+		<property name="volume">
+			<value>2</value>
+		</property>
 		<relationship name="sounds">
 			<destination>{49a4f87b-0da2-4893-90a3-bc18041696f2}</destination>
 			<destination>{36182ff1-656a-4137-8be0-22ce7f068d89}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{508ebb5b-79de-4417-9ee1-a2a53e4c99c2}">
+		<property name="volume">
+			<value>-3</value>
+		</property>
 		<property name="name">
 			<value>Swipe</value>
 		</property>

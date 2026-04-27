@@ -120,6 +120,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{1ef8b3e6-13d5-4273-a10c-eaa25a396a4d}">
+		<property name="volume">
+			<value>-18</value>
+		</property>
 		<property name="name">
 			<value>Whoosh</value>
 		</property>
@@ -172,6 +175,12 @@
 		</relationship>
 	</object>
 	<object class="MultiSound" id="{8d9da570-0d7c-48d9-a329-c1be809b1b3e}">
+		<property name="triggerProbabilityEnabled">
+			<value>true</value>
+		</property>
+		<property name="triggerProbability">
+			<value>0</value>
+		</property>
 		<property name="start">
 			<value>1.6000000000000001</value>
 		</property>
@@ -211,6 +220,7 @@
 	<object class="MixerBusEffectChain" id="{c0c7077d-ca81-448f-be47-572c2d0c6719}">
 		<relationship name="effects">
 			<destination>{d76edc16-bb7a-4b63-9ba4-249aaed5d7ed}</destination>
+			<destination>{db494d92-5d17-4a07-87ff-f1786051487c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{422489c5-5f2d-43a3-950b-c2695695d661}" />
@@ -286,6 +296,11 @@
 	<object class="MixerBusPanner" id="{5177540f-1167-4d93-9e36-62cecc12380a}" />
 	<object class="MixerBusFader" id="{784cdb01-9df0-46c9-92de-bb74daad8542}" />
 	<object class="MixerBusFader" id="{d76edc16-bb7a-4b63-9ba4-249aaed5d7ed}" />
+	<object class="DistortionEffect" id="{db494d92-5d17-4a07-87ff-f1786051487c}">
+		<property name="level">
+			<value>0.699999988</value>
+		</property>
+	</object>
 	<object class="SingleSound" id="{c6bc437f-07fe-49c0-85ab-d04eb5fc4dca}">
 		<property name="volume">
 			<value>4</value>
