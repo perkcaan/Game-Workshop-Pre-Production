@@ -5,6 +5,7 @@ using UnityEngine.Android;
 using System;
 using FMODUnity;
 using FMOD.Studio;
+using DG.Tweening;
 
 public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, IHeatable, ITargetable
 {
@@ -468,6 +469,21 @@ public class PlayerMovementController : MonoBehaviour, ISwipeable, IAbsorbable, 
     public void RemoveWebSlow(float slowAmount)
     {
         SetWeight(_weight - slowAmount);
+    }
+
+    public void Dance()
+    {
+        _ctx.Animator.SetTrigger("Dance");
+        _ctx.PlayerHasControl = false;
+        _ctx.CanSwipe = false;
+        _ctx.CanSwipe = false;
+        float swayAngle = 15f;
+        float swayDuration = 0.6f;
+        Sequence swaySequence = DOTween.Sequence();
+        swaySequence.Append(transform.DORotate(new Vector3(0, 0, swayAngle), swayDuration / 2f).SetEase(Ease.InOutSine));
+        swaySequence.Append(transform.DORotate(new Vector3(0, 0, -swayAngle), swayDuration).SetEase(Ease.InOutSine));     
+        swaySequence.Append(transform.DORotate(Vector3.zero, swayDuration / 2f).SetEase(Ease.InOutSine));                 
+        swaySequence.SetLoops(-1, LoopType.Restart);
     }
 
 }
