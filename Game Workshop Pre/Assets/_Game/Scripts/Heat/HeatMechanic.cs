@@ -104,6 +104,7 @@ public class HeatMechanic : MonoBehaviour
     public void Reset()
     {
         _ignitionTimer = 0f;
+        _debugTimer = 0f;
         _hasIgnited = false;
         coolingOff = false;
         _shaderManager.Reset();
