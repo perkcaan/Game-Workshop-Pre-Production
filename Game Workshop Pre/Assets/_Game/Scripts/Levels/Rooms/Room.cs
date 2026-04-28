@@ -65,6 +65,7 @@ public class Room : MonoBehaviour
     private bool _isRoomCleaned = false;
     public bool IsRoomCleaned { get { return _isRoomCleaned; } }
     private bool _isDrawerOut = false;
+    public bool IsDrawerOut { get { return _isDrawerOut; } }
     private bool _isRoomClosed = false;
     private Collider2D _collider;
 

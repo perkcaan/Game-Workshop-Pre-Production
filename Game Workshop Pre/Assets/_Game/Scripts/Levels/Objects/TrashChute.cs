@@ -26,7 +26,8 @@ public class TrashChute : MonoBehaviour
     {
         if (!_canDropAutomatically) return;
         if (_possibleTrash == null || _possibleTrash.Count <= 0) return;
-
+        if (!_parentRoom.IsDrawerOut) return;
+        
         _currentTime += Time.deltaTime;
         if (_currentTime >= _dropInterval)
         {
