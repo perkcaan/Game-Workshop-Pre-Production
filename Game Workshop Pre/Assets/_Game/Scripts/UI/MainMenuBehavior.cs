@@ -8,6 +8,7 @@ using FMODUnity;
 using FMOD.Studio;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.Rendering;
 
 public class MainMenuBehavior : MonoBehaviour
 {
@@ -36,13 +37,18 @@ public class MainMenuBehavior : MonoBehaviour
 
     public void Update()
     {
-        if (credits != null)
+        if (credits.activeSelf)
         {
-            creditText.transform.Translate(Vector3.up * Time.deltaTime * 20 ,Space.World);
-            if (creditText.GetComponent<RectTransform>().position.y > creditsPosition.y + 630)
+            creditText.transform.Translate(Vector3.up * Time.deltaTime * 50 ,Space.World);
+            if (creditText.GetComponent<RectTransform>().position.y > creditsPosition.y + 3600)
             {
                 creditText.GetComponent<RectTransform>().position = creditsPosition;
             }
+
+        }
+        else
+        {
+            creditText.GetComponent<RectTransform>().position = creditsPosition;
         }
     }
     public void OnPlayButtonClicked()
@@ -71,6 +77,13 @@ public class MainMenuBehavior : MonoBehaviour
 
         credits.SetActive(true);
         
+    }
+
+    public void OnCreditsReturnClicked()
+    {
+        if (settingsMenuIsOpen)
+            return;
+        credits.SetActive(false);
     }
 
     public void OnExitButtonClicked()
