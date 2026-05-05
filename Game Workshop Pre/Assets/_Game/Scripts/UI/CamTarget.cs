@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CamTarget : MonoBehaviour
 {
-    public Transform Player; 
+    private Transform _player; 
 
     [SerializeField] private float _camLeanSensitivity = 0.2f; // Sensitivity to mouse
     [SerializeField] private float _maxCamOffset = 1.5f; // Max distance the cam can lean
@@ -28,6 +28,7 @@ public class CamTarget : MonoBehaviour
 
     void Start()
     {
+        _player = GameManager.Instance.CurrentPlayer.transform;
         mainCam = Camera.main;
     }
 
@@ -38,13 +39,13 @@ public class CamTarget : MonoBehaviour
         mouseWorld.z = 0f;
 
         // Get the offset vector from player to mouse
-        Vector3 playerToMouse = mouseWorld - Player.position;
+        Vector3 playerToMouse = mouseWorld - _player.position;
         Vector3 finalOffset = playerToMouse * _camLeanSensitivity;
 
         // Clamp the offset to prevent the cam from moving too far
         finalOffset = Vector3.ClampMagnitude(finalOffset, _maxCamOffset);
 
         // Set cam target position
-        transform.position = Player.position + finalOffset;
+        transform.position = _player.position + finalOffset;
     }
 }

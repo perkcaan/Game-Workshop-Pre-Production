@@ -1,8 +1,13 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : PersistentSingleton<GameManager>
+public class GameManager : StaticInstance<GameManager>
 {
+    [SerializeField] private List<GameObject> _requiredPrefabs;
+    [SerializeField] private PlayerMovementController _player;
+    public PlayerMovementController CurrentPlayer { get { return _player; } }
+
     // Subscribe to event OnEnable (and unsubscribe on OnDisable) to update along with settings
     public Action SettingsChanged;
 
@@ -19,5 +24,17 @@ public class GameManager : PersistentSingleton<GameManager>
     private void OnValidate()
     {
         SettingsChanged?.Invoke();
+    }
+    
+
+    protected override void Awake()
+    {
+        base.Awake();
+        foreach (GameObject prefab in _requiredPrefabs)
+        {
+            GameObject gameObject = Instantiate(prefab);
+            gameObject.name = prefab.name;
+            gameObject.transform.SetParent(transform);
+        }
     }
 }

@@ -43,7 +43,6 @@ public class HookHandler : MonoBehaviour
             if (headScript != null) headScript.Initialize(this);
 
             _hookHead.gameObject.SetActive(false);
-            _hookHead.parent = null;
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class HeatMeter : MonoBehaviour
 {
-    [SerializeField] private HeatMechanic _targetHeatMechanic;
+    private HeatMechanic _playerHeat;
     [SerializeField] private Image _fillImage;
     [SerializeField] private Image _outline;
     [SerializeField] private Image _skullEyes;
@@ -43,7 +43,8 @@ public class HeatMeter : MonoBehaviour
 
     private void Start()
     {
-        if (_targetHeatMechanic == null || _fillImage == null || _outline == null)
+        _playerHeat = GameManager.Instance.CurrentPlayer.GetComponent<HeatMechanic>();
+        if (_playerHeat == null || _fillImage == null || _outline == null)
         {
             //Debug.LogError("Please set up Heat Meter UI components.");
             enabled = false;
@@ -53,14 +54,14 @@ public class HeatMeter : MonoBehaviour
         _rectTransform = GetComponent<RectTransform>();
         _originalPosition = _rectTransform.anchoredPosition;
         _originalJawPosition = _skullJaw.anchoredPosition;
-        _lastHeat = _targetHeatMechanic.Heat;
+        _lastHeat = _playerHeat.Heat;
 
         _outline.color = _outlineBaseColor;
     }
 
     private void Update()
     {
-        float currentHeat = _targetHeatMechanic.Heat;
+        float currentHeat = _playerHeat.Heat;
         float maxRange = HeatMechanic.HIGHEST_HEAT_VALUE - HeatMechanic.LOWEST_HEAT_VALUE;
         float heatProgress = Mathf.Clamp01((currentHeat - HeatMechanic.LOWEST_HEAT_VALUE) / maxRange);
         float heatChange = currentHeat - _lastHeat;

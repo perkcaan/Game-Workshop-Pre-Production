@@ -8,7 +8,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
-    [SerializeField] PlayerMovementController player;
+    private PlayerMovementController _player;
     [SerializeField] int maxItemSlots;
     [SerializeField] TextMeshProUGUI displayedItemText;
     [SerializeField] TextMeshProUGUI displayedItemTitle;
@@ -23,6 +23,7 @@ public class Inventory : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        _player = GameManager.Instance.CurrentPlayer;
         foreach (ItemSlot slot in itemSlotsObject.GetComponentsInChildren<ItemSlot>())
         {
             itemSlots.Add(slot);
@@ -74,7 +75,7 @@ public class Inventory : MonoBehaviour
         }
         */
         equippedItems.Add(item);
-        item.EquipItem(player);
+        item.EquipItem(_player);
         return true;
     }
 

@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4451683606027335081
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2065745906948420158}
+  - component: {fileID: 2509545488875292317}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2065745906948420158
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4451683606027335081}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2509545488875292317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4451683606027335081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34a401781394bac449fac4f67eb5abb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  _requiredPrefabs:
+  - {fileID: 1252208599824013288, guid: cb35b3ff8c5347745ba60e5159bf59d1, type: 3}
+  - {fileID: 494990914064446509, guid: c72873b049597ca4c913be63de8c24ad, type: 3}
+  - {fileID: 5279530425186277343, guid: 79ba6fe23cc3ebe43b1b12b25d0499cf, type: 3}
+  - {fileID: 2430726272465431738, guid: be9efae8d4ff6b54ca7f8d1caddc2b17, type: 3}
+  - {fileID: 1489097950859146266, guid: 349ef43613060454aab5343659442714, type: 3}
+  - {fileID: 1635045063289426747, guid: 2eec0da1d967f4e9f9ebbcd20ebe30fb, type: 3}
+  - {fileID: 8358447601360719518, guid: a8e51b5320e5d724b9c06b522c3bb469, type: 3}
+  - {fileID: 323604497749117408, guid: 634c2ec3bea35a04284e6a51cca5c0d5, type: 3}
+  _player: {fileID: 0}
+  _useTrashballLabels: 1
