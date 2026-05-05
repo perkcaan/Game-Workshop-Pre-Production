@@ -5,12 +5,13 @@ using UnityEngine;
 public class BumperObject : MonoBehaviour
 {
     [SerializeField] float bounceForce = 10f;
-    [SerializeField] Transform outerRing;
-    void Start()
+    Animator animator;
+    Collider2D _collider2D;
+    void Awake()
     {
-        
+        animator = GetComponent<Animator>();
+        _collider2D = GetComponent<Collider2D>();
     }
-
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.rigidbody == null) return;
@@ -22,19 +23,16 @@ public class BumperObject : MonoBehaviour
         {
             BounceObject(collision);
         }
-
-        BounceAnimation();
-    }
-
-    void BounceAnimation()
-    {
-        outerRing.localScale = Vector3.one * 1.4f;
-        outerRing.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutExpo);
+        animator.SetTrigger("Bounce");
     }
 
     void BounceObject(Collision2D collision, float forceMultiplier = 1f)
     {
-        Vector3 bounceDirection = (collision.transform.position - transform.position).normalized;
-        collision.rigidbody.AddForce(bounceDirection * bounceForce * forceMultiplier, ForceMode2D.Impulse); 
+        if (collision.gameObject.TryGetComponent(out ISwipeable target))
+        {
+            Vector3 bounceDirection = (collision.transform.position - transform.position).normalized;
+            float knockbackMultiplier = 0f;
+            target.OnSwipe(bounceDirection, bounceForce * forceMultiplier, _collider2D, ref knockbackMultiplier);
+        }
     }
 }
