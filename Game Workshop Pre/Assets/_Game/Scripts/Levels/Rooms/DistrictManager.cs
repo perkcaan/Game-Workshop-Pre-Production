@@ -102,9 +102,10 @@ public class DistrictManager : StaticInstance<DistrictManager>
 
     private void Update()
     {
-        
-
-
+        if (FocusedRoom != null)
+        {
+           FocusedRoom.UpdateFocusedRoom(); 
+        }
     }
 
     public void AwardCoins(int amount)

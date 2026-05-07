@@ -6,6 +6,8 @@ public class Gate : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Collider2D _collider;
     private bool _isGateDown = false;
+    private bool _isBlockingPlayer = false;
+    public bool IsBlockingPlayer { get { return _isBlockingPlayer; } }
     private List<Room> _roomsClosingGate = new List<Room>();
     [SerializeField] private bool _isHorizontal;
     private void Start()
@@ -55,4 +57,22 @@ public class Gate : MonoBehaviour
             ParticleManager.Instance.Play("GateOpenV", transform.position);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.TryGetComponent(out PlayerMovementController player))
+        {
+            _isBlockingPlayer = true;
+        }
+    }
+
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.TryGetComponent(out PlayerMovementController player))
+        {
+            _isBlockingPlayer = false;
+        }
+    }
+
 }

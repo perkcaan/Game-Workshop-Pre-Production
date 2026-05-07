@@ -80,6 +80,22 @@ public class Room : MonoBehaviour
         _maxTrashBallSize = 0;
     }
 
+    public void UpdateFocusedRoom()
+    {
+        // Close room if focused and gates are not blocking the player
+        if (_isRoomClosed) return;
+        bool canClose = true;
+        foreach (Gate gate in _connectedGates)
+        {
+            if (gate.IsBlockingPlayer) canClose = false;
+        }
+
+        if (canClose)
+        {
+            TriggerRoomClose();
+        }
+    }
+
     public void NewTrashBallSize(int size)
     {
         if(size > _maxTrashBallSize) _maxTrashBallSize = size;
@@ -120,9 +136,8 @@ public class Room : MonoBehaviour
 
         if (IsTrashRoom && !IsRoomCleaned)
         {
-            PlayerMovementController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
+            PlayerMovementController player = GameManager.Instance.CurrentPlayer;
             AudioManager.Instance.Play("gateUp", player.transform);
-            //StartCoroutine(RoomClearParticles(player));
         }
 
         foreach (Gate gate in _connectedGates)
