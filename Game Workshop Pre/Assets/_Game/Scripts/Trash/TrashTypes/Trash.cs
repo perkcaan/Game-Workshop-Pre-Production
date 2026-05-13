@@ -36,12 +36,20 @@ public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
     protected Tween _shakeTween;
     protected float _shakeSpeed = 0.125f;
 
+    [Header("Particles")]
+    [SerializeField] protected ParticleSystem passiveParticle; 
+
     protected virtual void Awake()
     {
         _collider = GetComponent<CircleCollider2D>();
         _rigidBody = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (_pointValue <= 0) _pointValue = 1;
+
+        if (passiveParticle != null) {
+            ParticleSystem particle = Instantiate(passiveParticle, transform);
+            if (particle != null) particle.Play();
+        }
     }
     protected void CreateTrashBall()
     {

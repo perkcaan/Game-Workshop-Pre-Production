@@ -5,6 +5,7 @@ using System;
 
 public class TrashPile : Trash, ISweepable, ISwipeable
 {
+    [Header("TrashPile")]
     [SerializeField] int _health;
     [SerializeField] int _trashSpreadRange;
     [SerializeField] float _swipeForceShakeMultiplier = 0.5f;
@@ -13,7 +14,6 @@ public class TrashPile : Trash, ISweepable, ISwipeable
     [SerializeField] List<GameObject> _startingStoredTrash;
     [SerializeField] Color color;
     [SerializeField] bool _dashBreak; // not implemented
-    [SerializeField] ParticleSystem stinkParticle; 
     private float _sweepTimer;
     public GameObject HitParent { get { return gameObject; } }
 
@@ -22,10 +22,6 @@ public class TrashPile : Trash, ISweepable, ISwipeable
         base.Awake();
         _size = 0;
         RecalculateSize(true);
-        if (stinkParticle != null) {
-            ParticleSystem particle = Instantiate(stinkParticle, transform);
-            if (particle != null) particle.Play();
-        }
     }
 
     private void OnValidate()

@@ -3,6 +3,7 @@ using System;
 
 public class CollectableTrash : Trash, ISweepable, ISwipeable, IPokeable, ITargetable
 {
+    [Header("CollectableTrash")]
     [SerializeField] float _sweepDurationToBecomeBall;
     [SerializeField] bool _swipesIntoTrashBall;
     [SerializeField] float _pokeForceMultiplier = 1f;

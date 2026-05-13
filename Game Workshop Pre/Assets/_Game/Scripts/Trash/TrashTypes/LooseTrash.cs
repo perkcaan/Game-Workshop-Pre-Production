@@ -4,6 +4,7 @@ using System;
 
 public class LooseTrash : Trash, ISweepable, ISwipeable, IPokeable
 {
+    [Header("LooseTrash")]
     [SerializeField] bool _hasImpactParticle = false;
     [SerializeField] float _sweepDurationToBecomeBall;
     [SerializeField] float _playerEnterKnockback;
