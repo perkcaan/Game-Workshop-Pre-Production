@@ -60,19 +60,22 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     [SerializeField] float _secondaryThreshold = 0.15f;
 
     [Header("Trash Particles")]
-    [SerializeField] ParticleSystem rollingDustParticle; 
-    [SerializeField] ParticleSystem burningParticle; 
-    [SerializeField] ParticleSystem speedingLinesParticle;
+    [SerializeField] ParticleSystem _rollingDustParticleSystem;
+    [SerializeField] ParticleSystem _burningParticleSystem;
+    [SerializeField] ParticleSystem _speedingLinesParticleSystem;
 
-    [Header("Trash State")]
-    // state of trashball
+    private ParticleSystem _rollingDustParticle; 
+    private ParticleSystem _burningParticle; 
+    private ParticleSystem _speedingLinesParticle;
+
+    [Header("Trash Properties")]
+    public bool isBurning = false;
+    public bool isSwiped = false;
     private static int _nextID = 0; // universal count for trash ball IDs
     private int _trashID; //individual identifier for this trash ball
     private bool _isBeingDestroyed = false;
     private bool _isDecaying = false;
     private float _decayTimer = 0f;
-    public bool isBurning = false;
-    public bool isSwiped = false;
     
     // material stats
     private float _maxHealthMultiplier = 1f;
@@ -130,7 +133,10 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         _secondaryTrashMaterial = _baseMaterial;
         Rigidbody.sharedMaterial = Instantiate(Rigidbody.sharedMaterial);
 
-        ParticleManager.Instance.PlayParticleOnThis(rollingDustParticle, transform);
+        _rollingDustParticle = Instantiate(_rollingDustParticleSystem, transform);
+        _rollingDustParticle.Play();
+        _speedingLinesParticle = Instantiate(_speedingLinesParticleSystem, transform);
+        _speedingLinesParticle.Stop();
     }
 
     private void Start()
@@ -148,7 +154,6 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
 
         if (!_pauseDecay && Rigidbody.linearVelocity.magnitude < 1)
         {
-            isSwiped = false;
             _decayTimer -= Time.deltaTime * _defaultDecayMultiplier * _decayMultiplier;
 
             if (_decayTimer <= 0)
@@ -173,6 +178,24 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         if (distanceVector.magnitude >= Mathf.Pow(Size, 1f / 3f) * _scaleMultiplier)
         {
             _lastRolledLocation = transform.position;
+            float sizeScaling = Mathf.Pow(Size, 1f / 3f);
+            ParticleSystem.ShapeModule rollShape = _rollingDustParticle.shape;
+            ParticleSystem.EmissionModule rollEmission = _rollingDustParticle.emission;
+            ParticleSystem.ShapeModule speedShape = _speedingLinesParticle.shape;
+            ParticleSystem.EmissionModule speedEmission = _speedingLinesParticle.emission;
+            rollShape.radius = sizeScaling / 4f;
+            rollEmission.rateOverTime = sizeScaling;
+            rollEmission.rateOverDistance = sizeScaling;
+            speedShape.radius = sizeScaling / 4f - 0.25f;
+
+            float interval = 0.25f / Rigidbody.linearVelocity.magnitude;
+            ParticleSystem.Burst burst0 = speedEmission.GetBurst(0);
+            ParticleSystem.Burst burst1 = speedEmission.GetBurst(1);
+            burst0.repeatInterval = interval;
+            burst1.repeatInterval = interval;
+            speedEmission.SetBurst(0, burst0);
+            speedEmission.SetBurst(1, burst1);
+
             ActionOnMaterials((material, amount) => material.whenBallRolls(this, amount));
         }
 
@@ -198,6 +221,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
         if (Rigidbody.linearVelocity.magnitude < 1)
         {
             isSwiped = false;
+            _speedingLinesParticle.Stop();
             _decayTimer -= Time.deltaTime * _defaultDecayMultiplier * _decayMultiplier;
             if (_decayTimer <= 0)
             {
@@ -205,11 +229,11 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
                 _decayTimer = _decayTrashDropRate;
             }
         }
-
-        // Can't decay when moving
-        if (Rigidbody.linearVelocity.magnitude > 1)
+        else
         {
             SetDecaying(false);
+            float moveAngle = Mathf.Atan2(Rigidbody.linearVelocity.y, Rigidbody.linearVelocity.x) * Mathf.Rad2Deg;
+            _speedingLinesParticle.transform.rotation = Quaternion.Euler(0, 0, moveAngle);
         }
     }
     
@@ -312,7 +336,8 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     {
         if (_burningHeatPerSecond > 1f && !isBurning) {
             isBurning = true;
-            ParticleManager.Instance.PlayParticleOnThis(burningParticle, transform);
+            _burningParticle = Instantiate(_burningParticleSystem, transform);
+            _burningParticle.Play();
             ParticleManager.Instance.Play("SmokeBlast", transform.position, Quaternion.identity, force: Mathf.Pow(Size, 1f / 3f)/3f, parent: gameObject.transform);
         }
     }
@@ -761,7 +786,7 @@ public class TrashBall : MonoBehaviour, ISweepable, ISwipeable, IPokeable, IHeat
     public void OnSwipe(Vector2 direction, float force, Collider2D collision, ref float knockbackMultiplier)
     {
         if (_isBeingDestroyed) return;
-
+        _speedingLinesParticle.Play();
         isSwiped = true;
         ActionOnMaterials((material, amount) => material.whenBallSwiped(this, amount));
 

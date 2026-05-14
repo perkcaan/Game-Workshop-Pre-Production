@@ -69,11 +69,15 @@ public class ParticleManager : Singleton<ParticleManager>
         }
     }
 
-    public void PlayParticleOnThis(ParticleSystem playedParticle, Transform thisTransform)
+    public ParticleSystem PlayParticleOnThis(ParticleSystem playedParticle, Transform thisTransform)
     {
         if (playedParticle != null) {
             ParticleSystem particle = Instantiate(playedParticle, thisTransform);
-            if (particle != null) particle.Play();
+            if (particle != null) {
+                particle.Play();
+                return particle;
+            }
         }
+        return null;
     }
 }
