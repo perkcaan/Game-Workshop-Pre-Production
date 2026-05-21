@@ -216,7 +216,7 @@ public class RoomConnectionTool : EditorTool
             if (gate == null) continue;
 
             Vector3 pos = gate.transform.position;
-            float size = HandleUtility.GetHandleSize(pos) * 0.2f;
+            float size = HandleUtility.GetHandleSize(pos) * 0.16f;
             Handles.color = Color.green;
 
             Vector3[] verts =
