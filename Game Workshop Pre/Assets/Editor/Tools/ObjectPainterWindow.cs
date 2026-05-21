@@ -3,10 +3,13 @@ using UnityEditor;
 
 public class ObjectPainterWindow : EditorWindow
 {
+    [SerializeField] GameObject horizontalGate;
+    [SerializeField] GameObject verticalGate;
     private GameObject prefabToPaint;
     private Transform parentObject;
     private bool isPainting = false;
     private Grid grid;
+    private LevelObjectContainer objectContainer;
 
     [MenuItem("Tools/Object Painter")]
     public static void ShowWindow()
@@ -20,6 +23,10 @@ public class ObjectPainterWindow : EditorWindow
         {
             grid = FindAnyObjectByType<Grid>();
         }
+        if (objectContainer == null)
+        {
+            objectContainer = FindAnyObjectByType<LevelObjectContainer>();
+        }
 
         GUILayout.Label("Object Painter", EditorStyles.boldLabel);
         prefabToPaint = (GameObject)EditorGUILayout.ObjectField("Prefab to Paint", prefabToPaint, typeof(GameObject), false);
@@ -28,9 +35,32 @@ public class ObjectPainterWindow : EditorWindow
         EditorGUILayout.Space();
         if (GUILayout.Button("Start Painting")) isPainting = true;
         if (GUILayout.Button("End Painting")) isPainting = false;
+        if (GUILayout.Button("Clear"))
+        {
+            prefabToPaint = null;
+            parentObject = null;
+        }
+
+        // Gates shortcut
+        GUILayout.Label("Gates: ", EditorStyles.boldLabel);
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("H"))
+        {
+            prefabToPaint = horizontalGate;
+            parentObject = objectContainer.GatesContainer.transform;
+        }
+
+        if (GUILayout.Button("V"))
+        {
+            prefabToPaint = verticalGate;
+            parentObject = objectContainer.GatesContainer.transform;
+        }
+        GUILayout.EndHorizontal();
+
 
         EditorGUILayout.Space();
-        GUILayout.Label("Controls", EditorStyles.boldLabel);
+        GUILayout.Label("Controls: ", EditorStyles.boldLabel);
         GUILayout.Label("- Drag Left Click to Paint\n- Hold Left Shift to Erase\n- Hold Left Control for Offset Placement", EditorStyles.label);
     }
 
@@ -54,7 +84,7 @@ public class ObjectPainterWindow : EditorWindow
         Vector3Int cellPos;
         Vector3 snappedPos;
 
-        if (e.control || e.shift)
+        if (e.control)
         {
             float tileSize = grid.CellToWorld(Vector3Int.one).x;
             mousePos -= Vector2.one * tileSize / 4.0f;
