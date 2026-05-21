@@ -56,6 +56,14 @@ public class Room : MonoBehaviour
 
     // Gates tied to this room
     [SerializeField] private List<Gate> _connectedGates;
+    public List<Gate> ConnectedGates
+    {
+        get
+        {
+            if (_connectedGates == null) return new List<Gate>();
+            return _connectedGates;
+        }
+    }
     [SerializeField] private bool _openGatesOnClean = true; 
 
     // Event triggers

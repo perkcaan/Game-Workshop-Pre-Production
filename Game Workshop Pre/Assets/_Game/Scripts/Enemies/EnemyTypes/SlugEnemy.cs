@@ -10,7 +10,6 @@ using UnityEngine;
 public class SlugEnemy : EnemyBase
 {
     [Header("Slug Properties")]
-    [SerializeField] private float _eatRadius = 3f;
     [SerializeField] private float _stomachLimit = 30f;
 
     private EnemyBlackboard _blackboard; 

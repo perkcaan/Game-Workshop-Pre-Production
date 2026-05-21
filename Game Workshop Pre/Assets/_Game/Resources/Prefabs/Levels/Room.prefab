@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5686449132992306426}
   - component: {fileID: 2341470601195091327}
   - component: {fileID: -6979097873488287620}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Room
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,6 +41,7 @@ PolygonCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3820466890568341675}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -64,7 +65,8 @@ PolygonCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -90,6 +92,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e35ddcfb90ff584ba386e5b463eec39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoomDataPrefab: {fileID: 0}
-  ActiveRoomData: {fileID: 0}
+  RoomDrawerPrefab: {fileID: 0}
+  ActiveRoomDrawer: {fileID: 0}
   _baseTemperature: 20
+  _isTrashRoom: 1
+  coinsAwarded: 0
+  totalMinSizeToAbsorb: 0
+  baseIntensity: 0
+  musicSection: 0
+  _nearbyRooms: []
+  _connectedGates: []
+  _openGatesOnClean: 1
+  _roomCleanEvents:
+    _eventTriggers: []
+  references:
+    version: 2
+    RefIds: []

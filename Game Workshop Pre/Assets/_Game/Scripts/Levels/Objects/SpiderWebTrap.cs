@@ -10,7 +10,6 @@ public class SpiderWebTrap : MonoBehaviour
     [SerializeField] private int _playerSpeedReduction;
 
     // Drag increase for trash ball
-    [SerializeField] private float _trashBallSpeedReduction = 5f;
 
     [SerializeField] private float _timeUntilDecay = 10f;
     private float _decayTimer = 0;

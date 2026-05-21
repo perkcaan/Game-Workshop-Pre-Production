@@ -50,7 +50,9 @@ public class ShaderManager : MonoBehaviour
     {
         if ((Vector2) transform.localPosition != Vector2.zero)
         {
-            Debug.LogWarning($"{transform.parent.name}'s sprite is not centered properly. Please fix in Editor. Position: {transform.parent.position}");
+            Debug.LogWarning($"{transform.parent.name}'s sprite was moved independently. Fixing automatically...");
+            transform.parent.position = new Vector2(transform.position.x, transform.position.y);
+            transform.localPosition = Vector2.zero;
         }    
     }
 
