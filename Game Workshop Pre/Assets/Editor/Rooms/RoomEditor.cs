@@ -1,6 +1,7 @@
+using Unity.VectorGraphics;
 using UnityEditor;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 [CustomEditor(typeof(Room))]
 public class RoomEditor : Editor
@@ -27,7 +28,7 @@ public class RoomEditor : Editor
             return;
         }
 
-        bool hasValidPrefab = IsValidPrefabAsset(_room.RoomDrawerPrefab);
+        bool hasValidPrefab   = IsValidPrefabAsset(_room.RoomDrawerPrefab);
         bool hasValidInstance = HasValidActiveInstance(_room);
 
         if (_room.RoomDrawerPrefab != null && !hasValidPrefab)
@@ -40,21 +41,62 @@ public class RoomEditor : Editor
 
         GUILayout.Space(5);
 
-        GUI.enabled = hasValidPrefab && !hasValidInstance;
-        if (GUILayout.Button("Pull Out Drawer"))
+        if (!hasValidPrefab)
         {
-            PullOutDrawer(_room);
+            if (GUILayout.Button("Create Drawer"))
+                CreateDrawerPrefab(_room);
         }
-
-        GUI.enabled = hasValidInstance;
-        if (GUILayout.Button("Push In Drawer"))
+        else
         {
-            PushInDrawer(_room);
-        }
+            GUI.enabled = !hasValidInstance;
+            if (GUILayout.Button("Pull Out Drawer"))
+                PullOutDrawer(_room);
 
-        GUI.enabled = true;
+            GUI.enabled = hasValidInstance;
+            if (GUILayout.Button("Push In Drawer"))
+                PushInDrawer(_room);
+
+            GUI.enabled = true;
+        }
 
         DrawStatusInfo(hasValidPrefab, hasValidInstance);
+    }
+
+    private static void CreateDrawerPrefab(Room room)
+    {
+        // Open a save panel so the user picks a name and location.
+        string scene = SceneManager.GetActiveScene().name;
+        string defaultName = $"{scene}_{room.name}";
+        string path = EditorUtility.SaveFilePanelInProject(
+            "Create Room Drawer Prefab",
+            defaultName,
+            "prefab",
+            "Choose where to save the new drawer prefab.",
+            "Assets/_Game/Resources/Rooms"
+        );
+
+        // Cancelled.
+        if (string.IsNullOrEmpty(path)) return;
+
+        // Create a temporary empty GameObject, save it as a prefab, then
+        // immediately destroy the temp object — we don't want it in the scene.
+        var temp = new GameObject("RoomDrawer");
+        GameObject prefabAsset = PrefabUtility.SaveAsPrefabAsset(temp, path);
+        Object.DestroyImmediate(temp);
+
+        if (prefabAsset == null)
+        {
+            Debug.LogWarning($"[RoomEditor] Failed to create drawer prefab at '{path}'.", room);
+            return;
+        }
+
+        // Assign the new prefab asset to the room.
+        Undo.RecordObject(room, "Create Room Drawer Prefab");
+        room.RoomDrawerPrefab = prefabAsset;
+        EditorUtility.SetDirty(room);
+
+        // Ping the new asset in the Project window so the user can find it.
+        EditorGUIUtility.PingObject(prefabAsset);
     }
 
     private void DrawStatusInfo(bool hasValidPrefab, bool hasValidInstance)
@@ -81,50 +123,36 @@ public class RoomEditor : Editor
     private static bool IsValidPrefabAsset(GameObject obj)
     {
         if (obj == null) return false;
-
-        PrefabAssetType type = PrefabUtility.GetPrefabAssetType(obj);
-        return type != PrefabAssetType.NotAPrefab;
+        return PrefabUtility.GetPrefabAssetType(obj) != PrefabAssetType.NotAPrefab;
     }
 
     private static bool HasValidActiveInstance(Room room)
     {
         if (room.ActiveRoomDrawer == null) return false;
-
-        if (!room.ActiveRoomDrawer) return false;
-
+        if (!room.ActiveRoomDrawer)        return false;
         return PrefabUtility.IsPartOfPrefabInstance(room.ActiveRoomDrawer);
     }
 
     private static void PullOutDrawer(Room room)
     {
-        if (room == null) return;
-
+        if (room == null)                  return;
         if (room.ActiveRoomDrawer != null) return;
 
         if (room.RoomDrawerPrefab == null)
         {
-            Debug.LogWarning(
-                "Cannot pull out drawer: RoomDrawerPrefab is not assigned.",
-                room
-            );
+            Debug.LogWarning("Cannot pull out drawer: RoomDrawerPrefab is not assigned.", room);
             return;
         }
 
         if (!IsValidPrefabAsset(room.RoomDrawerPrefab))
         {
-            Debug.LogWarning(
-                "Cannot pull out drawer: RoomDrawerPrefab is not a prefab asset.",
-                room
-            );
+            Debug.LogWarning("Cannot pull out drawer: RoomDrawerPrefab is not a prefab asset.", room);
             return;
         }
 
         if (room.transform == null)
         {
-            Debug.LogWarning(
-                "Cannot pull out drawer: Room has no valid transform.",
-                room
-            );
+            Debug.LogWarning("Cannot pull out drawer: Room has no valid transform.", room);
             return;
         }
 
@@ -132,13 +160,11 @@ public class RoomEditor : Editor
 
         if (instance == null)
         {
-            Debug.LogWarning("Failed to instantiate RoomDrawerPrefab. The prefab may be missing or invalid.",
-                room
-            );
+            Debug.LogWarning("Failed to instantiate RoomDrawerPrefab. The prefab may be missing or invalid.", room);
             return;
         }
 
-        instance.name = "RoomDrawer (Editing)";
+        instance.name         = "RoomDrawer (Editing)";
         room.ActiveRoomDrawer = instance;
 
         Undo.RegisterCreatedObjectUndo(instance, "Pull Out Room Drawer");

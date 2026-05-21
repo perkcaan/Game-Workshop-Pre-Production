@@ -13,6 +13,7 @@ public static class RoomObjectParenter
     static RoomObjectParenter()
     {
         SceneView.duringSceneGui += OnSceneGUI;
+        ObjectChangeEvents.changesPublished += OnChangesPublished;
     }
 
     private static void OnSceneGUI(SceneView _)
@@ -83,6 +84,39 @@ public static class RoomObjectParenter
         if (anyChanged) _dragCandidates.Clear();
     }
 
+    private static void OnChangesPublished(ref ObjectChangeEventStream stream)
+    {
+        if (Application.isPlaying) return;
+ 
+        for (int i = 0; i < stream.length; i++)
+        {
+            if (stream.GetEventType(i) != ObjectChangeKind.CreateGameObjectHierarchy) continue;
+ 
+            stream.GetCreateGameObjectHierarchyEvent(i, out var data);
+            GameObject obj = EditorUtility.EntityIdToObject(data.instanceId) as GameObject;
+            if (obj == null) continue;
+ 
+            // Only care about created prefabs
+            if (PrefabUtility.IsPartOfPrefabAsset(obj)) continue;
+            if (!PrefabUtility.IsPartOfPrefabInstance(obj)) continue;
+
+            RoomObject ro = obj.GetComponent<RoomObject>();
+            if (ro == null) continue;
+            GameObject roomObjectRoot = ro.gameObject;
+            if (roomObjectRoot == null) continue;
+ 
+            Vector2 worldPos = roomObjectRoot.transform.position;
+            Room targetRoom = FindRoomAt(worldPos);
+            if (targetRoom == null) continue;
+ 
+            Room currentRoom = FindCurrentRoom(roomObjectRoot);
+            if (targetRoom == currentRoom) continue;
+ 
+
+            if (roomObjectRoot != null) ParentToRoom(roomObjectRoot, targetRoom, currentRoom);
+        }
+    }
+
 
     private static readonly int RoomLayerMask = LayerMask.GetMask("Room");
     private static Room FindRoomAt(Vector2 worldPos)
@@ -102,47 +136,29 @@ public static class RoomObjectParenter
     {
         EnsureDrawerPulledOut(targetRoom);
  
-        if (targetRoom.ActiveRoomDrawer == null)
-        {
-            Debug.LogWarning(
-                $"[RoomObjectAutoParenter] Could not pull out drawer for '{targetRoom.name}'. " +
-                "Is RoomDrawerPrefab assigned?",
-                targetRoom
-            );
-            return;
-        }
+        // Determine the destination parent — drawer if available, Room itself as fallback.
+        Transform destinationParent = targetRoom.ActiveRoomDrawer != null ? targetRoom.ActiveRoomDrawer.transform : targetRoom.transform;
  
-        // If the object is inside a pulled-out drawer (a live prefab instance),
-        // we must surgically remove it from that prefab. The correct order:
-        //   1. Unpack the drawer instance so everything becomes plain scene objects
-        //      and the RoomObject is free to move.
-        //   2. Depart the RoomObject to scene root.
-        //   3. SaveAsPrefabAsset the unpacked drawer back to the original asset path
-        //      — now saved without the RoomObject.
-        //   4. Destroy the unpacked drawer instance and re-instantiate it as a
-        //      fresh prefab instance so RoomEditor sees it as still pulled out.
         if (currentRoom != null && PrefabUtility.IsPartOfPrefabInstance(roomObject))
         {
             GameObject oldDrawer        = currentRoom.ActiveRoomDrawer;
             GameObject oldPrefabAsset   = PrefabUtility.GetCorrespondingObjectFromSource(oldDrawer);
             string     oldPrefabPath    = AssetDatabase.GetAssetPath(oldPrefabAsset);
  
-            // Step 1: Unpack — drawer and all children become plain scene objects.
+            // Unpack
             PrefabUtility.UnpackPrefabInstance(
                 oldDrawer,
                 PrefabUnpackMode.Completely,
                 InteractionMode.UserAction
             );
  
-            // Step 2: Depart the RoomObject before saving so it isn't included.
+            // Depart RoomObject
             roomObject.transform.SetParent(null, worldPositionStays: true);
  
-            // Step 3: Save the now-unpacked drawer (without the RoomObject) back
-            // to the original prefab asset on disk.
+            // Save unpacked drawer as prefab
             PrefabUtility.SaveAsPrefabAsset(oldDrawer, oldPrefabPath);
  
-            // Step 4: Destroy the plain-GameObject drawer and replace it with a
-            // fresh prefab instance so RoomEditor's HasValidActiveInstance stays true.
+            // Step 4: Destroy the old drawer gameobject and replace with the new instance
             Object.DestroyImmediate(oldDrawer);
             GameObject newInstance = PrefabUtility.InstantiatePrefab(
                 oldPrefabAsset, currentRoom.transform
@@ -155,7 +171,7 @@ public static class RoomObjectParenter
  
         Undo.SetTransformParent(
             roomObject.transform,
-            targetRoom.ActiveRoomDrawer.transform,
+            destinationParent,
             $"Auto-parent '{roomObject.name}' → Room '{targetRoom.name}'"
         );
  
@@ -184,7 +200,7 @@ public static class RoomObjectParenter
         if (instance == null)
         {
             Debug.LogWarning(
-                $"[RoomObjectAutoParenter] Failed to instantiate drawer prefab for '{room.name}'.",
+                $"[RoomObjectParenter] Failed to instantiate drawer prefab for '{room.name}'.",
                 room
             );
             return;

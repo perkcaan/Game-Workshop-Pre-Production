@@ -29,7 +29,7 @@ public class DistrictManager : StaticInstance<DistrictManager>
     private int coinsEarned;
 
     [ContextMenu("Generate Rooms")]
-    private void GenerateRooms()
+    public void GenerateRooms()
     {
         RoomPolygonGenerator.GeneratePolygonColliders(transform, _roomTilemap);
     }
