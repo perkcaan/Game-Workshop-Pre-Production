@@ -8,7 +8,7 @@ using FMOD;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class EnemyBase : MonoBehaviour, ITargetable, IAbsorbable, IHeatable, ICleanable, ISwipeable, ISweepable, IPokeable
+public abstract class EnemyBase : RoomObject, ITargetable, IAbsorbable, IHeatable, ICleanable, ISwipeable, ISweepable, IPokeable
 {
     [Header("Enemy")]
     [SerializeField] protected BehaviourTree _behaviour;

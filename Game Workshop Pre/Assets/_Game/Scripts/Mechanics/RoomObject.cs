@@ -1,7 +1,13 @@
+using UnityEditor.Rendering.Universal;
 using UnityEngine;
 
 public class RoomObject : MonoBehaviour
 {
+    public void ValidateSprite()
+    {
+        ShaderManager sm = GetComponentInChildren<ShaderManager>();
+        sm.OnValidate();
+    }
     // private static int roomLayerMask = -1;
     // private void OnValidate()
     // {

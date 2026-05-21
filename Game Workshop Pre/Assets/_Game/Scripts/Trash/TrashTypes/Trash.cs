@@ -8,7 +8,7 @@ using UnityEngine;
 
 // An abstract class for Trash. All types of Trash can inherit from this.
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class Trash : MonoBehaviour, IAbsorbable, IHeatable, ICleanable
+public abstract class Trash : RoomObject, IAbsorbable, IHeatable, ICleanable
 {
     [SerializeField] protected GameObject _trashBallPrefab;
     [SerializeField] protected float _explosionMultiplier;

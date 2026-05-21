@@ -46,7 +46,7 @@ public class ShaderManager : MonoBehaviour
         _block = new MaterialPropertyBlock();
     }
 
-    private void OnValidate()
+    public void OnValidate()
     {
         if ((Vector2) transform.localPosition != Vector2.zero)
         {
