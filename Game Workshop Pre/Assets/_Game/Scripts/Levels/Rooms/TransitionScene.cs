@@ -19,8 +19,7 @@ public class TransitionScene : MonoBehaviour
         // this isnt very safe, make it safer later
         if (collider.TryGetComponent(out PlayerMovementController player))
         {
-            RuntimeManager.GetBus("bus:/").stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            SceneManager.LoadScene(_sceneName);
+            GameManager.LoadScene(_sceneName);
         }
     }
 }
